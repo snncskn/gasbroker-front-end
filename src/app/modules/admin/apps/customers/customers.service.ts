@@ -71,12 +71,11 @@ export class CustomersService {
      * Get customers
      */
     getCustomers(): Observable<Customer[]> {
-        //api/apps/contacts/all
-        //`${environment.url}/users/agent`
-        return this._httpClient.get<any>(`${environment.url}/customers/list`).pipe(
+      
+        return this._httpClient.get<any>(`${environment.url}/company`).pipe(
             tap((customers) => {
-                this._customers.next(customers.data);
-                this._customersCount = customers.records;
+                this._customers.next(customers.body);
+                this._customersCount = customers.body.length;
             })
         );
     }
@@ -90,7 +89,7 @@ export class CustomersService {
         let filter = { card_name: query, card_code: query, email: query };
         let where = { filter, pageNumber: 9999, pageSize: 20, sortField: '', sortOrder: '' };
 
-        return this._httpClient.post<any>(`${environment.url}/customers/find`, { queryParams: where }).pipe(
+        return this._httpClient.post<any>(`${environment.url}/company/find`, { queryParams: where }).pipe(
             tap((customers) => {
                 this._customers.next(customers.data);
             })

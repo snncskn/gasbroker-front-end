@@ -84,12 +84,12 @@
                                         </ng-container>
                                         <ng-container *ngIf="!customer.avatar">
                                             <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
-                                                {{customer.card_name}}
+                                                {{customer.full_name}}
                                             </div>
                                         </ng-container>
                                     </div>
                                     <div class="min-w-0 ml-4">
-                                        <div class="font-medium leading-5 truncate">  {{customer.card_name | uppercase }} </div>
+                                        <div class="font-medium leading-5 truncate">  {{customer.full_name | uppercase }} </div>
                                         <div class="leading-5 truncate text-secondary">{{customer.phone}} - {{customer.email}}</div>
                                     </div>
                                 </a>

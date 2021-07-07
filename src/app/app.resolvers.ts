@@ -36,7 +36,7 @@ export class InitialDataResolver implements Resolve<any>
             this._httpClient.get<any>('api/common/navigation'),
             this._httpClient.get<any>('api/common/notifications'),
             this._httpClient.get<any>('api/common/shortcuts'),
-            this._httpClient.post<any>(`${environment.url}/user/me`,{})
+            this._httpClient.post<any>(`${environment.url}/api/auth/me`,{})
         ]).pipe(
             map(([messages, navigation, notifications, shortcuts, user]) => ({
                     messages,

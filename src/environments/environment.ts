@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    url: 'http://hairdresserapi.teoden.co.uk/'
+    url: 'http://localhost:3300'
 
 };
 

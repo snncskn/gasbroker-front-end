@@ -75,13 +75,13 @@ export class AuthService
             return throwError('User is already logged in.');
         }
     //return this._httpClient.post(`api/auth/sign-in`, credentials).pipe(
-    return this._httpClient.post(`${environment.url}/users/login`, credentials).pipe(
+    return this._httpClient.post(`${environment.url}/api/auth/signin`, credentials).pipe(
             switchMap((response: any) => {
-                
-                this.accessToken = response.data.accessToken;
+                console.log(response);
+                this.accessToken = response.access_token;
                 this._authenticated = true;
-                this._userService.user = response.data;
-                return of(response.data);
+                this._userService.user = response.user.data;
+                return of(response.user.data);
                 
                 /*
                 this.accessToken = response.accessToken;
