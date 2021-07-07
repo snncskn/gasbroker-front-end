@@ -1,0 +1,37 @@
+<div mat-dialog-content>
+<style>
+.zebra {
+  background-color: rgba(0, 0, 0, 0.05)!important;
+  cursor: pointer;
+}
+.zebraActive {
+  background-color: rgba(111, 220, 15, 0.598)!important;
+  cursor: pointer;
+}
+table{
+  min-height: 100px; 
+  overflow: auto !important;
+  width: 100%;
+}
+    </style>
+    <ng-container>
+        <div class="flex-auto mt-6" style="width: 350px!important;height: 300px!important;">
+            
+            <table mat-table [dataSource]="dataSourceUserRoles" class="mat-elevation-z8">
+                <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef> Role Name </th>
+                    <td nowrap mat-cell *matCellDef="let element"> {{element.title}} </td>
+
+                </ng-container>
+                 
+                <tr mat-header-row *matHeaderRowDef="displayedUserRolesColumn;"></tr>
+                <tr mat-row [class]="setStyle2(i,row)" (click)="checkRole(row)"
+                style="cursor: pointer;"
+                    *matRowDef="let i=index;let row; columns: displayedUserRolesColumn;"></tr>
+            </table>
+                    
+               
+          
+        </div>
+    </ng-container>
+</div>

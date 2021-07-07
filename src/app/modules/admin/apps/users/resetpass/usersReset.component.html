@@ -1,0 +1,39 @@
+<div mat-dialog-content>
+    <ng-container>
+        <div class="flex-auto mt-6" style="width: 350px!important;height: 300px!important;">
+            <h1 mat-dialog-title>Reset Password</h1>
+            <form [formGroup]="ResetPasswordForm">
+                <mat-form-field class="fuse-mat-no-subscript flex-auto w-full p-4">
+                    <mat-label>New Password</mat-label>
+                    <mat-icon
+                    [svgIcon]="'heroicons_solid:key'"
+                    matPrefix></mat-icon>
+                    <input
+                    id="pass"
+                    matInput
+                    type="password"
+                    class="form-control"
+                    [formControlName]="'pass'"
+                    #passwordField>
+                </mat-form-field>
+                <mat-form-field class="fuse-mat-no-subscript flex-auto w-full p-4">
+                    <mat-label>Confirm New Password</mat-label>
+                    <mat-icon
+                    [svgIcon]="'heroicons_solid:key'"
+                    matPrefix></mat-icon>
+                    <input
+                    id="confirmPass"
+                    matInput
+                    type="password"
+                    class="form-control"
+                    [formControlName]="'confirmPass'"
+                    #passwordField>
+                </mat-form-field>
+                <button class="ml-8" mat-flat-button [color]="'primary'" (click)="resetPassword()" [disabled]="!ResetPasswordForm.valid">
+                    <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                    <span class="ml-2 mr-1">Reset</span>
+                </button>
+            </form>
+        </div>
+    </ng-container>
+</div>

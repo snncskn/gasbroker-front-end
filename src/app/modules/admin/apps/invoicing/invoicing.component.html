@@ -1,0 +1,160 @@
+<div mat-dialog-content>
+    <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+        <!-- Header -->
+        <div
+            class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+            <!-- Loader -->
+            <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+                <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+            </div>
+            <!-- Title -->
+            <div class="text-4xl font-extrabold tracking-tight leading-none">Invoicing</div>
+        </div>
+
+        <form style="width: 950px!important" [formGroup]="invoicingForm">
+
+            <div class="flex mt-8 ml-12 w-full">
+                <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                    <mat-label>Customer</mat-label>
+                    <input type="text" placeholder="Customer" matInput formControlName="customers"
+                        [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredOptions | async"
+                            (optionSelected)="selectCustomer($event)" [value]="option.card_name | titlecase">
+                            <ng-container>
+                                {{option.card_name | titlecase}}
+                            </ng-container>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field class="fuse-mat-no-subscript flex-auto ml-12">
+                    <mat-label>Invoicing Type</mat-label>
+                    <mat-select [formControlName]="'invoice_type'" [placeholder]="'Invoicing Type'">
+                        <mat-option value="13">Select</mat-option>
+                        <mat-option value="12">Sales Invoice</mat-option>
+                        <mat-option value="11">Purchases Invoice</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="flex mt-8 ml-12 w-full">
+                <div class="flex w-full">
+                    <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                        <mat-label>Invoice No</mat-label>
+                        <input matInput [formControlName]="'invoice_no'" [placeholder]="'Invoice No'"
+                            [spellcheck]="false">
+                    </mat-form-field>
+                </div>
+                <div class="flex ml-12 w-full">
+                    <mat-form-field appearance="fill" class="flex-auto">
+                        <mat-label>Invoice Date</mat-label>
+                        <input matInput [formControlName]="'invoice_date'" [placeholder]="'Invoice Date'"
+                            [matDatepicker]="picker">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field class="fuse-mat-no-subscript ml-12 flex-auto">
+                        <mat-label>Maturity (day)</mat-label>
+                        <input matInput [formControlName]="'maturity'" [placeholder]="'Maturity (day)'"
+                            [spellcheck]="false">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="flex mt-8 ml-12 w-full">
+                <div class="flex w-full">
+                    <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                        <mat-label>Invoicing Status</mat-label>
+                        <mat-select [formControlName]="'invoice_status'" [placeholder]="'Invoicing Status'">
+                            <mat-option value="63">On Hold</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex ml-12 w-full">
+                    <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+                        <mat-label>Content</mat-label>
+                        <textarea matInput matTextareaAutosize [formControlName]="'content'" [placeholder]="'Content'"
+                            [spellcheck]="false">
+                </textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="flex-auto ml-12  mt-8 gt-xs:pl-3">
+                <button class="add" mat-flat-button type="button" [color]="'primary'" (click)="add()"
+                    style="float: right;">
+                    Add
+                </button>
+            </div>
+
+            <div class="ml-12 grid grid-cols-12 gap-x-1 mt-15">
+                <!-- Columns -->
+                <div class="col-span-5 font-medium text-md text-secondary">SERVICE</div>
+                <div class="col-span-2 font-medium text-md text-right text-secondary">RATE</div>
+                <div class="col-span-2 font-medium text-md text-right text-secondary">QTY</div>
+                <div class="col-span-2 font-medium text-md text-right text-secondary">TOTAL</div>
+                <!-- Divider -->
+                <div class="col-span-12 my-4 border-b"></div>
+
+                <!-- Item -->
+                <ng-container formArrayName="invoiceItems" *ngFor="let item of invoiceItems.controls;let i = index;">
+                    <div class="col-span-6 text-lg font-medium"  [formGroupName]="i">
+                        <mat-form-field class="w-full">
+                            <input matInput formControlName="content" placeholder="Content" type="text">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-span-2 self-center text-right"  [formGroupName]="i">
+                        <mat-form-field>
+                            <input matInput formControlName="price" placeholder="Price"  (ngModelChange)="valuechange()" type="text">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-span-2 self-center text-right" [formGroupName]="i">
+                        <mat-form-field>
+                            <input matInput formControlName="quantity" placeholder="Quantity" (ngModelChange)="valuechange()" type="text">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-span-2 self-center text-right" [formGroupName]="i">
+                        <mat-form-field>
+                            <input matInput formControlName="total" placeholder="Total" type="text"  readonly>
+                        </mat-form-field>
+                    </div>
+                    <!-- Divider -->
+                    <div class="col-span-12 my-4 border-b"></div>
+                </ng-container>
+
+                <!-- Spacer -->
+                <div class="col-span-12 mt-16"></div>
+
+                <!-- Subtotal -->
+                <div class="col-span-10 self-center font-medium tracking-tight text-secondary">SUBTOTAL</div>
+                <div class="col-span-2 text-right text-lg">
+                    <mat-form-field>
+                        <input matInput [formControlName]="'sub_total'" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <!-- Divider -->
+                <div class="col-span-12 my-3 border-b"></div>
+
+                <!-- Tax -->
+                <div class="col-span-10 self-center font-medium tracking-tight text-secondary">TAX</div>
+                <div class="col-span-2 text-right text-lg">$11,365.75</div>
+
+                <!-- Divider -->
+                <div class="col-span-12 my-3 border-b"></div>
+
+                <!-- Total -->
+                <div class="col-span-10 self-center text-2xl font-medium tracking-tight text-secondary">TOTAL</div>
+                <div class="col-span-2 text-right text-2xl font-medium">$235,000.00</div>
+
+            </div>
+            <div class="flex-auto mt-8 gt-xs:pl-3">
+                <button class="add" mat-flat-button type="button" [color]="'primary'" (click)="createInvoice()"
+                    style="float: right;">
+                    Save
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>

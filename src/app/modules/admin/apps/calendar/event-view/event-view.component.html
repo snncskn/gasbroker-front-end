@@ -1,0 +1,309 @@
+<ng-container *ngIf="panelMode === 'view'">
+    <div class="flex-auto p-5" style="width: 600px; height: 680px;" *ngIf="isLoading">
+        <div class="flex">
+            <div class="flex flex-auto w-full justify-between ml-4">
+                <div class="flex-auto">
+                    <div class="col text-3xl font-semibold tracking-tight leading-none">
+                        {{event.title
+                        ||
+                        '(No title)'}}
+                    </div>
+                    <div class="flex justify-between">
+                        <div class="flex w-full" *ngIf="event.start?.length>0">
+                            <mat-icon color="primary" class="icon-size-2 text-hint bg-dark"
+                                [svgIcon]="'heroicons_solid:clock'">
+                            </mat-icon>
+                            {{event.start | date:'dd/MM/yyyy'
+                            }}
+                        </div>
+                        <div class="flex w-full font-semibold" *ngIf="event.start?.length>0">
+                            <mat-icon color="primary" class="icon-size-2 text-hint bg-dark"
+                                [svgIcon]="'heroicons_outline:clock'">
+                            </mat-icon>
+                            {{event.start | date:'HH:mm'
+                            }}-{{event.end | date:'HH:mm' }}
+                        </div>
+                    </div>
+                    <div class="flex flex-auto justify-between">
+                        <div class="flex w-full" *ngIf="event.customer.phone?.length>0">
+                            <mat-icon class="icon-size-2 text-hint bg-dark" [svgIcon]="'heroicons_solid:phone'">
+                            </mat-icon>
+                            {{event.customer.phone}}
+                        </div>
+
+                        <div class="flex w-full" *ngIf="event.customer.email?.length>0">
+                            <mat-icon class="icon-size-2 text-hint bg-dark" [svgIcon]="'heroicons_solid:mail'">
+                            </mat-icon>
+                            {{event.customer.email}}
+                        </div>
+
+                    </div>
+                    <div class="flex flex-auto justify-between">
+                        <div class="flex w-full" *ngIf="event.customer.diffNote.length>0">
+                            <mat-icon class="icon-size-2 text-hint bg-dark" [svgIcon]="'heroicons_solid:archive'">
+                            </mat-icon>
+                            {{event.customer.diffNote}}
+                        </div>
+                        <div class="flex w-full">
+                            <mat-icon color="warn" class="icon-size-2 text-hint bg-dark"
+                                [svgIcon]="'heroicons_solid:badge-check'">
+                            </mat-icon>
+                            {{event.customer.visits}}
+                        </div>
+                    </div>
+                    <div *ngIf="event.finish_date?.length>0">
+                        <mat-icon class="icon-size-2 text-hint bg-dark" [svgIcon]="'heroicons_solid:flag'">
+                        </mat-icon>
+                        {{event.finish_date}}
+
+                    </div>
+
+                    <div>
+                        <div class="w-2 h-2 rounded-full" [ngClass]="getCalendar(event.calendarId)?.color">
+
+                            <div class="ml-3 leading-none"><b>{{getCalendar(event.calendarId).full_name}}</b></div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div *ngIf="event.finish_status">
+                    </div>
+                </div>
+                <div class="flex -mt-2 -mr-2 ml-3">
+                    <ng-container *ngIf="!event.recurrence">
+                        <button *ngIf="event.paymentStatus" mat-icon-button
+                            (click)="changeEventPanelMode('payments','single')">
+                            <mat-icon [svgIcon]="'heroicons_outline:cash'"></mat-icon>
+                        </button>
+                        <button *ngIf="event.paymentStatus" mat-icon-button mat-dialog-close (click)="editEvent(event)">
+                            <mat-icon [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                        </button>
+
+                        <button *ngIf="event.paymentStatus" mat-icon-button (click)="deleteEvent(event)">
+                            <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-auto mt-10 " style="height: 400px;">
+            <mat-tab-group>
+                <mat-tab label="Detail">
+                    <ng-template matTabContent>
+                        <table style=" width: 100%;" mat-table [dataSource]="event.products" class="mat-elevation-z8">
+                            <ng-container matColumnDef="product_name">
+                                <th mat-header-cell *matHeaderCellDef> Product Name. </th>
+                                <td mat-cell *matCellDef="let element">
+                                        {{element.product_name}}
+                                   
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="price">
+                                <th mat-header-cell *matHeaderCellDef> Price </th>
+                                <td mat-cell *matCellDef="let element"> £
+                                    {{event.oap ? element.aop_price: element.price }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="minute">
+                                <th mat-header-cell *matHeaderCellDef> Minute </th>
+                                <td mat-cell *matCellDef="let element"> {{element.minute}} mins
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="symbol">
+                                <th mat-header-cell *matHeaderCellDef> # </th>
+                                <td mat-cell *matCellDef="let element">
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row [class]="setStyle(i,row)"
+                                *matRowDef="let i = index;let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </ng-template>
+
+
+                </mat-tab>
+
+                <mat-tab label="History">
+                    <ng-template matTabContent>
+                        <mat-table style="border-style: solid;border-color: coral;width: 100%; height: 300px;" mat-table
+                            [dataSource]="event.appointments" class="mat">
+                            <ng-container matColumnDef="date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    <mat-icon class="icon-size-1 text-hint" [svgIcon]="'heroicons_outline:calendar'">
+                                    </mat-icon> Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.start_tmp | date:
+                                    'dd/MM/yyyy' }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="price">
+                                <mat-header-cell *matHeaderCellDef>
+                                    <mat-icon class="icon-size-1 text-hint" [svgIcon]="'heroicons_solid:cash'">
+                                    </mat-icon> Price
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <span class="iconify" data-icon="bi:currency-pound" data-inline="false"></span>
+                                    £{{element.price}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="minute">
+                                <mat-header-cell *matHeaderCellDef>
+                                    <mat-icon class="icon-size-1 text-hint" [svgIcon]="'heroicons_solid:clock'">
+                                    </mat-icon> Minute
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    {{element.minute}} mins </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="note">
+                                <mat-header-cell *matHeaderCellDef>
+                                    <mat-icon class="icon-size-1 text-hint" [svgIcon]="'heroicons_solid:pencil-alt'">
+                                    </mat-icon> Note
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    {{element.description}}
+
+
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="search">
+                                <mat-header-cell *matHeaderCellDef>
+                                    <mat-icon class="icon-size-1 text-hint" [svgIcon]="'heroicons_solid:search'">
+                                    </mat-icon> Detail
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <div *ngIf="element.detail.length>0">
+                                        <button mat-button [matMenuTriggerFor]="menu">
+                                            <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                            <button *ngFor="let d of element.detail">
+                                                {{d.product_name}}-
+                                                £{{d.price}}</button>
+                                        </mat-menu>
+
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedHistoryColumns">
+                            </mat-header-row>
+                            <mat-row [class]="setStyle(i,row)"
+                                *matRowDef="let i = index; let row; columns: displayedHistoryColumns;">
+                            </mat-row>
+                        </mat-table>
+                    </ng-template>
+
+
+                </mat-tab>
+                <mat-tab label="Payments">
+                    <ng-template matTabContent>
+                        <mat-table style="border-style: solid;border-color: coral;width: 100%;" mat-table
+                            [dataSource]="event.payments" class="mat-elevation-z8">
+                            <ng-container matColumnDef="price">
+                                <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> £ {{element.price }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="method">
+                                <mat-header-cell *matHeaderCellDef> Cash/Card </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{element.method }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="sys_date">
+                                <mat-header-cell *matHeaderCellDef> System Time </mat-header-cell>
+                                <mat-cell *matCellDef="let element" nowrap> {{element.sys_date }}
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedPaymentsColumns">
+                            </mat-header-row>
+                            <mat-row [class]="setStyle(i,row)"
+                                *matRowDef="let i = index;let row; columns: displayedPaymentsColumns;">
+                            </mat-row>
+                        </mat-table>
+                    </ng-template>
+                </mat-tab>
+
+                <mat-tab label="Notes">
+                    <ng-template matTabContent>
+                        <mat-table style="border-style: solid;border-color: coral;width: 100%; height: 300px;" mat-table
+                            [dataSource]="event.notes" class="mat">
+                            <ng-container matColumnDef="app_date">
+                                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.app_date | date:'dd/MM/yyyy'
+                                    }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="therapist">
+                                <mat-header-cell *matHeaderCellDef> Therapist </mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{ element.therapist }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="text">
+                                <mat-header-cell *matHeaderCellDef> Note </mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{ element.text }}
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedNotesColumns">
+                            </mat-header-row>
+                            <mat-row [class]="setStyle(i,row)"
+                                *matRowDef="let i = index;let row; columns: displayedNotesColumns;">
+                            </mat-row>
+                        </mat-table>
+                    </ng-template>
+                </mat-tab>
+
+            </mat-tab-group>
+        </div>
+        <!-- Description -->
+        <div fxFlexAlign="end">
+            <div class="mt-6">
+                <mat-icon [svgIcon]="'heroicons_outline:menu-alt-2'"></mat-icon>
+                <div class="flex-auto ml-6">{{event.description}}</div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="panelMode === 'payments'">
+    <div class="flex-auto p-8">
+        <!-- Info -->
+        <div class="flex">
+            <mat-icon [svgIcon]="'heroicons_outline:information-circle'"></mat-icon>
+            <div class="flex flex-auto justify-between ml-12">
+
+                <form [formGroup]="paymentForm">
+                    <div class="text-3xl font-semibold tracking-tight leading-none">{{event.title ||
+                        '(No title)'}} Payment</div>
+
+                    <hr />
+                    <div fxLayout="row" fxFlexFill fxLayout.lt-sm="column">
+                        <mat-form-field class="w-full">
+                            <mat-label>Base Price</mat-label>
+                            <span matPrefix>£</span>
+                            <input matInput [formControlName]="'price'">
+                        </mat-form-field>
+
+                        <div>
+
+                            <mat-slide-toggle formControlName="method" [color]="'primary'">
+                                {{paymentForm.get('method').value === true ? 'Cash' : 'Cart'}}
+                            </mat-slide-toggle>
+
+                        </div>
+
+                    </div>
+                    <div class="ml-auto mt-6">
+                        <button mat-flat-button [color]="'primary'" (click)="addPayment()">
+                            Pay
+                        </button>
+                        <button mat-flat-button [color]="'warn'" (click)="cancelPayment()">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-container>

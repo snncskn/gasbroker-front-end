@@ -1,0 +1,32 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden dark:bg-gray-900">
+
+    <mat-drawer-container class="flex-auto h-full bg-transparent">
+        <!-- Drawer 
+        <mat-drawer class="w-60 dark:bg-gray-900" [autoFocus]="false" [mode]="drawerMode" [opened]="drawerOpened"
+            #drawer>
+            <calendar-sidebar (calendarUpdated)="onCalendarUpdated($event)"></calendar-sidebar>
+        </mat-drawer>
+-->
+        <mat-drawer-content class="flex">
+
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+
+                <!-- FullCalendar -->
+                <div class="flex flex-col flex-auto" *ngIf="isLoading">
+                    <full-calendar 
+                        [options]='calendarOptions'
+                        *ngIf="isLoading"
+                        (eventMouseOver)="MouseOver($event)"
+                        [businessHours]="businessHours"
+                         #fullCalendar>
+                         <ng-template fcEventContent let-arg='arg'>
+                            <b>{{ arg.timeText }}</b>
+                            <i>{{ arg.event.title }}</i>
+                          </ng-template>
+                        </full-calendar>
+                </div>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

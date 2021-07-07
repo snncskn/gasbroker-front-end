@@ -1,0 +1,281 @@
+<div mat-dialog-content>
+    <ng-container *ngIf="detailPanel">
+        <form style="width: 950px!important" [formGroup]="eventForm">
+            <div class="flex-auto mt-12">
+                <div class="grid grid-cols-2">
+                    <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                        <div class="flex items-center" *ngIf="!data.id">
+                            
+                            <mat-icon class="hidden sm:inline-flex mr-4" style="cursor: pointer;"
+                                (click)="newCustomerPanelShow()" [svgIcon]="'heroicons_outline:pencil-alt'">
+                            </mat-icon>
+                            <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                                <input tabindex="-1" type="text" placeholder="Customer"
+                                    matInput formControlName="customers"
+                                    [matAutocomplete]="auto">
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                    (optionSelected)="selectCustomer($event)">
+                                    <mat-option *ngFor="let option of filteredOptions | async"
+                                        [value]="option.card_name">
+                                        <ng-container>
+                                            {{option.card_name | titlecase}}
+                                        </ng-container>
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex items-center" *ngIf="data.id">
+                            <mat-icon class="hidden sm:inline-flex mr-4" style="cursor: pointer;"
+                                [svgIcon]="'heroicons_outline:pencil-alt'">
+                            </mat-icon>
+                            {{data.title}}
+                        </div>
+                        <div class="flex items-start mt-6">
+                            <mat-icon class="hidden sm:inline-flex mt-3 mr-6" [svgIcon]="'heroicons_outline:calendar'">
+                            </mat-icon>
+                            <div class="flex-auto">
+                                <fuse-date-range [formControlName]="'range'" [dateFormat]="settings.dateFormat"
+                                    [timeRange]="!eventForm.get('allDay').value" [timeFormat]="settings.timeFormat">
+                                </fuse-date-range>
+                                <mat-checkbox *ngIf="false" class="mt-4" [color]="'primary'"
+                                    [formControlName]="'allDay'">
+                                    All day
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-4">
+                            <mat-icon class="hidden sm:inline-flex mr-4" [svgIcon]="'heroicons_outline:tag'">
+                            </mat-icon>
+                            <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                                <mat-select formControlName="calendarId" (change)="$event.stopImmediatePropagation()">
+                                    <mat-select-trigger class="inline-flex items-center leading-none">
+                                        <span class="w-3 h-3 rounded-full"
+                                            [ngClass]="getCalendar(eventForm.get('calendarId').value)?.color"></span>
+                                        <span
+                                            class="ml-3">{{getCalendar(eventForm.get('calendarId').value)?.full_name}}</span>
+                                    </mat-select-trigger>
+                                    <ng-container *ngFor="let calendar of calendars">
+                                        <mat-option [value]="calendar.id">
+                                            <div class="inline-flex items-center">
+                                                <span class="w-3 h-3 rounded-full" [ngClass]="calendar.color"></span>
+                                                <span class="ml-3">{{calendar.full_name}}</span>
+                                            </div>
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex items-start mt-6">
+                            <mat-icon class="hidden sm:inline-flex mr-6 mt-3"
+                                [svgIcon]="'heroicons_outline:menu-alt-2'">
+                            </mat-icon>
+                            <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript flex-auto">
+                                <textarea matInput matTextareaAutosize formControlName="description"
+                                    [placeholder]="'Event description'">
+                    </textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="d-flex items-start mt-6 limit-container">
+                            <!--senin müdahale edeceğin yer burası aslında-->
+                            <div class="example-container mat-elevation-z8" *ngIf="isLoading">
+
+                                <table mat-table [dataSource]="selectData" class="mat-elevation-z8">
+                                    <ng-container matColumnDef="product_name">
+                                        <th mat-header-cell *matHeaderCellDef> Total. </th>
+                                        <td nowrap mat-cell *matCellDef="let element"> {{element.product_name}} </td>
+
+                                    </ng-container>
+                                    <ng-container matColumnDef="minute">
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            {{selectedMin}} mins </th>
+                                        <td nowrap mat-cell *matCellDef="let element" style="  width: 20% !important;">
+                                            <div class="flex items-center">
+                                                <mat-icon class="icon-size-2 text-hint bg-dark"
+                                                    [svgIcon]="'heroicons_solid:clock'">
+                                                </mat-icon>
+                                                <div class="ml-1.5 text-md text-secondary">{{element.minute}} mins.
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="price">
+                                        <th mat-header-cell *matHeaderCellDef> £ {{selectedPrice}} </th>
+                                        <td nowrap mat-cell *matCellDef="let element" style="  width: 20% !important;">
+                                            <div class="flex items-center">
+                                                <mat-icon class="icon-size-2 text-hint"
+                                                    [svgIcon]="'heroicons_solid:cash'">
+                                                </mat-icon>
+                                                <div class="ml-1.5 text-md text-secondary"> £ {{eventForm.value.aop ? element.aop_price : element.price }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+                                    <tr mat-row [class]="setStyle(i,row)"
+                                    style="cursor: pointer;"
+                                        *matRowDef="let i=index;let row; columns: displayedColumns;"></tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="flex flex-col p-6 shadow" *ngIf="isLoading">
+                        <div class="flex items-center mt-2">
+                            <mat-checkbox class="example-margin" (change)="calculatePrice()" formControlName="aop">OAP</mat-checkbox>
+                        </div>
+                        <mat-tab-group mat-align-tabs="center" [selectedIndex]="selectedIndex">
+                            <mat-tab label="Children">
+
+                                <table mat-table [dataSource]="dataSourceProductChild" class="mat-elevation-z8">
+                                    <ng-container matColumnDef="product_name">
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            Product Name
+                                        </th>
+                                        <td mat-cell  *matCellDef="let element">
+                                            {{element.product_name}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="price">
+                                        <th mat-header-cell *matHeaderCellDef> Price </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <mat-icon class="icon-size-2 text-hint" [svgIcon]="'heroicons_solid:cash'">
+                                            </mat-icon> 
+                                            {{eventForm.value.aop ? element.aop_price : element.price }}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="minute">
+                                        <th mat-header-cell *matHeaderCellDef> Minute </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <mat-icon class="icon-size-2 text-hint" [svgIcon]="'heroicons_solid:clock'">
+                                            </mat-icon> {{element.minute}}
+                                        </td>
+
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
+                                    <tr mat-row style="cursor: pointer;" (click)="checkProduct(row)"
+                                        *matRowDef="let i= index;let row; columns: displayedProductColumns;"
+                                        [class]="setStyle2(i,row)"> </tr>
+
+                                </table>
+                            </mat-tab>
+                            <mat-tab label="Man & Woman">
+                                <div class="limit-container">
+                                    <table mat-table [dataSource]="dataSourceProduct">
+                                        <ng-container matColumnDef="product_name">
+                                            <th mat-header-cell *matHeaderCellDef>
+                                                Product Name
+                                            </th>
+                                            <td nowrap mat-cell *matCellDef="let element"> 
+                                                {{element.product_name |
+                                                slice:0:25}}
+                                                {{element.time_break }}
+                                            </td>
+
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="price">
+                                            <th mat-header-cell *matHeaderCellDef> Price </th>
+                                            <td nowrap mat-cell *matCellDef="let element">
+                                                <mat-icon class="icon-size-2 text-hint"
+                                                    [svgIcon]="'heroicons_solid:cash'">
+                                                </mat-icon>
+                                                {{eventForm.value.aop ? element.aop_price : element.price }}
+                                            </td>
+
+
+
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="minute">
+                                            <th mat-header-cell *matHeaderCellDef> Minute </th>
+                                            <td nowrap mat-cell *matCellDef="let element">
+                                                <mat-icon class="icon-size-2 text-hint"
+                                                    [svgIcon]="'heroicons_solid:clock'">
+                                                </mat-icon> {{element.minute}}
+                                            </td>
+
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
+                                    <tr mat-row style="cursor: pointer;"
+                                        (click)="checkProduct(row)"
+                                        *matRowDef="let i= index;let row; columns: displayedProductColumns;"
+                                        [class]="setStyle2(i,row)"> </tr>
+
+                                    </table>
+                                </div>
+                            </mat-tab>
+
+                        </mat-tab-group>
+                        <div class="ml-auto mt-12 space-x-5">
+                            <button class="button-style" mat-flat-button type="button" [color]="'primary'"
+                                (click)="closeEvent()">
+                                Close
+                            </button>
+                            <button class="button-style" mat-flat-button type="button" [color]="'primary'"
+                                (click)="addEvent()">
+                                Add & Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </ng-container>
+    <ng-container *ngIf="customerPanel">
+        <div class="flex-auto mt-12" style="width: 450px!important;height: 400px!important;">
+
+            <form [formGroup]="customerForm">
+
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field class="flex-auto">
+                        <input type="text" placeholder="Customer Name" matInput [formControlName]="'card_name'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field class="flex-auto gt-xs:pr-3">
+                        <mat-select [formControlName]="'gender'" [placeholder]="'Gender'">
+                            <mat-option>Select</mat-option>
+                            <mat-option value="E">Man</mat-option>
+                            <mat-option value="K">Woman</mat-option>
+                            <mat-option value="C">Child</mat-option>
+                        </mat-select>
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:location-marker'">
+                        </mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <input type="date" placeholder="Birthday" matInput [formControlName]="'birthday'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:device-tablet'"></mat-icon>
+                    </mat-form-field>
+
+                </div>
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <input type="email" placeholder="E-Mail" matInput [formControlName]="'email'">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:email'"></mat-icon>
+                    </mat-form-field>
+
+                </div>
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <input type="text" placeholder="Phone" matInput [formControlName]="'phone'">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:phone'"></mat-icon>
+                    </mat-form-field>
+
+                </div>
+                <div class="flex-auto gt-xs:pl-3">
+                    <button class="add" mat-flat-button type="button" [color]="'primary'" (click)="addCustomer()">
+                        Add
+                    </button>
+                    <button mat-flat-button [color]="'warn'" (click)="appointmentPanelShow()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </ng-container>
+</div>

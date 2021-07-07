@@ -1,0 +1,284 @@
+<div class="flex flex-col w-full">
+    <div
+    class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between  border-b">
+   
+    <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+        <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
+    <div class="relative flex flex-col flex-auto items-center px-6 sm:px-8 mt-20">
+        <div class="w-full max-w-3xl">
+            <form [formGroup]="profileForm">
+
+                <!-- Avatar -->
+                <div class="flex flex-auto items-end -mt-16">
+                    <div class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
+                       <!--  Upload / Remove avatar 
+                        <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+                        <div class="absolute inset-0 flex items-center justify-center z-20">
+                            <div>
+                                <input
+                                    id="avatar-file-input"
+                                    class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                                    type="file"
+                                    [multiple]="false"
+                                    [accept]="'image/jpeg, image/png'"
+                                    (change)="uploadAvatar(avatarFileInput.files)"
+                                    #avatarFileInput>
+                                <label
+                                    class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+                                    for="avatar-file-input"
+                                    matRipple>
+                                    <mat-icon
+                                        class="text-white"
+                                        [svgIcon]="'heroicons_outline:camera'"></mat-icon>
+                                </label>
+                            </div>
+                            <div>
+                                <button
+                                    mat-icon-button
+                                    (click)="removeAvatar()">
+                                    <mat-icon
+                                        class="text-white"
+                                        [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                </button>
+                            </div>
+                        </div>-->
+                        
+                    </div>
+                </div>
+
+                <!-- Name -->
+                <div class="mt-6">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>User Name</mat-label>
+                        <mat-icon
+                            matPrefix
+                            class="hidden sm:flex icon-size-5"
+                            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                         
+                        <input
+                            matInput
+                            [formControlName]="'userName'"
+                            [placeholder]="'User Name'"
+                            >
+                    </mat-form-field>
+                </div> 
+                <div class="mt-6">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>Name</mat-label>
+                        <mat-icon
+                            matPrefix
+                            class="hidden sm:flex icon-size-5"
+                            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                         
+                        <input
+                            matInput
+                            [formControlName]="'full_name'"
+                            [placeholder]="'Name'"
+                            >
+                    </mat-form-field>
+                </div>
+                <div class="mt-6">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>E mail</mat-label>
+                        <mat-icon
+                            matPrefix
+                            class="hidden sm:flex icon-size-5"
+                            [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                         
+                        <input
+                            matInput
+                            [formControlName]="'email'"
+                            [placeholder]="'E mail'"
+                            >
+                    </mat-form-field>
+                </div>
+                <div class="mt-6">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>Phone Number</mat-label>
+                        <mat-icon
+                            matPrefix
+                            class="hidden sm:flex icon-size-5"
+                            [svgIcon]="'heroicons_solid:phone'"></mat-icon>
+                        <input
+                            matInput
+                            [formControlName]="'mobilePhone'"
+                            [placeholder]="'Phone Number'">
+                    </mat-form-field>
+                </div>
+                <div class="mt-6">                
+                    <mat-form-field class="fuse-mat-no-subscript flex-auto w-1/4">
+                    <mat-label> Gender</mat-label>
+                    <mat-select [formControlName]="'gender'">
+                        <ng-container>
+                            <mat-option value="Erkek">
+                                Man
+                            </mat-option>
+                            <mat-option value="Kadın">
+                                Woman
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="fuse-mat-no-subscript ml-6 flex-auto w-2/5">
+                        <mat-label>Birthday</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'birthday'"
+                            [placeholder]="'Birthday'"
+                            [matDatepicker]="picker">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="mt-8">
+                    <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+                        <mat-label>Post Code</mat-label>
+                        <mat-icon
+                            matPrefix
+                            class="hidden sm:flex icon-size-5"
+                            [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
+                        <input
+                            matInput
+                            [formControlName]="'address'"
+                            [placeholder]="'Post Code'"
+                            [spellcheck]="false">
+                    </mat-form-field>
+                </div>
+ 
+                <div class="flex items-center mt-6 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+                   
+                    <button
+                        class="ml-auto"
+                        mat-button
+                        [matTooltip]="'Cancel'">
+                        Cancel
+                    </button> 
+                    <button
+                        class="ml-2"
+                        mat-flat-button
+                        [color]="'primary'"
+                        [disabled]="profileForm.invalid"
+                        [matTooltip]="'Save'"
+                        (click)="updateUser()">
+                        Save
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+ <!-- 
+
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+
+   
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+       
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        
+        <div class="text-4xl font-extrabold tracking-tight">Profile</div>
+    </div> 
+    <div class="flex flex-auto overflow-hidden">
+        <div class="flex border-b w-4/5 ml-18">
+           
+            <form class="flex flex-col w-full" [formGroup]="profileForm">
+                <div class="relative w-24 h-24">
+                    <input
+                        id="avatar-file-input"
+                        class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                        type="file"
+                        [multiple]="false"
+                        [accept]="'image/jpeg, image/png'"
+                        (change)="uploadAvatar(avatarFileInput.files)"
+                        #avatarFileInput>
+                    <label
+                        class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+                        for="avatar-file-input"
+                        matRipple>
+                        <mat-icon
+                            class="text-white"
+                            [svgIcon]="'heroicons_outline:camera'"></mat-icon>
+                    </label>
+                </div>
+
+                <div class="relative w-24 h-24">
+                    <img
+                        class="w-full h-full rounded-full"
+                        src={{avatarSrc}}
+                        alt="User avatar">
+                </div>
+
+                <div class="flex mt-8 mb-8 w-5/6">
+                    <div class="flex mr-8 w-full">
+                    <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                        <mat-label>User Name</mat-label>
+                        <input matInput [formControlName]="'userName'">
+                    </mat-form-field>
+                    </div>
+                    <div class="flex mr-8 w-full">
+                        <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                            <mat-label>Name</mat-label>
+                            <input matInput [formControlName]="'full_name'">
+                        </mat-form-field>
+                        </div>
+                    <div class="flex mr-8 w-full">
+                        <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                            <mat-label>E mail</mat-label>
+                            <input matInput [formControlName]="'email'">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="flex mt-8 w-4/6">
+                    <div class="flex mr-8 w-full">
+                    <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput [formControlName]="'mobilePhone'">
+                    </mat-form-field>
+                    </div>
+                    <div class="flex mr-8 w-2/3">
+                        <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                            <mat-label> Gender</mat-label>
+                            <mat-select [formControlName]="'gender'">
+                                <ng-container>
+                                    <mat-option value="Erkek">
+                                        Man
+                                    </mat-option>
+                                    <mat-option value="Kadın">
+                                        Woman
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        </div>
+                    <div class="flex mr-8 w-2/3">
+                        <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                            <mat-label>Birthday</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'birthday'"
+                                [placeholder]="'Birthday'"
+                                [matDatepicker]="picker">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="flex mt-8 w-full">
+                    <button mat-flat-button [color]="'primary'"
+                    (click)="updateUser()">
+                    Update
+                    </button>
+                </div>
+            </form>
+    </div>
+</div>
+-->
