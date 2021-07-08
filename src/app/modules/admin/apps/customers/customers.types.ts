@@ -7,7 +7,7 @@ export interface Customer
     full_name?: string;
     fax?: string;
     registered_date?: string | null;
-    email?: Date | null;
+    email?: string | null;
 }
 
 
