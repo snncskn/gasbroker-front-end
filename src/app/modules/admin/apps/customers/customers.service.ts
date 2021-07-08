@@ -13,8 +13,6 @@ export class CustomersService {
     // Private
     private _customer: BehaviorSubject<Customer | null> = new BehaviorSubject(null);
     private _customers: BehaviorSubject<Customer[] | null> = new BehaviorSubject(null);
-    private _countries: BehaviorSubject<Country[] | null> = new BehaviorSubject(null);
-    private _tags: BehaviorSubject<Tag[] | null> = new BehaviorSubject(null);
     private _customersCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
 
 
@@ -24,7 +22,7 @@ export class CustomersService {
      */
     constructor(private _httpClient: HttpClient,
         public toastr: ToastrManager
-        ) {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -49,20 +47,6 @@ export class CustomersService {
         return this._customersCount.asObservable();
     }
 
-    /**
-     * Getter for countries
-     */
-    get countries$(): Observable<Country[]> {
-        return this._countries.asObservable();
-    }
-
-    /**
-     * Getter for tags
-     */
-    get tags$(): Observable<Tag[]> {
-        return this._tags.asObservable();
-    }
-
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -71,13 +55,19 @@ export class CustomersService {
      * Get customers
      */
     getCustomers(): Observable<Customer[]> {
-      
+
         return this._httpClient.get<any>(`${environment.url}/company`).pipe(
             tap((customers) => {
                 this._customers.next(customers.body);
                 this._customersCount = customers.body.length;
             })
         );
+    }
+
+    getTypes():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/COMPANY_TYPE`;
+            return this._httpClient.get<any>(url);
     }
 
     /**
@@ -104,7 +94,7 @@ export class CustomersService {
             take(1),
             map((customers) => {
                 const customer = customers.find(item => item.id === id) || null;
-
+console.log(2222)
                 this._customer.next(customer);
 
                 return customer;
@@ -125,15 +115,15 @@ export class CustomersService {
      */
     createCustomer(): Observable<any> {
 
-        let new1 = { birthday: '', gender: '', phone: '', card_name: '', status: '', email: '', tax_no: '', tax_name: '' }
+        let new1 = { full_name: '', name: '', phone: '', fax: '', types: [], email: '', registered_date: null}
         return this.customers$.pipe(
             take(1),
-            switchMap(customers => this._httpClient.post<any>(`${environment.url}/customers/save`, new1).pipe(
+            switchMap(customers => this._httpClient.post<any>(`${environment.url}/company/`, new1).pipe(
                 map((newCustomer) => {
 
-                    this._customers.next([newCustomer.data, ...customers]);
+                    this._customers.next([newCustomer.body, ...customers]);
 
-                    return newCustomer.data;
+                    return newCustomer.body;
                 })
             ))
         );
@@ -148,13 +138,14 @@ export class CustomersService {
     updateCustomer(id: string, customer: Customer): Observable<any> {
         return this.customers$.pipe(
             take(1),
-            switchMap(customers => this._httpClient.put<any>(`${environment.url}/customers/${id}`, customer).pipe(
+            switchMap(customers => this._httpClient.put<any>(`${environment.url}/company/${id}`, customer).pipe(
                 map((updatedCustomer) => {
                     const index = customers.findIndex(item => item.id === id);
-                    customers[index] = updatedCustomer.data;
+                    console.log(123)
+                    customers[index] = updatedCustomer.body;
                     this._customers.next(customers);
 
-                    return updatedCustomer.data;
+                    return updatedCustomer.body;
                 }),
                 switchMap(updatedCustomer => this.customer$.pipe(
                     take(1),
@@ -204,127 +195,6 @@ export class CustomersService {
     }
 
     /**
-     * Get countries
-     */
-    getCountries(): Observable<Country[]> {
-        return this._httpClient.get<Country[]>('api/apps/contacts/countries').pipe(
-            tap((countries) => {
-                this._countries.next(countries);
-            })
-        );
-    }
-
-    /**
-     * Get tags
-     */
-    getTags(): Observable<Tag[]> {
-        return this._httpClient.get<Tag[]>('api/apps/contacts/tags').pipe(
-            tap((tags) => {
-                this._tags.next(tags);
-            })
-        );
-    }
-
-    /**
-     * Create tag
-     *
-     * @param tag
-     */
-    createTag(tag: Tag): Observable<Tag> {
-        return this.tags$.pipe(
-            take(1),
-            switchMap(tags => this._httpClient.post<Tag>('api/apps/contacts/tag', { tag }).pipe(
-                map((newTag) => {
-
-                    // Update the tags with the new tag
-                    this._tags.next([...tags, newTag]);
-
-                    // Return new tag from observable
-                    return newTag;
-                })
-            ))
-        );
-    }
-
-    /**
-     * Update the tag
-     *
-     * @param id
-     * @param tag
-     */
-    updateTag(id: string, tag: Tag): Observable<Tag> {
-        return this.tags$.pipe(
-            take(1),
-            switchMap(tags => this._httpClient.patch<Tag>('api/apps/contacts/tag', {
-                id,
-                tag
-            }).pipe(
-                map((updatedTag) => {
-
-                    // Find the index of the updated tag
-                    const index = tags.findIndex(item => item.id === id);
-
-                    // Update the tag
-                    tags[index] = updatedTag;
-
-                    // Update the tags
-                    this._tags.next(tags);
-
-                    // Return the updated tag
-                    return updatedTag;
-                })
-            ))
-        );
-    }
-
-    /**
-     * Delete the tag
-     *
-     * @param id
-     */
-    deleteTag(id: string): Observable<boolean> {
-        return this.tags$.pipe(
-            take(1),
-            switchMap(tags => this._httpClient.delete('api/apps/contacts/tag', { params: { id } }).pipe(
-                map((isDeleted: boolean) => {
-
-                    // Find the index of the deleted tag
-                    const index = tags.findIndex(item => item.id === id);
-
-                    // Delete the tag
-                    tags.splice(index, 1);
-
-                    // Update the tags
-                    this._tags.next(tags);
-
-                    // Return the deleted status
-                    return isDeleted;
-                }),
-                filter(isDeleted => isDeleted),
-                switchMap(isDeleted => this.customers$.pipe(
-                    take(1),
-                    map((customers) => {
-
-                        // Iterate through the customers
-                        customers.forEach((customer) => {
-
-                            const tagIndex = customer.tags.findIndex(tag => tag === id);
-
-                            // If the customer has the tag, remove it
-                            if (tagIndex > -1) {
-                                customer.tags.splice(tagIndex, 1);
-                            }
-                        });
-
-                        // Return the deleted status
-                        return isDeleted;
-                    })
-                ))
-            ))
-        );
-    }
-
-    /**
      * Update the avatar of the given customer
      *
      * @param id
@@ -339,6 +209,6 @@ export class CustomersService {
         formData.append("file", avatar);
         let tmp = {};
         return this._httpClient.post<any>(
-                    `${environment.url}/files/avatar/`,formData);
+            `${environment.url}/files/avatar/`, formData);
     }
 }

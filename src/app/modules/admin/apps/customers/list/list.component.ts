@@ -21,6 +21,7 @@ export class CustomersListComponent implements OnInit, OnDestroy
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
 
     customers$: Observable<Customer[]>;
+    //customer$: Observable<Customer>;
 
     customersCount: number = 0;
     customersTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
@@ -68,19 +69,20 @@ export class CustomersListComponent implements OnInit, OnDestroy
             }); 
 
         // Get the customer
+       // this.customer$ = this._customersService.customer$;
         this._customersService.customer$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((customer: Customer) => {
-
-                // Update the selected customer
+                console.log(321)
+                // Update the counts
                 this.selectedCustomer = customer;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
-            });
+            }); 
 
         // Get the countries
-        this._customersService.countries$
+       /* this._customersService.countries$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((countries: Country[]) => {
 
@@ -89,7 +91,7 @@ export class CustomersListComponent implements OnInit, OnDestroy
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
-            });
+            });*/
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -195,9 +197,9 @@ export class CustomersListComponent implements OnInit, OnDestroy
      *
      * @param index
      * @param item
-     */
+     
     trackByFn(index: number, item: any): any
     {
         return item.id || index;
-    }
+    }*/
 }

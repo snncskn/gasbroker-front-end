@@ -435,7 +435,6 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         },
         eventDidMount: function(info) {
-           console.log(info)
         },
         slotDuration: { minutes: 15 },
         slotLabelInterval: { hours: 1 },
