@@ -129,25 +129,17 @@ export class ProductService
      * @param order
      * @param search
      */
-    getProducts(page: number = 0, size: number = 10, sort: string = 'product_name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+    getProducts(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
         Observable<{ pagination: InventoryPagination; products: InventoryProduct[] }>
     {
 
 
-        let url = `${environment.url}/products/find`;
+        let url = `${environment.url}/product`;
         //'api/apps/ecommerce/inventory/products'
-        return this._httpClient.post<{ pagination: InventoryPagination; products: InventoryProduct[] }>(url, {
-            queryParams: {
-                pageNumber: '' + page,
-                pageSize: '' + size,
-                sortField:sort,
-                sortOrder: order,
-                filter: { product_name : search }
-            }
-        }).pipe(
+        return this._httpClient.get<any>(url).pipe(
             tap((response) => {
-                this._pagination.next(response.pagination);
-                this._products.next(response.products);
+                // this._pagination.next(response.pagination);
+                this._products.next(response.body);
             })
         );
     }
@@ -182,15 +174,15 @@ export class ProductService
     createProduct(): Observable<any>
     {
 
-        let tmp ={product_code:'MAN & WOMAN',active:'1',product_name:'',minute:'',price:'',aop_price:''};
-        let url = `${environment.url}/products/save`;
+        let tmp ={id:"",code:"",active:'1',name:''};
+        let url = `${environment.url}/product/`;
         return this.products$.pipe(
             take(1),
-            switchMap(products => this._httpClient.post<any>(url, {products:tmp}).pipe(
+            switchMap(() => this._httpClient.post<any>(url, tmp).pipe(
                 map((newProduct) => {
 
                     // Update the products with the new product
-                    this._products.next([newProduct.data, ...products]);
+                    this._products.next([newProduct.data]);
 
                     // Return the new product
                     return newProduct;
@@ -352,49 +344,49 @@ export class ProductService
      *
      * @param id
      */
-    deleteTag(id: string): Observable<boolean>
-    {
-        return this.tags$.pipe(
-            take(1),
-            switchMap(tags => this._httpClient.delete('api/apps/ecommerce/inventory/tag', {params: {id}}).pipe(
-                map((isDeleted: boolean) => {
+    // deleteTag(id: string): Observable<boolean>
+    // {
+    //     return this.tags$.pipe(
+    //         take(1),
+    //         switchMap(tags => this._httpClient.delete('api/apps/ecommerce/inventory/tag', {params: {id}}).pipe(
+    //             map((isDeleted: boolean) => {
 
-                    // Find the index of the deleted tag
-                    const index = tags.findIndex(item => item.id === id);
+    //                 // Find the index of the deleted tag
+    //                 const index = tags.findIndex(item => item.id === id);
 
-                    // Delete the tag
-                    tags.splice(index, 1);
+    //                 // Delete the tag
+    //                 tags.splice(index, 1);
 
-                    // Update the tags
-                    this._tags.next(tags);
+    //                 // Update the tags
+    //                 this._tags.next(tags);
 
-                    // Return the deleted status
-                    return isDeleted;
-                }),
-                filter(isDeleted => isDeleted),
-                switchMap(isDeleted => this.products$.pipe(
-                    take(1),
-                    map((products) => {
+    //                 // Return the deleted status
+    //                 return isDeleted;
+    //             }),
+    //             filter(isDeleted => isDeleted),
+    //             switchMap(isDeleted => this.products$.pipe(
+    //                 take(1),
+    //                 map((products) => {
 
-                        // Iterate through the contacts
-                        products.forEach((product) => {
+    //                     // Iterate through the contacts
+    //                     products.forEach((product) => {
 
-                            const tagIndex = product.tags.findIndex(tag => tag === id);
+    //                         const tagIndex = product.tags.findIndex(tag => tag === id);
 
-                            // If the contact has the tag, remove it
-                            if ( tagIndex > -1 )
-                            {
-                                product.tags.splice(tagIndex, 1);
-                            }
-                        });
+    //                         // If the contact has the tag, remove it
+    //                         if ( tagIndex > -1 )
+    //                         {
+    //                             product.tags.splice(tagIndex, 1);
+    //                         }
+    //                     });
 
-                        // Return the deleted status
-                        return isDeleted;
-                    })
-                ))
-            ))
-        );
-    }
+    //                     // Return the deleted status
+    //                     return isDeleted;
+    //                 })
+    //             ))
+    //         ))
+    //     );
+    // }
 
     /**
      * Get vendors

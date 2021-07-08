@@ -34,7 +34,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     isLoading: boolean = false;
     pagination: InventoryPagination;
     productsCount: number = 0;
-    productsTableColumns: string[] = ['color','product_name','product_code', 'minute','price', 'active', 'details'];
+    productsTableColumns: string[] = ['name','code', 'active', 'details'];
     searchInputControl: FormControl = new FormControl();
     selectedProduct: InventoryProduct | null = null;
     selectedProductForm: FormGroup;
@@ -62,58 +62,13 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
             id               : [''],
-            product_name     : [''], 
-            color            : [''], 
-            product_code     : ['MAN & WOMAN'], 
-            time_break       : [],
-            minute           : [''], 
-            aop_price        : [''], 
-            description      : [''],
-            tags             : [[]],
-            sku              : [''],
-            barcode          : [''],
-            brand            : [''],
-            vendor           : [''],
-            stock            : [''],
-            reserved         : [''],
-            cost             : [''],
-            basePrice        : [''],
-            taxPercent       : [''],
-            price            : [''],
-            aopPrice         : [''],
-            weight           : [''],
-            thumbnail        : [''],
-            images           : [[]],
-            currentImageIndex: [0], // Image index that is currently being viewed
-            active           : [false]
+            name     : [''], 
+            code     : [''], 
+            active           : [true]
         });
 
         this.isLoading=true;
         this.ngxService.start();
-
-        // Get the brands
-        this._inventoryService.brands$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((brands: InventoryBrand[]) => {
-
-                // Update the brands
-                this.brands = brands;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the categories
-        this._inventoryService.categories$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((categories: InventoryCategory[]) => {
-
-                // Update the categories
-                this.categories = categories;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
 
         // Get the pagination
         this._inventoryService.pagination$
@@ -141,31 +96,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
             this.isLoading=false;
             this.ngxService.stop();
 
-        // Get the tags
-        this._inventoryService.tags$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((tags: InventoryTag[]) => {
-
-                // Update the tags
-                this.tags = tags;
-                this.filteredTags = tags;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the vendors
-        this._inventoryService.vendors$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((vendors: InventoryVendor[]) => {
-
-                // Update the vendors
-                this.vendors = vendors;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
        
         this.searchInputControl.valueChanges
             .pipe(
@@ -174,7 +104,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
                 switchMap((query) => {
                     this.closeDetails();
                     this.isLoading = true;
-                    return this._inventoryService.getProducts(1, 10, 'product_name', 'asc', query);
+                    return this._inventoryService.getProducts(1, 10, 'name', 'asc', query);
                 }),
                 map(() => {
                     this.isLoading = false;
@@ -241,7 +171,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         // Get the product by id
         this._inventoryService.getProductById(productId)
             .subscribe((product) => {
-
+                console.log("12345");
                 // Set the selected product
                 this.selectedProduct = product;
 
@@ -261,30 +191,30 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         this.selectedProduct = null;
     }
 
-    /**
-     * Cycle through images of selected product
-     */
-    cycleImages(forward: boolean = true): void
-    {
-        // Get the image count and current image index
-        const count = this.selectedProductForm.get('images').value.length;
-        const currentIndex = this.selectedProductForm.get('currentImageIndex').value;
+    // /**
+    //  * Cycle through images of selected product
+    //  */
+    // cycleImages(forward: boolean = true): void
+    // {
+    //     // Get the image count and current image index
+    //     const count = this.selectedProductForm.get('images').value.length;
+    //     const currentIndex = this.selectedProductForm.get('currentImageIndex').value;
 
-        // Calculate the next and previous index
-        const nextIndex = currentIndex + 1 === count ? 0 : currentIndex + 1;
-        const prevIndex = currentIndex - 1 < 0 ? count - 1 : currentIndex - 1;
+    //     // Calculate the next and previous index
+    //     const nextIndex = currentIndex + 1 === count ? 0 : currentIndex + 1;
+    //     const prevIndex = currentIndex - 1 < 0 ? count - 1 : currentIndex - 1;
 
-        // If cycling forward...
-        if ( forward )
-        {
-            this.selectedProductForm.get('currentImageIndex').setValue(nextIndex);
-        }
-        // If cycling backwards...
-        else
-        {
-            this.selectedProductForm.get('currentImageIndex').setValue(prevIndex);
-        }
-    }
+    //     // If cycling forward...
+    //     if ( forward )
+    //     {
+    //         this.selectedProductForm.get('currentImageIndex').setValue(nextIndex);
+    //     }
+    //     // If cycling backwards...
+    //     else
+    //     {
+    //         this.selectedProductForm.get('currentImageIndex').setValue(prevIndex);
+    //     }
+    // }
 
     /**
      * Toggle the tags edit mode
@@ -356,22 +286,22 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Delete the selected product using the form data
      */
-    deleteSelectedProduct(): void
-    {
-        // Get the product object
-        const product = this.selectedProductForm.getRawValue();
+    // deleteSelectedProduct(): void
+    // {
+    //     // Get the product object
+    //     const product = this.selectedProductForm.getRawValue();
 
-        // Delete the product on the server
-        this.ngxService.start();
+    //     // Delete the product on the server
+    //     this.ngxService.start();
 
-        this._inventoryService.deleteProduct(product.id).subscribe(() => {
+    //     this._inventoryService.deleteProduct(product.id).subscribe(() => {
 
-            // Close the details
-            this.ngxService.stop();
+    //         // Close the details
+    //         this.ngxService.stop();
 
-            this.closeDetails();
-        });
-    }
+    //         this.closeDetails();
+    //     });
+    // }
 
     /**
      * Show flash message
@@ -418,12 +348,12 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     onSearchChange(searchValue: string): void {  
         this.products$.forEach(item=>{
             item.forEach(it=>{
-               if(it.product_name.indexOf(searchValue)>0){
+               if(it.name.indexOf(searchValue)>0){
                     merge(searchValue).pipe(
                         switchMap(() => {
                             this.closeDetails();
                             this.isLoading = true;
-                            return this._inventoryService.getProducts(0,10,'product_name',"asc",searchValue);
+                            return this._inventoryService.getProducts(0,10,'name',"asc",searchValue);
                         }),
                         map(() => {
                             this.isLoading = false;

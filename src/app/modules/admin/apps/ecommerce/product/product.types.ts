@@ -1,26 +1,8 @@
 export interface InventoryProduct
 {
     id: string;
-    product_name: string,
-    color:string,
-    price: number;
-
-    category?: string;
-    name: string;
-    description?: string;
-    tags?: string[];
-    sku?: string | null;
-    barcode?: string | null;
-    brand?: string | null;
-    vendor: string | null;
-    stock: number;
-    reserved: number;
-    cost: number;
-    basePrice: number;
-    taxPercent: number;
-    weight: number;
-    thumbnail: string;
-    images: string[];
+    name: string,
+    code: string;
     active: boolean;
 }
 
