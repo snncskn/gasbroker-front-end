@@ -5,7 +5,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     {
         id      : 'dashboards',
         title   : 'Dashboards',
-        subtitle: 'İstanbul Hair Studio',
+        subtitle: 'Gas Broker',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
