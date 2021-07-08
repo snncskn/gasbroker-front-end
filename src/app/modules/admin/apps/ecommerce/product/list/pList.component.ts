@@ -63,36 +63,12 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         this.selectedProductForm = this._formBuilder.group({
             id               : [''],
             name     : [''], 
-            code     : ['GAS & OIL & YAĞĞĞĞ'], 
+            code     : [''], 
             active           : [true]
         });
 
         this.isLoading=true;
         this.ngxService.start();
-
-        // Get the brands
-        this._inventoryService.brands$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((brands: InventoryBrand[]) => {
-
-                // Update the brands
-                this.brands = brands;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the categories
-        this._inventoryService.categories$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((categories: InventoryCategory[]) => {
-
-                // Update the categories
-                this.categories = categories;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
 
         // Get the pagination
         this._inventoryService.pagination$
@@ -119,31 +95,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
             });
             this.isLoading=false;
             this.ngxService.stop();
-
-        // Get the tags
-        this._inventoryService.tags$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((tags: InventoryTag[]) => {
-
-                // Update the tags
-                this.tags = tags;
-                this.filteredTags = tags;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the vendors
-        this._inventoryService.vendors$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((vendors: InventoryVendor[]) => {
-
-                // Update the vendors
-                this.vendors = vendors;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
 
        
         this.searchInputControl.valueChanges

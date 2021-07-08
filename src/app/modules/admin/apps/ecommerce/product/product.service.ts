@@ -174,15 +174,15 @@ export class ProductService
     createProduct(): Observable<any>
     {
 
-        let tmp ={product_code:'MAN & WOMAN',active:'1',name:'',minute:'',price:'',aop_price:''};
-        let url = `${environment.url}/products/save`;
+        let tmp ={id:"",code:"",active:'1',name:''};
+        let url = `${environment.url}/product/`;
         return this.products$.pipe(
             take(1),
-            switchMap(products => this._httpClient.post<any>(url, {products:tmp}).pipe(
+            switchMap(() => this._httpClient.post<any>(url, tmp).pipe(
                 map((newProduct) => {
 
                     // Update the products with the new product
-                    this._products.next([newProduct.data, ...products]);
+                    this._products.next([newProduct.data]);
 
                     // Return the new product
                     return newProduct;
