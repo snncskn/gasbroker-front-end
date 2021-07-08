@@ -81,14 +81,14 @@ export class CustomersCustomerResolver implements Resolve<any>
     }
 }
 
-@Injectable({
+/*@Injectable({
     providedIn: 'root'
 })
 export class CustomersCountriesResolver implements Resolve<any>
 {
     /**
      * Constructor
-     */
+     
     constructor(private _customersService: CustomersService)
     {
     }
@@ -102,7 +102,7 @@ export class CustomersCountriesResolver implements Resolve<any>
      *
      * @param route
      * @param state
-     */
+     
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Country[]>
     {
         return this._customersService.getCountries();
@@ -114,9 +114,9 @@ export class CustomersCountriesResolver implements Resolve<any>
 })
 export class CustomersTagsResolver implements Resolve<any>
 {
-    /**
+    /*
      * Constructor
-     */
+     
     constructor(private _customersService: CustomersService)
     {
     }
@@ -130,9 +130,9 @@ export class CustomersTagsResolver implements Resolve<any>
      *
      * @param route
      * @param state
-     */
+     
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Tag[]>
     {
         return this._customersService.getTags();
     }
-}
+}*/

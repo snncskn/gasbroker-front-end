@@ -12,15 +12,15 @@ import { CustomersService } from 'app/modules/admin/apps/customers/customers.ser
 import { CalendarService } from '../../calendar/calendar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
-    selector       : 'customers-details',
-    templateUrl    : './details.component.html',
-    encapsulation  : ViewEncapsulation.None,
+    selector: 'customers-details',
+    templateUrl: './details.component.html',
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomersDetailsComponent implements OnInit, OnDestroy
-{
+export class CustomersDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
@@ -33,6 +33,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
     customers: Customer[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    dataSourceTypes: any[];
 
     /**
      * Constructor
@@ -49,9 +50,10 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
         private _router: Router,
         private readonly ngxService: NgxUiLoaderService,
         private _overlay: Overlay,
-        private _viewContainerRef: ViewContainerRef
-    )
-    {
+        private _viewContainerRef: ViewContainerRef,
+        public toastr: ToastrManager
+
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -61,23 +63,24 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Open the drawer
         this._customersListComponent.matDrawer.open();
 
         // Create the customer form
         this.customerForm = this._formBuilder.group({
-            id          : [''],
-            avatar      : [null],
-            card_name   : ['', [Validators.required]],
-            email       : [null],
-            phone       : [null],
-            gender      : ['',[Validators.required]],
-            birthday    : [null],
-            tax_no      : [null],
-            tax_name    : [null],
-            address     : [null],
+            id: [''],
+            types: [null],
+            full_name: ['', [Validators.required]],
+            email: [null],
+            phone: [null],
+            name: ['', [Validators.required]],
+            fax: [null],
+            registered_date: [null],
+        });
+
+        this._customersService.getTypes().subscribe(res => {
+            this.dataSourceTypes = res.body;
         });
 
         // Get the customers
@@ -109,21 +112,18 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-
-     }
+    }
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
 
         // Dispose the overlays if they are still on the DOM
-        if ( this._tagsPanelOverlayRef )
-        {
+        if (this._tagsPanelOverlayRef) {
             this._tagsPanelOverlayRef.dispose();
         }
     }
@@ -135,8 +135,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
     /**
      * Close the drawer
      */
-    closeDrawer(): Promise<MatDrawerToggleResult>
-    {
+    closeDrawer(): Promise<MatDrawerToggleResult> {
         return this._customersListComponent.matDrawer.close();
     }
 
@@ -145,14 +144,11 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
      *
      * @param editMode
      */
-    toggleEditMode(editMode: boolean | null = null): void
-    {
-        if ( editMode === null )
-        {
+    toggleEditMode(editMode: boolean | null = null): void {
+        if (editMode === null) {
             this.editMode = !this.editMode;
         }
-        else
-        {
+        else {
             this.editMode = editMode;
         }
 
@@ -163,12 +159,11 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
     /**
      * Update the customer
      */
-    updateCustomer(): void
-    {
+    updateCustomer(): void {
         // Get the customer object
         const customer = this.customerForm.getRawValue();
         // Go through the customer object and clear empty values
-        
+
         //customer.emails = customer.emails.nfilter(email => email.email);
 
         //customer.phoneNumbers = customer.phoneNumbers.filter(phoneNumber => phoneNumber.phoneNumber);
@@ -176,20 +171,19 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
         // Update the customer on the server
         this.ngxService.start();
         this._customersService.updateCustomer(customer.id, customer).subscribe(() => {
-           
-            this._snackBar.open('Customer saved', '', { duration: 3000 });
+
+            this.toastr.successToastr('Customer updated', 'Updated!');
             // Toggle the edit mode off
-            this.toggleEditMode(false);
+            this.closeDrawer();
             this.ngxService.stop();
 
         });
-    } 
+    }
 
     /**
      * Delete the customer
      */
-    deleteCustomer(): void
-    {
+    deleteCustomer(): void {
         // Get the current customer's id
         const id = this.customer.id;
 
@@ -206,20 +200,17 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
                 this.ngxService.stop();
 
                 // Return if the customer wasn't deleted...
-                if ( !isDeleted )
-                {
+                if (!isDeleted) {
                     return;
                 }
 
                 // Navigate to the next customer if available
-                if ( nextCustomerId )
-                {
-                    this._router.navigate(['../', nextCustomerId], {relativeTo: this._activatedRoute});
+                if (nextCustomerId) {
+                    this._router.navigate(['../', nextCustomerId], { relativeTo: this._activatedRoute });
                 }
                 // Otherwise, navigate to the parent
-                else
-                {
-                    this._router.navigate(['../'], {relativeTo: this._activatedRoute});
+                else {
+                    this._router.navigate(['../'], { relativeTo: this._activatedRoute });
                 }
 
                 // Toggle the edit mode off
@@ -235,11 +226,9 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
      *
      * @param fileList
      */
-    uploadAvatar(fileList: FileList): void
-    {
+    uploadAvatar(fileList: FileList): void {
         // Return if canceled
-        if ( !fileList.length )
-        {
+        if (!fileList.length) {
             return;
         }
 
@@ -247,8 +236,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
         const file = fileList[0];
 
         // Return if the file is not allowed
-        if ( !allowedTypes.includes(file.type) )
-        {
+        if (!allowedTypes.includes(file.type)) {
             return;
         }
 
@@ -259,8 +247,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
     /**
      * Remove the avatar
      */
-    removeAvatar(): void
-    {
+    /*removeAvatar(): void {
         // Get the form control for 'avatar'
         const avatarFormControl = this.customerForm.get('avatar');
 
@@ -272,31 +259,30 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
 
         // Update the customer
         this.customer.avatar = null;
-    }
+    }*/
 
     /**
      * Open tags panel
      */
-    openTagsPanel(): void
-    {
+    openTagsPanel(): void {
         // Create the overlay
         this._tagsPanelOverlayRef = this._overlay.create({
-            backdropClass   : '',
-            hasBackdrop     : true,
-            scrollStrategy  : this._overlay.scrollStrategies.block(),
+            backdropClass: '',
+            hasBackdrop: true,
+            scrollStrategy: this._overlay.scrollStrategies.block(),
             positionStrategy: this._overlay.position()
-                                  .flexibleConnectedTo(this._tagsPanelOrigin.nativeElement)
-                                  .withFlexibleDimensions()
-                                  .withViewportMargin(64)
-                                  .withLockedPosition()
-                                  .withPositions([
-                                      {
-                                          originX : 'start',
-                                          originY : 'bottom',
-                                          overlayX: 'start',
-                                          overlayY: 'top'
-                                      }
-                                  ])
+                .flexibleConnectedTo(this._tagsPanelOrigin.nativeElement)
+                .withFlexibleDimensions()
+                .withViewportMargin(64)
+                .withLockedPosition()
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top'
+                    }
+                ])
         });
 
         // Subscribe to the attachments observable
@@ -322,8 +308,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
             this._renderer2.removeClass(this._tagsPanelOrigin.nativeElement, 'panel-opened');
 
             // If overlay exists and attached...
-            if ( this._tagsPanelOverlayRef && this._tagsPanelOverlayRef.hasAttached() )
-            {
+            if (this._tagsPanelOverlayRef && this._tagsPanelOverlayRef.hasAttached()) {
                 // Detach it
                 this._tagsPanelOverlayRef.detach();
 
@@ -332,8 +317,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
             }
 
             // If template portal exists and attached...
-            if ( templatePortal && templatePortal.isAttached )
-            {
+            if (templatePortal && templatePortal.isAttached) {
                 // Detach it
                 templatePortal.detach();
             }
@@ -343,8 +327,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
     /**
      * Toggle the tags edit mode
      */
-    toggleTagsEditMode(): void
-    {
+    toggleTagsEditMode(): void {
         this.tagsEditMode = !this.tagsEditMode;
     }
 
@@ -353,15 +336,14 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
      *
      * @param event
      */
-    filterTags(event): void
-    {
+    filterTags(event): void {
         // Get the value
         const value = event.target.value.toLowerCase();
 
     }
 
 
-   
+
 
 
     /**
@@ -370,8 +352,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 }
