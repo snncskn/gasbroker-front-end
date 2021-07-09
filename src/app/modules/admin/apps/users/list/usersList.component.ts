@@ -34,7 +34,7 @@ export class UsersListComponent implements OnInit
     isLoading: boolean = false;
     pagination: UsersPagination;
     usersCount: number = 0;
-    usersTableColumns: string[] = ['color','userName','full_name','email','mobilePhone','gender','birthday','post_code','details'];
+    usersTableColumns: string[] = ['color','username','full_name','email','mobilePhone','gender','birthday','post_code','details'];
     selectedUser: UsersList | null = null;
     selectedUserForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
@@ -55,7 +55,7 @@ export class UsersListComponent implements OnInit
         this.onLoad();
         this.selectedUserForm = this._formBuilder.group({
             id               : [''],
-            userName         : [''],
+            username         : [''],
             color            : [''], 
             full_name        : [''],
             email            : [''],
@@ -140,7 +140,7 @@ export class UsersListComponent implements OnInit
          }
 
     onLoad(){
-        this._usersService.getUsers(1, 1000, 'userName', 'asc', "").subscribe();
+        this._usersService.getUsers(1, 1000, 'username', 'asc', "").subscribe();
     }
 
     /**

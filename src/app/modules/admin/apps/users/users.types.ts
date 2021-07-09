@@ -2,7 +2,7 @@ export interface UsersList
 {
     id:string;
     uid: string;
-    userName: string,
+    username: string,
     gender: string;
     user_status: string;
     mobilePhone: string;

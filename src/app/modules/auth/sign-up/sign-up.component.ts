@@ -52,8 +52,8 @@ export class AuthSignUpComponent implements OnInit {
         this.signUpForm = this._formBuilder.group({
             step1: this._formBuilder.group({
                 id: [''],
-                userName: ['', Validators.required],
-                full_name: ['', Validators.required],
+                username: ['', Validators.required],
+                name: ['', Validators.required],
             }),
             step2: this._formBuilder.group({
                 email: ['', Validators.required, Validators.email],
@@ -80,14 +80,12 @@ export class AuthSignUpComponent implements OnInit {
         const user = this.signUpForm.getRawValue();
 
         let tmpUser = {
-            full_name: user.step1.full_name,
-            firstName: user.step1.full_name,
-            userName: user.step1.userName,
+            name: user.step1.name,
+            username: user.step1.username,
             email: user.step2.email,
             mobilePhone: user.step2.mobilePhone,
             pass: user.step3.pass,
             gender: '',
-            color: 'bg-teal-500',
         };
 
         // Update the user on the server
