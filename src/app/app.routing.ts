@@ -91,6 +91,7 @@ export const appRoutes: Route[] = [
                 {path: 'invoicing', loadChildren: () => import('app/modules/admin/apps/invoicing/invoicing.module').then(m => m.InvoicingModule)},
                 {path: 'users', loadChildren: () => import('app/modules/admin/apps/users/users.module').then(m => m.UsersModule)},
                 {path: 'profile', loadChildren: () => import('app/modules/admin/apps/profile/profile.module').then(m => m.ProfileModule)},
+                {path: 'vehicles', loadChildren: () => import('app/modules/admin/apps/vehicles/vehicles.module').then(m => m.VehiclesModule)},
             ]},
 
             // Pages

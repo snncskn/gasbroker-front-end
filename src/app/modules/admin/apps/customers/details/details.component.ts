@@ -54,6 +54,17 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
         public toastr: ToastrManager
 
     ) {
+                // Create the customer form
+                this.customerForm = this._formBuilder.group({
+                    id: [''],
+                    types: [null],
+                    full_name: ['', [Validators.required]],
+                    email: [null],
+                    phone: [null],
+                    name: ['', [Validators.required]],
+                    fax: [null],
+                    registered_date: [null],
+                });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -66,18 +77,6 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         // Open the drawer
         this._customersListComponent.matDrawer.open();
-
-        // Create the customer form
-        this.customerForm = this._formBuilder.group({
-            id: [''],
-            types: [null],
-            full_name: ['', [Validators.required]],
-            email: [null],
-            phone: [null],
-            name: ['', [Validators.required]],
-            fax: [null],
-            registered_date: [null],
-        });
 
         this._customersService.getTypes().subscribe(res => {
             this.dataSourceTypes = res.body;
