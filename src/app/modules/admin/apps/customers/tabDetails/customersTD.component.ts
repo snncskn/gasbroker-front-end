@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector       : 'customersTD',
@@ -11,7 +12,10 @@ export class CustomersTDComponent
     /**
      * Constructor
      */
-    constructor()
-    {
-    }
+     example:string;
+     constructor(private router: Router) { 
+             const navigation = this.router.getCurrentNavigation();
+       
+       this.example = 'testsetfsdfkdjsaflkdjs';
+     }
 }

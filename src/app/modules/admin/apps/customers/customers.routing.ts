@@ -13,6 +13,7 @@ export const customersRoutes: Route[] = [
         resolve  : {
         },
         children : [
+          
             {
                 path     : '',
                 component: CustomersListComponent,
@@ -21,6 +22,7 @@ export const customersRoutes: Route[] = [
                     
                 },
                 children : [
+                   
                     {
                         path         : ':id',
                         component    : CustomersDetailsComponent,
@@ -29,15 +31,15 @@ export const customersRoutes: Route[] = [
                             
                         },
                         canDeactivate: [CanDeactivateCustomersDetails],
-                        children:[
-                            {
-                                path     :'details/:id',
-                                component:CustomersTDComponent,
-                            },
-                        ]
-                    }
+                    },
+                
                 ]
             }
         ]
+    },
+    {
+        path     : 'detail/:id',
+        component: CustomersTDComponent,
     }
+    
 ];

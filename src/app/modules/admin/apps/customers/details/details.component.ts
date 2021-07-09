@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -54,17 +54,17 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
         public toastr: ToastrManager
 
     ) {
-                // Create the customer form
-                this.customerForm = this._formBuilder.group({
-                    id: [''],
-                    types: [null],
-                    full_name: ['', [Validators.required]],
-                    email: [null],
-                    phone: [null],
-                    name: ['', [Validators.required]],
-                    fax: [null],
-                    registered_date: [null],
-                });
+        // Create the customer form
+        this.customerForm = this._formBuilder.group({
+            id: [''],
+            types: [null],
+            full_name: ['', [Validators.required]],
+            email: [null],
+            phone: [null],
+            name: ['', [Validators.required]],
+            fax: [null],
+            registered_date: [null],
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -81,24 +81,24 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
         this._customersService.getTypes().subscribe(res => {
             this.dataSourceTypes = res.body;
             this._customersService.customer$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((customer: Customer) => {
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((customer: Customer) => {
 
-                // Open the drawer in case it is closed
-                this._customersListComponent.matDrawer.open();
+                    // Open the drawer in case it is closed
+                    this._customersListComponent.matDrawer.open();
 
-                // Get the customer
-                this.customer = customer;
+                    // Get the customer
+                    this.customer = customer;
 
-                // Patch values to the form
-                this.customerForm.patchValue(customer);
+                    // Patch values to the form
+                    this.customerForm.patchValue(customer);
 
-                // Toggle the edit mode off
-                this.toggleEditMode(true);
+                    // Toggle the edit mode off
+                    this.toggleEditMode(true);
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
         });
 
         // Get the customers
@@ -111,7 +111,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
         // Get the customer
-       
+
     }
 
     /**
@@ -159,7 +159,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
     /**
      * Update the customer
      */
-     updateCustomer(): void {
+    updateCustomer(): void {
         const customer = this.customerForm.getRawValue();
 
         this.ngxService.start();
@@ -332,9 +332,9 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
 
     }
 
-    customerTabDetails()
-    {
-        this._router.navigate(['/details',this.customer.id]);
+    customerTabDetails() {
+        this._router.navigate(['/customers/detail/'+this.customer.id]);
+
     }
 
 
