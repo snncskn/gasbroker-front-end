@@ -9,7 +9,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
-            /*
+           
             {
                 id   : 'dashboards.project',
                 title: 'Project',
@@ -17,6 +17,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:clipboard-check',
                 link : '/dashboards/project'
             },
+             /*
             {
                 id   : 'dashboards.analytics',
                 title: 'Analytics',
@@ -54,7 +55,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon    : 'heroicons_outline:archive',
                 link    : '/apps/vehicles'
             },
-            
+            {
+                id      : 'app.proposal',
+                title   : 'Proposal',
+                type    : 'basic',
+                icon    : 'heroicons_outline:archive',
+                link    : '/apps/proposals'
+            },
             /*{
                 id      : 'app.invoicing',
                 title   : 'Invoicing',
