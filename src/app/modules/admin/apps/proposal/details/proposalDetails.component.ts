@@ -72,13 +72,13 @@ export class ProposalDetailsComponent implements OnInit, OnDestroy {
             this.dataSourceTypes = res.body;
         });
 
-        this._vehiclesService.vehicles$
+        this._vehiclesService.proposals$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicles: Proposal[]) => {
                 this.vehicles = vehicles;
                 this._changeDetectorRef.markForCheck();
         });
-        this._vehiclesService.vehicle$
+        this._vehiclesService.proposal$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicle: Proposal) => {
 

@@ -38,7 +38,7 @@ export const customersRoutes: Route[] = [
         ]
     },
     {
-        path     : 'detail/:id',
+        path     : '/detail/:id',
         component: CustomersTDComponent,
     }
     

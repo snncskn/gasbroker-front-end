@@ -25,7 +25,7 @@ export class ProposalService {
         public toastr: ToastrManager
     ) {
     }
-    customers = [];
+    proposals = [];
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -34,14 +34,14 @@ export class ProposalService {
     /**
      * Getter for customer
      */
-    get vehicle$(): Observable<Proposal> {
+    get proposal$(): Observable<Proposal> {
         return this._proposal.asObservable();
     }
 
     /**
      * Getter for customers
      */
-    get vehicles$(): Observable<Proposal[]> {
+    get proposals$(): Observable<Proposal[]> {
         return this._proposals.asObservable();
     }
 
@@ -58,10 +58,10 @@ export class ProposalService {
      */
     getProposals(): Observable<Proposal[]> {
 
-        return this._httpClient.get<any>(`${environment.url}/vehicle`).pipe(
-            tap((vehicles) => {
-                this._proposals.next(vehicles.body);
-                this._proposalsCount = vehicles.body.length;
+        return this._httpClient.get<any>(`${environment.url}/proposal`).pipe(
+            tap((proposals) => {
+                this._proposals.next(proposals.body);
+                this._proposalsCount = proposals.body.length;
             })
         );
     }
@@ -74,9 +74,9 @@ export class ProposalService {
             sortField: 'full_name',
             sortOrder: 'asc'
         }
-        return this._httpClient.post<any>(`${environment.url}/company/find`, { queryParams: searchObject })
+        return this._httpClient.post<any>(`${environment.url}/proposal/find`, { queryParams: searchObject })
             .pipe(tap(data => {
-                return this.customers = data.body
+                return this.proposals = data.body
             }));
 
     }
@@ -134,7 +134,7 @@ export class ProposalService {
 
      
     createVehicle(vehicle: any): Observable<any> {
-        return this.vehicles$.pipe(
+        return this.proposals$.pipe(
             take(1),
             switchMap(vehicles => this._httpClient.post<any>(`${environment.url}/vehicle`, vehicle).pipe(
                 map((newVehicle) => {
@@ -150,7 +150,7 @@ export class ProposalService {
     newVehicle(): Observable<any> {
         const today = new Date();
 
-        return this.vehicles$.pipe(
+        return this.proposals$.pipe(
             take(1),
             switchMap(vehicles => this._httpClient.get<any>(`${environment.url}/vehicle`).pipe(
                 map((newVehicle) => {
@@ -165,26 +165,25 @@ export class ProposalService {
         
     }
 
- 
-    updateVehicle(id: string, vehicle: Proposal): Observable<any> {
-        return this.vehicles$.pipe(
+   
+    updateVehicle(id: string, proposal: Proposal): Observable<any> {
+        return this.proposals$.pipe(
             take(1),
-            switchMap(vehicles => this._httpClient.put<any>(`${environment.url}/vehicle/${id}`, vehicle).pipe(
+            switchMap(proposals => this._httpClient.put<any>(`${environment.url}/proposal/${id}`, proposal).pipe(
                 map((updatedVehicle) => {
-                    const index = vehicles.findIndex(item => item.id === id);
-                    console.log(123)
-                    vehicles[index] = updatedVehicle.body;
-                    this._proposals.next(vehicles);
+                    const index = proposals.findIndex(item => item.id === id);
+                    proposals[index] = updatedVehicle.body;
+                    this._proposals.next(proposals);
 
                     return updatedVehicle.body;
                 }),
-                switchMap(updatedVehicle => this.vehicle$.pipe(
+                switchMap(updatedVehicle => this.proposal$.pipe(
                     take(1),
                     filter(item => item && item.id === id),
                     tap(() => {
 
                         // Update the customer if it's selected
-                        this._proposal.next(updatedVehicle);
+                        this._proposals.next(updatedVehicle);
 
                         // Return the updated customer
                         return updatedVehicle;

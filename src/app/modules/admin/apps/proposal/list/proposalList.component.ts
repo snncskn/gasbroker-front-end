@@ -38,16 +38,15 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private readonly ngxService: NgxUiLoaderService,
-        private _vehiclesService: ProposalService,
+        private _proposalService: ProposalService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
     }
     ngOnInit(): void {
-        // Get the customers
-        this.vehicles$ = this._vehiclesService.vehicles$;
-        this._vehiclesService.vehicles$
+        this.vehicles$ = this._proposalService.proposals$;
+        this._proposalService.proposals$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((proposal: Proposal[]) => {
 
@@ -60,7 +59,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
 
         // Get the customer
         // this.customer$ = this._customersService.customer$;
-        this._vehiclesService.vehicle$
+        this._proposalService.proposal$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicle: Proposal) => {
                 // Update the counts
@@ -117,7 +116,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
                 switchMap(query =>
 
                     // Search
-                    this._vehiclesService.searchVehicles(query)
+                    this._proposalService.searchVehicles(query)
                 )
             )
             .subscribe();
@@ -131,7 +130,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
  
     newVehicle(): void {
         this.ngxService.start();
-        this._vehiclesService.newVehicle().subscribe((newVehicle) => {
+        this._proposalService.newVehicle().subscribe((newVehicle) => {
 
             this.ngxService.stop();
             this._router.navigate(['./', newVehicle.id], { relativeTo: this._activatedRoute });
