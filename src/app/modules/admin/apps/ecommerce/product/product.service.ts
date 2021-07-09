@@ -182,7 +182,6 @@ export class ProductService {
     updateProduct(product: any): Observable<InventoryProduct> {
 
         let url = `${environment.url}/product/${product.id}`;
-        console.log(url);
         return this.products$.pipe(
             take(1),
             switchMap(products => this._httpClient.put<any>(url, product).pipe(

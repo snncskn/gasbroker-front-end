@@ -4,6 +4,7 @@ import { CustomersCustomerResolver, CustomersResolver } from 'app/modules/admin/
 import { CustomersComponent } from 'app/modules/admin/apps/customers/customers.component';
 import { CustomersListComponent } from 'app/modules/admin/apps/customers/list/list.component';
 import { CustomersDetailsComponent } from 'app/modules/admin/apps/customers/details/details.component';
+import { CustomersTDComponent } from './tabDetails/customersTD.component';
 
 export const customersRoutes: Route[] = [
     {
@@ -27,7 +28,13 @@ export const customersRoutes: Route[] = [
                             task     : CustomersCustomerResolver,
                             
                         },
-                        canDeactivate: [CanDeactivateCustomersDetails]
+                        canDeactivate: [CanDeactivateCustomersDetails],
+                        children:[
+                            {
+                                path     :'details/:id',
+                                component:CustomersTDComponent,
+                            },
+                        ]
                     }
                 ]
             }

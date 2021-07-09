@@ -172,7 +172,6 @@ export class VehiclesService {
             switchMap(vehicles => this._httpClient.put<any>(`${environment.url}/vehicle/${id}`, vehicle).pipe(
                 map((updatedVehicle) => {
                     const index = vehicles.findIndex(item => item.id === id);
-                    console.log(123)
                     vehicles[index] = updatedVehicle.body;
                     this._vehicles.next(vehicles);
 

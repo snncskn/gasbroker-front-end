@@ -64,7 +64,6 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicle: Vehicle) => {
                 // Update the counts
-                console.log(321)
                 this.selectedVehicle = vehicle;
 
                 // Mark for check

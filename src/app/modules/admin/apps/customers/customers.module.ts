@@ -24,12 +24,14 @@ import { CustomersComponent } from 'app/modules/admin/apps/customers/customers.c
 import { CustomersDetailsComponent } from 'app/modules/admin/apps/customers/details/details.component';
 import { CustomersListComponent } from 'app/modules/admin/apps/customers/list/list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CustomersTDComponent } from './tabDetails/customersTD.component';
 
 @NgModule({
     declarations: [
         CustomersComponent,
         CustomersListComponent,
-        CustomersDetailsComponent
+        CustomersDetailsComponent,
+        CustomersTDComponent
     ],
     imports     : [
         RouterModule.forChild(customersRoutes),

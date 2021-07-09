@@ -87,7 +87,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         this._inventoryService.products$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((products: InventoryProduct[]) => {
-                console.log(12)
 
                 // Update the counts
                 this.productsCount = products.length;
@@ -173,7 +172,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         // Get the product by id
         this._inventoryService.getProductById(productId)
             .subscribe((product) => {
-                console.log("12345");
+
                 // Set the selected product
                 this.selectedProduct = product;
 
@@ -257,7 +256,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     updateSelectedProduct(): void
     {
         // Get the product object
-        console.log(123);
         const product = this.selectedProductForm.getRawValue();
         this.ngxService.start();
 
@@ -337,7 +335,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
                if(it.name.indexOf(searchValue)>0){
                     merge(searchValue).pipe(
                         switchMap(() => {
-                            console.log(12)
                             this.closeDetails();
                             this.isLoading = true;
                             return this._inventoryService.getProducts(0,10,'name',"asc",searchValue);
