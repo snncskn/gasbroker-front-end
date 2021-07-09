@@ -24,7 +24,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:chart-pie',
                 link : '/dashboards/analytics'
             },
-            */
+           
             {
                 id      : 'apps.calendar',
                 title   : 'Calendar',
@@ -33,7 +33,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon    : 'heroicons_outline:calendar',
                 link    : '/apps/calendar'
             },
-            {
+            */ {
                 id      : 'app.customers',
                 title   : 'Customers',
                 type    : 'basic',

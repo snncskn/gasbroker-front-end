@@ -10,8 +10,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 @Injectable({
     providedIn: 'root'
 })
-export class ProductService
-{
+export class ProductService {
     // Private
     private _brands: BehaviorSubject<InventoryBrand[] | null> = new BehaviorSubject(null);
     private _categories: BehaviorSubject<InventoryCategory[] | null> = new BehaviorSubject(null);
@@ -24,11 +23,10 @@ export class ProductService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient,   
-                private readonly ngxService: NgxUiLoaderService,
-                public toastr: ToastrManager
-        )
-    {
+    constructor(private _httpClient: HttpClient,
+        private readonly ngxService: NgxUiLoaderService,
+        public toastr: ToastrManager
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -38,56 +36,49 @@ export class ProductService
     /**
      * Getter for brands
      */
-    get brands$(): Observable<InventoryBrand[]>
-    {
+    get brands$(): Observable<InventoryBrand[]> {
         return this._brands.asObservable();
     }
 
     /**
      * Getter for categories
      */
-    get categories$(): Observable<InventoryCategory[]>
-    {
+    get categories$(): Observable<InventoryCategory[]> {
         return this._categories.asObservable();
     }
 
     /**
      * Getter for pagination
      */
-    get pagination$(): Observable<InventoryPagination>
-    {
+    get pagination$(): Observable<InventoryPagination> {
         return this._pagination.asObservable();
     }
 
     /**
      * Getter for product
      */
-    get product$(): Observable<InventoryProduct>
-    {
+    get product$(): Observable<InventoryProduct> {
         return this._product.asObservable();
     }
 
     /**
      * Getter for products
      */
-    get products$(): Observable<InventoryProduct[]>
-    {
+    get products$(): Observable<InventoryProduct[]> {
         return this._products.asObservable();
     }
 
     /**
      * Getter for tags
      */
-    get tags$(): Observable<InventoryTag[]>
-    {
+    get tags$(): Observable<InventoryTag[]> {
         return this._tags.asObservable();
     }
 
     /**
      * Getter for vendors
      */
-    get vendors$(): Observable<InventoryVendor[]>
-    {
+    get vendors$(): Observable<InventoryVendor[]> {
         return this._vendors.asObservable();
     }
 
@@ -98,8 +89,7 @@ export class ProductService
     /**
      * Get brands
      */
-    getBrands(): Observable<InventoryBrand[]>
-    {
+    getBrands(): Observable<InventoryBrand[]> {
         return this._httpClient.get<InventoryBrand[]>('api/apps/ecommerce/inventory/brands').pipe(
             tap((brands) => {
                 this._brands.next(brands);
@@ -110,8 +100,7 @@ export class ProductService
     /**
      * Get categories
      */
-    getCategories(): Observable<InventoryCategory[]>
-    {
+    getCategories(): Observable<InventoryCategory[]> {
         return this._httpClient.get<InventoryCategory[]>('api/apps/ecommerce/inventory/categories').pipe(
             tap((categories) => {
                 this._categories.next(categories);
@@ -130,8 +119,7 @@ export class ProductService
      * @param search
      */
     getProducts(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
-        Observable<{ pagination: InventoryPagination; products: InventoryProduct[] }>
-    {
+        Observable<{ pagination: InventoryPagination; products: InventoryProduct[] }> {
 
 
         let url = `${environment.url}/product`;
@@ -147,8 +135,7 @@ export class ProductService
     /**
      * Get product by id
      */
-    getProductById(id: string): Observable<InventoryProduct>
-    {
+    getProductById(id: string): Observable<InventoryProduct> {
         return this._products.pipe(
             take(1),
             map((products) => {
@@ -158,8 +145,7 @@ export class ProductService
             }),
             switchMap((product) => {
 
-                if ( !product )
-                {
+                if (!product) {
                     return throwError('Could not found product with id of ' + id + '!');
                 }
 
@@ -171,10 +157,9 @@ export class ProductService
     /**
      * Create product
      */
-    createProduct(): Observable<any>
-    {
+    createProduct(): Observable<any> {
 
-        let tmp ={id:"",code:"",active:'1',name:''};
+        let tmp = { id: "", code: "", active: '1', name: '' };
         let url = `${environment.url}/product/`;
         return this.products$.pipe(
             take(1),
@@ -197,40 +182,28 @@ export class ProductService
      * @param id
      * @param product
      */
-    updateProduct(id: string, product: InventoryProduct): Observable<InventoryProduct>
-    {
+    updateProduct(product: any): Observable<InventoryProduct> {
 
-        let url = `${environment.url}product/${id}`;
-
+        let url = `${environment.url}/product/${product.id}`;
+        console.log(url);
         return this.products$.pipe(
             take(1),
-            switchMap(products => this._httpClient.put<any>(url, {
-                id,
-                product
-            }).pipe(
+            switchMap(products => this._httpClient.put<any>(url, product).pipe(
                 map((updatedProduct) => {
-                    // Find the index of the updated product
-                    const index = products.findIndex(item => item.id === id);
+                    const index = products.findIndex(item => item.id === product.id);
+                    products[index] = updatedProduct.body;
 
-                    // Update the product
-                    products[index] = updatedProduct.data;
-
-                    // Update the products
                     this._products.next(products);
 
-                    // Return the updated product
                     this.ngxService.stop();
                     return updatedProduct;
                 }),
                 switchMap(updatedProduct => this.product$.pipe(
                     take(1),
-                    filter(item => item && item.id === id),
+                    filter(item => item && item.id === product.id),
                     tap(() => {
 
-                        // Update the product if it's selected
                         this._product.next(updatedProduct);
-
-                        // Return the updated product
                         return updatedProduct;
                     })
                 ))
@@ -243,26 +216,25 @@ export class ProductService
      *
      * @param id
      */
-    deleteProduct(id: string): Observable<boolean>
-    {
+    deleteProduct(id: string): Observable<boolean> {
 
         let url = `${environment.url}products/${id}`;
 
         return this.products$.pipe(
             take(1),
-            switchMap(products => this._httpClient.delete(url, {params: {id}}).pipe(
+            switchMap(products => this._httpClient.delete(url, { params: { id } }).pipe(
                 map((isDeleted: any) => {
-                    if(isDeleted.success){
-                    const index = products.findIndex(item => item.id === id);
+                    if (isDeleted.success) {
+                        const index = products.findIndex(item => item.id === id);
 
-                    products.splice(index, 1);
+                        products.splice(index, 1);
 
-                    this._products.next(products);
-                    this.ngxService.stop();
-                    this.toastr.errorToastr('Product deleted', 'Deleted!');
+                        this._products.next(products);
+                        this.ngxService.stop();
+                        this.toastr.errorToastr('Product deleted', 'Deleted!');
 
-                   // this._snackBar.open(isDeleted.message);
-                    return isDeleted.success;
+                        // this._snackBar.open(isDeleted.message);
+                        return isDeleted.success;
 
                     } else {
                         this.toastr.warningToastr(isDeleted.message, 'Warning!');
@@ -276,8 +248,7 @@ export class ProductService
     /**
      * Get tags
      */
-    getTags(): Observable<InventoryTag[]>
-    {
+    getTags(): Observable<InventoryTag[]> {
         return this._httpClient.get<InventoryTag[]>('api/apps/ecommerce/inventory/tags').pipe(
             tap((tags) => {
                 this._tags.next(tags);
@@ -290,11 +261,10 @@ export class ProductService
      *
      * @param tag
      */
-    createTag(tag: InventoryTag): Observable<InventoryTag>
-    {
+    createTag(tag: InventoryTag): Observable<InventoryTag> {
         return this.tags$.pipe(
             take(1),
-            switchMap(tags => this._httpClient.post<InventoryTag>('api/apps/ecommerce/inventory/tag', {tag}).pipe(
+            switchMap(tags => this._httpClient.post<InventoryTag>('api/apps/ecommerce/inventory/tag', { tag }).pipe(
                 map((newTag) => {
 
                     // Update the tags with the new tag
@@ -313,8 +283,7 @@ export class ProductService
      * @param id
      * @param tag
      */
-    updateTag(id: string, tag: InventoryTag): Observable<InventoryTag>
-    {
+    updateTag(id: string, tag: InventoryTag): Observable<InventoryTag> {
         return this.tags$.pipe(
             take(1),
             switchMap(tags => this._httpClient.patch<InventoryTag>('api/apps/ecommerce/inventory/tag', {
@@ -391,8 +360,7 @@ export class ProductService
     /**
      * Get vendors
      */
-    getVendors(): Observable<InventoryVendor[]>
-    {
+    getVendors(): Observable<InventoryVendor[]> {
         return this._httpClient.get<InventoryVendor[]>('api/apps/ecommerce/inventory/vendors').pipe(
             tap((vendors) => {
                 this._vendors.next(vendors);

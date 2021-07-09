@@ -12,6 +12,7 @@ import { calendarColors } from 'app/modules/admin/apps/calendar/sidebar/calendar
 import { MatTableDataSource } from '@angular/material/table';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Console } from 'console';
 
 @Component({
     selector       : 'pList-list',
@@ -86,6 +87,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         this._inventoryService.products$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((products: InventoryProduct[]) => {
+                console.log(12)
 
                 // Update the counts
                 this.productsCount = products.length;
@@ -268,14 +270,11 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     updateSelectedProduct(): void
     {
         // Get the product object
+        console.log(123);
         const product = this.selectedProductForm.getRawValue();
-        // Remove the currentImageIndex field
-        delete product.currentImageIndex;
-
-        // Update the product on the server
         this.ngxService.start();
 
-        this._inventoryService.updateProduct(product.id, product).subscribe(() => {
+        this._inventoryService.updateProduct(product).subscribe(() => {
 
             this.ngxService.stop();
             // Show a success message
@@ -339,7 +338,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
 
         const product = this.selectedProductForm.getRawValue();
         product.active = !product.active;
-        this._inventoryService.updateProduct(product.id, product).subscribe(() => {
+        this._inventoryService.updateProduct(product).subscribe(() => {
             this.showFlashMessage('success');
         });
 
@@ -351,6 +350,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
                if(it.name.indexOf(searchValue)>0){
                     merge(searchValue).pipe(
                         switchMap(() => {
+                            console.log(12)
                             this.closeDetails();
                             this.isLoading = true;
                             return this._inventoryService.getProducts(0,10,'name',"asc",searchValue);
