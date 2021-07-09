@@ -333,7 +333,8 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
     }
 
     customerTabDetails() {
-        this._router.navigate(['/customers/detail/'+this.customer.id]);
+        console.log('/customers/detail/'+this.customer.id)
+        this._router.navigateByUrl('/customers/detail/'+this.customer.id);
 
     }
 
