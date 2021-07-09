@@ -240,33 +240,20 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         this.filteredTags = this.tags.filter(tag => tag.title.toLowerCase().includes(value));
     }
 
-
-
-    /**
-     * Create product
-     */
     createProduct(): void
     {
         this.ngxService.start();
-
-        // Create the product
         this._inventoryService.createProduct().subscribe((newProduct) => {
 
-            // Go to new product
-            this.selectedProduct = newProduct.data;
+            this.selectedProduct = newProduct.body;
             this.ngxService.stop();
+            this.selectedProductForm.patchValue(newProduct.body);
 
-            // Fill the form
-            this.selectedProductForm.patchValue(newProduct.data);
-
-            // Mark for check
             this._changeDetectorRef.markForCheck();
         });
     }
 
-    /**
-     * Update the selected product using the form data
-     */
+
     updateSelectedProduct(): void
     {
         // Get the product object
@@ -338,7 +325,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
 
         const product = this.selectedProductForm.getRawValue();
         product.active = !product.active;
-        this._inventoryService.updateProduct(product).subscribe(() => {
+        this._inventoryService.deleteProduct(product.id).subscribe(() => {
             this.showFlashMessage('success');
         });
 

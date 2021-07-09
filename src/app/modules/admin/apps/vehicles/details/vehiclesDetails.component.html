@@ -77,25 +77,42 @@
 
                     <!-- Name -->
                     <div class="mt-6">
-                        <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
-                            <input tabindex="-1" type="text" placeholder="Customer"
-                                matInput formControlName="customers"
-                                [matAutocomplete]="auto">
-                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                (optionSelected)="selectCustomer($event)">
-                                <mat-option *ngFor="let option of filteredOptions | async"
-                                    [value]="option.id">
-                                    <ng-container>
-                                        {{option.full_name | titlecase}}
-                                    </ng-container>
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
+                        
+                        <ng-container *ngIf="vehicle.id === 'new'">
+                                <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
+                                    <input tabindex="-1" type="text" placeholder="Customer"
+                                        matInput formControlName="company"
+                                        [matAutocomplete]="auto">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                        (optionSelected)="selectCustomer($event)">
+                                        <mat-option *ngFor="let option of filteredOptions | async"
+                                            [value]="option.full_name">
+                                            <ng-container>
+                                                {{option.full_name | titlecase}}
+                                            </ng-container>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                        </ng-container>
+                        <ng-template  *ngIf="vehicle.id != 'new'">
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>name</mat-label>
+                                <mat-icon
+                                    matPrefix
+                                    class="hidden sm:flex icon-size-5"
+                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                <input
+                                    matInput disabled
+                                    [formControlName]="'name'"
+                                    [placeholder]="'Company Name'"
+                                    [spellcheck]="false">
+                            </mat-form-field>
+                        </ng-template>
                     </div>
 
                     <div class="flex items-center mt-6">
                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                            <mat-label>name</mat-label>
+                            <mat-label>Vehicle Name</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
@@ -103,7 +120,7 @@
                             <input
                                 matInput
                                 [formControlName]="'name'"
-                                [placeholder]="'Company Name'"
+                                [placeholder]="'Vehicle Name'"
                                 [spellcheck]="false">
                         </mat-form-field>
                     </div>
@@ -173,6 +190,7 @@
                             [color]="'primary'"
                             [disabled]="vehicleForm.invalid"
                             [matTooltip]="'Save'"
+                            [routerLink]="['../']"
                             (click)="updateVehicle()">
                             Save
                         </button> 

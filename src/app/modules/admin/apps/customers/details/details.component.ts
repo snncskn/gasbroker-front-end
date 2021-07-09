@@ -80,19 +80,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
 
         this._customersService.getTypes().subscribe(res => {
             this.dataSourceTypes = res.body;
-        });
-
-        // Get the customers
-        this._customersService.customers$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((customers: Customer[]) => {
-                this.customers = customers;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-        // Get the customer
-        this._customersService.customer$
+            this._customersService.customer$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((customer: Customer) => {
 
@@ -111,6 +99,19 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+        });
+
+        // Get the customers
+        this._customersService.customers$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((customers: Customer[]) => {
+                this.customers = customers;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+        // Get the customer
+       
     }
 
     /**
@@ -159,23 +160,13 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
      * Update the customer
      */
     updateCustomer(): void {
-        // Get the customer object
         const customer = this.customerForm.getRawValue();
-        // Go through the customer object and clear empty values
 
-        //customer.emails = customer.emails.nfilter(email => email.email);
-
-        //customer.phoneNumbers = customer.phoneNumbers.filter(phoneNumber => phoneNumber.phoneNumber);
-
-        // Update the customer on the server
         this.ngxService.start();
         this._customersService.updateCustomer(customer.id, customer).subscribe(() => {
-
             this.toastr.successToastr('Customer updated', 'Updated!');
-            // Toggle the edit mode off
             this.closeDrawer();
             this.ngxService.stop();
-
         });
     }
 

@@ -141,7 +141,6 @@ console.log(2222)
             switchMap(customers => this._httpClient.put<any>(`${environment.url}/company/${id}`, customer).pipe(
                 map((updatedCustomer) => {
                     const index = customers.findIndex(item => item.id === id);
-                    console.log(123)
                     customers[index] = updatedCustomer.body;
                     this._customers.next(customers);
 

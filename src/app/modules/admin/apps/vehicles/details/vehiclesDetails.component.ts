@@ -63,8 +63,8 @@ export class VehiclesDetailsComponent implements OnInit, OnDestroy {
             id: [''],
             type: [''],
             name: ['', [Validators.required]],
+            company: [''],
             company_id: [''],
-            customers: [''],
             registered_date: [null],
         });
 
@@ -72,16 +72,12 @@ export class VehiclesDetailsComponent implements OnInit, OnDestroy {
             this.dataSourceTypes = res.body;
         });
 
-        // Get the vehicles
         this._vehiclesService.vehicles$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicles: Vehicle[]) => {
                 this.vehicles = vehicles;
-
-                // Mark for check
                 this._changeDetectorRef.markForCheck();
-            });
-        // Get the vehicle
+        });
         this._vehiclesService.vehicle$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicle: Vehicle) => {
@@ -139,7 +135,7 @@ export class VehiclesDetailsComponent implements OnInit, OnDestroy {
     public list() {
         this._vehiclesService.getCustomers().subscribe(data => {
           this.customers = data.body;
-          this.filteredOptions = this.vehicleForm.controls['customers'].valueChanges.pipe(
+          this.filteredOptions = this.vehicleForm.controls['company'].valueChanges.pipe(
             startWith(''),
             map(value => this._filter(value === '' ? '99' : value))
           );
@@ -150,7 +146,7 @@ export class VehiclesDetailsComponent implements OnInit, OnDestroy {
         let option = this.customers.filter(item => item.full_name.toUpperCase() === event.option.value.toUpperCase());
         if (option.length > 0) {
           this.selectCustomerItem = option[0];
-          this.vehicleForm.get('customers').setValue(option[0].id, { emitEvent: false });
+          this.vehicleForm.get('company_id').setValue(option[0].id, { emitEvent: false });
         }
     }
     
@@ -173,17 +169,26 @@ export class VehiclesDetailsComponent implements OnInit, OnDestroy {
     updateVehicle(): void {
         // Get the customer object
         const vehicle = this.vehicleForm.getRawValue();
-
+      
         // Update the customer on the server
         this.ngxService.start();
-        this._vehiclesService.updateVehicle(vehicle.id, vehicle).subscribe(() => {
-
-            this.toastr.successToastr('Vehicle updated', 'Updated!');
-            // Toggle the edit mode off
-            this.closeDrawer();
-            this.ngxService.stop();
-
-        });
+        if(vehicle.id==='new'){
+            vehicle.id ='';
+            this._vehiclesService.createVehicle(vehicle).subscribe(() => {
+                this.toastr.successToastr('Vehicle updated', 'Updated!');
+                this.closeDrawer();
+                this.ngxService.stop();
+            });
+        }else{
+            this._vehiclesService.updateVehicle(vehicle.id, vehicle).subscribe(() => {
+                this.toastr.successToastr('Vehicle updated', 'Updated!');
+                this.closeDrawer();
+                this.ngxService.stop();
+    
+            });
+        }
+        this._changeDetectorRef.markForCheck();
+    
     }
 
     

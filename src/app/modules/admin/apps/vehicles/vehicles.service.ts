@@ -67,29 +67,29 @@ export class VehiclesService {
     }
 
     public CustomersFind(search: string): Observable<any> {
-        let searchObject ={
-            filter: {full_name:search},
-            pageNumber:1,
-            pageSize:10,
-            sortField:'full_name',
-            sortOrder:'asc'
-        } 
-        return this._httpClient.post<any>(`${environment.url}/company/find`,{queryParams:searchObject})
-        .pipe(tap(data => {
+        let searchObject = {
+            filter: { full_name: search },
+            pageNumber: 1,
+            pageSize: 10,
+            sortField: 'full_name',
+            sortOrder: 'asc'
+        }
+        return this._httpClient.post<any>(`${environment.url}/company/find`, { queryParams: searchObject })
+            .pipe(tap(data => {
                 return this.customers = data.body
-        }));
-    
+            }));
+
     }
 
     getTypes():
         Observable<any> {
         let url = `${environment.url}/parameter/category/VEHICLE_TYPE`;
-            return this._httpClient.get<any>(url);
+        return this._httpClient.get<any>(url);
     }
 
     getCustomers():
-    Observable<any> {
-    let url = `${environment.url}/company`;
+        Observable<any> {
+        let url = `${environment.url}/company`;
         return this._httpClient.get<any>(url);
     }
 
@@ -132,58 +132,67 @@ export class VehiclesService {
         );
     }
 
-        /**
-     * Create customer
-     */
-         createVehicle(): Observable<any> {
-            const today = new Date();
-            let new1 = { name: '', type: '', registered_date:today }
-            return this.vehicles$.pipe(
-                take(1),
-                switchMap(vehicles => this._httpClient.post<any>(`${environment.url}/vehicle`, new1).pipe(
-                    map((newVehicle) => {
-    
-                        this._vehicles.next([newVehicle.body, ...vehicles]);
-    
-                        return newVehicle.body;
+     
+    createVehicle(vehicle: any): Observable<any> {
+        return this.vehicles$.pipe(
+            take(1),
+            switchMap(vehicles => this._httpClient.post<any>(`${environment.url}/vehicle`, vehicle).pipe(
+                map((newVehicle) => {
+
+                    this._vehicles.next([newVehicle.body, ...vehicles]);
+
+                    return newVehicle.body;
+                })
+            ))
+        );
+    }
+      
+    newVehicle(): Observable<any> {
+        const today = new Date();
+
+        return this.vehicles$.pipe(
+            take(1),
+            switchMap(vehicles => this._httpClient.get<any>(`${environment.url}/vehicle`).pipe(
+                map((newVehicle) => {
+                    let new1 = { id:'new',company_id:'',name: '', type: '', registered_date: today.toString() }
+                    this._vehicles.next([new1, ...vehicles]);
+
+                    return new1;
+                })
+            ))
+        ); 
+ 
+        
+    }
+
+ 
+    updateVehicle(id: string, vehicle: Vehicle): Observable<any> {
+        return this.vehicles$.pipe(
+            take(1),
+            switchMap(vehicles => this._httpClient.put<any>(`${environment.url}/vehicle/${id}`, vehicle).pipe(
+                map((updatedVehicle) => {
+                    const index = vehicles.findIndex(item => item.id === id);
+                    console.log(123)
+                    vehicles[index] = updatedVehicle.body;
+                    this._vehicles.next(vehicles);
+
+                    return updatedVehicle.body;
+                }),
+                switchMap(updatedVehicle => this.vehicle$.pipe(
+                    take(1),
+                    filter(item => item && item.id === id),
+                    tap(() => {
+
+                        // Update the customer if it's selected
+                        this._vehicle.next(updatedVehicle);
+
+                        // Return the updated customer
+                        return updatedVehicle;
                     })
                 ))
-            );
-        }
-
-        /**
-     * Update vehicle
-     *
-     * @param id
-     * @param vehicle
-     */
-         updateVehicle(id: string, vehicle: Vehicle): Observable<any> {
-            return this.vehicles$.pipe(
-                take(1),
-                switchMap(vehicles => this._httpClient.put<any>(`${environment.url}/vehicle/${id}`, vehicle).pipe(
-                    map((updatedVehicle) => {
-                        const index = vehicles.findIndex(item => item.id === id);
-                        console.log(123)
-                        vehicles[index] = updatedVehicle.body;
-                        this._vehicles.next(vehicles);
-    
-                        return updatedVehicle.body;
-                    }),
-                    switchMap(updatedVehicle => this.vehicle$.pipe(
-                        take(1),
-                        filter(item => item && item.id === id),
-                        tap(() => {
-    
-                            // Update the customer if it's selected
-                            this._vehicle.next(updatedVehicle);
-    
-                            // Return the updated customer
-                            return updatedVehicle;
-                        })
-                    ))
-                ))
-            );
-        }
+            ))
+        );
+    }
 
     /**
      * Create customer

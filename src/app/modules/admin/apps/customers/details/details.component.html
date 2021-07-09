@@ -225,9 +225,10 @@
 
                     <div class="flex items-center mt-6">
                     <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                        <mat-label>Company Type</mat-label>
                         <mat-select placeholder="Types" [formControlName]="'types'" multiple>
                             <mat-option *ngFor="let option of dataSourceTypes"
-                                [value]="option.id">
+                                [value]="option.description">
                                 <ng-container>
                                     {{option.description | titlecase}}
                                 </ng-container>
@@ -328,6 +329,7 @@
                         </button>
                         <!-- Save -->
                         <button
+                        [routerLink]="['../']"
                             class="ml-2"
                             mat-flat-button
                             [color]="'primary'"

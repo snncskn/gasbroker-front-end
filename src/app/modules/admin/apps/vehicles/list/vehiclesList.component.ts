@@ -90,7 +90,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 )
             )
             .subscribe(() => {
-                this.createVehicle();
+                this.newVehicle();
             });
 
         // Subscribe to media changes
@@ -128,22 +128,20 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+ 
+    newVehicle(): void {
+        this.ngxService.start();
+        this._vehiclesService.newVehicle().subscribe((newVehicle) => {
 
-        /**
-     * Create vehicle
-     */
-         createVehicle(): void
-         {
-             this.ngxService.start();
-             this._vehiclesService.createVehicle().subscribe((newVehicle) => {
-     
-                 this.ngxService.stop();
-                 this._router.navigate(['./', newVehicle.id], {relativeTo: this._activatedRoute});
-     
-                 this._changeDetectorRef.markForCheck();
-                 
-             });
-         }
+            this.ngxService.stop();
+            this._router.navigate(['./', newVehicle.id], { relativeTo: this._activatedRoute });
+
+            this._changeDetectorRef.markForCheck();
+
+        });
+    
+        
+    }
 
     onBackdropClicked(): void {
         // Go back to the list
