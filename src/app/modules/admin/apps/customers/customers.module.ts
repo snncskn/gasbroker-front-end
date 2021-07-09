@@ -25,6 +25,8 @@ import { CustomersDetailsComponent } from 'app/modules/admin/apps/customers/deta
 import { CustomersListComponent } from 'app/modules/admin/apps/customers/list/list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomersTDComponent } from './tabDetails/customersTD.component';
+import { FormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
     declarations: [
@@ -53,6 +55,8 @@ import { CustomersTDComponent } from './tabDetails/customersTD.component';
         MatTooltipModule,
         MatSnackBarModule,
         FuseFindByKeyPipeModule,
+        MatTabsModule,
+        FormsModule, 
         SharedModule
     ],
     providers   : [
