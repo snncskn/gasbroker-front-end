@@ -7,23 +7,23 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil, filter, switchMap } from 'rxjs/operators';
-import { VehiclesService } from '../vehicles.service';
-import { Vehicle } from '../vehicles.types';
+import { ProposalService } from '../proposals.service';
+import { Proposal } from '../proposals.types';
 
 @Component({
-    selector: 'vehicles-list',
-    templateUrl: './vehiclesList.component.html',
+    selector: 'proposal-list',
+    templateUrl: './proposalList.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VehiclesListComponent implements OnInit, OnDestroy {
+export class ProposalListComponent implements OnInit, OnDestroy {
 
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
-    vehicles$: Observable<Vehicle[]>;
+    vehicles$: Observable<Proposal[]>;
 
     vehiclesCount: number = 0;
-    selectedVehicle: Vehicle;
+    selectedVehicle: Proposal;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
@@ -38,21 +38,20 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private readonly ngxService: NgxUiLoaderService,
-        private _vehiclesService: VehiclesService,
+        private _proposalService: ProposalService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
     }
     ngOnInit(): void {
-        // Get the customers
-        this.vehicles$ = this._vehiclesService.vehicles$;
-        this._vehiclesService.vehicles$
+        this.vehicles$ = this._proposalService.proposals$;
+        this._proposalService.proposals$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((vehicles: Vehicle[]) => {
+            .subscribe((proposal: Proposal[]) => {
 
                 // Update the counts
-                this.vehiclesCount = vehicles.length;
+                this.vehiclesCount = proposal.length;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -60,10 +59,11 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
 
         // Get the customer
         // this.customer$ = this._customersService.customer$;
-        this._vehiclesService.vehicle$
+        this._proposalService.proposal$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((vehicle: Vehicle) => {
+            .subscribe((vehicle: Proposal) => {
                 // Update the counts
+                console.log(321)
                 this.selectedVehicle = vehicle;
 
                 // Mark for check
@@ -116,7 +116,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 switchMap(query =>
 
                     // Search
-                    this._vehiclesService.searchVehicles(query)
+                    this._proposalService.searchVehicles(query)
                 )
             )
             .subscribe();
@@ -130,7 +130,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
  
     newVehicle(): void {
         this.ngxService.start();
-        this._vehiclesService.newVehicle().subscribe((newVehicle) => {
+        this._proposalService.newVehicle().subscribe((newVehicle) => {
 
             this.ngxService.stop();
             this._router.navigate(['./', newVehicle.id], { relativeTo: this._activatedRoute });

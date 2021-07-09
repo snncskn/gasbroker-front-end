@@ -73,7 +73,6 @@ export class CustomersListComponent implements OnInit, OnDestroy
         this._customersService.customer$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((customer: Customer) => {
-                console.log(321)
                 // Update the counts
                 this.selectedCustomer = customer;
 

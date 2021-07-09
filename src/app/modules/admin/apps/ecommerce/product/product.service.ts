@@ -165,11 +165,8 @@ export class ProductService {
             take(1),
             switchMap(() => this._httpClient.post<any>(url, tmp).pipe(
                 map((newProduct) => {
+                    this._products.next([newProduct.body]);
 
-                    // Update the products with the new product
-                    this._products.next([newProduct.data]);
-
-                    // Return the new product
                     return newProduct;
                 })
             ))
@@ -185,7 +182,6 @@ export class ProductService {
     updateProduct(product: any): Observable<InventoryProduct> {
 
         let url = `${environment.url}/product/${product.id}`;
-        console.log(url);
         return this.products$.pipe(
             take(1),
             switchMap(products => this._httpClient.put<any>(url, product).pipe(
@@ -218,11 +214,11 @@ export class ProductService {
      */
     deleteProduct(id: string): Observable<boolean> {
 
-        let url = `${environment.url}products/${id}`;
+        let url = `${environment.url}/product/delete/${id}`;
 
         return this.products$.pipe(
             take(1),
-            switchMap(products => this._httpClient.delete(url, { params: { id } }).pipe(
+            switchMap(products => this._httpClient.put(url, { params: { id } }).pipe(
                 map((isDeleted: any) => {
                     if (isDeleted.success) {
                         const index = products.findIndex(item => item.id === id);
@@ -233,7 +229,6 @@ export class ProductService {
                         this.ngxService.stop();
                         this.toastr.errorToastr('Product deleted', 'Deleted!');
 
-                        // this._snackBar.open(isDeleted.message);
                         return isDeleted.success;
 
                     } else {

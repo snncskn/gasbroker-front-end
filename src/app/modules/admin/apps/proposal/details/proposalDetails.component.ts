@@ -6,22 +6,22 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, switchMap, takeUntil, filter, map } from 'rxjs/operators';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { VehiclesListComponent } from '../list/vehiclesList.component';
-import { Vehicle } from '../vehicles.types';
-import { VehiclesService } from '../vehicles.service';
+import { ProposalListComponent } from '../list/proposalList.component';
+import { Proposal } from '../proposals.types';
+import { ProposalService } from '../proposals.service';
 
 @Component({
-    selector: 'vehicles-details',
-    templateUrl: './vehiclesDetails.component.html',
+    selector: 'proposal-details',
+    templateUrl: './proposalDetails.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VehiclesDetailsComponent implements OnInit, OnDestroy {
+export class ProposalDetailsComponent implements OnInit, OnDestroy {
 
-    vehicle: Vehicle;
+    vehicle: Proposal;
     vehicleForm: FormGroup;
     customers: any[];
-    vehicles: Vehicle[];
+    vehicles: Proposal[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     dataSourceTypes: any[];
     filteredOptions: Observable<string[]>;
@@ -36,8 +36,8 @@ export class VehiclesDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _vehiclesListComponent: VehiclesListComponent,
-        private _vehiclesService: VehiclesService,
+        private _vehiclesListComponent: ProposalListComponent,
+        private _vehiclesService: ProposalService,
         private _formBuilder: FormBuilder,
         private _renderer2: Renderer2,
         private _router: Router,
@@ -72,15 +72,15 @@ export class VehiclesDetailsComponent implements OnInit, OnDestroy {
             this.dataSourceTypes = res.body;
         });
 
-        this._vehiclesService.vehicles$
+        this._vehiclesService.proposals$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((vehicles: Vehicle[]) => {
+            .subscribe((vehicles: Proposal[]) => {
                 this.vehicles = vehicles;
                 this._changeDetectorRef.markForCheck();
         });
-        this._vehiclesService.vehicle$
+        this._vehiclesService.proposal$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((vehicle: Vehicle) => {
+            .subscribe((vehicle: Proposal) => {
 
                 // Open the drawer in case it is closed
                 this._vehiclesListComponent.matDrawer.open();

@@ -94,7 +94,6 @@ export class CustomersService {
             take(1),
             map((customers) => {
                 const customer = customers.find(item => item.id === id) || null;
-console.log(2222)
                 this._customer.next(customer);
 
                 return customer;
@@ -141,7 +140,6 @@ console.log(2222)
             switchMap(customers => this._httpClient.put<any>(`${environment.url}/company/${id}`, customer).pipe(
                 map((updatedCustomer) => {
                     const index = customers.findIndex(item => item.id === id);
-                    console.log(123)
                     customers[index] = updatedCustomer.body;
                     this._customers.next(customers);
 

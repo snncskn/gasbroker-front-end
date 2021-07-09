@@ -4,6 +4,7 @@ import { CustomersCustomerResolver, CustomersResolver } from 'app/modules/admin/
 import { CustomersComponent } from 'app/modules/admin/apps/customers/customers.component';
 import { CustomersListComponent } from 'app/modules/admin/apps/customers/list/list.component';
 import { CustomersDetailsComponent } from 'app/modules/admin/apps/customers/details/details.component';
+import { CustomersTDComponent } from './tabDetails/customersTD.component';
 
 export const customersRoutes: Route[] = [
     {
@@ -12,6 +13,7 @@ export const customersRoutes: Route[] = [
         resolve  : {
         },
         children : [
+          
             {
                 path     : '',
                 component: CustomersListComponent,
@@ -20,6 +22,7 @@ export const customersRoutes: Route[] = [
                     
                 },
                 children : [
+                   
                     {
                         path         : ':id',
                         component    : CustomersDetailsComponent,
@@ -27,10 +30,16 @@ export const customersRoutes: Route[] = [
                             task     : CustomersCustomerResolver,
                             
                         },
-                        canDeactivate: [CanDeactivateCustomersDetails]
-                    }
+                        canDeactivate: [CanDeactivateCustomersDetails],
+                    },
+                
                 ]
             }
         ]
+    },
+    {
+        path     : '/detail/:id',
+        component: CustomersTDComponent,
     }
+    
 ];

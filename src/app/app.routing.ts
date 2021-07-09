@@ -77,8 +77,8 @@ export const appRoutes: Route[] = [
 
             // Dashboards
             {path: 'dashboards', children: [
-           //     {path: 'project', loadChildren: () => import('app/modules/admin/dashboards/project/project.module').then(m => m.ProjectModule)},
-            //    {path: 'analytics', loadChildren: () => import('app/modules/admin/dashboards/analytics/analytics.module').then(m => m.AnalyticsModule)},
+               {path: 'project', loadChildren: () => import('app/modules/admin/dashboards/project/project.module').then(m => m.ProjectModule)},
+                {path: 'analytics', loadChildren: () => import('app/modules/admin/dashboards/analytics/analytics.module').then(m => m.AnalyticsModule)},
                 {path: 'calendar', loadChildren: () => import('app/modules/admin/apps/calendar/calendar.module').then(m => m.CalendarModule)},
             ]},
             
@@ -92,6 +92,7 @@ export const appRoutes: Route[] = [
                 {path: 'users', loadChildren: () => import('app/modules/admin/apps/users/users.module').then(m => m.UsersModule)},
                 {path: 'profile', loadChildren: () => import('app/modules/admin/apps/profile/profile.module').then(m => m.ProfileModule)},
                 {path: 'vehicles', loadChildren: () => import('app/modules/admin/apps/vehicles/vehicles.module').then(m => m.VehiclesModule)},
+                {path: 'proposals', loadChildren: () => import('app/modules/admin/apps/proposal/proposals.module').then(m => m.ProposalsModule)},
             ]},
 
             // Pages
