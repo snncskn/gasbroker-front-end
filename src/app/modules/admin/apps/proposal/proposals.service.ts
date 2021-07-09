@@ -5,16 +5,16 @@ import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { Customer, Country, Tag } from 'app/modules/admin/apps/customers/customers.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { Vehicle } from './vehicles.types';
+import { Proposal } from './proposals.types';
 
 @Injectable({
     providedIn: 'root'
 })
-export class VehiclesService {
+export class ProposalService {
     // Private
-    private _vehicle: BehaviorSubject<Vehicle | null> = new BehaviorSubject(null);
-    private _vehicles: BehaviorSubject<Vehicle[] | null> = new BehaviorSubject(null);
-    private _vehiclesCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _proposal: BehaviorSubject<Proposal | null> = new BehaviorSubject(null);
+    private _proposals: BehaviorSubject<Proposal[] | null> = new BehaviorSubject(null);
+    private _proposalsCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
 
 
 
@@ -34,19 +34,19 @@ export class VehiclesService {
     /**
      * Getter for customer
      */
-    get vehicle$(): Observable<Vehicle> {
-        return this._vehicle.asObservable();
+    get vehicle$(): Observable<Proposal> {
+        return this._proposal.asObservable();
     }
 
     /**
      * Getter for customers
      */
-    get vehicles$(): Observable<Vehicle[]> {
-        return this._vehicles.asObservable();
+    get vehicles$(): Observable<Proposal[]> {
+        return this._proposals.asObservable();
     }
 
     get getCount$(): Observable<any> {
-        return this._vehiclesCount.asObservable();
+        return this._proposalsCount.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -56,12 +56,12 @@ export class VehiclesService {
     /**
      * Get customers
      */
-    getVehicles(): Observable<Vehicle[]> {
+    getProposals(): Observable<Proposal[]> {
 
         return this._httpClient.get<any>(`${environment.url}/vehicle`).pipe(
             tap((vehicles) => {
-                this._vehicles.next(vehicles.body);
-                this._vehiclesCount = vehicles.body.length;
+                this._proposals.next(vehicles.body);
+                this._proposalsCount = vehicles.body.length;
             })
         );
     }
@@ -104,7 +104,7 @@ export class VehiclesService {
 
         return this._httpClient.post<any>(`${environment.url}/company/find`, { queryParams: where }).pipe(
             tap((vehicles) => {
-                this._vehicles.next(vehicles.body);
+                this._proposal.next(vehicles.body);
             })
         );
     }
@@ -112,14 +112,14 @@ export class VehiclesService {
     /**
      * Get customer by id
      */
-    getVehicleById(id: string): Observable<Vehicle> {
-        return this._vehicles.pipe(
+    getVehicleById(id: string): Observable<Proposal> {
+        return this._proposals.pipe(
             take(1),
-            map((vehicles) => {
-                const vehicle = vehicles.find(item => item.id === id) || null;
-                this._vehicle.next(vehicle);
+            map((proposals) => {
+                const proposal = proposals.find(item => item.id === id) || null;
+                this._proposal.next(proposal);
 
-                return vehicle;
+                return proposal;
             }),
             switchMap((vehicle) => {
 
@@ -139,7 +139,7 @@ export class VehiclesService {
             switchMap(vehicles => this._httpClient.post<any>(`${environment.url}/vehicle`, vehicle).pipe(
                 map((newVehicle) => {
 
-                    this._vehicles.next([newVehicle.body, ...vehicles]);
+                    this._proposals.next([newVehicle.body, ...vehicles]);
 
                     return newVehicle.body;
                 })
@@ -155,7 +155,7 @@ export class VehiclesService {
             switchMap(vehicles => this._httpClient.get<any>(`${environment.url}/vehicle`).pipe(
                 map((newVehicle) => {
                     let new1 = { id:'new',company_id:'',name: '', type: '', registered_date: today.toString() }
-                    this._vehicles.next([new1, ...vehicles]);
+                    this._proposals.next([new1, ...vehicles]);
 
                     return new1;
                 })
@@ -166,14 +166,15 @@ export class VehiclesService {
     }
 
  
-    updateVehicle(id: string, vehicle: Vehicle): Observable<any> {
+    updateVehicle(id: string, vehicle: Proposal): Observable<any> {
         return this.vehicles$.pipe(
             take(1),
             switchMap(vehicles => this._httpClient.put<any>(`${environment.url}/vehicle/${id}`, vehicle).pipe(
                 map((updatedVehicle) => {
                     const index = vehicles.findIndex(item => item.id === id);
+                    console.log(123)
                     vehicles[index] = updatedVehicle.body;
-                    this._vehicles.next(vehicles);
+                    this._proposals.next(vehicles);
 
                     return updatedVehicle.body;
                 }),
@@ -183,7 +184,7 @@ export class VehiclesService {
                     tap(() => {
 
                         // Update the customer if it's selected
-                        this._vehicle.next(updatedVehicle);
+                        this._proposal.next(updatedVehicle);
 
                         // Return the updated customer
                         return updatedVehicle;

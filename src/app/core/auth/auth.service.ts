@@ -77,7 +77,6 @@ export class AuthService
     //return this._httpClient.post(`api/auth/sign-in`, credentials).pipe(
     return this._httpClient.post(`${environment.url}/api/auth/signin`, credentials).pipe(
             switchMap((response: any) => {
-                console.log(response);
                 this.accessToken = response.access_token;
                 this._authenticated = true;
                 this._userService.user = response.user.data;

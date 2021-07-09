@@ -94,7 +94,6 @@ export class CustomersService {
             take(1),
             map((customers) => {
                 const customer = customers.find(item => item.id === id) || null;
-console.log(2222)
                 this._customer.next(customer);
 
                 return customer;

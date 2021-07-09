@@ -159,7 +159,7 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
     /**
      * Update the customer
      */
-    updateCustomer(): void {
+     updateCustomer(): void {
         const customer = this.customerForm.getRawValue();
 
         this.ngxService.start();
@@ -332,6 +332,10 @@ export class CustomersDetailsComponent implements OnInit, OnDestroy {
 
     }
 
+    customerTabDetails()
+    {
+        this._router.navigate(['/details',this.customer.id]);
+    }
 
 
 

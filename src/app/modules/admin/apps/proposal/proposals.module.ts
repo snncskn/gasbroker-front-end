@@ -19,22 +19,22 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import * as moment from 'moment';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
-import { customersRoutes } from 'app/modules/admin/apps/customers/customers.routing';
-import { CustomersComponent } from 'app/modules/admin/apps/customers/customers.component';
-import { CustomersDetailsComponent } from 'app/modules/admin/apps/customers/details/details.component';
-import { CustomersListComponent } from 'app/modules/admin/apps/customers/list/list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { CustomersTDComponent } from './tabDetails/customersTD.component';
+import { ProposalsComponent } from './proposals.component';
+import { proposalRoutes } from './proposals.routing';
+import { ProposalListComponent } from './list/proposalList.component';
+import { ProposalDetailsComponent } from './details/proposalDetails.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
     declarations: [
-        CustomersComponent,
-        CustomersListComponent,
-        CustomersDetailsComponent,
-        CustomersTDComponent
+        ProposalsComponent,
+        ProposalListComponent,
+        ProposalDetailsComponent
+
     ],
     imports     : [
-        RouterModule.forChild(customersRoutes),
+        RouterModule.forChild(proposalRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -52,6 +52,7 @@ import { CustomersTDComponent } from './tabDetails/customersTD.component';
         MatTableModule,
         MatTooltipModule,
         MatSnackBarModule,
+        MatAutocompleteModule,
         FuseFindByKeyPipeModule,
         SharedModule
     ],
@@ -72,6 +73,6 @@ import { CustomersTDComponent } from './tabDetails/customersTD.component';
         }
     ]
 })
-export class CustomersModule
+export class ProposalsModule
 {
 }
