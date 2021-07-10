@@ -1,29 +1,34 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
+import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { takeUntil, filter, switchMap } from 'rxjs/operators';
+import { takeUntil, filter, switchMap, map } from 'rxjs/operators';
 import { ProposalService } from '../proposals.service';
 import { Proposal } from '../proposals.types';
+import { merge, fromEvent, Observable, Subject } from 'rxjs';
 
 @Component({
     selector: 'proposal-list',
     templateUrl: './proposalList.component.html',
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProposalListComponent implements OnInit, OnDestroy {
 
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
+    @ViewChild(MatPaginator) private _paginator: MatPaginator;
+    @ViewChild(MatSort) private _sort: MatSort;
+    proposalsTableColumns: string[] = ['name','type','publish_date','last_offer_date','product_detail','detail'];
+    isLoading: boolean = false;
 
-    vehicles$: Observable<Proposal[]>;
 
-    vehiclesCount: number = 0;
-    selectedVehicle: Proposal;
+    proposals$: Observable<Proposal[]>;
+
+    proposalsCount: number = 0;
+    selectedProposal: Proposal;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
@@ -45,35 +50,34 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     ) {
     }
     ngOnInit(): void {
-        this.vehicles$ = this._proposalService.proposals$;
+        this.proposals$ = this._proposalService.proposals$;
         this._proposalService.proposals$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((proposal: Proposal[]) => {
 
                 // Update the counts
-                this.vehiclesCount = proposal.length;
+                this.proposalsCount = proposal.length;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
 
+        this.isLoading=true;
         // Get the customer
         // this.customer$ = this._customersService.customer$;
         this._proposalService.proposal$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicle: Proposal) => {
-                // Update the counts
-                console.log(321)
-                this.selectedVehicle = vehicle;
+                this.selectedProposal = vehicle;
+                this.isLoading=false;
 
-                // Mark for check
                 this._changeDetectorRef.markForCheck();
-            });
+        });
 
         this.matDrawer.openedChange.subscribe((opened) => {
             if (!opened) {
                 // Remove the selected customer when drawer closed
-                this.selectedVehicle = null;
+                this.selectedProposal = null;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -89,7 +93,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
                 )
             )
             .subscribe(() => {
-                this.newVehicle();
+                this.newProposal();
             });
 
         // Subscribe to media changes
@@ -116,7 +120,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
                 switchMap(query =>
 
                     // Search
-                    this._proposalService.searchVehicles(query)
+                    this._proposalService.searchProposal(query)
                 )
             )
             .subscribe();
@@ -127,19 +131,10 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
- 
-    newVehicle(): void {
-        this.ngxService.start();
-        this._proposalService.newVehicle().subscribe((newVehicle) => {
 
-            this.ngxService.stop();
-            this._router.navigate(['./', newVehicle.id], { relativeTo: this._activatedRoute });
-
-            this._changeDetectorRef.markForCheck();
-
-        });
-    
-        
+    newProposal(): void {
+        console.log('/apps/proposals/form')
+        this._router.navigateByUrl('/apps/proposals/form');
     }
 
     onBackdropClicked(): void {
@@ -149,4 +144,33 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         // Mark for check
         this._changeDetectorRef.markForCheck();
     }
+
+    /**
+  * After view init
+  */
+    ngAfterViewInit(): void {
+        // If the user changes the sort order...
+        this._sort.sortChange
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
+
+            });
+
+
+        // Get products if sort or page changes
+        merge(this._sort.sortChange,).pipe(
+            switchMap(() => {
+
+
+                return this._proposalService.getProposals();
+            }),
+            map(() => {
+
+            })
+        ).subscribe();
+    }
+    trackByFn(index: number, item: any): any {
+        return item.id || index;
+    }
+
 }

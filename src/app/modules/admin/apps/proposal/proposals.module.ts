@@ -21,20 +21,20 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProposalsComponent } from './proposals.component';
-import { proposalRoutes } from './proposals.routing';
+import { routes, ProposalRoutingModule } from './proposals.routing';
 import { ProposalListComponent } from './list/proposalList.component';
-import { ProposalDetailsComponent } from './details/proposalDetails.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ProposalFormComponent } from './form/proposal-form.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
     declarations: [
         ProposalsComponent,
         ProposalListComponent,
-        ProposalDetailsComponent
-
+        ProposalFormComponent
     ],
     imports     : [
-        RouterModule.forChild(proposalRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -50,13 +50,17 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         MatSelectModule,
         MatSidenavModule,
         MatTableModule,
+        MatSortModule,
         MatTooltipModule,
         MatSnackBarModule,
         MatAutocompleteModule,
         FuseFindByKeyPipeModule,
-        SharedModule
+        SharedModule,
+        ProposalRoutingModule,
+        MatStepperModule,
     ],
     providers   : [
+        ProposalListComponent,
         {
             provide : MAT_DATE_FORMATS,
             useValue: {

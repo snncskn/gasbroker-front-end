@@ -1,36 +1,33 @@
-import { Route } from '@angular/router';
-import { ProposalDetailsComponent } from './details/proposalDetails.component';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule, Routes } from '@angular/router';
+import { ProposalFormComponent } from './form/proposal-form.component';
 import { ProposalListComponent } from './list/proposalList.component';
-import { ProposalsComponent } from './proposals.component';
-import { CanDeactivateVehiclesDetails } from './proposals.guards';
-import { ProposalDetailsResolver, ProposalResolver } from './proposals.resolvers';
 
 
-export const proposalRoutes: Route[] = [
+
+export const routes: Routes = [
     {
-        path     : '',
-        component: ProposalsComponent,
-        resolve  : {
-        },
-        children : [
-            {
-                path     : '',
-                component: ProposalListComponent,
-                resolve  : { 
-                    tasks    : ProposalResolver,
-                },
-                children : [
-                    {
-                        path         : ':id',
-                        component    : ProposalDetailsComponent,
-                        resolve      : {
-                            task     : ProposalDetailsResolver,
-                            
-                        },
-                        canDeactivate: [CanDeactivateVehiclesDetails]
-                    }
-                ]
-            }
-        ]
-    }
+        path: '',
+        redirectTo: 'list',
+        pathMatch: 'full'
+      },
+      {
+        path: 'list',
+        component: ProposalListComponent
+      },
+      {
+        path: 'form/:id',
+        component: ProposalFormComponent,
+      },
+      {
+        path: 'form',
+        component: ProposalFormComponent,
+      }
+ 
 ];
+
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+  })
+  export class ProposalRoutingModule {}

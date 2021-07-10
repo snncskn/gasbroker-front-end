@@ -98,13 +98,13 @@ export class ProposalService {
      *
      * @param query
      */
-    searchVehicles(query: string): Observable<Customer[]> {
+    searchProposal(query: string): Observable<Customer[]> {
         let filter = { name: query };
         let where = { filter, pageNumber: 9999, pageSize: 20, sortField: '', sortOrder: '' };
 
         return this._httpClient.post<any>(`${environment.url}/company/find`, { queryParams: where }).pipe(
-            tap((vehicles) => {
-                this._proposal.next(vehicles.body);
+            tap((proposals) => {
+                this._proposal.next(proposals.body);
             })
         );
     }
@@ -132,21 +132,21 @@ export class ProposalService {
         );
     }
 
-     
-    createVehicle(vehicle: any): Observable<any> {
+
+    createProposal(item: any): Observable<any> {
         return this.proposals$.pipe(
             take(1),
-            switchMap(vehicles => this._httpClient.post<any>(`${environment.url}/vehicle`, vehicle).pipe(
+            switchMap(proposal => this._httpClient.post<any>(`${environment.url}/proposal`, item).pipe(
                 map((newVehicle) => {
 
-                    this._proposals.next([newVehicle.body, ...vehicles]);
+                    this._proposals.next([newVehicle.body, ...proposal]);
 
                     return newVehicle.body;
                 })
             ))
         );
     }
-      
+
     newVehicle(): Observable<any> {
         const today = new Date();
 
@@ -154,18 +154,18 @@ export class ProposalService {
             take(1),
             switchMap(vehicles => this._httpClient.get<any>(`${environment.url}/vehicle`).pipe(
                 map((newVehicle) => {
-                    let new1 = { id:'new',company_id:'',name: '', type: '', registered_date: today.toString() }
+                    let new1 = { id: 'new', company_id: '', name: '', type: '', registered_date: today.toString() }
                     this._proposals.next([new1, ...vehicles]);
 
                     return new1;
                 })
             ))
-        ); 
- 
-        
+        );
+
+
     }
 
-   
+
     updateVehicle(id: string, proposal: Proposal): Observable<any> {
         return this.proposals$.pipe(
             take(1),
@@ -192,6 +192,23 @@ export class ProposalService {
             ))
         );
     }
+
+    getProposalTypes():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/PROPOSAL_TYPES`;
+        return this._httpClient.get<any>(url);
+    }
+    getProposalStatus():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/PROPOSAL_STATUS`;
+        return this._httpClient.get<any>(url);
+    }
+    getProposalDocs():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/PROPOSAL_DOCS`;
+        return this._httpClient.get<any>(url);
+    }
+
 
     /**
      * Create customer

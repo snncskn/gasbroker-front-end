@@ -363,6 +363,12 @@ export class ProductService {
         );
     }
 
+    getFilterProducts(prm?: string):Observable<any> {
+        let url = `${environment.url}/product`;
+        return this._httpClient.get<any>(url);
+    }
+
+
     /**
      * Update the avatar of the given contact
      *

@@ -60,7 +60,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title   : 'Proposal',
                 type    : 'basic',
                 icon    : 'heroicons_outline:archive',
-                link    : '/apps/proposals'
+                link    : '/apps/proposals/list'
             },
             /*{
                 id      : 'app.invoicing',
