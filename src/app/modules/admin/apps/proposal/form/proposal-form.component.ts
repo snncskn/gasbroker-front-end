@@ -113,8 +113,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     save() {
         let createPrp = {type:'',last_offer_date:'',publish_date:'',location:'',product:'',quantity:''};
        createPrp.type = this.verticalStepperForm.value.step1.type;
-       createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date;
-       createPrp.publish_date = this.verticalStepperForm.value.step1.publish_date;
+       createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date.toDate();
+       createPrp.publish_date = this.verticalStepperForm.value.step1.publish_date.toDate();
        createPrp.location = this.verticalStepperForm.value.step2.location;
        createPrp.product = this.verticalStepperForm.value.step2.products;
        createPrp.quantity = this.verticalStepperForm.value.step2.quantity;
