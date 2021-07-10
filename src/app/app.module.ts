@@ -14,6 +14,7 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, PB_DIRECTION, POSITION, SPINNER } from 'ngx-ui-loader';
 import { ToastrModule } from 'ng6-toastr-notifications';
+import { HttpClientModule } from '@angular/common/http';
 
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
@@ -46,7 +47,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         ToastrModule.forRoot(),
         CoreModule,
         LayoutModule,
-        MarkdownModule.forRoot({})
+        MarkdownModule.forRoot({}),
+        HttpClientModule
     ],
     bootstrap   : [
         AppComponent
