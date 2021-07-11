@@ -176,8 +176,7 @@ export class UsersService {
         switchMap((users) =>
           this._httpClient.post<any>(url, user).pipe(
             map((newUser) => {
-              // this._users.next([newUser.data, ...users]);
-              // Return the new user
+              
               return newUser;
             })
           )

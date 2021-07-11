@@ -86,6 +86,7 @@ export class AuthSignUpComponent implements OnInit {
             mobilePhone: user.step2.mobilePhone,
             pass: user.step3.pass,
             gender: '',
+            roles:['user']
         };
 
         // Update the user on the server
