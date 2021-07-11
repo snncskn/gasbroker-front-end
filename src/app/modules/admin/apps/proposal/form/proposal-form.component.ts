@@ -6,7 +6,6 @@ import { InventoryProduct } from '../../ecommerce/product/product.types';
 import { tap, startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { VehiclesService } from '../../vehicles/vehicles.service';
 import { ProposalService } from '../proposals.service';
-import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'environments/environment';
 
 
@@ -28,10 +27,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     locationLabel: string;
     fileUploadUrl: string;
 
-    uploader:FileUploader;
-    hasBaseDropZoneOver:boolean;
-    hasAnotherDropZoneOver:boolean;
-    response:string;
+    @ViewChild('docsFileInput') private _docsFileInput: ElementRef;
+
 
 
     constructor(private _formBuilder: FormBuilder,
@@ -40,28 +37,6 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         private _proposalService: ProposalService,
     ) {
         this.fileUploadUrl = environment.url+'/media';
-        this.uploader = new FileUploader({
-            url: this.fileUploadUrl,
-            disableMultipart: true, // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
-            formatDataFunctionIsAsync: true,
-            formatDataFunction: async (item) => {
-              return new Promise( (resolve, reject) => {
-                resolve({
-                  name: item._file.name,
-                  length: item._file.size,
-                  contentType: item._file.type,
-                  date: new Date()
-                });
-              });
-            }
-          });
-      
-          this.hasBaseDropZoneOver = false;
-          this.hasAnotherDropZoneOver = false;
-      
-          this.response = '';
-      
-          this.uploader.response.subscribe( res => this.response = res );
     }
 
 
@@ -169,14 +144,16 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
             this.locationLabel = 'Ürünün varış yeri';
         }
 
-    }
-    public fileOverBase(e:any):void {
-        this.hasBaseDropZoneOver = e;
-      }
-     
-      public fileOverAnother(e:any):void {
-        this.hasAnotherDropZoneOver = e;
-      }
+    } 
+    uploadDocs(fileList: FileList,fileName: string): void {
+        if (!fileList.length) {
+            return;
+        }
 
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        const file = fileList[0];
+        
+
+    }
 
 }

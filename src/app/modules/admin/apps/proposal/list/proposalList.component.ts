@@ -21,7 +21,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
-    proposalsTableColumns: string[] = ['name','type','publish_date','last_offer_date','product_detail','detail'];
+    proposalsTableColumns: string[] = ['name','type','publish_date','last_offer_date','status','product_detail','detail'];
     isLoading: boolean = false;
 
 

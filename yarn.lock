@@ -222,7 +222,7 @@
     "symbol-observable" "4.0.0"
     "uuid" "8.3.2"
 
-"@angular/common@*", "@angular/common@>= 10.0.0", "@angular/common@12.0.2":
+"@angular/common@12.0.2":
   "integrity" "sha512-KJFtqdIGVrF97iK3zcN9FoQ1fDsc/u4ez1Qtx0HdH21qAuAvK/FYybg4r1G6miXoUJcO8hu9oRddEoiNPkXAew=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-12.0.2.tgz"
   "version" "12.0.2"
@@ -256,7 +256,7 @@
   dependencies:
     "tslib" "^2.1.0"
 
-"@angular/core@*", "@angular/core@>= 10.0.0", "@angular/core@12.0.2":
+"@angular/core@12.0.2":
   "integrity" "sha512-RBTl8L2ckSI3n2lo9rmwlUeZAuEd/TWUjoidoxPYWrKfbnFwKX65idCCbWLJivSVIBnPQYvAdC+3k4w40N9AWA=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-12.0.2.tgz"
   "version" "12.0.2"
@@ -282,7 +282,7 @@
   dependencies:
     "tslib" "^2.1.0"
 
-"@angular/material@>= 10.0.0", "@angular/material@12.0.2":
+"@angular/material@12.0.2":
   "integrity" "sha512-jTH53w4iVNk+3K5ciFyHeRhNNtV6TzeuNTSELeme4l3t5FP3VqFTdE56Q55MrV2RMIzDKLYEpiqSiQf+8ZuGSA=="
   "resolved" "https://registry.npmjs.org/@angular/material/-/material-12.0.2.tgz"
   "version" "12.0.2"
@@ -5888,13 +5888,6 @@
   "resolved" "https://registry.npmjs.org/marked/-/marked-2.0.7.tgz"
   "version" "2.0.7"
 
-"mat-file-upload@^11.1.2":
-  "integrity" "sha512-XDfq0tJvlLC0AIXyumw+107Rax98wLFJ77gJK6KsPyW4jIr+/ydQDxqbPu8eGta0lLckaOx+VHrb4M1VUBnRJQ=="
-  "resolved" "https://registry.npmjs.org/mat-file-upload/-/mat-file-upload-11.1.2.tgz"
-  "version" "11.1.2"
-  dependencies:
-    "tslib" "^2.0.0"
-
 "mdn-data@2.0.14":
   "integrity" "sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow=="
   "resolved" "https://registry.npmjs.org/mdn-data/-/mdn-data-2.0.14.tgz"
@@ -6246,13 +6239,6 @@
   "version" "1.5.10"
   dependencies:
     "tslib" "^1.10.0"
-
-"ng2-file-upload@^1.4.0":
-  "integrity" "sha512-3J/KPU/tyh/ad6TFeUbrxX+SihUj0iOEt2Zsg4EX7mB3GFiQscXOfcUOxCkBtPWWWaqt3azrYbVGzsYa3/7NzQ=="
-  "resolved" "https://registry.npmjs.org/ng2-file-upload/-/ng2-file-upload-1.4.0.tgz"
-  "version" "1.4.0"
-  dependencies:
-    "tslib" "^1.9.0"
 
 "ng6-toastr-notifications@^1.0.4":
   "integrity" "sha512-5miEItoUOhnQfawBRqKyO2+h/C4k/53vWx3QniOl4dMHL8KqHCsccBCSuHyLpHC2ZYxIXXJLI8ArbeLI4L12Uw=="

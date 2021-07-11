@@ -14,8 +14,7 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, PB_DIRECTION, POSITION, SPINNER } from 'ngx-ui-loader';
 import { ToastrModule } from 'ng6-toastr-notifications';
-import { HttpClientModule } from '@angular/common/http'; 
-import { FileUploadModule } from 'ng2-file-upload';
+import { HttpClientModule } from '@angular/common/http';  
 
 
 
@@ -51,8 +50,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         CoreModule,
         LayoutModule,
         MarkdownModule.forRoot({}),
-        HttpClientModule,
-        FileUploadModule,,
+        HttpClientModule, 
         
     ],
     bootstrap   : [
