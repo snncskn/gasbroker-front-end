@@ -27,12 +27,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProposalFormComponent } from './form/proposal-form.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
+import {MatDialogModule} from '@angular/material/dialog';
+import { OfferComponent } from './offer/offer.component';
 
 @NgModule({
     declarations: [
         ProposalsComponent,
         ProposalListComponent,
-        ProposalFormComponent
+        ProposalFormComponent,
+        OfferComponent
     ],
     imports     : [
         MatButtonModule,
@@ -58,6 +61,8 @@ import { MatStepperModule } from '@angular/material/stepper';
         SharedModule,
         ProposalRoutingModule,
         MatStepperModule,
+        MatDialogModule
+        
     ],
     providers   : [
         ProposalListComponent,

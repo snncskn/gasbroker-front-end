@@ -31,7 +31,7 @@
 
           <!-- Main actions -->
           <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
-            <!-- Search -->
+            <!-- Search  
             <div class="flex-auto">
               <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full min-w-50">
                 <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
@@ -39,7 +39,7 @@
                   [placeholder]="'Search customers'">
               </mat-form-field>
             </div>
-            <!-- Add customer button -->
+             -->
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newProposal()">
               <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
               <span class="ml-2 mr-1">Add</span>
@@ -141,15 +141,31 @@
 
               </td>
             </ng-container>
+            <ng-container matColumnDef="product">
+              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                disableClear>
+                Product
+              </th>
+              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                <div class="flex items-center justify-between">
+                  <div
+                    class="py-0.5 px-3 rounded-full text-sm font-semibold text-pink-800 bg-pink-100 dark:text-pink-50 dark:bg-pink-500">
+                    {{ row.product?.code }}- {{ row.product?.name }}
+                  </div>
+                </div>
+              </td>
+            </ng-container>
             <ng-container matColumnDef="detail">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
                 #
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <a [routerLink]="['/apps/proposals/form/', row.id]">
-                  <i class="material-icons" style="cursor: pointer;">edit_note</i>
-                </a>
+                <button class="fuse-mat-button-rounded bg-accent-600" (click)="openProposalOffer(row)" mat-flat-button [color]="'accent'">
+
+                  <span class="ml-2" > Teklif Ver</span> 
+
+                </button>
               </td>
             </ng-container>
 

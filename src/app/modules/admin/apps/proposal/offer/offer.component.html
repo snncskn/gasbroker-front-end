@@ -1,0 +1,57 @@
+<div mat-dialog-content>
+   
+        <form style="width: 450px!important" [formGroup]="offerForm">
+
+            <div class="flex flex-col gt-xs:flex-row">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Proposal</mat-label>
+
+                    <input type="text" placeholder="Proposal Number" matInput [formControlName]="'proposal_id'">
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col gt-xs:flex-row">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Company</mat-label>
+                    <input type="text" placeholder="company_id" matInput [formControlName]="'company_id'">
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                </mat-form-field>
+            </div>
+           
+            <div class="flex flex-col gt-xs:flex-row">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Offer Date</mat-label>
+                    <input matInput [matDatepicker]="Datepicker" [formControlName]="'offer_date'"
+                        [placeholder]="'Offer Date'">
+                    <mat-datepicker-toggle matSuffix [for]="Datepicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #Datepicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col gt-xs:flex-row">
+                <mat-form-field class="flex-auto gt-xs:pr-3">
+                    <mat-label>Payment Type</mat-label>
+                    <mat-select [formControlName]="'payment_type'">
+                        <mat-option *ngFor="let option of dataSourcePaymentTypes" [value]="option.description">
+                            <ng-container>
+                                {{option.description | titlecase}}
+                            </ng-container>
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:location-marker'">
+                    </mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col gt-xs:flex-row">
+            
+                <button
+                class="mt-4"
+                mat-flat-button
+                [color]="'primary'">
+                Save
+            </button>
+            </div>
+
+        </form>
+     
+</div>

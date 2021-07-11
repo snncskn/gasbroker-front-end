@@ -26,8 +26,9 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     dataSourceDocs: any[];
     locationLabel: string;
     fileUploadUrl: string;
+    filesUpload: any[] = [];
 
-    @ViewChild('docsFileInput') private _docsFileInput: ElementRef;
+    @ViewChild('docsFileInput') private docsFileInput: ElementRef;
 
 
 
@@ -145,15 +146,11 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         }
 
     } 
-    uploadDocs(fileList: FileList,fileName: string): void {
-        if (!fileList.length) {
-            return;
-        }
-
-        const allowedTypes = ['image/jpeg', 'image/png'];
+    uploadDocs(fileList: FileList,fileName: any): void {
         const file = fileList[0];
-        
-
+        let tmp = {id:1,description:fileName.description,name:fileName.name,fileName: file.name,
+                        type: file.name.split('.')[1].toUpperCase()};
+        this.filesUpload.push(tmp);
     }
 
 }

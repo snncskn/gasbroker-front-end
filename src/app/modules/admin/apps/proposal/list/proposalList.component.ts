@@ -11,6 +11,8 @@ import { takeUntil, filter, switchMap, map } from 'rxjs/operators';
 import { ProposalService } from '../proposals.service';
 import { Proposal } from '../proposals.types';
 import { merge, fromEvent, Observable, Subject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { OfferComponent } from '../offer/offer.component';
 
 @Component({
     selector: 'proposal-list',
@@ -21,7 +23,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
-    proposalsTableColumns: string[] = ['name','type','publish_date','last_offer_date','status','product_detail','detail'];
+    proposalsTableColumns: string[] = ['name','type','publish_date','last_offer_date','status','product','product_detail','detail'];
     isLoading: boolean = false;
 
 
@@ -45,6 +47,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         private readonly ngxService: NgxUiLoaderService,
         private _proposalService: ProposalService,
         @Inject(DOCUMENT) private _document: any,
+        public dialog: MatDialog,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
@@ -55,10 +58,9 @@ export class ProposalListComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((proposal: Proposal[]) => {
 
-                // Update the counts
+               if(proposal){
                 this.proposalsCount = proposal.length;
-
-                // Mark for check
+               }
                 this._changeDetectorRef.markForCheck();
             });
 
@@ -145,11 +147,9 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.markForCheck();
     }
 
-    /**
-  * After view init
-  */
     ngAfterViewInit(): void {
-        // If the user changes the sort order...
+        
+        console.log('asd');
         this._sort.sortChange
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
@@ -160,8 +160,6 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         // Get products if sort or page changes
         merge(this._sort.sortChange,).pipe(
             switchMap(() => {
-
-
                 return this._proposalService.getProposals();
             }),
             map(() => {
@@ -172,5 +170,13 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
+    openProposalOffer(item: any){
+        const dialogRef = this.dialog.open(OfferComponent, { data: item });
+        dialogRef.afterClosed().subscribe(result => {
 
-}
+        });
+
+        
+    }
+
+} 

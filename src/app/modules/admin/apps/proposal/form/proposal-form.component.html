@@ -13,14 +13,14 @@
                         <div class="flex flex-col gt-xs:flex-row">
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <mat-label>İşlem Tipi</mat-label>
-                                <mat-select [formControlName]="'type'"  (selectionChange)="onChangeType($event)">
+                                <mat-select [formControlName]="'type'" (selectionChange)="onChangeType($event)">
                                     <mat-option *ngFor="let option of dataSourceTypes" [value]="option.description">
                                         <ng-container>
                                             {{option.description | titlecase}}
                                         </ng-container>
                                     </mat-option>
                                 </mat-select>
-                               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:location-marker'">
+                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:location-marker'">
                                 </mat-icon>
                             </mat-form-field>
                             <mat-form-field class="flex-auto gt-xs:pr-3">
@@ -32,7 +32,7 @@
                                         </ng-container>
                                     </mat-option>
                                 </mat-select>
-                               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:location-marker'">
+                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:location-marker'">
                                 </mat-icon>
                             </mat-form-field>
                             <mat-form-field class="fuse-mat-no-subscript w-full">
@@ -53,7 +53,7 @@
                             </mat-form-field>
                         </div>
                         <div class="flex justify-end">
-                            <br/>
+                            <br />
                             <button class="px-8" mat-flat-button [color]="'primary'"
                                 [disabled]="verticalStepperStep1.stepControl.pristine || verticalStepperStep1.stepControl.invalid"
                                 type="button" matStepperNext>
@@ -91,20 +91,15 @@
                             </mat-form-field>
                         </div>
                         <div class="flex">
-                        <mat-form-field class="fuse-mat-textarea flex-auto">
-                            <mat-label>{{locationLabel}}</mat-label>
+                            <mat-form-field class="fuse-mat-textarea flex-auto">
+                                <mat-label>{{locationLabel}}</mat-label>
 
-                            <textarea
-                                matInput
-                                [formControlName]="'location'"
-                                placeholder="{{locationLabel}}"
-                                [rows]="3"></textarea>
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
-                        </mat-form-field>
-                    </div>
+                                <textarea matInput [formControlName]="'location'" placeholder="{{locationLabel}}"
+                                    [rows]="3"></textarea>
+                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:menu-alt-2'">
+                                </mat-icon>
+                            </mat-form-field>
+                        </div>
                         <div class="flex justify-end">
                             <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
                                 matStepperPrevious>
@@ -121,29 +116,49 @@
                     <mat-step [formGroupName]="'step3'" [stepControl]="verticalStepperForm.get('step3')">
                         <ng-template matStepLabel>Dokümanlar</ng-template>
                         <p class="my-6 font-medium">
-                            
+
                         </p>
                         <div class="flex flex-col gt-sm:flex-row">
                             <div class="flex flex-col">
                                 <span class="font-medium mb-2">Dokümanlar</span>
-                                
 
-                                <div class="flex flex-col"  *ngFor="let item of dataSourceDocs">
-                                    <input
-                                    id="avatar-file-input"
-                                    class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
-                                    type="file"
-                                    [multiple]="false"
-                                    [accept]="'image/jpeg, image/png'"
-                                    (change)="uploadDocs(docsFileInput.files,item)"
-                                    #docsFileInput >
-                                 
-                                
-                                   
+
+                                <div class="flex flex-col" *ngFor="let item of dataSourceDocs">
+                                    {{item.description}}
+                                    <input type="file" (change)="uploadDocs(docsFileInput.files,item)" #docsFileInput>
+
                                 </div>
-                              
+
+                                <div class="flex flex-wrap -m-2 mt-2" *ngFor="let file of filesUpload">
+                                    <a class="flex flex-col w-40 h-40 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card"
+                                        >
+                                        <div class="aspect-w-9 aspect-h-6">
+                                            <div class="flex items-center justify-center">
+                                                <div class="relative">
+                                                    <div>
+                                                        <mat-icon class="icon-size-14 text-hint"
+                                                            [svgIcon]="'iconsmind:file'">
+                                                        </mat-icon>
+                                                        <div class="absolute left-0 bottom-0 px-1.5 rounded text-sm font-semibold leading-5 text-white"
+                                                            [class.bg-red-600]="file.type.toUpperCase() === 'PDF'"
+                                                            [class.bg-blue-600]="file.type.toUpperCase() === 'DOC'"
+                                                            [class.bg-green-600]="file.type.toUpperCase() === 'XLS'"
+                                                            [class.bg-green-600]="file.type.toUpperCase() === 'XLSX'"
+                                                            [class.bg-gray-600]="file.type.toUpperCase() === 'TXT'"
+                                                            [class.bg-amber-600]="file.type.toUpperCase() === 'JPG'">
+                                                            {{file.name.toUpperCase()}}
+
+                                                        </div>
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
                             </div>
-                         
+
                         </div>
                         <div class="flex justify-end mt-8">
                             <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
@@ -170,9 +185,8 @@
                                 (click)="verticalStepper.reset();">
                                 İptal
                             </button>
-                            <button class="px-8" mat-flat-button [color]="'secondary'" type="submit"
-                                (click)="save()">
-                               Gönder
+                            <button class="px-8" mat-flat-button [color]="'secondary'" type="submit" (click)="save()">
+                                Gönder
                             </button>
                         </div>
                     </mat-step>

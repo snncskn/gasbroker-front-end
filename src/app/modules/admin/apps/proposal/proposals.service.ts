@@ -208,6 +208,12 @@ export class ProposalService {
         let url = `${environment.url}/parameter/category/PROPOSAL_DOCS`;
         return this._httpClient.get<any>(url);
     }
+    getPaymentTypes():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/PAYMENT_TYPES`;
+        return this._httpClient.get<any>(url);
+    }
+
 
 
     /**
