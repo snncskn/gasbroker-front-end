@@ -29,13 +29,15 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import {MatDialogModule} from '@angular/material/dialog';
 import { OfferComponent } from './offer/offer.component';
+import { OfferListComponent } from './offer-list/offer-list.component';
 
 @NgModule({
     declarations: [
         ProposalsComponent,
         ProposalListComponent,
         ProposalFormComponent,
-        OfferComponent
+        OfferComponent,
+        OfferListComponent
     ],
     imports     : [
         MatButtonModule,

@@ -13,6 +13,7 @@ import { Proposal } from '../proposals.types';
 import { merge, fromEvent, Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { OfferComponent } from '../offer/offer.component';
+import { OfferListComponent } from '../offer-list/offer-list.component';
 
 @Component({
     selector: 'proposal-list',
@@ -172,6 +173,14 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     }
     openProposalOffer(item: any){
         const dialogRef = this.dialog.open(OfferComponent, { data: item });
+        dialogRef.afterClosed().subscribe(result => {
+
+        });
+
+        
+    }
+    openProposalList(item: any){
+        const dialogRef = this.dialog.open(OfferListComponent, { data: item });
         dialogRef.afterClosed().subscribe(result => {
 
         });
