@@ -25,7 +25,7 @@
                             </mat-form-field>
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <mat-label>Durum</mat-label>
-                                <mat-select [formControlName]="'type'">
+                                <mat-select [formControlName]="'status'">
                                     <mat-option *ngFor="let option of dataSourceStatus" [value]="option.description">
                                         <ng-container>
                                             {{option.description | titlecase}}
@@ -53,6 +53,7 @@
                             </mat-form-field>
                         </div>
                         <div class="flex justify-end">
+                            <br/>
                             <button class="px-8" mat-flat-button [color]="'primary'"
                                 [disabled]="verticalStepperStep1.stepControl.pristine || verticalStepperStep1.stepControl.invalid"
                                 type="button" matStepperNext>
@@ -84,6 +85,7 @@
                         </div>
                         <div class="flex">
                             <mat-form-field class="flex-auto">
+                                <mat-label>Miktar</mat-label>
                                 <input matInput [formControlName]="'quantity'" [placeholder]="'Birim'" required>
                                 <span matPrefix>Adet</span>
                             </mat-form-field>
@@ -117,20 +119,69 @@
                     </mat-step>
 
                     <mat-step [formGroupName]="'step3'" [stepControl]="verticalStepperForm.get('step3')">
-                        <ng-template matStepLabel>Notifications</ng-template>
+                        <ng-template matStepLabel>Dokümanlar</ng-template>
                         <p class="my-6 font-medium">
-                            We'll always let you know about important changes, but you pick what else you want to hear
-                            about.
+                            
                         </p>
                         <div class="flex flex-col gt-sm:flex-row">
                             <div class="flex flex-col">
                                 <span class="font-medium mb-2">Dokümanlar</span>
+                                <input type="file" ng2FileSelect [uploader]="uploader" />
+
                                 <div class="flex flex-col"  *ngFor="let item of dataSourceDocs">
-                                    <mat-checkbox class="mb-1" [color]="'primary'" [formControlName]="'companyNews'">
-                                        {{item.description}}
-                                    </mat-checkbox>
+                                  
+                                  
+                                    <div ng2FileDrop
+                                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                    (fileOver)="fileOverBase($event)"
+                                    [uploader]="uploader"
+                                    class="well my-drop-zone">
+                                    {{item.description}}
+                                </div>
+                                
                                    
                                 </div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th width="50%">Name</th>
+                                        <th>Size</th>
+                                        <th>Progress</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let item of uploader.queue">
+                                        <td><strong>{{ item?.file?.name }}</strong></td>
+                                        <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                                        <td *ngIf="uploader.options.isHTML5">
+                                            <div class="progress" style="margin-bottom: 0;">
+                                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                            <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                            <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                        </td>
+                                        <td nowrap>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                <span class="glyphicon glyphicon-upload"></span> Upload
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-xs"
+                                                    (click)="item.cancel()" [disabled]="!item.isUploading">
+                                                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-xs"
+                                                    (click)="item.remove()">
+                                                <span class="glyphicon glyphicon-trash"></span> Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                          
                         </div>

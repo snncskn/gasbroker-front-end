@@ -54,6 +54,7 @@ import { MatStepperModule } from '@angular/material/stepper';
         MatTooltipModule,
         MatSnackBarModule,
         MatAutocompleteModule,
+        MatFileUploadModule,
         FuseFindByKeyPipeModule,
         SharedModule,
         ProposalRoutingModule,

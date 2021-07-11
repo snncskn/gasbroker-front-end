@@ -6,6 +6,8 @@ import { InventoryProduct } from '../../ecommerce/product/product.types';
 import { tap, startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { VehiclesService } from '../../vehicles/vehicles.service';
 import { ProposalService } from '../proposals.service';
+import { FileUploader } from 'ng2-file-upload';
+import { environment } from 'environments/environment';
 
 
 @Component({
@@ -24,12 +26,42 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     dataSourceStatus: any[];
     dataSourceDocs: any[];
     locationLabel: string;
+    fileUploadUrl: string;
+
+    uploader:FileUploader;
+    hasBaseDropZoneOver:boolean;
+    hasAnotherDropZoneOver:boolean;
+    response:string;
+
 
     constructor(private _formBuilder: FormBuilder,
         private _vehiclesService: VehiclesService,
         private _productService: ProductService,
         private _proposalService: ProposalService,
     ) {
+        this.fileUploadUrl = environment.url+'/media';
+        this.uploader = new FileUploader({
+            url: this.fileUploadUrl,
+            disableMultipart: true, // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
+            formatDataFunctionIsAsync: true,
+            formatDataFunction: async (item) => {
+              return new Promise( (resolve, reject) => {
+                resolve({
+                  name: item._file.name,
+                  length: item._file.size,
+                  contentType: item._file.type,
+                  date: new Date()
+                });
+              });
+            }
+          });
+      
+          this.hasBaseDropZoneOver = false;
+          this.hasAnotherDropZoneOver = false;
+      
+          this.response = '';
+      
+          this.uploader.response.subscribe( res => this.response = res );
     }
 
 
@@ -40,7 +72,9 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.verticalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
+                company_id: ['2c67b871-0a77-4c8a-a4dc-4029fbea9a0c', Validators.required],
                 type: ['', Validators.required],
+                status: ['', Validators.required],
                 publish_date: ['', Validators.required],
                 last_offer_date: ['', Validators.required]
             }),
@@ -61,7 +95,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         });
 
         this._productService.getFilterProducts().subscribe(data => {
-            this.products = data;
+            this.products = data.body;
         });
 
         this.filteredOptions = this.verticalStepperForm.get('step2').get('products').valueChanges.pipe(
@@ -111,13 +145,17 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
     }
     save() {
-        let createPrp = {type:'',last_offer_date:'',publish_date:'',location:'',product:'',quantity:''};
-       createPrp.type = this.verticalStepperForm.value.step1.type;
+        let createPrp = {type:'',freight_type:'',status:'',last_offer_date:'',publish_date:'',location:'',
+                product:'',product_quantity:'',product_id:'',company_id:'2c67b871-0a77-4c8a-a4dc-4029fbea9a0c'};
+       createPrp.type    = this.verticalStepperForm.value.step1.type;
+       createPrp.freight_type    = this.verticalStepperForm.value.step1.type;
        createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date.toDate();
-       createPrp.publish_date = this.verticalStepperForm.value.step1.publish_date.toDate();
-       createPrp.location = this.verticalStepperForm.value.step2.location;
-       createPrp.product = this.verticalStepperForm.value.step2.products;
-       createPrp.quantity = this.verticalStepperForm.value.step2.quantity;
+       createPrp.publish_date    = this.verticalStepperForm.value.step1.publish_date.toDate();
+       createPrp.location        = this.verticalStepperForm.value.step2.location;
+       createPrp.product          = this.verticalStepperForm.value.step2.products;
+       createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
+       createPrp.status = this.verticalStepperForm.value.step1.status;
+       createPrp.product_id = this.selectedProdcut.id;
        this._proposalService.createProposal(createPrp).subscribe(data=>{
            console.log(data.body);
        });
@@ -132,6 +170,13 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         }
 
     }
+    public fileOverBase(e:any):void {
+        this.hasBaseDropZoneOver = e;
+      }
+     
+      public fileOverAnother(e:any):void {
+        this.hasAnotherDropZoneOver = e;
+      }
 
 
 }

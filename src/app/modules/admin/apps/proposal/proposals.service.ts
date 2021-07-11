@@ -136,10 +136,10 @@ export class ProposalService {
     createProposal(item: any): Observable<any> {
         return this.proposals$.pipe(
             take(1),
-            switchMap(proposal => this._httpClient.post<any>(`${environment.url}/proposal`, item).pipe(
+            switchMap(proposals => this._httpClient.post<any>(`${environment.url}/proposal`, item).pipe(
                 map((newVehicle) => {
 
-                    this._proposals.next([newVehicle.body, ...proposal]);
+                    this._proposals.next([newVehicle.body, ...proposals]);
 
                     return newVehicle.body;
                 })
