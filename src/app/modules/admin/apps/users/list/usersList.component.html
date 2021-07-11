@@ -52,13 +52,13 @@
                         </ng-container>
 
                         <!-- User Name -->
-                        <ng-container matColumnDef="userName">
+                        <ng-container matColumnDef="username">
                             <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
                                 mat-sort-header disableClear>
                                 User Name
                             </th>
                             <td class="pr-8 truncate" mat-cell *matCellDef="let user">
-                                {{user.userName}}
+                                {{user.username}}
                             </td>
                         </ng-container>
 
@@ -171,7 +171,7 @@
                                                     matPrefix
                                                     class="hidden sm:flex icon-size-5"
                                                     [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                                                    <input matInput [formControlName]="'userName'">
+                                                    <input matInput [formControlName]="'username'">
                                                 </mat-form-field>
                                                 </div>
                                                 <div class="flex ml-8 w-full">
