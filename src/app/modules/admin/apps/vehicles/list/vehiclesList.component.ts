@@ -48,6 +48,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
+        this._vehiclesService.getVehicles().subscribe();
     }
     ngOnInit(): void {
         // Get the customers
@@ -57,7 +58,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
             .subscribe((vehicles: Vehicle[]) => {
 
                 // Update the counts
-                this.vehiclesCount = vehicles.length;
+                this.vehiclesCount = vehicles?.length;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();

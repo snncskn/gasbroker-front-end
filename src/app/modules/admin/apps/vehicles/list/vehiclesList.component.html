@@ -55,7 +55,7 @@
                   Company Name
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  {{ row.company_id}}
+                  {{ row.company?.name}}
                 </td>
               </ng-container>
               <ng-container matColumnDef="name">
