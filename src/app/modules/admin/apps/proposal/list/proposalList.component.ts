@@ -52,6 +52,9 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
+
+        this._proposalService.getProposals().subscribe(data=>{
+        });
     }
     ngOnInit(): void {
         this.proposals$ = this._proposalService.proposals$;
