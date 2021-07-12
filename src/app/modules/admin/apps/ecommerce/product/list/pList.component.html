@@ -102,15 +102,15 @@
             </ng-container>
 
             <!-- Code -->
-            <!-- <ng-container matColumnDef="code">
+            <ng-container matColumnDef="code2">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
                 Product Code
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let product">
-                {{ product.code }}
+                Product Code
               </td>
-            </ng-container> -->
+            </ng-container>
 
             <!-- Active -->
             <ng-container matColumnDef="active">
@@ -232,7 +232,6 @@
                             </div>
                           </div>
                           <div class="flex flex-col mt-8">
-                            <span class="font-semibold mb-2">Product status</span>
                             <mat-slide-toggle [formControlName]="'active'" (click)="updateActive()" [color]="'primary'">
                               {{
                               selectedProductForm.get("active").value === true
@@ -249,9 +248,6 @@
                               <mat-label>Code</mat-label>
                               <input matInput [formControlName]="'code'" />
                             </mat-form-field>
-                          </div>
-
-                          <div class="flex flex-col w-1/4 pl-8">
                             <mat-form-field class="w-full">
                               <mat-label>Name</mat-label>
                               <input matInput [formControlName]="'name'" />
