@@ -43,17 +43,17 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private readonly ngxService: NgxUiLoaderService,
-        private _vehiclesService: VehiclesService,
+        private _vehicleService: VehiclesService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
-        this._vehiclesService.getVehicles().subscribe();
+        this._vehicleService.getVehicles().subscribe();
     }
     ngOnInit(): void {
         // Get the customers
-        this.vehicles$ = this._vehiclesService.vehicles$;
-        this._vehiclesService.vehicles$
+        this.vehicles$ = this._vehicleService.vehicles$;
+        this._vehicleService.vehicles$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicles: Vehicle[]) => {
 
@@ -64,7 +64,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        this._vehiclesService.vehicle$
+        this._vehicleService.vehicle$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicle: Vehicle) => {
                 // Update the counts
@@ -120,7 +120,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 switchMap(query =>
 
                     // Search
-                    this._vehiclesService.searchVehicles(query)
+                    this._vehicleService.searchVehicles(query)
                 )
             )
             .subscribe();
@@ -138,7 +138,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         // Get products if sort or page changes
         merge(this._sort.sortChange,).pipe(
             switchMap(() => {
-                return this._vehiclesService.getVehicles();
+                return this._vehicleService.getVehicles();
             }),
             map(() => {
 
@@ -164,7 +164,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
 
     deleteVehicle(item:any)
     {
-        this._vehiclesService.deleteVehicle(item.id).subscribe();
+        this._vehicleService.deleteVehicle(item.id).subscribe();
     }
 
     onBackdropClicked(): void {

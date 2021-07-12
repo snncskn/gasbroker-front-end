@@ -45,13 +45,13 @@ export class CustomersTDComponent implements OnInit {
         console.log(this.companyDetail)
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
-                this._customersService.getCompanyById(params.get("id")).subscribe(data=>{
-                    this.companyDetail=data.body.id;
+                this._customersService.getCompanyById(params.get("id")).subscribe(data => {
+                    this.companyDetail = data.body.id;
                     this.customerForm.patchValue(data.body);
-                }) 
+                })
             };
         });
-        
+
     }
 
     ngOnInit(): void {
@@ -76,7 +76,13 @@ export class CustomersTDComponent implements OnInit {
         console.log(createCompany)
 
         this._customersService.createCustomer(createCompany).subscribe(data => {
-        this._router.navigateByUrl('/apps/company/list');
+            this._router.navigateByUrl('/apps/company/list');
         });
+    }
+
+    deleteCompany() {
+        if (this.companyDetail) {
+            this._customersService.deleteCompany(this.companyDetail).subscribe();
+        }
     }
 }

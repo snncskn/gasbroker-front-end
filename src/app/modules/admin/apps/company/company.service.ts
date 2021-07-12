@@ -183,7 +183,7 @@ export class CustomersService {
      *
      * @param company_id
      */
-    deleteCustomer(company_id: string): Observable<boolean> {
+     deleteCompany(company_id: string): Observable<boolean> {
         return this.customers$.pipe(
             take(1),
             switchMap(customers => this._httpClient.put(`${environment.url}/company/delete/${company_id}`, { company_id }).pipe(

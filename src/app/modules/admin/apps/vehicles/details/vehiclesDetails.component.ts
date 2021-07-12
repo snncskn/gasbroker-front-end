@@ -109,4 +109,12 @@ export class VehiclesDetailsComponent implements OnInit {
           this.vehicleForm.get('company_id').setValue(option[0].id, { emitEvent: false });
         }
     }
+
+    deleteVehicle()
+    {
+        if(this.vehicleDetail)
+        {
+            this._vehicleService.deleteVehicle(this.vehicleDetail).subscribe();
+        }
+    }
 }
