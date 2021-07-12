@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { Customer, Country, Tag } from 'app/modules/admin/apps/customers/customers.types';
+import { Company} from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
@@ -11,9 +11,9 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 })
 export class CustomersService {
     // Private
-    private _customer: BehaviorSubject<Customer | null> = new BehaviorSubject(null);
-    private _customers: BehaviorSubject<Customer[] | null> = new BehaviorSubject(null);
-    private _customersCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _company: BehaviorSubject<Company | null> = new BehaviorSubject(null);
+    private _companys: BehaviorSubject<Company[] | null> = new BehaviorSubject(null);
+    private _companysCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
 
 
 
@@ -24,6 +24,8 @@ export class CustomersService {
         public toastr: ToastrManager
     ) {
     }
+    customers = [];
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -32,19 +34,19 @@ export class CustomersService {
     /**
      * Getter for customer
      */
-    get customer$(): Observable<Customer> {
-        return this._customer.asObservable();
+    get customer$(): Observable<Company> {
+        return this._company.asObservable();
     }
 
     /**
      * Getter for customers
      */
-    get customers$(): Observable<Customer[]> {
-        return this._customers.asObservable();
+    get customers$(): Observable<Company[]> {
+        return this._companys.asObservable();
     }
 
     get getCount$(): Observable<any> {
-        return this._customersCount.asObservable();
+        return this._companysCount.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -54,12 +56,12 @@ export class CustomersService {
     /**
      * Get customers
      */
-    getCustomers(): Observable<Customer[]> {
+    getCustomers(): Observable<Company[]> {
 
         return this._httpClient.get<any>(`${environment.url}/company`).pipe(
             tap((customers) => {
-                this._customers.next(customers.body);
-                this._customersCount = customers.body.length;
+                this._companys.next(customers.body);
+                this._companysCount = customers.body.length;
             })
         );
     }
@@ -75,13 +77,13 @@ export class CustomersService {
      *
      * @param query
      */
-    searchCustomers(query: string): Observable<Customer[]> {
+    searchCustomers(query: string): Observable<Company[]> {
         let filter = { card_name: query, card_code: query, email: query };
         let where = { filter, pageNumber: 9999, pageSize: 20, sortField: '', sortOrder: '' };
 
         return this._httpClient.post<any>(`${environment.url}/company/find`, { queryParams: where }).pipe(
             tap((customers) => {
-                this._customers.next(customers.data);
+                this._companys.next(customers.data);
             })
         );
     }
@@ -89,12 +91,12 @@ export class CustomersService {
     /**
      * Get customer by id
      */
-    getCustomerById(id: string): Observable<Customer> {
-        return this._customers.pipe(
+    getCustomerById(id: string): Observable<Company> {
+        return this._companys.pipe(
             take(1),
             map((customers) => {
                 const customer = customers.find(item => item.id === id) || null;
-                this._customer.next(customer);
+                this._company.next(customer);
 
                 return customer;
             }),
@@ -109,23 +111,34 @@ export class CustomersService {
         );
     }
 
+    getCompanyById(id: string): Observable<any> {
+        return this._httpClient.get<any>(`${environment.url}/company/${id}`)
+    }
+
     /**
      * Create customer
      */
-    createCustomer(): Observable<any> {
-
-        let new1 = { full_name: '', name: '', phone: '', fax: '', types: [], email: '', registered_date: null}
-        return this.customers$.pipe(
-            take(1),
-            switchMap(customers => this._httpClient.post<any>(`${environment.url}/company/`, new1).pipe(
-                map((newCustomer) => {
-
-                    this._customers.next([newCustomer.body, ...customers]);
-
-                    return newCustomer.body;
-                })
-            ))
-        );
+    createCustomer(item: any): Observable<any> {
+        if(item.id){
+            return this.customers$.pipe(
+                take(1),
+                switchMap(customers => this._httpClient.put<any>(`${environment.url}/company/${item.id}`, item).pipe(
+                    map((newCustomer) => {
+                        return newCustomer.body;
+                    })
+                ))
+            );
+        }
+        else{
+            return this.customers$.pipe(
+                take(1),
+                switchMap(customers => this._httpClient.post<any>(`${environment.url}/company/`, item).pipe(
+                    map((newCustomer) => {
+                        return newCustomer.body;
+                    })
+                ))
+            );
+        }
     }
 
     /**
@@ -134,14 +147,14 @@ export class CustomersService {
      * @param id
      * @param customer
      */
-    updateCustomer(id: string, customer: Customer): Observable<any> {
+    updateCustomer(id: string, customer: Company): Observable<any> {
         return this.customers$.pipe(
             take(1),
             switchMap(customers => this._httpClient.put<any>(`${environment.url}/company/${id}`, customer).pipe(
                 map((updatedCustomer) => {
                     const index = customers.findIndex(item => item.id === id);
                     customers[index] = updatedCustomer.body;
-                    this._customers.next(customers);
+                    this._companys.next(customers);
 
                     return updatedCustomer.body;
                 }),
@@ -151,7 +164,7 @@ export class CustomersService {
                     tap(() => {
 
                         // Update the customer if it's selected
-                        this._customer.next(updatedCustomer);
+                        this._company.next(updatedCustomer);
 
                         // Return the updated customer
                         return updatedCustomer;
@@ -164,22 +177,22 @@ export class CustomersService {
     /**
      * Delete the customer
      *
-     * @param id
+     * @param company_id
      */
-    deleteCustomer(id: string): Observable<boolean> {
+    deleteCustomer(company_id: string): Observable<boolean> {
         return this.customers$.pipe(
             take(1),
-            switchMap(customers => this._httpClient.delete(`${environment.url}/customers/${id}`).pipe(
+            switchMap(customers => this._httpClient.put(`${environment.url}/company/delete/`,{company_id}).pipe(
                 map((isDeleted: any) => {
                     if (isDeleted.success) {
                         // Find the index of the deleted customer
-                        const index = customers.findIndex(item => item.id === id);
+                        const index = customers.findIndex(item => item.id === company_id);
 
                         // Delete the customer
                         customers.splice(index, 1);
 
                         // Update the customers
-                        this._customers.next(customers);
+                        this._companys.next(customers);
 
                         // Return the deleted status
                     } else {
@@ -198,7 +211,7 @@ export class CustomersService {
      * @param id
      * @param avatar
      */
-    uploadAvatar(id: string, avatar: File): Observable<Customer> {
+    uploadAvatar(id: string, avatar: File): Observable<Company> {
         const formData = new FormData();
         let headers = new Headers();
 

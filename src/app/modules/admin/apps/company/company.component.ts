@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-    selector       : 'customers',
-    templateUrl    : './customers.component.html',
+    selector       : 'company',
+    templateUrl    : './company.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })

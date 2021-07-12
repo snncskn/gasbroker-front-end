@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { fromEvent, merge, Observable, Subject } from 'rxjs';
+import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Customer, Country } from 'app/modules/admin/apps/customers/customers.types';
-import { CustomersService } from 'app/modules/admin/apps/customers/customers.service';
+import { Company, Country } from 'app/modules/admin/apps/company/company.types';
+import { CustomersService } from 'app/modules/admin/apps/company/company.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
     selector       : 'customers-list',
@@ -19,17 +20,20 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 export class CustomersListComponent implements OnInit, OnDestroy
 {
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
+    @ViewChild(MatSort) private _sort: MatSort;
 
-    customers$: Observable<Customer[]>;
+    customers$: Observable<Company[]>;
     //customer$: Observable<Customer>;
 
     customersCount: number = 0;
-    customersTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
+    customersTableColumns: string[] = ['name', 'type', 'registered_date', 'email','phone','detail'];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
-    selectedCustomer: Customer;
+    selectedCustomer: Company;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    isLoading: boolean = false;
+
 
     /**
      * Constructor
@@ -59,7 +63,7 @@ export class CustomersListComponent implements OnInit, OnDestroy
         this.customers$ = this._customersService.customers$;
         this._customersService.customers$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((customers: Customer[]) => {
+            .subscribe((customers: Company[]) => {
 
                 // Update the counts
                 this.customersCount = customers.length;
@@ -67,30 +71,16 @@ export class CustomersListComponent implements OnInit, OnDestroy
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             }); 
-
-        // Get the customer
-       // this.customer$ = this._customersService.customer$;
+            
         this._customersService.customer$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((customer: Customer) => {
+            .subscribe((customer: Company) => {
                 // Update the counts
                 this.selectedCustomer = customer;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             }); 
-
-        // Get the countries
-       /* this._customersService.countries$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((countries: Country[]) => {
-
-                // Update the countries
-                this.countries = countries;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });*/
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -103,18 +93,6 @@ export class CustomersListComponent implements OnInit, OnDestroy
                 )
             )
             .subscribe();
-
-        // Subscribe to MatDrawer opened change
-        this.matDrawer.openedChange.subscribe((opened) => {
-            if ( !opened )
-            {
-                // Remove the selected customer when drawer closed
-                this.selectedCustomer = null;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            }
-        });
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
@@ -134,19 +112,6 @@ export class CustomersListComponent implements OnInit, OnDestroy
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-
-        // Listen for shortcuts
-        fromEvent(this._document, 'keydown')
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                filter<KeyboardEvent>(event =>
-                    (event.ctrlKey === true || event.metaKey) // Ctrl or Cmd
-                    && (event.key === '/') // '/'
-                )
-            )
-            .subscribe(() => {
-                this.createCustomer();
-            });
     }
 
     /**
@@ -157,6 +122,26 @@ export class CustomersListComponent implements OnInit, OnDestroy
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    ngAfterViewInit(): void {
+
+        this._sort.sortChange
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
+
+            });
+
+
+        // Get products if sort or page changes
+        merge(this._sort.sortChange,).pipe(
+            switchMap(() => {
+                return this._customersService.getCustomers();
+            }),
+            map(() => {
+
+            })
+        ).subscribe();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -178,27 +163,23 @@ export class CustomersListComponent implements OnInit, OnDestroy
     /**
      * Create customer
      */
-    createCustomer(): void
+     newCompany(): void
     {
-        this.ngxService.start();
-        this._customersService.createCustomer().subscribe((newCustomer) => {
+        this._router.navigate(['/apps/company/form']);
 
-            this.ngxService.stop();
-            this._router.navigate(['./', newCustomer.id], {relativeTo: this._activatedRoute});
-
-            this._changeDetectorRef.markForCheck();
-            
-        });
     }
 
-    /**
-     * Track by function for ngFor loops
-     *
-     * @param index
-     * @param item
-     
-    trackByFn(index: number, item: any): any
+    openCompany(item:any)
     {
+        this._router.navigate(['/apps/company/form/'+item.id]);
+    }
+
+    deleteCompany(item:any)
+    {
+        this._customersService.deleteCustomer(item.id).subscribe();
+    }
+
+    trackByFn(index: number, item: any): any {
         return item.id || index;
-    }*/
+    }
 }
