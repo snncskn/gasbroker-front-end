@@ -1,7 +1,13 @@
 import { Route } from '@angular/router';
 import { ProductComponent } from 'app/modules/admin/apps/ecommerce/product/product.component';
 import { InventoryListComponent } from 'app/modules/admin/apps/ecommerce/product/list/pList.component';
-import { InventoryBrandsResolver, InventoryCategoriesResolver, InventoryProductsResolver, InventoryTagsResolver, InventoryVendorsResolver } from 'app/modules/admin/apps/ecommerce/product/product.resolvers';
+import {
+  InventoryBrandsResolver,
+  InventoryCategoriesResolver,
+  InventoryProductsResolver,
+  InventoryPropertiesResolver,
+  InventoryVendorsResolver,
+} from "app/modules/admin/apps/ecommerce/product/product.resolvers";
 
 export const ecommerceRoutes: Route[] = [
     {
@@ -20,7 +26,7 @@ export const ecommerceRoutes: Route[] = [
                     brands    : InventoryBrandsResolver,
                     categories: InventoryCategoriesResolver,
                     products  : InventoryProductsResolver,
-                    tags      : InventoryTagsResolver,
+                    properties      : InventoryPropertiesResolver,
                     vendors   : InventoryVendorsResolver
                 }
             }

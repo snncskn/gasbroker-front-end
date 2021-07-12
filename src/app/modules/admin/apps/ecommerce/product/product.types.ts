@@ -1,9 +1,11 @@
-export interface InventoryProduct
-{
-    id: string;
-    name: string,
-    code: string;
-    active: boolean;
+export interface InventoryProduct {
+  id: string;
+  name: string;
+  code: string;
+  images: string[];
+  properties: string[];
+  categories?: string[];
+  active: boolean;
 }
 
 export interface InventoryPagination
@@ -31,10 +33,10 @@ export interface InventoryBrand
     slug: string;
 }
 
-export interface InventoryTag
+export interface InventoryProperty
 {
     id?: string;
-    title?: string;
+    name?: string;
 }
 
 export interface InventoryVendor
