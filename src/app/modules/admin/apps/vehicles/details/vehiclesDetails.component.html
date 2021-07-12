@@ -1,203 +1,86 @@
-<div class="flex flex-col w-full">
-
-    <!-- Edit mode -->
-    <ng-container>
-
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <!-- Main -->
+    <div class="flex-auto">
         <!-- Header -->
-        <div class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
-            <!-- Background
-            <ng-container *ngIf="customer.background">
-                <img
-                    class="absolute inset-0 object-cover w-full h-full"
-                    [src]="customer.background">
-            </ng-container>-->
-            <!-- Close button -->
-            <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
-                <button
-                    mat-icon-button
-                    [matTooltip]="'Close'"
-                    [routerLink]="['../']">
-                    <mat-icon
-                        class="text-white"
-                        [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        <div
+            class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+            <!-- Title -->
+            <div class="text-4xl font-extrabold tracking-tight">Details</div>
+
+            <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
+                <button class="mr-5" mat-flat-button [color]="'primary'">
+                    <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                    <span class="ml-2 mr-1">Remove</span>
+                </button>
+                <button class="" mat-flat-button [color]="'primary'"
+                    [disabled]="vehicleForm.invalid || vehicleForm.pristine" (click)="addNewVehicle()">
+                    <span class="ml-2 mr-1">Save</span>
                 </button>
             </div>
         </div>
+        <div class="relative mt-5 ml-5 pb-4 p-8 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
+            <form [formGroup]="vehicleForm">
+                <mat-tab-group class="ml-2" mat-align-tabs="left">
 
-        <!-- Customer form -->
-        <div class="relative flex flex-col flex-auto items-center px-6 sm:px-12">
-            <div class="w-full max-w-3xl">
-                <form [formGroup]="vehicleForm">
-
-                    <!-- Avatar -->
-                    <div class="flex flex-auto items-end -mt-16">
-                        <div class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
-                            <!-- Upload / Remove avatar -->
-                            <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-                            <div class="absolute inset-0 flex items-center justify-center z-20">
-                                <!--<div>
-                                    <input
-                                        id="avatar-file-input"
-                                        class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
-                                        type="file"
-                                        [multiple]="false"
-                                        [accept]="'image/jpeg, image/png'"
-                                        (change)="uploadAvatar(avatarFileInput.files)"
-                                        #avatarFileInput>
-                                    <label
-                                        class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
-                                        for="avatar-file-input"
-                                        matRipple>
-                                        <mat-icon
-                                            class="text-white"
-                                            [svgIcon]="'heroicons_outline:camera'"></mat-icon>
-                                    </label>
-                                </div>
-                                <div>
-                                    <button
-                                        mat-icon-button
-                                        (click)="removeAvatar()">
-                                        <mat-icon
-                                            class="text-white"
-                                            [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                                    </button>
-                                </div>-->
+                    <mat-tab label="Genel Bilgiler">
+                        <div class="ml-2 w-1/3">
+                            <div class="mt-6">
+                                    <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
+                                        <input tabindex="-1" type="text" placeholder="Customer"
+                                            matInput formControlName="company"
+                                            [matAutocomplete]="auto">
+                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                            (optionSelected)="selectCustomer($event)">
+                                            <mat-option *ngFor="let option of filteredOptions | async"
+                                                [value]="option.full_name">
+                                                <ng-container>
+                                                    {{option.full_name | titlecase}}
+                                                </ng-container>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
                             </div>
-                            <!-- Image/Letter 
-                            <img
-                                class="object-cover w-full h-full"
-                                *ngIf="customer.avatar"
-                                [src]="customer.avatar">
-                            <div
-                                class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
-                                {{customer.full_name}}
-                            </div>-->
-                        </div>
-                    </div>
-
-                    <!-- Name -->
-                    <div class="mt-6">
-                        
-                        <ng-container *ngIf="vehicle.id === 'new'">
-                                <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
-                                    <input tabindex="-1" type="text" placeholder="Customer"
-                                        matInput formControlName="company"
-                                        [matAutocomplete]="auto">
-                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                        (optionSelected)="selectCustomer($event)">
-                                        <mat-option *ngFor="let option of filteredOptions | async"
-                                            [value]="option.full_name">
+                            <div class="mt-6">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Vehicle Name</mat-label>
+                                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
+                                    <input matInput [formControlName]="'name'" [placeholder]="'Vehicle Name *'"
+                                        [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
+                            <div class="flex items-center mt-6">
+                                <div class="w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Company Type</mat-label>
+                                    <mat-select placeholder="Types" [formControlName]="'type'">
+                                        <mat-option *ngFor="let option of dataSourceTypes" [value]="option.description">
                                             <ng-container>
-                                                {{option.full_name | titlecase}}
+                                                {{option.description | titlecase}}
                                             </ng-container>
                                         </mat-option>
-                                    </mat-autocomplete>
+                                    </mat-select>
                                 </mat-form-field>
-                        </ng-container>
-                        <ng-template  *ngIf="vehicle.id != 'new'">
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                <mat-label>name</mat-label>
-                                <mat-icon
-                                    matPrefix
-                                    class="hidden sm:flex icon-size-5"
-                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                                <input
-                                    matInput disabled
-                                    [formControlName]="'name'"
-                                    [placeholder]="'Company Name'"
-                                    [spellcheck]="false">
-                            </mat-form-field>
-                        </ng-template>
-                    </div>
+                            </div>
+                            <div class="ml-5 w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Registered Date</mat-label>
+                                    <input matInput [matDatepicker]="Datepicker" [formControlName]="'registered_date'"
+                                        [placeholder]="'registered date'">
+                                    <mat-datepicker-toggle matSuffix [for]="Datepicker">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #Datepicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            </div>
+                        </div>
+                    </mat-tab>
 
-                    <div class="flex items-center mt-6">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
-                            <mat-label>Vehicle Name</mat-label>
-                            <mat-icon
-                                matPrefix
-                                class="hidden sm:flex icon-size-5"
-                                [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                            <input
-                                matInput
-                                [formControlName]="'name'"
-                                [placeholder]="'Vehicle Name'"
-                                [spellcheck]="false">
-                        </mat-form-field>
-                    </div>
+                    <mat-tab label="Evrak Listesi">Content 3</mat-tab>
 
-                    <div class="flex items-center mt-6">
-                        <mat-form-field class="fuse-mat-no-subscript flex-auto">
-                            <mat-label>Vehicle Type</mat-label>
-                            <mat-select placeholder="Vehicle Type" [formControlName]="'type'">
-                                <mat-option *ngFor="let option of dataSourceTypes"
-                                    [value]="option.id">
-                                    <ng-container>
-                                        {{option.description | titlecase}}
-                                    </ng-container>
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <!-- Registered Date -->
-                    <div class="flex items-center mt-6">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
-                            <mat-label>Registered Date</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="Datepicker"
-                                [formControlName]="'registered_date'"
-                                [placeholder]="'Registered Date'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="Datepicker">
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #Datepicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="flex items-center mt-6 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
-                        <!-- Delete
-                        <button
-                            mat-button
-                            [color]="'warn'"
-                            [matTooltip]="'Delete'"
-                            (click)="deleteCustomer()">
-                            Delete
-                        </button> -->
-                        <!-- Cancel -->
-                        <button
-                            class="ml-auto"
-                            mat-button
-                            [matTooltip]="'Cancel'"
-                            (click)="closeDrawer()">
-                            Cancel
-                        </button>
-                        <!-- details -->
-                        <button
-                            class="ml-2"
-                            mat-flat-button
-                            [color]="'primary'"
-                            [disabled]="vehicleForm.invalid"
-                            [matTooltip]="'Save'"
-                            (click)="vehicleDetails()">
-                            Details
-                        </button>
-                        <!-- Save -->
-                        <button
-                            class="ml-2"
-                            mat-flat-button
-                            [color]="'primary'"
-                            [disabled]="vehicleForm.invalid"
-                            [matTooltip]="'Save'"
-                            [routerLink]="['../']"
-                            (click)="updateVehicle()">
-                            Save
-                        </button> 
-                    </div>
-
-                </form>
-            </div>
+                    <mat-tab label="Onay Süreçleri">Content 3</mat-tab>
+                </mat-tab-group>
+            </form>
         </div>
-    </ng-container>
+    </div>
 </div>

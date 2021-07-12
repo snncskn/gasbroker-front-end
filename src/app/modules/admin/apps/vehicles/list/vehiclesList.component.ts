@@ -2,11 +2,12 @@ import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
+import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { takeUntil, filter, switchMap } from 'rxjs/operators';
+import { fromEvent, merge, Observable, Subject } from 'rxjs';
+import { takeUntil, filter, switchMap, map } from 'rxjs/operators';
 import { VehiclesService } from '../vehicles.service';
 import { Vehicle } from '../vehicles.types';
 
@@ -19,14 +20,18 @@ import { Vehicle } from '../vehicles.types';
 export class VehiclesListComponent implements OnInit, OnDestroy {
 
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
+    @ViewChild(MatSort) private _sort: MatSort;
+
 
     vehicles$: Observable<Vehicle[]>;
 
     vehiclesCount: number = 0;
     selectedVehicle: Vehicle;
+    vehiclesTableColumn: string[] = ['company_id', 'name', 'type', 'registered_date','detail'];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
+    isLoading: boolean=false;
 
 
 
@@ -58,8 +63,6 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        // Get the customer
-        // this.customer$ = this._customersService.customer$;
         this._vehiclesService.vehicle$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicle: Vehicle) => {
@@ -122,24 +125,45 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
+    ngAfterViewInit(): void {
+
+        this._sort.sortChange
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
+
+            });
+
+
+        // Get products if sort or page changes
+        merge(this._sort.sortChange,).pipe(
+            switchMap(() => {
+                return this._vehiclesService.getVehicles();
+            }),
+            map(() => {
+
+            })
+        ).subscribe();
+    }
+
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
  
-    newVehicle(): void {
-        this.ngxService.start();
-        this._vehiclesService.newVehicle().subscribe((newVehicle) => {
+    newVehicle(): void
+    {
+        this._router.navigate(['/apps/vehicles/form']);
+    }
 
-            this.ngxService.stop();
-            this._router.navigate(['./', newVehicle.id], { relativeTo: this._activatedRoute });
+    openVehicle(item:any)
+    {
+        this._router.navigate(['/apps/vehicles/form/'+item.id]);
+    }
 
-            this._changeDetectorRef.markForCheck();
-
-        });
-    
-        
+    deleteVehicle(item:any)
+    {
+        this._vehiclesService.deleteVehicle(item.id).subscribe();
     }
 
     onBackdropClicked(): void {
@@ -148,5 +172,9 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
+    }
+
+    trackByFn(index: number, item: any): any {
+        return item.id || index;
     }
 }

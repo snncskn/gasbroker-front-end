@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { Company} from 'app/modules/admin/apps/company/company.types';
+import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
@@ -69,7 +69,7 @@ export class CustomersService {
     getTypes():
         Observable<any> {
         let url = `${environment.url}/parameter/category/COMPANY_TYPE`;
-            return this._httpClient.get<any>(url);
+        return this._httpClient.get<any>(url);
     }
 
     /**
@@ -119,21 +119,25 @@ export class CustomersService {
      * Create customer
      */
     createCustomer(item: any): Observable<any> {
-        if(item.id){
+        if (item.id) {
             return this.customers$.pipe(
                 take(1),
                 switchMap(customers => this._httpClient.put<any>(`${environment.url}/company/${item.id}`, item).pipe(
                     map((newCustomer) => {
+                        this.toastr.successToastr('Vehicle Updated', 'Updated!');
+
                         return newCustomer.body;
                     })
                 ))
             );
         }
-        else{
+        else {
             return this.customers$.pipe(
                 take(1),
                 switchMap(customers => this._httpClient.post<any>(`${environment.url}/company/`, item).pipe(
                     map((newCustomer) => {
+                        this.toastr.successToastr('Vehicle Added', 'Added!');
+
                         return newCustomer.body;
                     })
                 ))
@@ -182,7 +186,7 @@ export class CustomersService {
     deleteCustomer(company_id: string): Observable<boolean> {
         return this.customers$.pipe(
             take(1),
-            switchMap(customers => this._httpClient.put(`${environment.url}/company/delete/`,{company_id}).pipe(
+            switchMap(customers => this._httpClient.put(`${environment.url}/company/delete/${company_id}`, { company_id }).pipe(
                 map((isDeleted: any) => {
                     if (isDeleted.success) {
                         // Find the index of the deleted customer

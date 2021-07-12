@@ -1,36 +1,30 @@
-import { Route } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { VehiclesDetailsComponent } from './details/vehiclesDetails.component';
 import { VehiclesListComponent } from './list/vehiclesList.component';
-import { VehiclesComponent } from './vehicles.component';
-import { CanDeactivateVehiclesDetails } from './vehicles.guards';
-import { VehiclesDetailsResolver, VehiclesResolver } from './vehicles.resolvers';
 
-
-export const vehiclesRoutes: Route[] = [
+export const vehiclesRoutes: Routes = [
     {
-        path     : '',
-        component: VehiclesComponent,
-        resolve  : {
-        },
-        children : [
-            {
-                path     : '',
-                component: VehiclesListComponent,
-                resolve  : { 
-                    tasks    : VehiclesResolver,
-                },
-                children : [
-                    {
-                        path         : ':id',
-                        component    : VehiclesDetailsComponent,
-                        resolve      : {
-                            task     : VehiclesDetailsResolver,
-                            
-                        },
-                        canDeactivate: [CanDeactivateVehiclesDetails]
-                    }
-                ]
-            }
-        ]
-    }
+        path: '',
+        redirectTo: 'list',
+        pathMatch: 'full'
+      },
+      {
+        path: 'list',
+        component: VehiclesListComponent,
+      },
+      {
+        path: 'form/:id',
+        component: VehiclesDetailsComponent,
+      },
+      {
+        path: 'form',
+        component: VehiclesDetailsComponent,
+      }
+ 
 ];
+@NgModule({
+    imports: [RouterModule.forChild(vehiclesRoutes)],
+    exports: [RouterModule]
+  })
+  export class VehiclesRoutingModule {}

@@ -76,7 +76,6 @@ export class CustomersTDComponent implements OnInit {
         console.log(createCompany)
 
         this._customersService.createCustomer(createCompany).subscribe(data => {
-            this.toastr.successToastr('Company Added/Updated', 'Added/Updated!');
         this._router.navigateByUrl('/apps/company/list');
         });
     }

@@ -110,44 +110,38 @@ export class VehiclesService {
         );
     }
 
-    /**
-     * Get customer by id
-     */
-    getVehicleById(id: string): Observable<Vehicle> {
-        return this._vehicles.pipe(
-            take(1),
-            map((vehicles) => {
-                const vehicle = vehicles.find(item => item.id === id) || null;
-                this._vehicle.next(vehicle);
-
-                return vehicle;
-            }),
-            switchMap((vehicle) => {
-
-                if (!vehicle) {
-                    return throwError('Could not found vehicle with id of ' + id + '!');
-                }
-
-                return of(vehicle);
-            })
-        );
+    getVehicleById(id: string): Observable<any> {
+        return this._httpClient.get<any>(`${environment.url}/vehicle/${id}`)
     }
 
-     
-    createVehicle(vehicle: any): Observable<any> {
-        return this.vehicles$.pipe(
-            take(1),
-            switchMap(vehicles => this._httpClient.post<any>(`${environment.url}/vehicle`, vehicle).pipe(
-                map((newVehicle) => {
 
-                    this._vehicles.next([newVehicle.body, ...vehicles]);
+    createVehicle(item: any): Observable<any> {
+        if (item.id) {
+            return this.vehicles$.pipe(
+                take(1),
+                switchMap(customers => this._httpClient.put<any>(`${environment.url}/vehicle/${item.id}`, item).pipe(
+                    map((newVehicle) => {
+                        this.toastr.successToastr('Vehicle Updated', 'Updated!');
 
-                    return newVehicle.body;
-                })
-            ))
-        );
+                        return newVehicle.body;
+                    })
+                ))
+            );
+        }
+        else {
+            return this.vehicles$.pipe(
+                take(1),
+                switchMap(customers => this._httpClient.post<any>(`${environment.url}/vehicle/`, item).pipe(
+                    map((newVehicle) => {
+                        this.toastr.successToastr('Vehicle Added', 'Added!');
+
+                        return newVehicle.body;
+                    })
+                ))
+            );
+        }
     }
-      
+
     newVehicle(): Observable<any> {
         const today = new Date();
 
@@ -155,18 +149,18 @@ export class VehiclesService {
             take(1),
             switchMap(vehicles => this._httpClient.get<any>(`${environment.url}/vehicle`).pipe(
                 map((newVehicle) => {
-                    let new1 = { id:'new',company_id:'',name: '', type: '', registered_date: today.toString() }
+                    let new1 = { id: 'new', company_id: '', name: '', type: '', registered_date: today.toString() }
                     this._vehicles.next([new1, ...vehicles]);
 
                     return new1;
                 })
             ))
-        ); 
- 
-        
+        );
+
+
     }
 
- 
+
     updateVehicle(id: string, vehicle: Vehicle): Observable<any> {
         return this.vehicles$.pipe(
             take(1),
@@ -193,6 +187,37 @@ export class VehiclesService {
             ))
         );
     }
+
+        /**
+     * Delete the customer
+     *
+     * @param vehilce_id
+     */
+         deleteVehicle(vehilce_id: string): Observable<boolean> {
+            return this.vehicles$.pipe(
+                take(1),
+                switchMap(vehicles => this._httpClient.put(`${environment.url}/vehicle/delete/${vehilce_id}`, { vehilce_id }).pipe(
+                    map((isDeleted: any) => {
+                        if (isDeleted.success) {
+                            // Find the index of the deleted customer
+                            const index = vehicles.findIndex(item => item.id === vehilce_id);
+    
+                            // Delete the customer
+                            vehicles.splice(index, 1);
+    
+                            // Update the customers
+                            this._vehicles.next(vehicles);
+    
+                            // Return the deleted status
+                        } else {
+                            this.toastr.errorToastr(isDeleted.message);
+                        }
+    
+                        return isDeleted;
+                    })
+                ))
+            );
+        }
 
     /**
      * Create customer
