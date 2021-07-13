@@ -21,10 +21,12 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VehiclesComponent } from './vehicles.component';
-import { vehiclesRoutes } from './vehicles.routing';
+import { vehiclesRoutes, VehiclesRoutingModule } from './vehicles.routing';
 import { VehiclesListComponent } from './list/vehiclesList.component';
 import { VehiclesDetailsComponent } from './details/vehiclesDetails.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
     declarations: [
@@ -49,11 +51,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         MatRippleModule,
         MatSelectModule,
         MatSidenavModule,
+        MatSortModule,
+        MatTabsModule,
         MatTableModule,
         MatTooltipModule,
         MatSnackBarModule,
         MatAutocompleteModule,
         FuseFindByKeyPipeModule,
+        VehiclesRoutingModule,
         SharedModule
     ],
     providers   : [
