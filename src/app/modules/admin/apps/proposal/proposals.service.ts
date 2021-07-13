@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { Customer, Country, Tag } from 'app/modules/admin/apps/customers/customers.types';
+import { Company, Country, Tag } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Proposal } from './proposals.types';
@@ -98,7 +98,7 @@ export class ProposalService {
      *
      * @param query
      */
-    searchProposal(query: string): Observable<Customer[]> {
+    searchProposal(query: string): Observable<Company[]> {
         let filter = { name: query };
         let where = { filter, pageNumber: 9999, pageSize: 20, sortField: '', sortOrder: '' };
 

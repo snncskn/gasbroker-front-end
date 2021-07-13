@@ -19,21 +19,21 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import * as moment from 'moment';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
-import { customersRoutes } from 'app/modules/admin/apps/customers/customers.routing';
-import { CustomersComponent } from 'app/modules/admin/apps/customers/customers.component';
-import { CustomersDetailsComponent } from 'app/modules/admin/apps/customers/details/details.component';
-import { CustomersListComponent } from 'app/modules/admin/apps/customers/list/list.component';
+import { CompanyRoutingModule, customersRoutes } from 'app/modules/admin/apps/company/company.routing';
+import { CustomersComponent } from 'app/modules/admin/apps/company/company.component';
+import { CustomersListComponent } from 'app/modules/admin/apps/company/list/list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { CustomersTDComponent } from './tabDetails/customersTD.component';
+import { CustomersTDComponent } from './tabDetails/companyTD.component';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
     declarations: [
         CustomersComponent,
         CustomersListComponent,
-        CustomersDetailsComponent,
         CustomersTDComponent
+
     ],
     imports     : [
         RouterModule.forChild(customersRoutes),
@@ -54,9 +54,11 @@ import { MatTabsModule } from '@angular/material/tabs';
         MatTableModule,
         MatTooltipModule,
         MatSnackBarModule,
+        MatSortModule,
         FuseFindByKeyPipeModule,
         MatTabsModule,
-        FormsModule, 
+        FormsModule,
+        CompanyRoutingModule,
         SharedModule
     ],
     providers   : [
@@ -76,6 +78,6 @@ import { MatTabsModule } from '@angular/material/tabs';
         }
     ]
 })
-export class CustomersModule
+export class CompanyModule
 {
 }

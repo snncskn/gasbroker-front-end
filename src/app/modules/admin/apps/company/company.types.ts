@@ -1,4 +1,4 @@
-export interface Customer
+export interface Company
 {
     id: string;
     name: string;
@@ -8,6 +8,7 @@ export interface Customer
     fax?: string;
     registered_date?: string | null;
     email?: string | null;
+    website?: string | null;
 }
 
 

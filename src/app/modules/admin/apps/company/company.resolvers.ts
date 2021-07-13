@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { CustomersService } from 'app/modules/admin/apps/customers/customers.service';
-import { Customer, Country, Tag } from 'app/modules/admin/apps/customers/customers.types';
+import { CustomersService } from 'app/modules/admin/apps/company/company.service';
+import { Company, Country, Tag } from 'app/modules/admin/apps/company/company.types';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +27,7 @@ export class CustomersResolver implements Resolve<any>
      * @param route
      * @param state
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Customer[]>
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Company[]>
     {
         return this._customersService.getCustomers();
     }
@@ -58,7 +58,7 @@ export class CustomersCustomerResolver implements Resolve<any>
      * @param route
      * @param state
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Customer>
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Company>
     {
         return this._customersService.getCustomerById(route.paramMap.get('id'))
                    .pipe(

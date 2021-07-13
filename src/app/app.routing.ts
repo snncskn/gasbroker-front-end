@@ -86,7 +86,7 @@ export const appRoutes: Route[] = [
             {path: 'apps', children: [
                 {path: 'academy', loadChildren: () => import('app/modules/admin/apps/academy/academy.module').then(m => m.AcademyModule)},
                 {path: 'calendar', loadChildren: () => import('app/modules/admin/apps/calendar/calendar.module').then(m => m.CalendarModule)},
-                {path: 'customers', loadChildren: () => import('app/modules/admin/apps/customers/customers.module').then(m => m.CustomersModule)},
+                {path: 'company', loadChildren: () => import('app/modules/admin/apps/company/company.module').then(m => m.CompanyModule)},
                 {path: 'products', loadChildren: () => import('app/modules/admin/apps/ecommerce/ecommerce.module').then(m => m.ECommerceModule)},
                 {path: 'invoicing', loadChildren: () => import('app/modules/admin/apps/invoicing/invoicing.module').then(m => m.InvoicingModule)},
                 {path: 'users', loadChildren: () => import('app/modules/admin/apps/users/users.module').then(m => m.UsersModule)},
