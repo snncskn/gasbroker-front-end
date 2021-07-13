@@ -231,7 +231,26 @@
                               </button>
                             </div>
                           </div>
-                          <div class="flex flex-col mt-8">
+
+                        </div>
+
+                        <div class="flex flex-auto">
+
+                          <div class="flex flex-col w-1/4 pl-8">
+                            <mat-form-field class="w-full">
+                              <mat-label>Code</mat-label>
+                              <input matInput [formControlName]="'code'" />
+                            </mat-form-field>
+                          </div>
+
+                          <div class="flex flex-col w-1/4 pl-8">
+                            <mat-form-field class="w-full">
+                              <mat-label>Name</mat-label>
+                              <input matInput [formControlName]="'name'" />
+                            </mat-form-field>
+                          </div>
+
+                          <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
                             <mat-slide-toggle [formControlName]="'active'" (click)="updateActive()" [color]="'primary'">
                               {{
                               selectedProductForm.get("active").value === true
@@ -239,30 +258,18 @@
                               : "Disabled"
                               }}
                             </mat-slide-toggle>
-                          </div>
-                        </div>
 
-                        <div class="flex flex-auto">
-                          <div class="flex flex-col w-1/4 pl-8">
-                            <mat-form-field class="w-full">
-                              <mat-label>Code</mat-label>
-                              <input matInput [formControlName]="'code'" />
-                            </mat-form-field>
-                            <mat-form-field class="w-full">
-                              <mat-label>Name</mat-label>
-                              <input matInput [formControlName]="'name'" />
-                            </mat-form-field>
-                            <button class="fuse-mat-button-rounded" (click)="openDetail(row)" mat-icon-button [color]="'primary'">
-                              <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                              [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon>
+                          </div>
+
+                          <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
+                            <button type="button" mat-flat-button [color]="'primary'" (click)="openDetail(product.id)">
+                              Details
                             </button>
-
                           </div>
-
                           <!-- Properties -->
-                          <div class="flex flex-col w-1/4 pl-8">
-                            <!-- Properties -->
-                            <ng-container *ngIf="
+                          <!-- <div class="flex flex-col w-1/4 pl-8"> -->
+                          <!-- Properties -->
+                          <!-- <ng-container *ngIf="
                                 selectedProduct ||
                                 selectedProduct?.properties?.length
                               ">
@@ -273,9 +280,9 @@
                                   border border-gray-300
                                   shadow-sm
                                   overflow-hidden
-                                ">
-                                <!-- Header -->
-                                <div class="flex items-center my-2 mx-3">
+                                "> -->
+                          <!-- Header -->
+                          <!-- <div class="flex items-center my-2 mx-3">
                                   <div class="flex items-center flex-auto min-w-0">
                                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:search'">
                                     </mat-icon>
@@ -293,16 +300,16 @@
                                       [svgIcon]="'heroicons_solid:check'">
                                     </mat-icon>
                                   </button>
-                                </div>
-                                <!-- Available properties -->
-                                <div class="
+                                </div> -->
+                          <!-- Available properties -->
+                          <!-- <div class="
                                     max-h-40
                                     leading-none
                                     overflow-y-auto
                                     border-t
-                                  ">
-                                  <!-- properties -->
-                                  <ng-container *ngIf="!propertiesEditMode">
+                                  "> -->
+                          <!-- properties -->
+                          <!-- <ng-container *ngIf="!propertiesEditMode">
                                     <ng-container *ngFor="
                                         let property of filteredProperties;
                                         trackBy: trackByFn
@@ -326,9 +333,9 @@
                                         {{ property.name }}
                                       </mat-checkbox>
                                     </ng-container>
-                                  </ng-container>
-                                  <!-- Properties editing -->
-                                  <ng-container *ngIf="propertiesEditMode">
+                                  </ng-container> -->
+                          <!-- Properties editing -->
+                          <!-- <ng-container *ngIf="propertiesEditMode">
                                     <div class="p-4 space-y-2">
                                       <ng-container *ngFor="
                                           let property of filteredProperties;
@@ -384,134 +391,8 @@
                                 </div>
                               </div>
                             </ng-container>
-                          </div>
+                          </div> -->
 
-                          <!-- Properties -->
-                          <div class="flex flex-col w-1/4 pl-8">
-                            <!-- Properties -->
-                            <ng-container *ngIf="
-                                selectedProduct ||
-                                selectedProduct?.properties?.length
-                              ">
-                              <span class="font-semibold">Properties</span>
-                              <div class="
-                                  mt-1
-                                  rounded-md
-                                  border border-gray-300
-                                  shadow-sm
-                                  overflow-hidden
-                                ">
-                                <!-- Header -->
-                                <div class="flex items-center my-2 mx-3">
-                                  <div class="flex items-center flex-auto min-w-0">
-                                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:search'">
-                                    </mat-icon>
-                                    <input class="min-w-0 ml-2 py-1 border-0" type="text"
-                                      placeholder="Enter property name" (input)="filterProperties($event)" (keydown)="
-                                        filterPropertiesInputKeyDown($event)
-                                      " [maxLength]="50" #newPropertyInput />
-                                  </div>
-                                  <button class="ml-3 w-8 h-8 min-h-8" mat-icon-button
-                                    (click)="togglePropertiesEditMode()">
-                                    <mat-icon *ngIf="!propertiesEditMode" class="icon-size-5"
-                                      [svgIcon]="'heroicons_solid:pencil-alt'">
-                                    </mat-icon>
-                                    <mat-icon *ngIf="propertiesEditMode" class="icon-size-5"
-                                      [svgIcon]="'heroicons_solid:check'">
-                                    </mat-icon>
-                                  </button>
-                                </div>
-                                <!-- Available properties -->
-                                <div class="
-                                    max-h-40
-                                    leading-none
-                                    overflow-y-auto
-                                    border-t
-                                  ">
-                                  <!-- properties -->
-                                  <ng-container *ngIf="!propertiesEditMode">
-                                    <ng-container *ngFor="
-                                        let property of filteredProperties;
-                                        trackBy: trackByFn
-                                      ">
-                                      <mat-checkbox class="
-                                          flex
-                                          items-center
-                                          h-10
-                                          min-h-10
-                                          px-4
-                                        " [color]="'primary'" [checked]="
-                                          selectedProduct.properties.includes(
-                                            property.id
-                                          )
-                                        " (change)="
-                                          toggleProductProperty(
-                                            property,
-                                            $event
-                                          )
-                                        ">
-                                        {{ property.name }}
-                                      </mat-checkbox>
-                                    </ng-container>
-                                  </ng-container>
-                                  <!-- Properties editing -->
-                                  <ng-container *ngIf="propertiesEditMode">
-                                    <div class="p-4 space-y-2">
-                                      <ng-container *ngFor="
-                                          let property of filteredProperties;
-                                          trackBy: trackByFn
-                                        ">
-                                        <mat-form-field class="
-                                            fuse-mat-dense fuse-mat-no-subscript
-                                            w-full
-                                          ">
-                                          <input matInput [value]="property.name" (input)="
-                                              updatePropertyName(
-                                                property,
-                                                $event
-                                              )
-                                            " />
-                                          <button mat-icon-button (click)="deleteProperty(property)" matSuffix>
-                                            <mat-icon class="icon-size-5" [svgIcon]="
-                                                'heroicons_solid:trash'
-                                              ">
-                                            </mat-icon>
-                                          </button>
-                                        </mat-form-field>
-                                      </ng-container>
-                                    </div>
-                                  </ng-container>
-                                </div>
-                                <div class="
-                                    flex
-                                    items-center
-                                    h-10
-                                    min-h-10
-                                    -ml-0.5
-                                    pl-4
-                                    pr-3
-                                    leading-none
-                                    cursor-pointer
-                                    border-t
-                                    hover:bg-gray-50
-                                    dark:hover:bg-hover
-                                  " *ngIf="
-                                    shouldShowCreatePropertyButton(
-                                      newPropertyInput.value
-                                    )
-                                  " (click)="
-                                    createProperty(newPropertyInput.value);
-                                    newPropertyInput.value = ''
-                                  " matRipple>
-                                  <mat-icon class="mr-2 icon-size-5" [svgIcon]="'heroicons_solid:plus-circle'">
-                                  </mat-icon>
-                                  <div class="break-all">
-                                    Create "<b>{{ newPropertyInput.value }}</b>"
-                                  </div>
-                                </div>
-                              </div>
-                            </ng-container>
-                          </div>
                         </div>
                       </div>
                       <div class="
@@ -534,6 +415,9 @@
                               <span class="ml-2">An error occurred, try again!</span>
                             </ng-container>
                           </div>
+                          <button mat-flat-button [color]="'primary'" (click)="updateSelectedProduct()">
+                            Update
+                          </button>
                         </div>
                       </div>
                     </form>

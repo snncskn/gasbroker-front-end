@@ -165,6 +165,7 @@ export class ProductService {
       map((products) => {
         const product = products.find((item) => item.id === id) || null;
         this._product.next(product);
+        console.log(product);
         return product;
       }),
       switchMap((product) => {
@@ -455,4 +456,10 @@ export class ProductService {
             ))
         );
     }*/
+
+    getUnits():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/UNIT_TYPES`;
+        return this._httpClient.get<any>(url);
+    }
 }

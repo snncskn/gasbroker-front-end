@@ -94,24 +94,8 @@ export class InventoryListComponent
       id: [""],
       code: [""],
       name: [""],
-      properties: [
-        {
-          id: "1",
-          name: "Flame speed rate",
-        },
-        {
-          id: "2",
-          name: "Boiling Temp",
-        },
-        {
-          id: "3",
-          name: "Carbon Content",
-        },
-        {
-          id: "4",
-          name: "Oxygen Content",
-        },
-      ],
+      // properties: [[]],
+      // categories: [[]],
       images: [[]],
       currentImageIndex: [0],
       active: [true],
@@ -565,10 +549,7 @@ export class InventoryListComponent
       });
     });
   }
-  openDetail(item:any)
-  {
-      this._router.navigate(['/apps/products/form']);
+  openDetail(id: string) {
+    this._router.navigate(["/apps/products/form/" + id]);
   }
-
-
 }

@@ -1,6 +1,6 @@
-import { Route } from '@angular/router';
-import { ProductComponent } from 'app/modules/admin/apps/ecommerce/product/product.component';
-import { InventoryListComponent } from 'app/modules/admin/apps/ecommerce/product/list/pList.component';
+import { Route } from "@angular/router";
+import { ProductComponent } from "app/modules/admin/apps/ecommerce/product/product.component";
+import { InventoryListComponent } from "app/modules/admin/apps/ecommerce/product/list/pList.component";
 import {
   InventoryBrandsResolver,
   InventoryCategoriesResolver,
@@ -8,35 +8,39 @@ import {
   InventoryPropertiesResolver,
   InventoryVendorsResolver,
 } from "app/modules/admin/apps/ecommerce/product/product.resolvers";
-import { ProductDetailComponent } from './product/product-detail/product-detail.component';
+import { ProductDetailComponent } from "./product/product-detail/product-detail.component";
 
 export const ecommerceRoutes: Route[] = [
-    {
-        path      : '',
-        pathMatch : 'full',
-        redirectTo: 'products'
-    },
-    {
-        path: 'form',
-        component: ProductDetailComponent,
+  {
+    path: "",
+    pathMatch: "full",
+    redirectTo: "products",
+  },
+  {
+    path: "form",
+    component: ProductDetailComponent,
+  },
+  {
+    path: "form/:id",
+    component: ProductDetailComponent,
+  },
+  {
+    path: "products",
+    component: ProductComponent,
+    children: [
+      {
+        path: "",
+        component: InventoryListComponent,
+        resolve: {
+          brands: InventoryBrandsResolver,
+          categories: InventoryCategoriesResolver,
+          products: InventoryProductsResolver,
+          properties: InventoryPropertiesResolver,
+          vendors: InventoryVendorsResolver,
+        },
       },
-    {
-        path     : 'products',
-        component: ProductComponent,
-        children : [
-            {
-                path     : '',
-                component: InventoryListComponent,
-                resolve  : {
-                    brands    : InventoryBrandsResolver,
-                    categories: InventoryCategoriesResolver,
-                    products  : InventoryProductsResolver,
-                    properties      : InventoryPropertiesResolver,
-                    vendors   : InventoryVendorsResolver
-                }
-            }
-        ]
-        /*children : [
+    ],
+    /*children : [
             {
                 path     : '',
                 component: ContactsListComponent,
@@ -57,5 +61,5 @@ export const ecommerceRoutes: Route[] = [
                 ]
             }
         ]*/
-    }
+  },
 ];
