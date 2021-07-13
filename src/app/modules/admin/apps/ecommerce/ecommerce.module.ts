@@ -27,6 +27,7 @@ import { FuseFindByKeyPipeModule } from "@fuse/pipes/find-by-key";
 import { FormsModule } from "@angular/forms";
 import { MailboxComposeComponent } from "./product/compose/compose.component";
 import { MatDialogModule } from "@angular/material/dialog";
+import { QuillModule } from "ngx-quill";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { MatDialogModule } from "@angular/material/dialog";
   ],
   imports: [
     RouterModule.forChild(ecommerceRoutes),
+    MatDialogModule,
     FormsModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -59,7 +61,6 @@ import { MatDialogModule } from "@angular/material/dialog";
     MatSnackBarModule,
     FuseFindByKeyPipeModule,
     QuillModule.forRoot(),
-    MatDialogModule
   ],
 })
 export class ECommerceModule {}
