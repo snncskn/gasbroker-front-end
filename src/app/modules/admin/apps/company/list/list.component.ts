@@ -6,7 +6,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Company, Country } from 'app/modules/admin/apps/company/company.types';
+import { Company} from 'app/modules/admin/apps/company/company.types';
 import { CustomersService } from 'app/modules/admin/apps/company/company.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MatSort } from '@angular/material/sort';
@@ -27,7 +27,6 @@ export class CustomersListComponent implements OnInit, OnDestroy
 
     customersCount: number = 0;
     customersTableColumns: string[] = ['name', 'type', 'registered_date', 'email','phone','detail'];
-    countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
     selectedCustomer: Company;

@@ -1,4 +1,4 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" isLoading>
     <!-- Main -->
     <div class="flex-auto">
         <!-- Header -->
@@ -18,9 +18,9 @@
                 </button>
             </div>
         </div>
-        <div class="relative mt-5 ml-5 pb-4 p-8 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
+        <div class="relative mt-5 ml-5 pb-4 p-8 mr-5 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
             <form [formGroup]="customerForm">
-                <mat-tab-group class="ml-2" mat-align-tabs="left">
+                <mat-tab-group mat-align-tabs="left">
 
                     <mat-tab label="Genel Bilgiler">
                         <div class="ml-2 w-1/3">
@@ -44,47 +44,48 @@
                             </div>
                             <div class="flex items-center mt-6">
                                 <div class="w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Company Type</mat-label>
-                                    <mat-select placeholder="Types" [formControlName]="'types'" multiple>
-                                        <mat-option *ngFor="let option of dataSourceTypes" [value]="option.description">
-                                            <ng-container>
-                                                {{option.description | titlecase}}
-                                            </ng-container>
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="ml-5 w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Registered Date</mat-label>
-                                    <input matInput [matDatepicker]="Datepicker" [formControlName]="'registered_date'"
-                                        [placeholder]="'registered date'">
-                                    <mat-datepicker-toggle matSuffix [for]="Datepicker">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #Datepicker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
+                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                        <mat-label>Company Type</mat-label>
+                                        <mat-select placeholder="Types" [formControlName]="'types'" multiple>
+                                            <mat-option *ngFor="let option of dataSourceTypes"
+                                                [value]="option.description">
+                                                <ng-container>
+                                                    {{option.description | titlecase}}
+                                                </ng-container>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="ml-5 w-full">
+                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                        <mat-label>Registered Date</mat-label>
+                                        <input matInput [matDatepicker]="Datepicker"
+                                            [formControlName]="'registered_date'" [placeholder]="'registered date'">
+                                        <mat-datepicker-toggle matSuffix [for]="Datepicker">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #Datepicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
                             </div>
                             <div class="flex items-center mt-6">
                                 <div class="w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Phone</mat-label>
-                                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                                        [svgIcon]="'heroicons_outline:phone'"></mat-icon>
-                                    <input matInput [formControlName]="'phone'" [placeholder]="'Phone'"
-                                    [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
-                            <div class="ml-5 w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>E mail</mat-label>
-                                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                                        [svgIcon]="'heroicons_outline:mail'"></mat-icon>
-                                    <input matInput [formControlName]="'email'" [placeholder]="'E mail'"
-                                    [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
+                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                        <mat-label>Phone</mat-label>
+                                        <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                            [svgIcon]="'heroicons_outline:phone'"></mat-icon>
+                                        <input matInput [formControlName]="'phone'" [placeholder]="'Phone'"
+                                            [spellcheck]="false">
+                                    </mat-form-field>
+                                </div>
+                                <div class="ml-5 w-full">
+                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                        <mat-label>E mail</mat-label>
+                                        <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                            [svgIcon]="'heroicons_outline:mail'"></mat-icon>
+                                        <input matInput [formControlName]="'email'" [placeholder]="'E mail'"
+                                            [spellcheck]="false">
+                                    </mat-form-field>
+                                </div>
                             </div>
                             <div class="flex items-center mt-6">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
@@ -92,12 +93,86 @@
                                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                                         [svgIcon]="'heroicons_outline:globe-alt'"></mat-icon>
                                     <input matInput [formControlName]="'website'" [placeholder]="'website'"
-                                    [spellcheck]="false">
+                                        [spellcheck]="false">
                                 </mat-form-field>
                             </div>
                         </div>
                     </mat-tab>
-                    <mat-tab label="Adres">Content 2</mat-tab>
+                    <mat-tab label="Adres">
+                        <form [formGroup]="addressesForm">
+                            <div class="flex items w-full">
+                                <div class="ml-2 w-1/3">
+                                    <div class="mt-6">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>Company Id</mat-label>
+                                            <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
+                                            <input matInput [formControlName]="'company_id'"
+                                                [placeholder]="'Company Name *'" [spellcheck]="false">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="flex items-center mt-6">
+                                        <div class="w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>Title</mat-label>
+                                                <input matInput [formControlName]="'title'" [placeholder]="'Title'"
+                                                    [spellcheck]="false">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="ml-5 w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>Type</mat-label>
+                                                <input matInput [formControlName]="'type'" [placeholder]="'Type'"
+                                                    [spellcheck]="false">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>Description</mat-label>
+                                            <textarea matInput [formControlName]="'description'"
+                                                [placeholder]="'Description'" [spellcheck]="false"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="flex items-center mt-6">
+                                        <div class="w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>Latitude</mat-label>
+                                                <input matInput [formControlName]="'lat'" [placeholder]="'Latitude'"
+                                                    [spellcheck]="false">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="ml-5 w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>Longitude</mat-label>
+                                                <input matInput [formControlName]="'long'" [placeholder]="'Longitude'"
+                                                    [spellcheck]="false">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="mt-5">
+                                        <button mat-flat-button [color]="'primary'" (click)="createAddress()">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="w-1/3 ml-20 mt-6">
+                                    <div>
+                                        <p>Address List</p>
+                                        <mat-accordion class="fuse-mat-no-subscript">
+                                            <mat-expansion-panel *ngFor="let value of addressList">
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title class="font-bold">{{value.title}}</mat-panel-title>
+                                                </mat-expansion-panel-header>
+                                                <p>Description: {{value.description}}</p>
+                                                <p>Type: {{value.type}}</p>
+                                            </mat-expansion-panel>
+                                        </mat-accordion>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-tab>
 
                     <mat-tab label="Evrak Listesi">Content 3</mat-tab>
 

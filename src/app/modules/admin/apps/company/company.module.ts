@@ -27,6 +27,7 @@ import { CustomersTDComponent } from './tabDetails/companyTD.component';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
     declarations: [
@@ -55,6 +56,7 @@ import { MatSortModule } from '@angular/material/sort';
         MatTooltipModule,
         MatSnackBarModule,
         MatSortModule,
+        MatExpansionModule,
         FuseFindByKeyPipeModule,
         MatTabsModule,
         FormsModule,

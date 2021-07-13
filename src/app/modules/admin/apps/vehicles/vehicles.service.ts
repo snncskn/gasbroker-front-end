@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { Company, Country, Tag } from 'app/modules/admin/apps/company/company.types';
+import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Vehicle } from './vehicles.types';
