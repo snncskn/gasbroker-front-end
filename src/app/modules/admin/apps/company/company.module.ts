@@ -28,6 +28,7 @@ import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
     declarations: [
@@ -61,6 +62,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
         MatTabsModule,
         FormsModule,
         CompanyRoutingModule,
+        GoogleMapsModule,
         SharedModule
     ],
     providers   : [
