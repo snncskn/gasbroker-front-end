@@ -14,6 +14,8 @@ export class CustomersTDComponent implements OnInit {
     customerForm: FormGroup;
     dataSourceTypes: any[];
     resetPassForm: FormGroup;
+    addressesForm: FormGroup;
+    addressList:any[];
 
     companyDetail: string;
     constructor(
@@ -27,6 +29,7 @@ export class CustomersTDComponent implements OnInit {
 
     ) {
 
+
         this.customerForm = this._formBuilder.group({
             id: [''],
             types: [null],
@@ -37,27 +40,43 @@ export class CustomersTDComponent implements OnInit {
             website: [null],
             registered_date: [null],
         });
+
+        this.addressesForm = this._formBuilder.group({
+            id: [''],
+            company_id: this.companyDetail,
+            title: [''],
+            description: [''],
+            type: [''],
+            lat: [''],
+            long: [''],
+        })
         this.resetPassForm = this._formBuilder.group({
             pass: ['', Validators.required],
             confirmPass: ['', Validators.required],
-
         });
-        console.log(this.companyDetail)
+
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
                 this._customersService.getCompanyById(params.get("id")).subscribe(data => {
                     this.companyDetail = data.body.id;
                     this.customerForm.patchValue(data.body);
+                    this.addressesForm.patchValue({company_id:data.body.id})
+                })
+
+                this._customersService.getAddressByCompanyId(params.get("id")).subscribe(data => {
+                    this.addressList=data.body;
+                    console.log(this.addressList)
                 })
             };
         });
 
-    }
-
-    ngOnInit(): void {
         this._customersService.getTypes().subscribe(res => {
             this.dataSourceTypes = res.body;
         });
+    }
+
+    ngOnInit(): void {
+
     }
 
     addNewCompany() {
@@ -73,7 +92,6 @@ export class CustomersTDComponent implements OnInit {
         createCompany.name = this.customerForm.value.name;
         createCompany.website = this.customerForm.value.website;
         createCompany.registered_date = this.customerForm.value.registered_date;
-        console.log(createCompany)
 
         this._customersService.createCustomer(createCompany).subscribe(data => {
             this._router.navigateByUrl('/apps/company/list');
@@ -84,5 +102,9 @@ export class CustomersTDComponent implements OnInit {
         if (this.companyDetail) {
             this._customersService.deleteCompany(this.companyDetail).subscribe();
         }
+    }
+
+    createAddress(){
+        this._customersService.createAddress(this.addressesForm.value).subscribe();
     }
 }

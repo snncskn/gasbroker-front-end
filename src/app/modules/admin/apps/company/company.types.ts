@@ -12,17 +12,13 @@ export interface Company
 }
 
 
-export interface Country
+export interface Address
 {
     id: string;
-    iso: string;
-    name: string;
-    code: string;
-    flagImagePos: string;
-}
-
-export interface Tag
-{
-    id?: string;
-    title?: string;
+    company_id: string;
+    description: string;
+    lat: string;
+    long: string;
+    type?: string | null;
+    title: string;
 }

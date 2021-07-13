@@ -5,6 +5,7 @@ import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { Address } from 'cluster';
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,7 @@ export class CustomersService {
     private _company: BehaviorSubject<Company | null> = new BehaviorSubject(null);
     private _companys: BehaviorSubject<Company[] | null> = new BehaviorSubject(null);
     private _companysCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _addresses:BehaviorSubject<Address[] | null>= new BehaviorSubject(null);
 
 
 
@@ -24,7 +26,7 @@ export class CustomersService {
         public toastr: ToastrManager
     ) {
     }
-    customers = [];
+    adresses = [];
 
 
     // -----------------------------------------------------------------------------------------------------
@@ -49,6 +51,10 @@ export class CustomersService {
         return this._companysCount.asObservable();
     }
 
+    get addresses$(): Observable<any[]> {
+        return this._addresses.asObservable();
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -70,6 +76,14 @@ export class CustomersService {
         Observable<any> {
         let url = `${environment.url}/parameter/category/COMPANY_TYPE`;
         return this._httpClient.get<any>(url);
+    }
+
+    getAddressByCompanyId(company_id: string): Observable<any> {
+        return this._httpClient.get<any>(`${environment.url}/address/company/${company_id}`).pipe(
+            tap((adresses) => {
+                this._addresses.next(adresses.body)
+            })
+        )
     }
 
     /**
@@ -113,6 +127,23 @@ export class CustomersService {
 
     getCompanyById(id: string): Observable<any> {
         return this._httpClient.get<any>(`${environment.url}/company/${id}`)
+    }
+
+    createAddress(address: any): Observable<any>
+    {
+        delete address.id;
+        let url = `${environment.url}/address/`;
+        return this.addresses$.pipe(
+            take(1),
+            switchMap(addresses => this._httpClient.post<any>(url, address).pipe(
+                map((newAddress) => {
+
+                    this.toastr.successToastr('Address Added', 'Added!');
+
+                    return newAddress;
+                })
+            ))
+        );
     }
 
     /**
