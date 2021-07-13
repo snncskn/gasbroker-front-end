@@ -35,11 +35,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link    : '/apps/calendar'
             },
             */ {
-                id      : 'app.customers',
-                title   : 'Customers',
+                id      : 'app.company',
+                title   : 'Company',
                 type    : 'basic',
                 icon    : 'heroicons_outline:user-group',
-                link    : '/apps/customers'
+                link    : '/apps/company'
             },
              {
                 id      : 'app.products',

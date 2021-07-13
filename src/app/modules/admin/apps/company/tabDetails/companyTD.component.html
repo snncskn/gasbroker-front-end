@@ -8,22 +8,22 @@
             <div class="text-4xl font-extrabold tracking-tight">Details</div>
 
             <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
-                <button class="mr-5" mat-flat-button [color]="'primary'">
+                <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteCompany()">
                     <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                    <span class="ml-2 mr-1">Remove</span>
+                    <span class="ml-2 mr-1">Delete</span>
                 </button>
                 <button class="" mat-flat-button [color]="'primary'"
-                    [disabled]="customerForm.invalid || customerForm.pristine">
+                    [disabled]="customerForm.invalid || customerForm.pristine" (click)="addNewCompany()">
                     <span class="ml-2 mr-1">Save</span>
                 </button>
             </div>
         </div>
-        <div class="relative mt-5">
+        <div class="relative mt-5 ml-5 pb-4 p-8 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
             <form [formGroup]="customerForm">
-                <mat-tab-group class="ml-5" mat-align-tabs="left">
+                <mat-tab-group class="ml-2" mat-align-tabs="left">
 
                     <mat-tab label="Genel Bilgiler">
-                        <div class="ml-5 w-1/3">
+                        <div class="ml-2 w-1/3">
                             <div class="mt-6">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>Company Full Name</mat-label>
@@ -43,7 +43,8 @@
                                 </mat-form-field>
                             </div>
                             <div class="flex items-center mt-6">
-                                <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                                <div class="w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>Company Type</mat-label>
                                     <mat-select placeholder="Types" [formControlName]="'types'" multiple>
                                         <mat-option *ngFor="let option of dataSourceTypes" [value]="option.description">
@@ -54,15 +55,44 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="flex items-center mt-6">
+                            <div class="ml-5 w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>Registered Date</mat-label>
-
                                     <input matInput [matDatepicker]="Datepicker" [formControlName]="'registered_date'"
                                         [placeholder]="'registered date'">
                                     <mat-datepicker-toggle matSuffix [for]="Datepicker">
                                     </mat-datepicker-toggle>
                                     <mat-datepicker #Datepicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            </div>
+                            <div class="flex items-center mt-6">
+                                <div class="w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Phone</mat-label>
+                                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_outline:phone'"></mat-icon>
+                                    <input matInput [formControlName]="'phone'" [placeholder]="'Phone'"
+                                    [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
+                            <div class="ml-5 w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>E mail</mat-label>
+                                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_outline:mail'"></mat-icon>
+                                    <input matInput [formControlName]="'email'" [placeholder]="'E mail'"
+                                    [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
+                            </div>
+                            <div class="flex items-center mt-6">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Web Site</mat-label>
+                                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_outline:globe-alt'"></mat-icon>
+                                    <input matInput [formControlName]="'website'" [placeholder]="'website'"
+                                    [spellcheck]="false">
                                 </mat-form-field>
                             </div>
                         </div>

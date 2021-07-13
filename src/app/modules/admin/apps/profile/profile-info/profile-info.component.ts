@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, OnInit, ViewChil
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UsersService } from '../../users/users.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { CustomersService } from '../../customers/customers.service';
+import { CustomersService } from '../../company/company.service';
 
 @Component({
     selector: 'profile-info',
