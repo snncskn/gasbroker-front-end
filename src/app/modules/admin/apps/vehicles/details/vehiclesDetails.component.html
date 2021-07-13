@@ -30,9 +30,10 @@
                                             matInput formControlName="company"
                                             [matAutocomplete]="auto">
                                         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                            (optionSelected)="selectCustomer($event)">
+                                            (optionSelected)="selectCustomer($event)"
+                                            [displayWith]="displayFn">
                                             <mat-option *ngFor="let option of filteredOptions | async"
-                                                [value]="option.full_name">
+                                                [value]="option">
                                                 <ng-container>
                                                     {{option.full_name | titlecase}}
                                                 </ng-container>

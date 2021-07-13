@@ -34,7 +34,7 @@ export class VehiclesDetailsComponent implements OnInit {
 
 
     ) {
-
+        this.list();
         this.vehicleForm = this._formBuilder.group({
             id: [''],
             type: [''],
@@ -43,15 +43,9 @@ export class VehiclesDetailsComponent implements OnInit {
             company_id: [''],
             registered_date: [null],
         });
+        
+     
 
-        this.activatedRouter.paramMap.subscribe(params => {
-            if (params.has('id')) {
-                this._vehicleService.getVehicleById(params.get("id")).subscribe(data=>{
-                    this.vehicleDetail=data.body.id;
-                    this.vehicleForm.patchValue(data.body);
-                }) 
-            };
-        });
         
     }
 
@@ -59,7 +53,7 @@ export class VehiclesDetailsComponent implements OnInit {
         this._vehicleService.getTypes().subscribe(res => {
             this.dataSourceTypes = res.body;
         });
-        this.list();
+       
     }
 
     addNewVehicle() {
@@ -88,25 +82,44 @@ export class VehiclesDetailsComponent implements OnInit {
         }
     
         return this.customers.filter(option => {
-          return option.full_name?.indexOf(filterValue) === 0 || option.full_name?.indexOf(filterValue.toLowerCase()) === 0;
+            if( typeof filterValue === 'object'){
+                return option?.full_name?.indexOf(filterValue.full_name) === 0 || option?.full_name?.indexOf(filterValue.full_name?.toLowerCase()) === 0;
+
+            }else{
+                return option?.full_name?.indexOf(filterValue) === 0 || option?.full_name?.indexOf(filterValue?.toLowerCase()) === 0;
+
+            }
         });
     }
 
     public list() {
         this._vehicleService.getCustomers().subscribe(data => {
           this.customers = data.body;
-          this.filteredOptions = this.vehicleForm.controls['company'].valueChanges.pipe(
-            startWith(''),
-            map(value => this._filter(value === '' ? '99' : value))
-          );
+          this.activatedRouter.paramMap.subscribe(params => {
+            if (params.has('id')) {
+                this._vehicleService.getVehicleById(params.get("id")).subscribe(data=>{
+                    this.vehicleDetail = data.body.id;
+                    this.vehicleForm.patchValue(data.body);
+                    this.vehicleForm.value.company_id = data.body.company.id;
+                    this.vehicleForm.value.company = data.body.company.name;
+                }) 
+            };
+        });
+        this.filteredOptions = this.vehicleForm.controls['company'].valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value === '' ? '99' : value))
+        );
         });
     }
 
     selectCustomer(event: any) {
-        let option = this.customers.filter(item => item.full_name.toUpperCase() === event.option.value.toUpperCase());
+        let option = this.customers.filter(item => item.full_name.toUpperCase() === event.option.value.full_name.toUpperCase());
         if (option.length > 0) {
           this.selectCustomerItem = option[0];
           this.vehicleForm.get('company_id').setValue(option[0].id, { emitEvent: false });
         }
     }
+    displayFn(x) {
+        return x.full_name;
+      }
 }
