@@ -222,7 +222,7 @@
     "symbol-observable" "4.0.0"
     "uuid" "8.3.2"
 
-"@angular/common@12.0.2":
+"@angular/common@^12.0.0 || ^13.0.0-0", "@angular/common@12.0.2":
   "integrity" "sha512-KJFtqdIGVrF97iK3zcN9FoQ1fDsc/u4ez1Qtx0HdH21qAuAvK/FYybg4r1G6miXoUJcO8hu9oRddEoiNPkXAew=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-12.0.2.tgz"
   "version" "12.0.2"
@@ -256,7 +256,7 @@
   dependencies:
     "tslib" "^2.1.0"
 
-"@angular/core@12.0.2":
+"@angular/core@^12.0.0 || ^13.0.0-0", "@angular/core@12.0.2":
   "integrity" "sha512-RBTl8L2ckSI3n2lo9rmwlUeZAuEd/TWUjoidoxPYWrKfbnFwKX65idCCbWLJivSVIBnPQYvAdC+3k4w40N9AWA=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-12.0.2.tgz"
   "version" "12.0.2"
@@ -269,6 +269,14 @@
   "version" "12.0.2"
   dependencies:
     "tslib" "^2.1.0"
+
+"@angular/google-maps@^12.1.1":
+  "integrity" "sha512-ZUO0yxu8+edHM4MrucK5EpqYE5pH4JkDZPF7DVsjlV1pN0ndKVFTbOuzjVDYsRO5VMhSMfhZF5pxAYkdj1DIkw=="
+  "resolved" "https://registry.npmjs.org/@angular/google-maps/-/google-maps-12.1.1.tgz"
+  "version" "12.1.1"
+  dependencies:
+    "@types/googlemaps" "^3.43.1"
+    "tslib" "^2.2.0"
 
 "@angular/language-service@12.0.2":
   "integrity" "sha512-H1aauvtS9qnq0FCdr3J2UROF7+AnOTCksD2AYuGS2/9O8tZLwwNz/UkXfxS3bHYzndYCsNiLPwAW7d0dWIjlqQ=="
@@ -1590,6 +1598,11 @@
   dependencies:
     "@types/minimatch" "*"
     "@types/node" "*"
+
+"@types/googlemaps@^3.43.1":
+  "integrity" "sha512-ZWNoz/O8MPEpiajvj7QiqCY8tTLFNqNZ/a+s+zTV58wFVNAvvqV4bdGfnsjTb5Cs4V6wEsLrX8XRhmnyYJ2Tdg=="
+  "resolved" "https://registry.npmjs.org/@types/googlemaps/-/googlemaps-3.43.3.tgz"
+  "version" "3.43.3"
 
 "@types/highlight.js@10.1.0":
   "integrity" "sha512-77hF2dGBsOgnvZll1vymYiNUtqJ8cJfXPD6GG/2M0aLRc29PkvB7Au6sIDjIEFcSICBhCh2+Pyq6WSRS7LUm6A=="
@@ -8155,7 +8168,7 @@
   dependencies:
     "queue-microtask" "^1.2.2"
 
-"rxjs@^6.6.6", "rxjs@6.6.7":
+"rxjs@^6.5.3", "rxjs@^6.6.6", "rxjs@6.6.7":
   "integrity" "sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ=="
   "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-6.6.7.tgz"
   "version" "6.6.7"
@@ -9229,7 +9242,7 @@
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   "version" "1.14.1"
 
-"tslib@^2.0.0", "tslib@^2.1.0", "tslib@2.2.0":
+"tslib@^2.0.0", "tslib@^2.1.0", "tslib@^2.2.0", "tslib@2.2.0":
   "integrity" "sha512-gS9GVHRU+RGn5KQM2rllAlR3dU6m7AcpJKdtH8gFvQiC4Otgk98XnmMU+nZenHt/+VhnBPWwgrJsyrdcw6i23w=="
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.2.0.tgz"
   "version" "2.2.0"

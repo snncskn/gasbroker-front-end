@@ -7,6 +7,7 @@ import { CustomersService } from '../company.service';
 @Component({
     selector: 'companyTD',
     templateUrl: './companyTD.component.html',
+    styleUrls: ['./companyTD.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -16,6 +17,22 @@ export class CustomersTDComponent implements OnInit {
     resetPassForm: FormGroup;
     addressesForm: FormGroup;
     addressList:any[];
+
+    center: google.maps.LatLngLiteral = {lat: 41, lng: 29};
+    zoom = 7;
+    markerOptions: google.maps.MarkerOptions = {draggable: false};
+    markerPositions: google.maps.LatLngLiteral[] = [];
+
+    addMarker(event: google.maps.MapMouseEvent) {
+        this.markerPositions=[];
+        this.markerPositions.push(event.latLng.toJSON());
+        this.markerPositions.forEach((element)=>(
+            this.addressesForm.patchValue({
+                lat:element.lat,
+                long:element.lng
+            })
+        ))
+      }
 
     companyDetail: string;
     constructor(
@@ -61,11 +78,7 @@ export class CustomersTDComponent implements OnInit {
                     this.companyDetail = data.body.id;
                     this.customerForm.patchValue(data.body);
                     this.addressesForm.patchValue({company_id:data.body.id})
-                })
-
-                this._customersService.getAddressByCompanyId(params.get("id")).subscribe(data => {
-                    this.addressList=data.body;
-                    console.log(this.addressList)
+                    this.loadAddress();
                 })
             };
         });
@@ -105,6 +118,22 @@ export class CustomersTDComponent implements OnInit {
     }
 
     createAddress(){
-        this._customersService.createAddress(this.addressesForm.value).subscribe();
+        if(this.companyDetail) {
+            this._customersService.createAddress(this.addressesForm.value).subscribe(data =>{
+                this.loadAddress()
+            })
+        }
+    }
+
+    newAddress()
+    {
+        this.addressList.push({id:'',isNew:true,description:'',title:'',type:''})
+    }
+
+    loadAddress()
+    {
+        this._customersService.getAddressByCompanyId(this.companyDetail).subscribe(data => {
+            this.addressList=data.body;
+        })
     }
 }
