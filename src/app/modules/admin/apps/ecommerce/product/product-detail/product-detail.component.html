@@ -18,7 +18,7 @@
                 </button>
             </div>
         </div>
-        <div class="relative flex mt-5 ml-5 pb-4 p-12 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
+        <div class="relative flex mt-5 pb-4 p-12 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
             <mat-form class="flex flex-col w-full" [formGroup]="productForm">
                 <mat-tab-group dynamicHeight>
                     <mat-tab label="Genel Bilgiler">
@@ -43,7 +43,7 @@
                             </div>
                             <div class="mt-6 ml-2 w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Ölçü Birimi</mat-label>
+                                    <mat-label>Unit of Measure </mat-label>
                                     <mat-select [formControlName]="'unit'" (selectionChange)="onChangeUnit($event)">
                                         <mat-option *ngFor="let option of dataSourceUnits" [value]="option.description">
                                             <ng-container>
@@ -51,14 +51,16 @@
                                             </ng-container>
                                         </mat-option>
                                     </mat-select>
-                                    <mat-icon class="icon-size-5" matPrefix
-                                        [svgIcon]="'heroicons_solid:location-marker'">
+                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:selector'">
                                     </mat-icon>
                                 </mat-form-field>
                             </div>
-                            <div class="mt-13 ml-2">
-                                <button mat-icon-button [color]="'primary'" (click)="openComposeDialog()">
+                        </div>
+                        <div class="ml-2" dir="rtl">
+                            <div class="mt-6 end">
+                                <button mat-raised-button (click)="openComposeDialog()">
                                     <mat-icon>add</mat-icon>
+                                    <span class="ml-2 mr-1">Define Product</span>
                                 </button>
                             </div>
                         </div>
