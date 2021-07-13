@@ -48,10 +48,13 @@ export class CustomersListComponent implements OnInit, OnDestroy
         private _fuseMediaWatcherService: FuseMediaWatcherService
     )
     {
+ 
         this._customersService.getCustomers().subscribe();
 
     }
-
+ 
+ 
+ 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
@@ -114,6 +117,8 @@ export class CustomersListComponent implements OnInit, OnDestroy
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+          
     }
 
     /**
