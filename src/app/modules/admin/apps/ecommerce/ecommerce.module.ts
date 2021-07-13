@@ -26,6 +26,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseFindByKeyPipeModule } from "@fuse/pipes/find-by-key";
 import { FormsModule } from "@angular/forms";
 import { MailboxComposeComponent } from "./product/compose/compose.component";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { MailboxComposeComponent } from "./product/compose/compose.component";
     MatSnackBarModule,
     FuseFindByKeyPipeModule,
     QuillModule.forRoot(),
+    MatDialogModule
   ],
 })
 export class ECommerceModule {}
