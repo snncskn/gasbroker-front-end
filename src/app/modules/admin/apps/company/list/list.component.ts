@@ -48,6 +48,8 @@ export class CustomersListComponent implements OnInit, OnDestroy
         private _fuseMediaWatcherService: FuseMediaWatcherService
     )
     {
+        this._customersService.getCustomers().subscribe();
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -66,7 +68,7 @@ export class CustomersListComponent implements OnInit, OnDestroy
             .subscribe((customers: Company[]) => {
 
                 // Update the counts
-                this.customersCount = customers.length;
+                this.customersCount = customers?.length;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -176,7 +178,7 @@ export class CustomersListComponent implements OnInit, OnDestroy
 
     deleteCompany(item:any)
     {
-        this._customersService.deleteCustomer(item.id).subscribe();
+        this._customersService.deleteCompany(item.id).subscribe();
     }
 
     trackByFn(index: number, item: any): any {

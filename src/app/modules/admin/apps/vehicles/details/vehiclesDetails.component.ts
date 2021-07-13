@@ -122,4 +122,12 @@ export class VehiclesDetailsComponent implements OnInit {
     displayFn(x) {
         return x.full_name;
       }
+
+    deleteVehicle()
+    {
+        if(this.vehicleDetail)
+        {
+            this._vehicleService.deleteVehicle(this.vehicleDetail).subscribe();
+        }
+    }
 }

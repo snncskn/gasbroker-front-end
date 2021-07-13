@@ -8,9 +8,9 @@
             <div class="text-4xl font-extrabold tracking-tight">Details</div>
 
             <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
-                <button class="mr-5" mat-flat-button [color]="'primary'">
+                <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteVehicle()">
                     <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                    <span class="ml-2 mr-1">Remove</span>
+                    <span class="ml-2 mr-1">Delete</span>
                 </button>
                 <button class="" mat-flat-button [color]="'primary'"
                     [disabled]="vehicleForm.invalid || vehicleForm.pristine" (click)="addNewVehicle()">
