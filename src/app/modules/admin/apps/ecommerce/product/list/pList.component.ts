@@ -34,6 +34,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Console } from "console";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "pList-list",
@@ -82,6 +83,7 @@ export class InventoryListComponent
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: FormBuilder,
+    private _router: Router,
     private readonly ngxService: NgxUiLoaderService,
     private _inventoryService: ProductService
   ) {}
@@ -563,4 +565,10 @@ export class InventoryListComponent
       });
     });
   }
+  openDetail(item:any)
+  {
+      this._router.navigate(['/apps/products/form']);
+  }
+
+
 }

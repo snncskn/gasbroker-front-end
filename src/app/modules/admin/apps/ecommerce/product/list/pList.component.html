@@ -252,6 +252,11 @@
                               <mat-label>Name</mat-label>
                               <input matInput [formControlName]="'name'" />
                             </mat-form-field>
+                            <button class="fuse-mat-button-rounded" (click)="openDetail(row)" mat-icon-button [color]="'primary'">
+                              <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                              [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon>
+                            </button>
+
                           </div>
 
                           <!-- Properties -->

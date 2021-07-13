@@ -8,6 +8,7 @@ import {
   InventoryPropertiesResolver,
   InventoryVendorsResolver,
 } from "app/modules/admin/apps/ecommerce/product/product.resolvers";
+import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 
 export const ecommerceRoutes: Route[] = [
     {
@@ -15,6 +16,10 @@ export const ecommerceRoutes: Route[] = [
         pathMatch : 'full',
         redirectTo: 'products'
     },
+    {
+        path: 'form',
+        component: ProductDetailComponent,
+      },
     {
         path     : 'products',
         component: ProductComponent,
