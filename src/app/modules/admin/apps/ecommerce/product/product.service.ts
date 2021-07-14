@@ -148,18 +148,18 @@ export class ProductService {
   }> {
     let url = `${environment.url}/product`;
     //'api/apps/ecommerce/inventory/products'
-    return this._httpClient.get<any>(url);
-  }
-
-  getProductAll(): Observable<any> {
-    let url = `${environment.url}/product`;
-    //'api/apps/ecommerce/inventory/products'
     return this._httpClient.get<any>(url).pipe(
       tap((response) => {
         // this._pagination.next(response.pagination);
         this._products.next(response.body);
       })
     );
+  }
+
+  getProductAll(): Observable<any> {
+    let url = `${environment.url}/product`;
+    //'api/apps/ecommerce/inventory/products'
+    return this._httpClient.get<any>(url);
   }
 
   /**

@@ -57,8 +57,6 @@ export class MailboxComposeComponent implements OnInit {
       product: ["", [Validators.required]],
     });
     // this.products$ = this._productService.products$;
-
-    this.list();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -68,7 +66,9 @@ export class MailboxComposeComponent implements OnInit {
   /**
    * On init
    */
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.list();
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
@@ -84,16 +84,32 @@ export class MailboxComposeComponent implements OnInit {
         "product"
       ].valueChanges.pipe(
         startWith(""),
-        map((value) => this._filter(value))
+        map((value) => this._filter(value === "" ? "99" : value))
       );
     });
   }
 
   private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.products.filter((product) =>
-      this._normalizeValue(product.name).includes(filterValue)
-    );
+    let filterValue;
+    if (value === "99") {
+      filterValue = "";
+    } else {
+      filterValue = value;
+    }
+
+    return this.products.filter((option) => {
+      if (typeof filterValue === "object") {
+        return (
+          option?.name?.indexOf(filterValue.name) === 0 ||
+          option?.name?.indexOf(filterValue.name?.toLowerCase()) === 0
+        );
+      } else {
+        return (
+          option?.name?.indexOf(filterValue) === 0 ||
+          option?.name?.indexOf(filterValue?.toLowerCase()) === 0
+        );
+      }
+    });
   }
 
   private _normalizeValue(value: string): string {
