@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrManager } from "ng6-toastr-notifications";
 import { Observable } from "rxjs";
 import { ProductService } from "../product.service";
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog } from "@angular/material/dialog";
 import { MailboxComposeComponent } from "../compose/compose.component";
 import { map, startWith } from "rxjs/operators";
 
@@ -22,6 +22,7 @@ import { map, startWith } from "rxjs/operators";
 export class ProductDetailComponent implements OnInit {
   productForm: FormGroup;
   dataSourceUnits: any[];
+  selectedUnit: any;
   productDetail: string;
   customers: any[];
   filteredOptions: Observable<string[]>;
@@ -34,7 +35,7 @@ export class ProductDetailComponent implements OnInit {
     public toastr: ToastrManager,
     private _router: Router,
     private readonly activatedRouter: ActivatedRoute,
-    private _matDialog: MatDialog,
+    private _matDialog: MatDialog
   ) {
     this.productForm = this._formBuilder.group({
       id: [""],
@@ -84,7 +85,10 @@ export class ProductDetailComponent implements OnInit {
       this._productService.deleteProduct(this.productDetail).subscribe();
     }
   }
-  onChangeUnit(event) {}
+  onChangeUnit(event) {
+    console.log(event.value);
+    this.selectedUnit = event.value;
+  }
 
   openComposeDialog(): void {
     // Open the dialog

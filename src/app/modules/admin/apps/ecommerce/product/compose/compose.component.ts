@@ -35,6 +35,7 @@ export class MailboxComposeComponent implements OnInit {
   };
   selectProductItem: any;
   dataSourceProducts: any[];
+  dataSourceUnits: any[];
   products: any[];
   filteredOptions: Observable<string[]>;
 
@@ -55,8 +56,11 @@ export class MailboxComposeComponent implements OnInit {
       subject: [""],
       body: ["", [Validators.required]],
       product: ["", [Validators.required]],
+      quantity: ["", [Validators.required]],
     });
     // this.products$ = this._productService.products$;
+    this.list();
+    this.dataSourceUnits = [" KM", "M2"];
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -66,9 +70,7 @@ export class MailboxComposeComponent implements OnInit {
   /**
    * On init
    */
-  ngOnInit(): void {
-    this.list();
-  }
+  ngOnInit(): void {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
@@ -101,16 +103,20 @@ export class MailboxComposeComponent implements OnInit {
       if (typeof filterValue === "object") {
         return (
           option?.name?.indexOf(filterValue.name) === 0 ||
-          option?.name?.indexOf(filterValue.name?.toLowerCase()) === 0
+          option?.name?.indexOf(filterValue.name?.toLowerCase()) === 0 ||
+          option?.name?.indexOf(filterValue.name?.toUpperCase()) === 0
         );
       } else {
         return (
           option?.name?.indexOf(filterValue) === 0 ||
-          option?.name?.indexOf(filterValue?.toLowerCase()) === 0
+          option?.name?.indexOf(filterValue?.toLowerCase()) === 0 ||
+          option?.name?.indexOf(filterValue?.toUpperCase()) === 0
         );
       }
     });
   }
+
+  onChangeUnit(event) {}
 
   private _normalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, "");
