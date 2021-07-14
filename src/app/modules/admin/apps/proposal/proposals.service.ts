@@ -191,8 +191,29 @@ export class ProposalService {
                 })
             ))
         );
+    }
 
+    deleteProposal(id: string): Observable<boolean> {
+        return this.proposals$.pipe(
+            take(1),
+            switchMap(proposals => this._httpClient.put(`${environment.url}/company/delete/${id}`, { id }).pipe(
+                map((isDeleted: any) => {
+                    if (isDeleted.success) {
 
+                        const index = proposals.findIndex(item => item.id === id);
+
+                        proposals.splice(index, 1);
+
+                        this._proposals.next(proposals);
+
+                    } else {
+                        this.toastr.errorToastr('Proposal was deleted !');
+                    }
+
+                    return isDeleted;
+                })
+            ))
+        );
     }
 
 

@@ -169,7 +169,7 @@
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                   [svgIcon]="'heroicons_outline:search'"></mat-icon> 
                 </button>
-                <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" mat-icon-button [color]="'warn'">
+                <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" (click)="deleteProposal(row)" mat-icon-button [color]="'warn'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                   [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
                 </button>

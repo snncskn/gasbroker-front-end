@@ -190,4 +190,9 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         }); 
     }
 
+    deleteProposal(item:any)
+    {
+       // this._proposalService.deleteProposal(item.id).subscribe();
+    }
+
 } 
