@@ -28,6 +28,7 @@ import { FormsModule } from "@angular/forms";
 import { MailboxComposeComponent } from "./product/compose/compose.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { QuillModule } from "ngx-quill";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { QuillModule } from "ngx-quill";
   imports: [
     RouterModule.forChild(ecommerceRoutes),
     MatDialogModule,
+    MatAutocompleteModule,
     FormsModule,
     MatButtonModule,
     MatCheckboxModule,
