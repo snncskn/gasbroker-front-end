@@ -1,1 +1,40 @@
-<p>offer-list works!</p>
+<div mat-dialog-content>
+    <div >
+        <table style="width: 700px!important" class="w-full table-fixed bg-transparent"
+          mat-table matSort [matSortActive]="'price'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
+          [multiTemplateDataRows]="true" [dataSource]="offers$" [trackBy]="trackByFn">
+
+          <ng-container matColumnDef="payment_type">
+            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+              Payment Type
+            </th>
+            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+              {{ row.payment_type }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+              Price
+            </th>
+            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+              {{ row.price }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="offer_date">
+            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+              Offer Date
+            </th>
+            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+              {{ row.offer_date | date:'dd/MM/yyyy' }}
+            </td>
+          </ng-container>
+
+          <tr class="shadow" mat-header-row *matHeaderRowDef="offersTableColumns; sticky: true"></tr>
+          <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
+            *matRowDef="let offer; columns: offersTableColumns"></tr>
+
+        </table>
+        </div>
+</div>

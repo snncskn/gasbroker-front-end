@@ -5,7 +5,7 @@ import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { Proposal } from './proposals.types';
+import { Proposal, ProposalOffer } from './proposals.types';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +15,8 @@ export class ProposalService {
     private _proposal: BehaviorSubject<Proposal | null> = new BehaviorSubject(null);
     private _proposals: BehaviorSubject<Proposal[] | null> = new BehaviorSubject(null);
     private _proposalsCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _offers: BehaviorSubject<ProposalOffer[] | null> = new BehaviorSubject(null);
+
 
 
 
@@ -49,6 +51,10 @@ export class ProposalService {
         return this._proposalsCount.asObservable();
     }
 
+    get offers$(): Observable<ProposalOffer[]> {
+        return this._offers.asObservable();
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -62,6 +68,16 @@ export class ProposalService {
             tap((proposals) => {
                 this._proposals.next(proposals.body);
                 this._proposalsCount = proposals.body.length;
+            })
+        );
+    }
+
+    getOffers(id: any): Observable<ProposalOffer[]> {
+
+        return this._httpClient.get<any>(`${environment.url}/proposal/offers/${id}`).pipe(
+            tap((offers) => {
+                this._offers.next(offers.body);
+                this._proposalsCount = offers.body.length;
             })
         );
     }
@@ -146,6 +162,20 @@ export class ProposalService {
             ))
         );
     }
+
+    createProposalOffer(item: any): Observable<any> {
+        return this.offers$.pipe(
+            take(1),
+            switchMap(offers => this._httpClient.post<any>(`${environment.url}/proposal/offer`, item).pipe(
+                map((newOffer) => {
+                    this.toastr.successToastr('Offer Received', 'Received!');
+                    
+                    return newOffer.body;
+                })
+            ))
+        );
+    }
+
 
     newVehicle(): Observable<any> {
         const today = new Date();
