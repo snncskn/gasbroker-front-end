@@ -31,7 +31,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     proposals$: Observable<Proposal[]>;
 
     proposalsCount: number = 0;
-    selectedProposal: Proposal;
+    selectedProposal: any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
@@ -63,6 +63,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
             .subscribe((proposal: Proposal[]) => {
 
                if(proposal){
+                this.selectedProposal=proposal
                 this.proposalsCount = proposal.length;
                }
                 this._changeDetectorRef.markForCheck();
@@ -174,21 +175,24 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
-    openProposalOffer(item: any){
+
+    openProposalOffer(item:any){
         const dialogRef = this.dialog.open(OfferComponent, { data: item });
         dialogRef.afterClosed().subscribe(result => {
 
         });
-
         
     }
-    openProposalList(item: any){
+    openOfferList(item: any){
         const dialogRef = this.dialog.open(OfferListComponent, { data: item });
         dialogRef.afterClosed().subscribe(result => {
 
-        });
+        }); 
+    }
 
-        
+    deleteProposal(item:any)
+    {
+       // this._proposalService.deleteProposal(item.id).subscribe();
     }
 
 } 
