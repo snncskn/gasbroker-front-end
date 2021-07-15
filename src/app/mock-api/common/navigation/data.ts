@@ -52,7 +52,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id      : 'app.vehicles',
                 title   : 'Vehicles',
                 type    : 'basic',
-                icon    : 'heroicons_outline:archive',
+                icon    : 'heroicons_outline:truck',
                 link    : '/apps/vehicles'
             },
             {
@@ -61,6 +61,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:archive',
                 link    : '/apps/proposals/list'
+            },
+            {
+                id      : 'app.transportaion',
+                title   : 'Transportation',
+                type    : 'basic',
+                icon    : 'heroicons_outline:flag',
+                link    : '/apps/transportation/list'
             },
             /*{
                 id      : 'app.invoicing',
