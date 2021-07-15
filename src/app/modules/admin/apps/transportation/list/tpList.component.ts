@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProcessService } from '../transportation.service';
@@ -34,8 +35,7 @@ export class TransportationListComponent implements OnInit
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _processService: ProcessService,
-
-
+        public toastr: ToastrManager,
     )
     {
         this._processService.getProcess().subscribe();
@@ -57,10 +57,16 @@ export class TransportationListComponent implements OnInit
     }
 
     newProcess(){
-        console.log(123);
         this._router.navigate(['/apps/transportation/form']);
     }
 
+    deleteProcess(item :any){
+        this._processService.getProcessDelete(item).subscribe(data=>{
+            this._router.navigateByUrl('/apps/transportation/list');
+            this._processService.getProcess().subscribe();
+            this.toastr.errorToastr('Process deleted', 'deleted!');
+        });
+    }
     openProcess(item:any)
     {
         this._router.navigate(['/apps/transportation/form/'+item.id]);

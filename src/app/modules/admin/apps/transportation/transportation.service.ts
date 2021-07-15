@@ -71,20 +71,17 @@ export class ProcessService {
         return this._httpClient.get<any>(url);
     }
 
-    getProcessGroupById(id:any):
-        Observable<any> {
+    getProcessGroupById(id: any): Observable<any> {
         let url = `${environment.url}/process-group/${id}`;
         return this._httpClient.get<any>(url);
     }
-    getProcessSave(item:any):
-        Observable<any> {
+    getProcessSave(item: any): Observable<any> {
         let url = `${environment.url}/process/`;
-        return this._httpClient.get<any>(url,item);
+        return this._httpClient.post<any>(url, item);
     }
-    getProcessDelete(item:any):
-        Observable<any> {
-        let url = `${environment.url}/process/${item.id}`;
-        return this._httpClient.put<any>(url,item);
+    getProcessDelete(item: any): Observable<any> {
+        let url = `${environment.url}/process/delete/${item.id}`;
+        return this._httpClient.put<any>(url, item);
     }
 
     getCustomers():

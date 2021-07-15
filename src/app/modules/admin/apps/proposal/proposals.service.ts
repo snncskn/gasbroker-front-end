@@ -74,7 +74,7 @@ export class ProposalService {
 
     getOffers(id: any): Observable<ProposalOffer[]> {
 
-        return this._httpClient.get<any>(`${environment.url}/proposal/offers/${id}`).pipe(
+        return this._httpClient.get<any>(`${environment.url}/offer/${id}`).pipe(
             tap((offers) => {
                 this._offers.next(offers.body);
                 this._proposalsCount = offers.body.length;
@@ -166,7 +166,7 @@ export class ProposalService {
     createProposalOffer(item: any): Observable<any> {
         return this.offers$.pipe(
             take(1),
-            switchMap(offers => this._httpClient.post<any>(`${environment.url}/proposal/offer`, item).pipe(
+            switchMap(offers => this._httpClient.post<any>(`${environment.url}/offer`, item).pipe(
                 map((newOffer) => {
                     this.toastr.successToastr('Offer Received', 'Received!');
                     

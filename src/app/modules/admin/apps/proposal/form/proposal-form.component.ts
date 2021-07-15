@@ -135,7 +135,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
        createPrp.status = this.verticalStepperForm.value.step1.status;
        createPrp.product_id = this.selectedProdcut.id;
        this._proposalService.createProposal(createPrp).subscribe(data => {
-           console.log(123);
+         
         this._router.navigateByUrl('/apps/proposals/list');
 
        });

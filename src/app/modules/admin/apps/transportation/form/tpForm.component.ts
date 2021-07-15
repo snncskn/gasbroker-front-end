@@ -23,6 +23,7 @@ export class TransportationFormComponent implements OnInit {
     customers: any[];
     filteredOptions: Observable<string[]>;
     selectCustomerItem: any;
+    isMap: boolean  = true;
 
     center: google.maps.LatLngLiteral = {lat: 41, lng: 29};
     zoom = 7;
@@ -30,7 +31,7 @@ export class TransportationFormComponent implements OnInit {
     markerPositions: google.maps.LatLngLiteral[] = [];
 
     addMarker(event: google.maps.MapMouseEvent) {
-        this.markerPositions=[];
+        this.markerPositions = [];
         this.markerPositions.push(event.latLng.toJSON());
         this.markerPositions.forEach((element)=>(
             this.processForm.patchValue({
@@ -64,9 +65,13 @@ export class TransportationFormComponent implements OnInit {
         
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
+                this.isMap = false;
                 this._processService.getProcessById(params.get("id")).subscribe(data => {
                     this.processForm.patchValue(data.body);
-                })
+                    let center: google.maps.LatLngLiteral = {lng: parseInt(data.body.latitude), lat: parseInt(data.body.longitude)};
+                    this.markerPositions.push(center);
+                    this.isMap = true;
+                });
             };
         });
     }
@@ -84,17 +89,20 @@ export class TransportationFormComponent implements OnInit {
       }
 
     addNewProcess() {
-        console.log(123);
         this._processService.getProcessSave(this.processForm.getRawValue()).subscribe(data=>{
-            this.dataSourceSubGroup = data.body.process_sub_groups;
+            this._router.navigateByUrl('/apps/transportation/list');
+            this.toastr.successToastr('Process created', 'Created!');
+
           });
     }
 
     deleteProcess()
     {
-        console.log(123);
         this._processService.getProcessDelete(this.processForm.getRawValue()).subscribe(data=>{
-            this.dataSourceSubGroup = data.body.process_sub_groups;
+            this._router.navigateByUrl('/apps/transportation/list');
+            this.toastr.errorToastr('Process deleted', 'deleted!');
+
+
         });
     }
 }
