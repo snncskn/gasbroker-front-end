@@ -76,6 +76,8 @@ export class InventoryListComponent
   vendors: InventoryVendor[];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   calendarColors: any = calendarColors;
+  dataSourceUnits: any[];
+
 
   /**
    * Constructor
@@ -84,6 +86,7 @@ export class InventoryListComponent
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: FormBuilder,
     private _router: Router,
+    private _productService: ProductService,
     private readonly ngxService: NgxUiLoaderService,
     private _inventoryService: ProductService
   ) {}
@@ -94,6 +97,7 @@ export class InventoryListComponent
       id: [""],
       code: [""],
       name: [""],
+      unit: [""],
       // properties: [[]],
       // categories: [[]],
       images: [[]],
@@ -101,6 +105,9 @@ export class InventoryListComponent
       active: [true],
     });
 
+    this._productService.getUnits().subscribe((res) => {
+      this.dataSourceUnits = res.body;
+    });
     // Get the pagination
     this._inventoryService.pagination$
       .pipe(takeUntil(this._unsubscribeAll))
@@ -445,7 +452,8 @@ export class InventoryListComponent
 
   createProduct(): void {
     this.ngxService.start();
-    this._inventoryService.createProduct().subscribe((newProduct) => {
+    let tmp = { id: "", code: "", active: "1", name: "" };
+    this._inventoryService.createProduct(tmp).subscribe((newProduct) => {
       this.selectedProduct = newProduct.body;
       this.ngxService.stop();
       this.selectedProductForm.patchValue(newProduct.body);

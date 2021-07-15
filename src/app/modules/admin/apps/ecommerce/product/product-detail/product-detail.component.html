@@ -45,7 +45,7 @@
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>Unit of Measure </mat-label>
                                     <mat-select [formControlName]="'unit'" (selectionChange)="onChangeUnit($event)">
-                                        <mat-option *ngFor="let option of dataSourceUnits" [value]="option.description">
+                                        <mat-option *ngFor="let option of dataSourceUnits" [value]="option.name">
                                             <ng-container>
                                                 {{option.description | titlecase}}
                                             </ng-container>

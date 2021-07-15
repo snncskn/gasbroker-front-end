@@ -71,7 +71,7 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {}
 
   addNewProduct() {
-    this._productService.createProduct().subscribe((data) => {
+    this._productService.createProduct(this.productForm.value).subscribe((data) => {
       this._router.navigate(["/apps/products/products"]);
     });
   }

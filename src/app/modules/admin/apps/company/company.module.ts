@@ -64,7 +64,7 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
         FormsModule,
         CompanyRoutingModule,
         GoogleMapsModule,
-        SharedModule
+        SharedModule,
         FileUploadModule
     ],
     providers   : [

@@ -187,13 +187,13 @@ export class ProductService {
   /**
    * Create product
    */
-  createProduct(): Observable<any> {
-    let tmp = { id: "", code: "", active: "1", name: "" };
+  createProduct(item: any): Observable<any> {
+    
     let url = `${environment.url}/product/`;
     return this.products$.pipe(
       take(1),
       switchMap(() =>
-        this._httpClient.post<any>(url, tmp).pipe(
+        this._httpClient.post<any>(url, item).pipe(
           map((newProduct) => {
             this._products.next([newProduct.body]);
 
@@ -219,6 +219,7 @@ export class ProductService {
           map((updatedProduct) => {
             const index = products.findIndex((item) => item.id === product.id);
             products[index] = updatedProduct.body;
+            this.toastr.warningToastr("Product updated", "Updated!");
 
             this._products.next(products);
 
