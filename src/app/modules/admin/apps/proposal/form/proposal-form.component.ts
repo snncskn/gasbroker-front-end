@@ -7,6 +7,7 @@ import { tap, startWith, debounceTime, distinctUntilChanged, switchMap, map } fr
 import { VehiclesService } from '../../vehicles/vehicles.service';
 import { ProposalService } from '../proposals.service';
 import { environment } from 'environments/environment';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     constructor(private _formBuilder: FormBuilder,
         private _vehiclesService: VehiclesService,
         private _productService: ProductService,
+        private _router: Router,
         private _proposalService: ProposalService,
     ) {
         this.fileUploadUrl = environment.url+'/media';
@@ -42,7 +44,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy(): void {
-        throw new Error('Method not implemented.');
+
     }
 
     ngOnInit(): void {
@@ -132,8 +134,10 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
        createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
        createPrp.status = this.verticalStepperForm.value.step1.status;
        createPrp.product_id = this.selectedProdcut.id;
-       this._proposalService.createProposal(createPrp).subscribe(data=>{
-           console.log(data.body);
+       this._proposalService.createProposal(createPrp).subscribe(data => {
+           console.log(123);
+        this._router.navigateByUrl('/apps/proposals/list');
+
        });
     }
 

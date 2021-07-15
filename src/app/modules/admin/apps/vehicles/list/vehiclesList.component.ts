@@ -164,7 +164,9 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
 
     deleteVehicle(item:any)
     {
-        this._vehicleService.deleteVehicle(item.id).subscribe();
+        this._vehicleService.deleteVehicle(item.id).subscribe(data=>{
+            this._vehicleService.getVehicles().subscribe();
+        });
     }
 
     onBackdropClicked(): void {

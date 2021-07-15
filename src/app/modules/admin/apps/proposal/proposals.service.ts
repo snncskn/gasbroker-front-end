@@ -156,7 +156,7 @@ export class ProposalService {
                 map((newVehicle) => {
 
                     this._proposals.next([newVehicle.body, ...proposals]);
-
+                    this.toastr.successToastr('Proposal Created', 'Create!');
                     return newVehicle.body;
                 })
             ))

@@ -57,6 +57,7 @@ export class TransportationListComponent implements OnInit
     }
 
     newProcess(){
+        console.log(123);
         this._router.navigate(['/apps/transportation/form']);
     }
 
