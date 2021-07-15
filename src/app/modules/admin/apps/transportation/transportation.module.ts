@@ -29,11 +29,13 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { transportationRoutes, TransportationRoutingModule } from './transportation.routing';
 import { TransportationComponent } from './transportation.component';
 import { TransportationListComponent } from './list/tpList.component';
+import { TransportationFormComponent } from './form/tpForm.component';
 
 @NgModule({
     declarations: [
         TransportationComponent,
-        TransportationListComponent
+        TransportationListComponent,
+        TransportationFormComponent
 
     ],
     imports     : [

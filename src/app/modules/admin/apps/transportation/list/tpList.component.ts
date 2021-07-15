@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ProcessService } from '../transportation.service';
+import { Process } from '../transportation.types';
 
 @Component({
     selector       : 'tp-list',
@@ -9,16 +12,19 @@ import { Observable } from 'rxjs';
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TransportationListComponent
+export class TransportationListComponent implements OnInit
 {
 
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
 
+    processCount: number = 0;
+    processes$:Observable<Process[]>
     transportations$: Observable<any[]>
     transportationsCount: number = 0;
     drawerMode: 'side' | 'over';
-
-    transportationTableColumns: string[] = ['name', 'type', 'registered_date', 'email','phone','detail'];
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+    transportationTableColumns: string[] = ['process_date', 'address', 'group', 'group_sub','detail'];
+    selectedProcess:any;
 
     /**
      * Constructor
@@ -27,11 +33,37 @@ export class TransportationListComponent
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _processService: ProcessService,
+
 
     )
     {
+        this._processService.getProcess().subscribe();
     }
 
+    ngOnInit(): void{
+
+        this.processes$ = this._processService.processes$;
+        this._processService.processes$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((process: Process[]) => {
+
+               if(process){
+                this.selectedProcess=process
+                this.processCount = process.length;
+               }
+                this._changeDetectorRef.markForCheck();
+            });
+    }
+
+    newProcess(){
+        this._router.navigate(['/apps/transportation/form']);
+    }
+
+    openProcess(item:any)
+    {
+        this._router.navigate(['/apps/transportation/form/'+item.id]);
+    }
 
     onBackdropClicked(): void
     {

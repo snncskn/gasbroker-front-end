@@ -18,10 +18,10 @@
             <div>
               <div class="text-4xl font-extrabold tracking-tight leading-none">Transportation</div>
               <div class="ml-0.5 font-medium text-secondary">
-                <!--<ng-container *ngIf="transportationsCount > 0">
+                <ng-container *ngIf="processCount > 0">
   
                 </ng-container>
-                Total Record {{transportationsCount}}-->
+                Total Record {{processCount}}
               </div>
             </div>
   
@@ -37,7 +37,7 @@
               </div>
                -->
               <button class="ml-4" mat-flat-button [color]="'primary'">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <mat-icon [svgIcon]="'heroicons_outline:plus'" (click)=newProcess()></mat-icon>
                 <span class="ml-2 mr-1">Add</span>
               </button>
             </div>
@@ -46,59 +46,50 @@
           <!-- Customers list -->
           <div class="relative">
             <table class="w-full min-w-320 table-fixed bg-transparent"
-              mat-table matSort [matSortActive]="'name'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
-              [multiTemplateDataRows]="true" [dataSource]="transportations$" [trackBy]="trackByFn">
+              mat-table matSort [matSortActive]="'process_date'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
+              [multiTemplateDataRows]="true" [dataSource]="processes$" [trackBy]="trackByFn">
   
-              <ng-container matColumnDef="name">
+              <ng-container matColumnDef="process_date">
                 <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                   disableClear>
-                  Company Name
+                  Process Date
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  {{ row.name }}
+                  {{ row.process_date | date:'dd/MM/yyyy' }}
                 </td>
               </ng-container>
   
-              <ng-container matColumnDef="type">
+              <ng-container matColumnDef="address">
                 <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                   disableClear>
-                  Type
+                  Address
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                   <div class="flex items-center justify-between">
                     <ng-container>
                       <div>
-                        {{row.types}}
+                        {{row.address}}
                       </div>
                     </ng-container>
                   </div>
                 </td>
               </ng-container>
-              <ng-container matColumnDef="registered_date">
+              <ng-container matColumnDef="group">
                 <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                   disableClear>
-                  Registered Date
+                  Movement Group 
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  {{ row.registered_date | date:'dd/MM/yyyy' }}
+                  {{ row.process_group.description }}
                 </td>
               </ng-container>
-              <ng-container matColumnDef="email">
+              <ng-container matColumnDef="group_sub">
                 <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                   disableClear>
-                  E mail
+                  Sub Movement Group
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  {{ row.email }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="phone">
-                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                  disableClear>
-                  Phone
-                </th>
-                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  {{ row.phone }}
+                  {{ row.process_sub_group.description }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="detail">
@@ -108,11 +99,11 @@
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                   <div>
-                  <button class="fuse-mat-button-rounded" (click)="openCompany(row)" mat-icon-button [color]="'primary'">
+                  <button class="fuse-mat-button-rounded" (click)="openProcess(row)" mat-icon-button [color]="'primary'">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                     [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon>
                   </button>
-                  <button class="fuse-mat-button-rounded text-on-warn-100" mat-icon-button [color]="'warn'" (click)="deleteCompany(row)">
+                  <button class="fuse-mat-button-rounded ml-1 text-on-warn-100" mat-icon-button [color]="'warn'" (click)="deleteCompany(row)">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                     [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
                   </button>
@@ -122,7 +113,7 @@
   
               <tr class="shadow" mat-header-row *matHeaderRowDef="transportationTableColumns; sticky: true"></tr>
               <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-                *matRowDef="let customers; columns: transportationTableColumns"></tr>
+                *matRowDef="let processes; columns: transportationTableColumns"></tr>
   
             </table>
           </div>
