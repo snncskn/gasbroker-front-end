@@ -27,6 +27,7 @@ import { CustomersTDComponent } from './tabDetails/companyTD.component';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
+import { FileUploadModule } from '@iplab/ngx-file-upload';
 
 @NgModule({
     declarations: [
@@ -59,7 +60,8 @@ import { MatSortModule } from '@angular/material/sort';
         MatTabsModule,
         FormsModule,
         CompanyRoutingModule,
-        SharedModule
+        SharedModule,
+        FileUploadModule
     ],
     providers   : [
         {

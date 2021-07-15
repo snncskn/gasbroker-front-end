@@ -183,7 +183,9 @@ export class CustomersListComponent implements OnInit, OnDestroy
 
     deleteCompany(item:any)
     {
-        this._customersService.deleteCompany(item.id).subscribe();
+        this._customersService.deleteCompany(item.id).subscribe(data=>{
+            this._customersService.getCustomers().subscribe();
+        });
     }
 
     trackByFn(index: number, item: any): any {

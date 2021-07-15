@@ -82,7 +82,10 @@ export class ProductDetailComponent implements OnInit {
 
   deleteProduct() {
     if (this.productDetail) {
-      this._productService.deleteProduct(this.productDetail).subscribe();
+      this._productService.deleteProduct(this.productDetail).subscribe(data=>{
+      this._router.navigate(["/apps/products/products"]);
+
+      });
     }
   }
   onChangeUnit(event) {

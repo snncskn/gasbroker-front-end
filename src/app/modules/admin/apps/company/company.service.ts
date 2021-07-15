@@ -72,6 +72,12 @@ export class CustomersService {
         return this._httpClient.get<any>(url);
     }
 
+    getCompanyDocs():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/COMPANY_DOCS`;
+        return this._httpClient.get<any>(url);
+    }
+
     /**
      * Search customers with given query
      *
@@ -183,7 +189,7 @@ export class CustomersService {
      *
      * @param company_id
      */
-     deleteCompany(company_id: string): Observable<boolean> {
+    deleteCompany(company_id: string): Observable<boolean> {
         return this.customers$.pipe(
             take(1),
             switchMap(customers => this._httpClient.put(`${environment.url}/company/delete/${company_id}`, { company_id }).pipe(
@@ -209,12 +215,6 @@ export class CustomersService {
         );
     }
 
-    /**
-     * Update the avatar of the given customer
-     *
-     * @param id
-     * @param avatar
-     */
     uploadAvatar(id: string, avatar: File): Observable<Company> {
         const formData = new FormData();
         let headers = new Headers();
@@ -224,6 +224,42 @@ export class CustomersService {
         formData.append("file", avatar);
         let tmp = {};
         return this._httpClient.post<any>(
-            `${environment.url}/files/avatar/`, formData);
+            `${environment.url}/users/avatar/`, formData);
+    }
+
+
+    uploadMedia(file: File,company_id?: string,user_id?: string,title?: string, description?:string, type?:string,
+                                        video_url?:string, ref?: string, ref_id?:string): Observable<Company> {
+        const formData = new FormData();
+        let headers = new Headers();
+        console.log(123);
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        formData.append("file", file);
+        formData.append("company_id", company_id);
+        formData.append("user_id", user_id);
+        formData.append("title", title);
+        formData.append("description", description); 
+        formData.append("type", type); 
+        formData.append("video_url", video_url); 
+        formData.append("ref", ref); 
+        formData.append("ref_id", ref_id); 
+        
+
+/*
+        let tmp = {
+            company_id: company_id,
+            user_id :user_id,
+            title : title,
+            file: file,
+            description: description,
+            type:type,
+            video_url:video_url,
+            ref: ref,
+            ref_id: ref_id
+        };
+        */
+        return this._httpClient.post<any>(
+            `${environment.url}/media/upload`, formData);
     }
 }
