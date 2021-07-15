@@ -120,9 +120,8 @@ export class UsersFormComponent implements OnInit {
         }
     }
 
-    deleteUser(){
-        if(this.usersForm.value.id)
-        {
+    deleteUser() {
+        if (this.usersForm.value.id) {
             this._usersService.deleteUser(this.usersForm.value.id).subscribe()
         }
     }

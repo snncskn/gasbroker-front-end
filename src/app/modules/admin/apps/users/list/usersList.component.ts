@@ -15,14 +15,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
-    selector       : 'usersList-list',
-    templateUrl    : './usersList.component.html',
-    encapsulation  : ViewEncapsulation.None,
+    selector: 'usersList-list',
+    templateUrl: './usersList.component.html',
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations     : fuseAnimations
+    animations: fuseAnimations
 })
-export class UsersListComponent implements OnInit
-{
+export class UsersListComponent implements OnInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -31,7 +30,7 @@ export class UsersListComponent implements OnInit
     isLoading: boolean = false;
     pagination: UsersPagination;
     usersCount: number = 0;
-    usersTableColumns: string[] = ['name','username','email','website','detail'];
+    usersTableColumns: string[] = ['name', 'username', 'email', 'website', 'detail'];
     selectedUser: UsersList | null = null;
     selectedUserForm: FormGroup;
     calendarColors: any = calendarColors;
@@ -49,43 +48,48 @@ export class UsersListComponent implements OnInit
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
 
-    ){
+    ) {
         this.onLoad();
-
     }
 
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.selectedUserForm = this._formBuilder.group({
-            id               : [''],
-            username         : [''],
-            email            : [''],
-            name             : [''],
+            id: [''],
+            username: [''],
+            email: [''],
+            name: [''],
         });
 
+        this.users$ = this._usersService.users$;
+        this._usersService.users$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((users: UsersList[]) => {
+                // Update the counts
+                this.usersCount = users?.length;
 
-    // Get the users
-    this.users$ = this._usersService.users$;
-    this._usersService.users$
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((users: UsersList[]) => {
-            // Update the counts
-            this.usersCount = users?.length;
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
 
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });       
+        this._usersService.user$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((user: UsersList) => {
+                // Update the counts
+                this.selectedUser = user;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
-    
-    ngAfterViewInit(): void
-    {
+
+    ngAfterViewInit(): void {
         // If the user changes the sort order...
         this._sort.sortChange
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
             });
         // Get products if sort or page changes
-        merge(this._sort.sortChange, ).pipe(
+        merge(this._sort.sortChange,).pipe(
             switchMap(() => {
                 this.isLoading = true;
                 return this._usersService.getUsers();
@@ -96,14 +100,13 @@ export class UsersListComponent implements OnInit
         ).subscribe();
     }
 
-    onLoad(){
+    onLoad() {
         this._usersService.getUsers().subscribe();
     }
 
-    onBackdropClicked(): void
-    {
+    onBackdropClicked(): void {
         // Go back to the list
-        this._router.navigate(['./'], {relativeTo: this._activatedRoute});
+        this._router.navigate(['./'], { relativeTo: this._activatedRoute });
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
@@ -112,17 +115,16 @@ export class UsersListComponent implements OnInit
     /**
     * Create User
     */
-    createUser()
-    {
+    createUser() {
         this._router.navigate(['/apps/users/form']);
     }
 
-    openUser(item:any){
+    openUser(item: any) {
         console.log(item)
-        this._router.navigate(['/apps/users/form/'+item.id])
+        this._router.navigate(['/apps/users/form/' + item.id])
     }
 
-    deleteUser(item:any){
+    deleteUser(item: any) {
         this._usersService.deleteUser(item.id).subscribe()
     }
 

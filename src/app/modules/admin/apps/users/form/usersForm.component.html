@@ -23,89 +23,91 @@
                 <mat-tab-group mat-align-tabs="left">
 
                     <mat-tab label="Genel Bilgiler">
-                <div class="flex items">
-                        <div class="ml-2 w-1/3">
-                            <div class="mt-6">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Name</mat-label>
-                                    <input matInput [formControlName]="'name'"
-                                        [placeholder]="'Name'" [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
-                            <div class="mt-6">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>User Name</mat-label>
-                                    <input matInput [formControlName]="'username'"
-                                        [placeholder]="'User Name'" [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
-                            <div class="flex items">
-                                <div class="mt-6 w-full">
-                                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                                        <mat-label>E mail</mat-label>
-                                        <input matInput [formControlName]="'email'"
-                                            [placeholder]="'E mail'" [spellcheck]="false">
-                                    </mat-form-field>
-                            </div>
-                            <div class="mt-6 ml-2 w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Website</mat-label>
-                                    <input matInput [formControlName]="'website'"
-                                        [placeholder]="'Website'" [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <ng-container *ngIf="!isNew">
                         <div class="flex items">
-                        <div class="mt-6 w-full">
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                <mat-label>Password</mat-label>
-                                <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                                <input type="password" [formControlName]="'password'" matInput>
-                            </mat-form-field>
-                        </div>
-                        <div class=" mt-6 ml-2 w-full">
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                <mat-label>Confirm Password</mat-label>
-                                <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                                <input type="password" [formControlName]="'confirmPassword'" matInput>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </ng-container>
-                        </div>
+                            <div class="ml-2 w-1/3">
+                                <div class="mt-6">
+                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput [formControlName]="'name'" [placeholder]="'Name'"
+                                            [spellcheck]="false">
+                                    </mat-form-field>
+                                </div>
+                                <div class="mt-6">
+                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                        <mat-label>User Name</mat-label>
+                                        <input matInput [formControlName]="'username'" [placeholder]="'User Name'"
+                                            [spellcheck]="false">
+                                    </mat-form-field>
+                                </div>
+                                <div class="flex items">
+                                    <div class="mt-6 w-full">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>E mail</mat-label>
+                                            <input matInput [formControlName]="'email'" [placeholder]="'E mail'"
+                                                [spellcheck]="false">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="mt-6 ml-2 w-full">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>Website</mat-label>
+                                            <input matInput [formControlName]="'website'" [placeholder]="'Website'"
+                                                [spellcheck]="false">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="!isNew">
+                                    <div class="flex items">
+                                        <div class="mt-6 w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>Password</mat-label>
+                                                <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+                                                <input type="password" [formControlName]="'password'" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class=" mt-6 ml-2 w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>Confirm Password</mat-label>
+                                                <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+                                                <input type="password" [formControlName]="'confirmPassword'" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
 
-                    </div>
+                        </div>
                     </mat-tab>
                     <ng-container *ngIf="isNew">
-                    <mat-tab label="Reset Password">
-                        <form [formGroup]="resetPassForm">
-                        <div class="w-1/3">
-                        <div class="mt-6 w-full">
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                <mat-label>New Password</mat-label>
-                                <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                                <input type="password" [formControlName]="'password'" matInput required>
-                            </mat-form-field>
-                        </div>
-                        <div class="mt-6 w-full">
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                <mat-label>Confirm New Password</mat-label>
-                                <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                                <input type="password" [formControlName]="'confirmPassword'" matInput required>
-                            </mat-form-field>
-                        </div>
-                        <div class="mt-6">
-                            <button class="" mat-flat-button [color]="'primary'"
-                            [disabled]="resetPassForm.invalid || resetPassForm.pristine" (click)="resetPassword()">
-                            <span class="ml-2 mr-1">Save</span>
-                        </button>
-                        </div>
-                    </div>
-                </form>
-                    </mat-tab>
+                        <mat-tab label="Reset Password">
+                            <form [formGroup]="resetPassForm">
+                                <div class="w-1/3">
+                                    <div class="mt-6 w-full">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>New Password</mat-label>
+                                            <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+                                            <input type="password" [formControlName]="'password'" matInput required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="mt-6 w-full">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>Confirm New Password</mat-label>
+                                            <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+                                            <input type="password" [formControlName]="'confirmPassword'" matInput
+                                                required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="mt-6">
+                                        <button class="" mat-flat-button [color]="'primary'"
+                                            [disabled]="resetPassForm.invalid || resetPassForm.pristine"
+                                            (click)="resetPassword()">
+                                            <span class="ml-2 mr-1">Save</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-tab>
                     </ng-container>
-                    </mat-tab-group>
+                </mat-tab-group>
             </form>
         </div>
     </div>
