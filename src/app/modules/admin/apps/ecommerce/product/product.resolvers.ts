@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProductService } from 'app/modules/admin/apps/ecommerce/product/product.service';
-import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor } from 'app/modules/admin/apps/ecommerce/product/product.types';
+import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryProperty, InventoryVendor } from 'app/modules/admin/apps/ecommerce/product/product.types';
 
 @Injectable({
     providedIn: 'root'
@@ -140,7 +140,7 @@ export class InventoryProductsResolver implements Resolve<any>
 @Injectable({
     providedIn: 'root'
 })
-export class InventoryTagsResolver implements Resolve<any>
+export class InventoryPropertiesResolver implements Resolve<any>
 {
     /**
      * Constructor
@@ -159,9 +159,9 @@ export class InventoryTagsResolver implements Resolve<any>
      * @param route
      * @param state
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<InventoryTag[]>
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<InventoryProperty[]>
     {
-        return this._productService.getTags();
+        return this._productService.getProperties();
     }
 }
 

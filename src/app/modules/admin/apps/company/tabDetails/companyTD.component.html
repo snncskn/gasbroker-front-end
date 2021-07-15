@@ -211,7 +211,22 @@
                         </form>
                     </mat-tab>
 
-                    <mat-tab label="Evrak Listesi">Content 3</mat-tab>
+                    <mat-tab label="Evrak Listesi">
+
+                        <div *ngFor="let item of  dataSourceDocs">
+                            {{item.description}}
+                            <form [formGroup]="demoForm">
+                                <file-upload formControlName="files" [multiple]="multiple" [animation]="animation">
+                                </file-upload>
+                                <input type="hidden" formControlName="label" [ngModel]="item.description">
+                            </form>
+                         
+                        </div>
+
+                        <button mat-flat-button [color]="'primary'" (click)="upload()">
+                            Upload
+                        </button>
+                    </mat-tab>
 
                     <mat-tab label="Onay Süreçleri">Content 3</mat-tab>
 

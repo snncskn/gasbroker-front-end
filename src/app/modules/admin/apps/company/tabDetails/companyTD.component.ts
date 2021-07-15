@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FileUploadValidators } from '@iplab/ngx-file-upload';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { CustomersService } from '../company.service';
 
@@ -14,6 +15,7 @@ import { CustomersService } from '../company.service';
 export class CustomersTDComponent implements OnInit {
     customerForm: FormGroup;
     dataSourceTypes: any[];
+    dataSourceDocs: any[];
     resetPassForm: FormGroup;
     addressesForm: FormGroup;
     addressList:any[];
@@ -33,6 +35,18 @@ export class CustomersTDComponent implements OnInit {
             })
         ))
       }
+
+    //file upload
+    public animation: boolean = false;
+    public multiple: boolean = false;
+    private filesControl = new FormControl(null);
+    private label = new FormControl(null);
+
+    public demoForm = new FormGroup({
+        files: this.filesControl,
+        label: this.label,
+    });
+    //file upload
 
     companyDetail: string;
     constructor(
@@ -86,6 +100,11 @@ export class CustomersTDComponent implements OnInit {
         this._customersService.getTypes().subscribe(res => {
             this.dataSourceTypes = res.body;
         });
+        this._customersService.getCompanyDocs().subscribe(res => {
+            this.dataSourceDocs = res.body;
+        });
+        
+        
     }
 
     ngOnInit(): void {
@@ -136,4 +155,29 @@ export class CustomersTDComponent implements OnInit {
             this.addressList=data.body;
         })
     }
+ 
+    public toggleStatus(): void {
+        this.filesControl.disabled ? this.filesControl.enable() : this.filesControl.disable();
+    }
+
+    public toggleMultiple() {
+        this.multiple = !this.multiple;
+    }
+
+    public clear(): void {
+        this.filesControl.setValue([]);
+    }
+
+    upload(){
+        console.log(this.demoForm.value);
+        this._customersService.uploadMedia(this.demoForm.value.files[0], this.companyDetail,'de46be50-b221-4dc3-9d7e-db409389d668',this.demoForm.value.label,'','test','').subscribe(data=>{
+            console.log(data);
+        });
+    }
+    formUrunEkle(val: any){ 
+        return new FormBuilder().group({
+            files: this.filesControl,
+            label: this.label,
+        })
+      }
 }

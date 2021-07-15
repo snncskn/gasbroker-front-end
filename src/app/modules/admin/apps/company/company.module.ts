@@ -29,6 +29,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { FileUploadModule } from '@iplab/ngx-file-upload';
 
 @NgModule({
     declarations: [
@@ -64,6 +65,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
         CompanyRoutingModule,
         GoogleMapsModule,
         SharedModule
+        FileUploadModule
     ],
     providers   : [
         {
