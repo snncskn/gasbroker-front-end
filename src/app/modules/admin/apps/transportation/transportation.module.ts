@@ -19,7 +19,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import * as moment from 'moment';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
-import { CompanyRoutingModule, customersRoutes } from 'app/modules/admin/apps/company/company.routing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';

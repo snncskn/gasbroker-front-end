@@ -81,7 +81,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title   : 'Users',
                 type    : 'basic',
                 icon    : 'heroicons_outline:user',
-                link    : '/apps/users'
+                link    : '/apps/users/list'
             },
             /*{
                 id      : 'settings',

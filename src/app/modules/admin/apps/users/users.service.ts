@@ -24,6 +24,8 @@ export class UsersService {
   private _roles: BehaviorSubject<UsersRoles[] | null> = new BehaviorSubject(
     null
   );
+  private _usersCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+
 
   /**
    * Constructor
@@ -38,6 +40,10 @@ export class UsersService {
     return this._user.asObservable();
   }
 
+  get getCount$(): Observable<any> {
+    return this._usersCount.asObservable();
+  }
+
   get users$(): Observable<UsersList[]> {
     return this._users.asObservable();
   }
@@ -46,42 +52,17 @@ export class UsersService {
     return this._roles.asObservable();
   }
 
-  /**
-   * Get users
-   *
-   *
-   * @param page
-   * @param size
-   * @param sort
-   * @param order
-   * @param search
-   */
 
-  getUsers(
-    page: number = 0,
-    size: number = 10,
-    sort: string = "username",
-    order: "asc" | "desc" | "" = "asc",
-    search: string = ""
-  ): Observable<{ pagination: UsersPagination; users: UsersList[] }> {
-    let url = `${environment.url}/users/find`;
-
-    return this._httpClient
-      .post<{ pagination: UsersPagination; users: UsersList[] }>(url, {
-        queryParams: {
-          pageNumber: "" + page,
-          pageSize: "" + size,
-          sortField: sort,
-          sortOrder: order,
-          filter: { username: search },
-        },
+  getUsers(){
+    return this._httpClient.get<any>(`${environment.url}/api/user`).pipe(
+      tap((users) => {
+          this._users.next(users.body);
+          this._usersCount = users.body.length;
       })
-      .pipe(
-        tap((response) => {
-          this._pagination.next(response.pagination);
-          this._users.next(response.users);
-        })
       );
+  }
+  getUsersById(id: string): Observable<any> {
+    return this._httpClient.get<any>(`${environment.url}/api/user/${id}`)
   }
 
   getRoles(userId?: string): Observable<any> {
@@ -137,24 +118,13 @@ export class UsersService {
   /**
    * Create user
    */
-  createUser(): Observable<any> {
-    let tmp = {
-      username: "",
-      firstName: "",
-      pass: "",
-      full_name: "",
-      email: "",
-      mobilePhone: "",
-      gender: "",
-      birthday: "",
-      color: "bg-teal-500",
-    };
-    let url = `${environment.url}/api/auth/signup`;
+  createUser(user:any): Observable<any> {
+    let url = `${environment.url}/api/user/`;
     return this.users$
       .pipe(
         take(1),
         switchMap((users) =>
-          this._httpClient.post<any>(url, tmp).pipe(
+          this._httpClient.post<any>(url, user).pipe(
             map((newUser) => {
               // Update the users with the new
               this._users.next([newUser.data, ...users]);
@@ -191,8 +161,8 @@ export class UsersService {
    * @param id
    * @param user
    */
-  updateUser(id: string, user: UsersList): Observable<UsersList> {
-    let url = `${environment.url}user/${id}`;
+  updateUser(id: string, user: any): Observable<UsersList> {
+    let url = `${environment.url}/api/user/${id}`;
 
     return this.users$.pipe(
       take(1),
@@ -214,7 +184,6 @@ export class UsersService {
               this._users.next(users);
 
               // Return the updated user
-              this.toastr.successToastr("User updated", "Updated!");
 
               return updatedUser;
             }),
@@ -297,7 +266,7 @@ export class UsersService {
     );
   }
   deleteUser(id: string): Observable<boolean> {
-    let url = `${environment.url}users/${id}`;
+    let url = `${environment.url}/api/user/delete/${id}`;
 
     return this.users$.pipe(
       take(1),

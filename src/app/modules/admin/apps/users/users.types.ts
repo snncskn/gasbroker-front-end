@@ -1,16 +1,11 @@
 export interface UsersList
 {
     id:string;
-    uid: string;
+    user_id: string;
     username: string,
-    gender: string;
-    user_status: string;
-    mobilePhone: string;
-    full_name: string;
-    color: string;
     pass:string;
     email:string;
-    birthday:string;
+    name:string;
 }
 
 export interface UsersPagination

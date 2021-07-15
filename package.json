@@ -44,6 +44,7 @@
         "moment-timezone": "^0.5.33",
         "ng-apexcharts": "1.5.10",
         "ng6-toastr-notifications": "^1.0.4",
+        "ngx-file-upload": "^0.0.1",
         "ngx-markdown": "12.0.1",
         "ngx-quill": "14.0.0",
         "ngx-ui-loader": "^11.0.0",
