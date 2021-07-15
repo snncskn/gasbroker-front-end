@@ -21,11 +21,7 @@
               <ng-container *ngIf="proposalsCount > 0">
 
               </ng-container>
-              {{proposalsCount | i18nPlural: {
-              '=0' : '',
-              '=1' : 'vehicle',
-              'other': 'Proposals'
-              } }}
+              Total Record {{proposalsCount}}
             </div>
           </div>
 
@@ -161,11 +157,11 @@
                 #
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)" mat-icon-button [color]="'accent'">
+                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)" mat-icon-button [color]="'primary'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                   [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon> 
                 </button>
-                <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)" mat-icon-button [color]="'accent'">
+                <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)" mat-icon-button [color]="'primary'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                   [svgIcon]="'heroicons_outline:search'"></mat-icon> 
                 </button>
