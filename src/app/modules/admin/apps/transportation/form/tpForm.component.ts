@@ -23,7 +23,6 @@ export class TransportationFormComponent implements OnInit {
     customers: any[];
     filteredOptions: Observable<string[]>;
     selectCustomerItem: any;
-    process:any;
 
     center: google.maps.LatLngLiteral = {lat: 41, lng: 29};
     zoom = 7;
@@ -54,7 +53,7 @@ export class TransportationFormComponent implements OnInit {
 
     ) {
         this.processForm = this._formBuilder.group({
-            id:this.process.id,
+            id:[''],
             group_id: [''],
             group_sub_id: [''],
             process_date: [null],
@@ -66,14 +65,10 @@ export class TransportationFormComponent implements OnInit {
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
                 this._processService.getProcessById(params.get("id")).subscribe(data => {
-                    this.process = data.body;
                     this.processForm.patchValue(data.body);
                 })
             };
         });
-        if(this.process.id)
-        {
-        }
     }
 
     ngOnInit(): void {
