@@ -66,7 +66,10 @@ export class VehiclesDetailsComponent implements OnInit {
         createVehicle.company_id = this.vehicleForm.value.company_id;
         createVehicle.registered_date = this.vehicleForm.value.registered_date;
 
-
+        if(createVehicle.company_id ===''){
+            this.toastr.errorToastr('Company required', 'Required!');
+            return;
+        }
         this._vehicleService.createVehicle(createVehicle).subscribe(data => {
         this._router.navigateByUrl('/apps/vehicles/list');
         });

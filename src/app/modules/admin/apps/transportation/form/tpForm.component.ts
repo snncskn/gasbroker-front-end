@@ -84,11 +84,17 @@ export class TransportationFormComponent implements OnInit {
       }
 
     addNewProcess() {
-        console.log(this.processForm.getRawValue());
+        console.log(123);
+        this._processService.getProcessSave(this.processForm.getRawValue()).subscribe(data=>{
+            this.dataSourceSubGroup = data.body.process_sub_groups;
+          });
     }
 
     deleteProcess()
     {
-
+        console.log(123);
+        this._processService.getProcessDelete(this.processForm.getRawValue()).subscribe(data=>{
+            this.dataSourceSubGroup = data.body.process_sub_groups;
+        });
     }
 }

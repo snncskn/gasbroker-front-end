@@ -61,7 +61,7 @@ export class InventoryListComponent
   productsTableColumns: string[] = [
     "code",
     "name",
-    // "properties",
+     "unit",
     // "categories",
     // "images",
     // "currentImageIndex",
