@@ -95,13 +95,17 @@ export class GroupFormComponent {
         }
     }
 
-    deleteSubGroup(item: any) {
-        if (this.groupId) {
-            this._groupService.deleteSubGroup(this.subGroupItems.value[item]).subscribe(data => {
+    deleteSubGroup(item: any,index: number) {
+        console.log(item);
+        if(item.id){
+            this._groupService.deleteSubGroup(item).subscribe(data => {
                 this.toastr.errorToastr('Process Sub Group deleted', 'deleted!');
                 this._router.navigateByUrl('/apps/group/form/' + data.body.id);
-
-            })
+            });
+        }else{
+          let tmp = this.formSubGroup.controls["subGroupItems"] as FormArray;
+          tmp.removeAt(index);
         }
+         
     }
 }
