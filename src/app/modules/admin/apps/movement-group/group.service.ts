@@ -70,10 +70,37 @@ export class GroupService {
         let url = `${environment.url}/process-group/delete/${item.id}`;
         return this._httpClient.put<any>(url,item);
     }
+
+    deleteSubGroup(item:any):
+    Observable<any> {
+    let url = `${environment.url}/process-sub-group/delete/${item.id}`;
+    return this._httpClient.put<any>(url,item);
+    }
+
     createProcessGroup(item: any): Observable<any> {
         let url = `${environment.url}/process-group/`;
-        return this._httpClient.post<any>(url, item);
+        if(item.id)
+        {
+            return this._httpClient.put<any>(url+item.id, item);
+        }
+        else
+        {
+            return this._httpClient.post<any>(url, item);
+        }
     }
+
+    createProcessSubGroup(item: any): Observable<any> {
+        let url = `${environment.url}/process-sub-group/`;
+        if(item.id)
+        {
+            return this._httpClient.put<any>(url+item.id, item);
+        }
+        else
+        {
+            return this._httpClient.post<any>(url, item);
+        }
+    }
+
     getProcessDelete(item: any): Observable<any> {
         let url = `${environment.url}/process/delete/${item.id}`;
         return this._httpClient.put<any>(url, item);

@@ -13,7 +13,7 @@
                     <span class="ml-2 mr-1">Delete</span>
                 </button>
                 <button class="" mat-flat-button [color]="'primary'"
-                    [disabled]="formSubGroup.invalid || formSubGroup.pristine" (click)="addSubGroup()">
+                     (click)="addGroup()">
                     <span class="ml-2 mr-1">Save</span>
                 </button>
             </div>
@@ -25,23 +25,17 @@
                         <div class="mt-6">
                             <mat-form-field class="fuse-mat-no-subscript w-full">
                                 <mat-label>Group Name</mat-label>
-                                <input matInput [formControlName]="'description'" [readonly]="!isSavedGroupInput"
+                                <input matInput [formControlName]="'description'"
                                     [placeholder]="'Group Name'" [spellcheck]="false">
                             </mat-form-field>
                         </div>
-                    </div>
-                    <div class="mt-13 ml-3">
-                        <button class="" mat-flat-button [color]="'primary'" [disabled]="!isSavedGroup"
-                            (click)="addGroup()">
-                            <span class="ml-2 mr-1">Save</span>
-                        </button>
                     </div>
                 </div>
                 <div class="mt-6 w-2/3">
                     <form [formGroup]="formSubGroup">
 
                         <div class="flex-auto ml-12  mt-8 gt-xs:pl-3">
-                            <button class="add" mat-flat-button type="button" [disabled]="isSavedGroup" [color]="'primary'" (click)="add()"
+                            <button class="add" mat-flat-button type="button" [color]="'primary'" (click)="add({description:'',id:''})"
                                 style="float: right;">
                                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                             </button>
@@ -50,6 +44,7 @@
                         <div class="ml-12 grid grid-cols-12 gap-x-1 mt-15">
                             <!-- Columns -->
                             <div class="col-span-5 font-medium text-md text-secondary">Sub Group Name</div>
+                            <div class="col-span-2 font-medium text-md text-secondary"></div>
                             <!-- Divider -->
                             <div class="col-span-12 my-4 border-b"></div>
 
@@ -61,6 +56,12 @@
                                         <input matInput formControlName="description" placeholder="Sub Group Name"
                                             type="text">
                                     </mat-form-field>
+                                </div>
+                                <div class="col-span-6 text-lg font-medium" [formGroupName]="i">
+                                        <button class="fuse-mat-button-rounded ml-1 text-on-warn-100" mat-icon-button [color]="'warn'" (click)="deleteSubGroup(i)">
+                                            <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                            [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
+                                          </button>
                                 </div>
                                 <!-- Divider -->
                                 <div class="col-span-12 my-4 border-b"></div>

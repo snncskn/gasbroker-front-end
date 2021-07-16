@@ -16,10 +16,9 @@ export class GroupFormComponent {
     groupForm: FormGroup;
     subGroupForm: any;
     formSubGroup: FormGroup;
-
-    isSavedGroup: boolean = true;
-    isSavedGroupInput: boolean = true;
     public groupsForm = new GroupForm();
+
+    groupId: string;
 
 
     constructor(
@@ -34,20 +33,24 @@ export class GroupFormComponent {
             description: [''],
         });
 
-        this.subGroupForm={
-            id:'', group_id:'',description:''
+        this.subGroupForm = {
+            id: '', group_id: '', description: ''
         }
         this.formSubGroup = this.groupsForm.convertModelToFormGroup(this.subGroupForm);
 
+        this.getGroupAndSubGroup();
 
+    }
+
+    getGroupAndSubGroup() {
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
-                this.isSavedGroup = false;
-                this.isSavedGroupInput = false;
                 this._groupService.getGroupById(params.get("id")).subscribe(data => {
                     this.groupForm.patchValue(data.body);
-                    console.log(data.body.process_sub_groups)
-                    console.log(this.formSubGroup.value)
+                    //this.groupId=data.body.id;
+                    data.body.process_sub_groups.forEach(element => {
+                        this.add(element)
+                    });
                 });
             };
         });
@@ -55,8 +58,9 @@ export class GroupFormComponent {
 
     add(item?: any) {
         const subGroupForm = this._formBuilder.group({
-            description: ['', Validators.required],
-            group_id: this.groupForm.value.id
+            description: item.description || '',
+            group_id: this.groupForm.value.id,
+            id: item.id || ''
         });
         this.subGroupItems.push(subGroupForm);
     }
@@ -66,39 +70,38 @@ export class GroupFormComponent {
     }
 
     addGroup() {
-
-        let createGroup = {
-            id: '', description: ''
-        };
-
-        createGroup.id = '';
-        createGroup.description = this.groupForm.value.description;
-
-        if (createGroup.description === '') {
+        if (this.groupForm.value.description === '') {
             this.toastr.errorToastr('Group Name required', 'Required!');
             return;
         }
-        this.isSavedGroup = false;
-        this.isSavedGroupInput = false;
-        this._groupService.createProcessGroup(createGroup).subscribe(data => {
+        this._groupService.createProcessGroup(this.groupForm.value).subscribe(data => {
+            this.groupId = data.body.id
             this.toastr.successToastr('Group name saved', 'Saved!');
-            this.groupForm.patchValue(data.body)
-            this.subGroupForm.patchValue({
-                group_id: data.body.id
-            })
+            this.subGroupItems.value.forEach(element => {
+                element.group_id = this.groupId;
+                this._groupService.createProcessSubGroup(element).subscribe()
+            });
+            this._router.navigateByUrl('/apps/group/form/' + data.body.id);
+
         });
     }
 
-    addSubGroup() {
-    }
-
     deleteGroup() {
-        if(this.groupForm.value.id)
-        {
-            this._groupService.deleteGroup(this.groupForm.value).subscribe(data=>{
-                this._router.navigateByUrl('/apps/group/list');
+        if (this.groupForm.value.id) {
+            this._groupService.deleteGroup(this.groupForm.value).subscribe(data => {
+                this._router.navigateByUrl('/apps/group/list/');
                 this.toastr.errorToastr('Process Group deleted', 'deleted!');
             });
+        }
+    }
+
+    deleteSubGroup(item: any) {
+        if (this.groupId) {
+            this._groupService.deleteSubGroup(this.subGroupItems.value[item]).subscribe(data => {
+                this.toastr.errorToastr('Process Sub Group deleted', 'deleted!');
+                this._router.navigateByUrl('/apps/group/form/' + data.body.id);
+
+            })
         }
     }
 }
