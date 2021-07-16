@@ -17,43 +17,48 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { UsersComponent } from 'app/modules/admin/apps/users/users.component';
 import { UsersListComponent} from 'app/modules/admin/apps/users/list/usersList.component';
-import { UsersResetComponent } from 'app/modules/admin/apps/users/resetpass/usersReset.component';
-import { usersRoutes } from 'app/modules/admin/apps/users/users.routing';
+import { usersRoutes, UsersRoutingModule } from 'app/modules/admin/apps/users/users.routing';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { UsersRolesComponent } from './roles/usersRoles.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDividerModule } from '@angular/material/divider';
+import { UsersFormComponent } from './form/usersForm.component';
 
 @NgModule({
     declarations: [
         UsersComponent,
         UsersListComponent,
-        UsersResetComponent,
-        UsersRolesComponent
+        UsersFormComponent,
     ],
     imports     : [
         RouterModule.forChild(usersRoutes),
         MatButtonModule,
         MatCheckboxModule,
+        MatDatepickerModule,
+        MatDividerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatPaginatorModule,
+        MatMomentDateModule,
         MatProgressBarModule,
+        MatRadioModule,
         MatRippleModule,
-        MatSortModule,
         MatSelectModule,
-        MatSlideToggleModule,
+        MatSidenavModule,
         MatTableModule,
         MatTooltipModule,
-        MatDatepickerModule,
-        MatMomentDateModule,
-        MatDialogModule,
         MatSnackBarModule,
+        MatSortModule,
+        MatExpansionModule,
         MatTabsModule,
+        MatDialogModule,
+        UsersRoutingModule,
         SharedModule
     ]
 })
