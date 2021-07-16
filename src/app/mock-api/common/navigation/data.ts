@@ -69,6 +69,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon    : 'heroicons_outline:flag',
                 link    : '/apps/transportation/list'
             },
+            {
+                id      : 'app.group',
+                title   : 'Movement Groups',
+                type    : 'basic',
+                icon    : 'heroicons_outline:collection',
+                link    : '/apps/group'
+            },
             /*{
                 id      : 'app.invoicing',
                 title   : 'Invoicing',
