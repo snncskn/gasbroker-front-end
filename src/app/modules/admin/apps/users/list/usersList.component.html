@@ -37,7 +37,8 @@
     
                         <!-- Table -->
                         <table class="w-full min-w-320 table-fixed bg-transparent"
-                            [ngClass]="{'pointer-events-none': isLoading}" mat-table matSort [matSortActive]="'name'"
+                            [ngClass]="{'pointer-events-none': isLoading}" mat-table 
+                            matSort [matSortActive]="'username'"
                             [matSortDisableClear]="true" [matSortDirection]="'asc'" [multiTemplateDataRows]="true"
                             [dataSource]="users$" [trackBy]="trackByFn">
 
@@ -313,9 +314,6 @@
                                 </div>
                             </ng-template>
                         </ng-container>
-
-
-
 
                         <tr class="shadow" mat-header-row *matHeaderRowDef="usersTableColumns; sticky: true"></tr>
                         <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row

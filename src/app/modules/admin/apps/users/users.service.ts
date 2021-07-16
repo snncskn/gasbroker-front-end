@@ -64,7 +64,7 @@ export class UsersService {
     order: "asc" | "desc" | "" = "asc",
     search: string = ""
   ): Observable<{ pagination: UsersPagination; users: UsersList[] }> {
-    let url = `${environment.url}/users/find`;
+    let url = `${environment.url}/api/user`;
 
     return this._httpClient
       .post<{ pagination: UsersPagination; users: UsersList[] }>(url, {

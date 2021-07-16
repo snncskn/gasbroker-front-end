@@ -12,19 +12,9 @@ export const usersRoutes: Route[] = [
         redirectTo: 'users'
     },
     {
-        path     : 'users',
-        component: UsersComponent,
-        children : [
-            {
-                path     : '',
-                component: UsersListComponent,
-                /*resolve  : {
-                    users  : UserListResolver
-                }*/
-            }
-        ]
-    },
-
+        path: 'list',
+        component: UsersListComponent,
+    }, 
     {
         path     : 'usersreset',
         component: UsersComponent,

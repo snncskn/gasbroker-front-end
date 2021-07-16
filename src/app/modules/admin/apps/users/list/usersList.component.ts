@@ -48,7 +48,9 @@ export class UsersListComponent implements OnInit
         private _formBuilder: FormBuilder,
         private _usersService: UsersService,
         public _dialog: MatDialog
-    ){}
+    ){
+        this._usersService.getUsers().subscribe();
+    }
 
     ngOnInit(): void
     {
@@ -230,6 +232,9 @@ export class UsersListComponent implements OnInit
                 userId:this.selectedUser.id
             }
         });
+    }
+    trackByFn(index: number, item: any): any {
+        return item.id || index;
     }
 
 }
