@@ -140,8 +140,11 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     }
 
     newProposal(): void {
-        console.log('/apps/proposals/form')
         this._router.navigateByUrl('/apps/proposals/form');
+    }
+
+    openProposal(item:any){
+        this._router.navigateByUrl('/apps/proposals/form/'+item.id)
     }
 
     onBackdropClicked(): void {

@@ -80,7 +80,7 @@
                   Movement Group 
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  {{ row.process_group.description }}
+                  {{ row.process_group?.description }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="group_sub">
@@ -89,7 +89,7 @@
                   Sub Movement Group
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  {{ row.process_sub_group.description }}
+                  {{ row.process_sub_group?.description }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="detail">

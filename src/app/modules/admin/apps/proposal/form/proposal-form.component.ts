@@ -7,7 +7,7 @@ import { tap, startWith, debounceTime, distinctUntilChanged, switchMap, map } fr
 import { VehiclesService } from '../../vehicles/vehicles.service';
 import { ProposalService } from '../proposals.service';
 import { environment } from 'environments/environment';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -28,6 +28,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     locationLabel: string;
     fileUploadUrl: string;
     filesUpload: any[] = [];
+    proposalId:any;
 
     @ViewChild('docsFileInput') private docsFileInput: ElementRef;
 
@@ -38,8 +39,33 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         private _productService: ProductService,
         private _router: Router,
         private _proposalService: ProposalService,
+        private readonly activatedRouter: ActivatedRoute
+
     ) {
         this.fileUploadUrl = environment.url+'/media';
+
+        this.activatedRouter.paramMap.subscribe(params => {
+            if (params.has('id')) {
+                this._proposalService.getProposalById(params.get("id")).subscribe(data => {
+                    console.log(data.body)
+                    this.proposalId = data.body.id;
+                    this.verticalStepperForm.patchValue({
+                        step1:{
+                            last_offer_date:data.body.last_offer_date,
+                            publish_date:data.body.publish_date,
+                            status:data.body.status,
+                            type:data.body.type,
+                        },
+
+                        step2:{
+                            location:data.body.location,
+                            products:data.body.product.name,
+                            quantity:data.body.product_quantity
+                        },
+                    })
+                })
+            };
+        });
     }
 
 
@@ -124,16 +150,17 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     }
     save() {
         let createPrp = {type:'',freight_type:'',status:'',last_offer_date:'',publish_date:'',location:'',
-                product:'',product_quantity:'',product_id:'',company_id:'2c67b871-0a77-4c8a-a4dc-4029fbea9a0c'};
+                product:'',product_quantity:'',product_id:'',id:'',company_id:'2c67b871-0a77-4c8a-a4dc-4029fbea9a0c'};
        createPrp.type    = this.verticalStepperForm.value.step1.type;
        createPrp.freight_type    = this.verticalStepperForm.value.step1.type;
-       createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date.toDate();
-       createPrp.publish_date    = this.verticalStepperForm.value.step1.publish_date.toDate();
+       createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date;
+       createPrp.publish_date    = this.verticalStepperForm.value.step1.publish_date;
        createPrp.location        = this.verticalStepperForm.value.step2.location;
        createPrp.product          = this.verticalStepperForm.value.step2.products;
        createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
        createPrp.status = this.verticalStepperForm.value.step1.status;
        createPrp.product_id = this.selectedProdcut.id;
+       createPrp.id=this.proposalId;
        this._proposalService.createProposal(createPrp).subscribe(data => {
          
         this._router.navigateByUrl('/apps/proposals/list');
