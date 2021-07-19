@@ -53,13 +53,25 @@ export class UsersService {
   }
 
 
-  getUsers(){
-    return this._httpClient.get<any>(`${environment.url}/api/user`).pipe(
-      tap((users) => {
-          this._users.next(users.body);
-          this._usersCount = users.body.length;
+  getUsers(
+    page: number = 0,
+    size: number = 10,
+    sort: string = "username",
+    order: "asc" | "desc" | "" = "asc",
+    search: string = ""
+  ): Observable<{ pagination: UsersPagination; users: UsersList[] }> {
+    let url = `${environment.url}/api/user`;
+
+    return this._httpClient
+      .post<{ pagination: UsersPagination; users: UsersList[] }>(url, {
+        queryParams: {
+          pageNumber: "" + page,
+          pageSize: "" + size,
+          sortField: sort,
+          sortOrder: order,
+          filter: { username: search },
+        },
       })
-      );
   }
   getUsersById(id: string): Observable<any> {
     return this._httpClient.get<any>(`${environment.url}/api/user/${id}`)

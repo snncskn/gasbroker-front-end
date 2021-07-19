@@ -44,6 +44,7 @@ export class UsersListComponent implements OnInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _formBuilder: FormBuilder,
         private _usersService: UsersService,
+
         public _dialog: MatDialog,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
@@ -126,6 +127,9 @@ export class UsersListComponent implements OnInit {
 
     deleteUser(item: any) {
         this._usersService.deleteUser(item.id).subscribe()
+    }
+    trackByFn(index: number, item: any): any {
+        return item.id || index;
     }
 
 }

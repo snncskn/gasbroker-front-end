@@ -26,6 +26,7 @@
                         <div class="ml-2 w-1/3">
                             <div class="mt-6">
                                     <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
+                                        <mat-label>Company Name</mat-label>
                                         <input tabindex="-1" type="text" placeholder="Customer"
                                             matInput formControlName="company"
                                             [matAutocomplete]="auto">
@@ -53,7 +54,7 @@
                             <div class="flex items-center mt-6">
                                 <div class="w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Company Type</mat-label>
+                                    <mat-label>Vehicle Type</mat-label>
                                     <mat-select placeholder="Types" [formControlName]="'type'">
                                         <mat-option *ngFor="let option of dataSourceTypes" [value]="option.description">
                                             <ng-container>

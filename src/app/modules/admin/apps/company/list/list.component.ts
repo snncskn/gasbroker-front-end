@@ -131,7 +131,7 @@ export class CustomersListComponent implements OnInit, OnDestroy
     }
 
     ngAfterViewInit(): void {
-
+        console.log(123);
         this._sort.sortChange
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {

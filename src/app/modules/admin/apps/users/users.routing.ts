@@ -1,31 +1,32 @@
-import { RouterModule, Routes } from '@angular/router';
-import { UsersListComponent } from 'app/modules/admin/apps/users/list/usersList.component';
-import { NgModule } from '@angular/core';
-import { UsersFormComponent } from './form/usersForm.component';
+import { RouterModule, Routes } from "@angular/router";
+import { UsersListComponent } from "app/modules/admin/apps/users/list/usersList.component";
+import { NgModule } from "@angular/core";
+import { UsersComponent } from "./users.component";
 
 export const usersRoutes: Routes = [
-    {
-        path: '',
-        redirectTo: 'list',
-        pathMatch: 'full'
-      },
+  {
+    path: "",
+    pathMatch: "full",
+    redirectTo: "users",
+  },
+  {
+    path: "list",
+    component: UsersListComponent,
+  },
+  {
+    path: "usersreset",
+    component: UsersComponent,
+    children: [
       {
-        path: 'list',
-        component: UsersListComponent,
+        path: "",
+        component: UsersComponent,
       },
-      {
-        path: 'form/:id',
-        component: UsersFormComponent,
-      },
-      {
-        path: 'form',
-        component: UsersFormComponent,
-      }
- 
+    ],
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(usersRoutes)],
-    exports: [RouterModule]
-  })
-  export class UsersRoutingModule {}
+  imports: [RouterModule.forChild(usersRoutes)],
+  exports: [RouterModule],
+})
+export class UsersRoutingModule {}
