@@ -33,7 +33,6 @@ export class UsersFormComponent implements OnInit {
         private readonly activatedRouter: ActivatedRoute,
 
 
-
     ) {
         this.usersForm = this._formBuilder.group({
             id: [''],
@@ -91,8 +90,6 @@ export class UsersFormComponent implements OnInit {
             });
         }
         else {
-            console.log(this.usersForm.value.password)
-            console.log(this.usersForm.value.confirmPassword)
             if (this.usersForm.value.password === this.usersForm.value.confirmPassword) {
                 if (!this.usersForm.value.password) {
                     this.toastr.errorToastr("Password cannot be empty", "Check your password!");
