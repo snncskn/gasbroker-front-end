@@ -48,8 +48,16 @@ export class NavigationMockApi
                         if ( defaultNavItem.id === compactNavItem.id )
                         {
                             let tmp =JSON.parse(localStorage.getItem('user'));
-                            console.log(tmp);
-                            compactNavItem.children = cloneDeep(defaultNavItem.children);
+                          
+                            let tmpChildren:any[] = [];
+                            defaultNavItem.children.forEach(item =>{
+                                tmp.permissions.ids.forEach(permission => {
+                                    if(item.id === permission){
+                                        tmpChildren.push(item);
+                                    }
+                                });
+                            });
+                            compactNavItem.children = cloneDeep(tmpChildren);
                         }
                     });
                 });
@@ -66,14 +74,27 @@ export class NavigationMockApi
 
                 // Fill horizontal navigation children using the default navigation
                 this._horizontalNavigation.forEach((horizontalNavItem) => {
+                    let tmpChildren:any[] = [];
                     this._defaultNavigation.forEach((defaultNavItem) => {
                         if ( defaultNavItem.id === horizontalNavItem.id )
                         {
-                            horizontalNavItem.children = cloneDeep(defaultNavItem.children);
+                            let tmp =JSON.parse(localStorage.getItem('user'));
+                          
+                          
+                            defaultNavItem.children.forEach(item =>{
+                                tmp.permissions.ids.forEach(permission => {
+                                    if(item.id === permission){
+                                        tmpChildren.push(item);
+                                    }
+                                });
+                            });
+                            horizontalNavItem.children = cloneDeep(tmpChildren);
+                            defaultNavItem.children = cloneDeep(tmpChildren);
+                            //horizontalNavItem.children = cloneDeep(defaultNavItem.children);
                         }
                     });
                 });
-
+                console.log(999);
                 // Return the response
                 return [
                     200,
