@@ -25,82 +25,66 @@
               Total Record {{processCount}}
             </div>
           </div>
-
-          <!-- Main actions -->
-          <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
-            <!-- Search -->
-            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
-              <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-              <input matInput [autocomplete]="'off'" [placeholder]="'Search processes'">
-            </mat-form-field>
-
-            <button class="ml-4" mat-flat-button [color]="'primary'">
-              <mat-icon [svgIcon]="'heroicons_outline:plus'" (click)=newProcess()></mat-icon>
-              <span class="ml-2 mr-1">Add</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Customers list -->
-        <div class="relative">
-          <table class="w-full min-w-320 table-fixed bg-transparent" mat-table matSort [matSortActive]="'process_date'"
-            [matSortDisableClear]="true" [matSortDirection]="'asc'" [multiTemplateDataRows]="true"
-            [dataSource]="processes$" [trackBy]="trackByFn">
-
-            <ng-container matColumnDef="process_date">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                Process Date
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                {{ row.process_date | date:'dd/MM/yyyy' }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="address">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                Address
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <div class="flex items-center justify-between">
-                  <ng-container>
-                    <div>
-                      {{row.address}}
-                    </div>
-                  </ng-container>
-                </div>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="group">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                Movement Group
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                {{ row.process_group.description }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="group_sub">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                Sub Movement Group
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                {{ row.process_sub_group.description }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="detail">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                #
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <div>
-                  <button class="fuse-mat-button-rounded" (click)="openProcess(row)" mat-icon-button
-                    [color]="'primary'">
-                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
-                    </mat-icon>
+  
+          <!-- Customers list -->
+          <div class="relative">
+            <table class="w-full min-w-320 table-fixed bg-transparent"
+              mat-table matSort [matSortActive]="'process_date'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
+              [multiTemplateDataRows]="true" [dataSource]="processes$" [trackBy]="trackByFn">
+  
+              <ng-container matColumnDef="process_date">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  Process Date
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  {{ row.process_date | date:'dd/MM/yyyy' }}
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="address">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  Address
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  <div class="flex items-center justify-between">
+                    <ng-container>
+                      <div>
+                        {{row.address}}
+                      </div>
+                    </ng-container>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="group">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  Movement Group 
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  {{ row.process_group?.description }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="group_sub">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  Sub Movement Group
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  {{ row.process_sub_group?.description }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="detail">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  #
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  <div>
+                  <button class="fuse-mat-button-rounded" (click)="openProcess(row)" mat-icon-button [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                    [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon>
                   </button>
                   <button class="fuse-mat-button-rounded ml-1 text-on-warn-100" mat-icon-button [color]="'warn'"
                     (click)="deleteCompany(row)">
@@ -118,6 +102,5 @@
           </table>
         </div>
       </div>
-    </mat-drawer-content>
   </mat-drawer-container>
 </div>

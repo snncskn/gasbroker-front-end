@@ -147,20 +147,22 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="detail">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+              <th class="bg-gray-50 dark:bg-black w-60 dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
                 #
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)" mat-icon-button
-                  [color]="'primary'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
-                  </mat-icon>
+                <button class="fuse-mat-button-rounded" (click)="openProposal(row)"  mat-icon-button [color]="'primary'">
+                  <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                  [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon> 
                 </button>
-                <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)" mat-icon-button
-                  [color]="'primary'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:search'">
-                  </mat-icon>
+                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)" mat-icon-button [color]="'primary'">
+                  <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                  [svgIcon]="'heroicons_outline:cash'" ></mat-icon> 
+                </button>
+                <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)" mat-icon-button [color]="'primary'">
+                  <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                  [svgIcon]="'heroicons_outline:search'"></mat-icon> 
                 </button>
                 <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" (click)="deleteProposal(row)"
                   mat-icon-button [color]="'warn'">

@@ -72,6 +72,12 @@ export class ProposalService {
         );
     }
 
+    getProposalById(id:any):
+    Observable<any> {
+    let url = `${environment.url}/proposal/${id}`;
+    return this._httpClient.get<any>(url);
+}
+
     getOffers(id: any): Observable<ProposalOffer[]> {
 
         return this._httpClient.get<any>(`${environment.url}/proposal/offers/${id}`).pipe(
@@ -150,17 +156,34 @@ export class ProposalService {
 
 
     createProposal(item: any): Observable<any> {
-        return this.proposals$.pipe(
-            take(1),
-            switchMap(proposals => this._httpClient.post<any>(`${environment.url}/proposal`, item).pipe(
-                map((newVehicle) => {
-
-                    this._proposals.next([newVehicle.body, ...proposals]);
-                    this.toastr.successToastr('Proposal Created', 'Create!');
-                    return newVehicle.body;
-                })
-            ))
-        );
+        if(item.id)
+        {
+            return this.proposals$.pipe(
+                take(1),
+                switchMap(proposals => this._httpClient.put<any>(`${environment.url}/proposal/`+item.id, item).pipe(
+                    map((newVehicle) => {
+    
+                        //this._proposals.next([newVehicle.body, ...proposals]);
+                        this.toastr.successToastr('Proposal Updated', 'Updated!');
+                        return newVehicle.body;
+                    })
+                ))
+            );
+        }
+        else
+        {
+            return this.proposals$.pipe(
+                take(1),
+                switchMap(proposals => this._httpClient.post<any>(`${environment.url}/proposal`, item).pipe(
+                    map((newVehicle) => {
+    
+                        //this._proposals.next([newVehicle.body, ...proposals]);
+                        this.toastr.successToastr('Proposal Created', 'Created!');
+                        return newVehicle.body;
+                    })
+                ))
+            );
+        }
     }
 
     createProposalOffer(item: any): Observable<any> {
