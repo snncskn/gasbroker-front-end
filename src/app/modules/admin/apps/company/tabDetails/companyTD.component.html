@@ -186,7 +186,9 @@
                                                                     <google-map [width]="null" [height]="null"
                                                                         [center]="center" [zoom]="zoom"
                                                                         (mapClick)="addMarker($event)">
-                                                                        <map-marker position="{ lat: 38.9987208, lng: -77.2538699 }"></map-marker>
+                                                                        <map-marker
+                                                                       [position]="value.position"
+                                                                        [options]="markerOptions"></map-marker>
  
                                                                     </google-map>
                                                                 </div>
@@ -199,12 +201,16 @@
                                                         <div class="w-full mt-5">
                                                             <div class="my-google-map">
                                                                 <google-map [width]="null" [height]="null"
-                                                                    [center]="center" [zoom]="zoom">
-                                                                    <map-marker
-                                                                        [position]="markerPosition"
-                                                                        [options]="markerOptions"></map-marker>
-                                                                </google-map>
+                                                                [center]="center" [zoom]="zoom"
+                                                                (mapClick)="addMarker($event)">
+                                                                <map-marker
+                                                               [position]="value.position"
+                                                                [options]="markerOptions"></map-marker>
+
+                                                            </google-map>
+
                                                             </div>
+
                                                         </div>
                                                     </ng-container>
                                                 </mat-expansion-panel>

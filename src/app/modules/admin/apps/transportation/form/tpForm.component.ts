@@ -23,6 +23,7 @@ export class TransportationFormComponent implements OnInit {
     customers: any[];
     filteredOptions: Observable<string[]>;
     selectCustomerItem: any;
+    selectedItem: any;
 
     center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
     zoom = 7;
@@ -61,25 +62,34 @@ export class TransportationFormComponent implements OnInit {
             latitude: [''],
             longitude: [''],
         });
-
+        this._processService.getProcessGroup().subscribe(res => {
+            this.dataSourceGroup = res.body;
+        });
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
                 this._processService.getProcessById(params.get("id")).subscribe(data => {
+                    this.changeGroup(data.body.group_id);
+                    this.selectedItem = data.body;
                     this.processForm.patchValue(data.body);
+                    let center: google.maps.LatLngLiteral = { lat: Number(data.body.latitude), lng: Number(data.body.longitude) };
+                    this.markerPositions.push(center);
+
+                   
                 })
             };
         });
     }
 
     ngOnInit(): void {
-        this._processService.getProcessGroup().subscribe(res => {
-            this.dataSourceGroup = res.body;
-        });
+       
     }
 
-    changeGroup($event) {
-        this._processService.getProcessGroupById($event.value).subscribe(data => {
+    changeGroup(val: string) {
+        this._processService.getProcessGroupById(val).subscribe(data => {
             this.dataSourceSubGroup = data.body.process_sub_groups;
+            if( this.selectedItem){
+                this.processForm.patchValue({group_sub_id: this.selectedItem.group_sub_id});
+            }
         });
     }
 

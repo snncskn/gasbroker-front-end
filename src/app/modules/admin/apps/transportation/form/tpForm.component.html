@@ -25,7 +25,7 @@
                             <div class="mt-6">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>Group</mat-label>
-                                    <mat-select placeholder="Groups" [formControlName]="'group_id'" (selectionChange)="changeGroup($event)">
+                                    <mat-select placeholder="Groups" [formControlName]="'group_id'" (selectionChange)="changeGroup($event.value)">
                                         <mat-option *ngFor="let option of dataSourceGroup" [value]="option.id">
                                             <ng-container>
                                                 {{option.description | titlecase}}

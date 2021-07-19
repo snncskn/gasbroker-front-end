@@ -79,7 +79,10 @@ export class AuthService
             switchMap((response: any) => {
                 this.accessToken = response.access_token;
                 this._authenticated = true;
+
                 this._userService.user = response.user.data;
+                localStorage.setItem('user', JSON.stringify(response.user.data));
+
                 return of(response.user.data);
                 
                 /*

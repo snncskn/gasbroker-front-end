@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash-es';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { FuseMockApiService } from '@fuse/lib/mock-api';
 import { compactNavigation, defaultNavigation, futuristicNavigation, horizontalNavigation } from 'app/mock-api/common/navigation/data';
+import { UserService } from 'app/core/user/user.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +18,8 @@ export class NavigationMockApi
     /**
      * Constructor
      */
-    constructor(private _fuseMockApiService: FuseMockApiService)
+    constructor(private _fuseMockApiService: FuseMockApiService,
+                private _userService: UserService)
     {
         // Register Mock API handlers
         this.registerHandlers();
@@ -39,12 +41,14 @@ export class NavigationMockApi
         this._fuseMockApiService
             .onGet('api/common/navigation')
             .reply(() => {
-
+                
                 // Fill compact navigation children using the default navigation
                 this._compactNavigation.forEach((compactNavItem) => {
                     this._defaultNavigation.forEach((defaultNavItem) => {
                         if ( defaultNavItem.id === compactNavItem.id )
                         {
+                            let tmp =JSON.parse(localStorage.getItem('user'));
+                            console.log(tmp);
                             compactNavItem.children = cloneDeep(defaultNavItem.children);
                         }
                     });

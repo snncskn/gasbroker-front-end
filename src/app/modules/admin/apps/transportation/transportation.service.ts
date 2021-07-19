@@ -6,6 +6,7 @@ import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Process } from './transportation.types';
+import { items } from 'app/mock-api/apps/file-manager/data';
 @Injectable({
     providedIn: 'root'
 })
@@ -71,20 +72,28 @@ export class ProcessService {
         return this._httpClient.get<any>(url);
     }
 
-    getProcessGroupById(id:any):
+    getProcessGroupById(id: any):
         Observable<any> {
         let url = `${environment.url}/process-group/${id}`;
         return this._httpClient.get<any>(url);
     }
-    getProcessSave(item:any):
+    getProcessSave(item: any):
         Observable<any> {
-        let url = `${environment.url}/process/`;
-        return this._httpClient.get<any>(url,item);
+        if (item.id === '') {
+            delete item.id;
+            let url = `${environment.url}/process/`;
+            return this._httpClient.post<any>(url, item);
+        }else{
+            let url = `${environment.url}/process/${item.id}`;
+            return this._httpClient.put<any>(url, item);
+        }
+
+      
     }
-    getProcessDelete(item:any):
+    getProcessDelete(item: any):
         Observable<any> {
         let url = `${environment.url}/process/${item.id}`;
-        return this._httpClient.put<any>(url,item);
+        return this._httpClient.put<any>(url, item);
     }
 
     getCustomers():

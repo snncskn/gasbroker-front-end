@@ -135,7 +135,9 @@ export class CustomersTDComponent implements OnInit {
 
     deleteCompany() {
         if (this.companyDetail) {
-            this._customersService.deleteCompany(this.companyDetail).subscribe();
+            this._customersService.deleteCompany(this.companyDetail).subscribe(data =>{
+            this._router.navigateByUrl('/apps/company/list');
+            });
         }
     }
 
@@ -172,6 +174,8 @@ export class CustomersTDComponent implements OnInit {
                 const item = cloneDeep(element);
                 item.expanded = false;
                 item.isNew = false;
+                let center: google.maps.LatLngLiteral = { lat: Number(element.latitude), lng: Number(element.longitude) };
+                item.position = center;
                 tmpist.push(item);
             });
             this.addressList = tmpist;
@@ -195,6 +199,7 @@ export class CustomersTDComponent implements OnInit {
 
     upload(){
         this._customersService.uploadMedia(this.demoForm.value.files[0], this.companyDetail,'de46be50-b221-4dc3-9d7e-db409389d668',this.demoForm.value.label,'','test','').subscribe(data=>{
+            console.log(data);
         });
     }
     formUrunEkle(val: any){ 
