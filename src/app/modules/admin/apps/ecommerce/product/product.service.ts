@@ -188,20 +188,39 @@ export class ProductService {
    * Create product
    */
   createProduct(item: any): Observable<any> {
-    
-    let url = `${environment.url}/product/`;
-    return this.products$.pipe(
-      take(1),
-      switchMap(() =>
-        this._httpClient.post<any>(url, item).pipe(
-          map((newProduct) => {
-            this._products.next([newProduct.body]);
 
-            return newProduct;
-          })
+    if(item.id)
+    {
+      let url = `${environment.url}/product/${item.id}`;
+      return this.products$.pipe(
+        take(1),
+        switchMap(() =>
+          this._httpClient.put<any>(url, item).pipe(
+            map((newProduct) => {
+              this._products.next([newProduct.body]);
+  
+              return newProduct;
+            })
+          )
         )
-      )
-    );
+      );
+    }
+    else
+    {
+      let url = `${environment.url}/product/`;
+      return this.products$.pipe(
+        take(1),
+        switchMap(() =>
+          this._httpClient.post<any>(url, item).pipe(
+            map((newProduct) => {
+              this._products.next([newProduct.body]);
+  
+              return newProduct;
+            })
+          )
+        )
+      );
+    }
   }
 
   /**

@@ -56,14 +56,68 @@
                                 </mat-form-field>
                             </div>
                         </div>
+                    <form [formGroup]="formSubProduct">
+
                         <div class="ml-2" dir="rtl">
+
                             <div class="mt-6">
-                                <button mat-raised-button (click)="openComposeDialog()">
+                                <button mat-raised-button (click)="add({product:'',id:'',quantity:''})" >
                                     <mat-icon>add</mat-icon>
                                     <span class="ml-2 mr-1">Define Product</span>
                                 </button>
                             </div>
                         </div>
+
+                            <div class="ml-12 grid grid-cols-12 gap-x-1 mt-15">
+                                <!-- Columns -->
+                                <div class="col-span-4 font-medium text-md text-secondary">Product Name</div>
+                                <div class="col-span-4 font-medium text-md text-secondary ml-5">Product Quantity</div>
+                                <div class="col-span-2 font-medium text-md text-secondary ml-5">Product Unit</div>
+                                <div class="col-span-2 font-medium text-md text-secondary ml-5"></div>
+
+                                <!-- Divider -->
+                                <div class="col-span-12 my-4 border-b"></div>
+    
+                                <!-- Item -->
+                                <ng-container formArrayName="subProductItems"
+                                    *ngFor="let item of subProductItems.controls;let i = index;">
+                                    <div class="col-span-4 text-lg font-medium" [formGroupName]="i">
+                                        <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
+                                            <mat-label>Product</mat-label>
+                                            <input tabindex="-1" type="text" matInput placeholder="Select a Product" aria-label="Product"
+                                                formControlName="product" [matAutocomplete]="auto">
+                                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                                (optionSelected)="selectProduct($event)" [displayWith]="displayFn">
+                                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                                    {{option.name}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-span-4 text-lg font-medium ml-5" [formGroupName]="i">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>Quantity</mat-label>
+                                            <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:scale'">
+                                            </mat-icon>
+                                            <input matInput [formControlName]="'quantity'" [placeholder]="'Quantity *'"
+                                                [spellcheck]="false">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-span-2 text-lg font-medium ml-5 mt-9" [formGroupName]="i">
+                                        {{unit}}
+                                    </div>
+                                    <div class="col-span-2 text-lg font-medium ml-5 mt-6" [formGroupName]="i">
+                                            <button class="fuse-mat-button-rounded ml-1 text-on-warn-100"
+                                                mat-icon-button [color]="'warn'" (click)="deleteSubGroup(item,i)">
+                                                <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
+                                              </button>
+                                    </div>
+                                    <!-- Divider -->
+                                    <div class="col-span-12 my-4 border-b"></div>
+                                </ng-container>
+                            </div>
+                            </form>
                     </mat-tab>
                 </mat-tab-group>
             </mat-form>
