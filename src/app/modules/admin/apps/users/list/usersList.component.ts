@@ -120,7 +120,6 @@ export class UsersListComponent implements OnInit {
     }
 
     openUser(item: any) {
-        console.log(item)
         this._router.navigate(['/apps/users/form/' + item.id])
     }
 
