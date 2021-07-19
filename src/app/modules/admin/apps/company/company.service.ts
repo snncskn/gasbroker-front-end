@@ -139,9 +139,7 @@ export class CustomersService {
         
         let url = `${environment.url}/address/`;
         console.log(123);
-        if(address.id !==''){
-            return  this._httpClient.put<any>(url+address.id, address);
-        }else{
+        if(address.id === null ){
             delete address.id;
             return this.addresses$.pipe(
                 take(1),
@@ -154,6 +152,8 @@ export class CustomersService {
                     })
                 ))
             );
+        }else{
+            return  this._httpClient.put<any>(url+address.id, address);
     
         }
     }

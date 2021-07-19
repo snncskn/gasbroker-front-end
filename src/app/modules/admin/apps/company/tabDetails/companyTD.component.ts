@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileUploadValidators } from '@iplab/ngx-file-upload';
+import { cloneDeep } from 'lodash';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { CustomersService } from '../company.service';
 
@@ -20,6 +21,7 @@ export class CustomersTDComponent implements OnInit {
     addressesForm: FormGroup;
     addressList:any[] = [];
     isLoadAddress: boolean = true;
+    formStatus: boolean = true;
 
     center: google.maps.LatLngLiteral = {lat: 41, lng: 29};
     zoom = 7;
@@ -139,8 +141,12 @@ export class CustomersTDComponent implements OnInit {
 
     createAddress(){
         if(this.companyDetail) {
+            this.addressesForm.value.company_id = this.companyDetail;
+            this.addressesForm.value.company_id = this.companyDetail;
+            this.addressesForm.value.lat = String(this.addressesForm.value.lat);
+            this.addressesForm.value.long = String(this.addressesForm.value.long);
             this._customersService.createAddress(this.addressesForm.value).subscribe(data =>{
-                //this.loadAddress();
+                this.loadAddress();
 
             })
         }
@@ -159,15 +165,20 @@ export class CustomersTDComponent implements OnInit {
     {
         this.isLoadAddress = false;
         this.addressList = [];
+        let tmpist = [];
+        this.formStatus = false;
         this._customersService.getAddressByCompanyId(this.companyDetail).subscribe(data => {
             data.body.forEach(element => {
-                element.expanded = false;
-                element.isNew = false;
-                this.addressList.push(element);
+                const item = cloneDeep(element);
+                item.expanded = false;
+                item.isNew = false;
+                tmpist.push(item);
             });
-        this.isLoadAddress = true;
+            this.addressList = tmpist;
+            this.isLoadAddress = true;
+            this.formStatus = true;
 
-        })
+        });
     }
  
     public toggleStatus(): void {
@@ -183,9 +194,7 @@ export class CustomersTDComponent implements OnInit {
     }
 
     upload(){
-        console.log(this.demoForm.value);
         this._customersService.uploadMedia(this.demoForm.value.files[0], this.companyDetail,'de46be50-b221-4dc3-9d7e-db409389d668',this.demoForm.value.label,'','test','').subscribe(data=>{
-            console.log(data);
         });
     }
     formUrunEkle(val: any){ 
