@@ -61,7 +61,7 @@ export class UsersService {
     search: string = ""
   ): Observable<{ pagination: UsersPagination; users: UsersList[] }> {
     let url = `${environment.url}/api/user`;
-
+    /*
     return this._httpClient
       .post<{ pagination: UsersPagination; users: UsersList[] }>(url, {
         queryParams: {
@@ -72,7 +72,16 @@ export class UsersService {
           filter: { username: search },
         },
       })
+
+      */
+      return this._httpClient.get<any>(`${environment.url}/api/user`).pipe(
+        tap((customers) => {
+            this._users.next(customers.body);
+            this._usersCount = customers.body.length;
+        })
+    );
   }
+
   getUsersById(id: string): Observable<any> {
     return this._httpClient.get<any>(`${environment.url}/api/user/${id}`)
   }
