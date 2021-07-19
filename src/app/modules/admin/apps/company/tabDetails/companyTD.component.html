@@ -99,20 +99,27 @@
                         </div>
                     </mat-tab>
                     <mat-tab label="Adres">
-                        <form [formGroup]="addressesForm">
+                        <form [formGroup]="addressesForm"  *ngIf="isLoadAddress">
                             <div class="flex items w-full">
-                                <button mat-flat-button [color]="'primary'" (click)="newAddress()">
-                                    New Adress
-                                </button>
-
-                                <div class="w-full ml-20 mt-12">
+                                <div class="w-full ml-2">
                                     <div class="w-full">
+                                        <button mat-flat-button [color]="'primary'" (click)="newAddress()">
+                                            New Adress
+                                        </button>
                                         <ng-container *ngFor="let value of addressList">
-                                            <mat-accordion class="fuse-mat-no-subscript mt-1">
-                                                <mat-expansion-panel>
+                                            <mat-accordion class="fuse-mat-no-subscript mt-1" >
+                                                <mat-expansion-panel (opened)="value.expanded" [expanded]="value.expanded" >
                                                     <mat-expansion-panel-header>
                                                         <mat-panel-title class="font-bold">{{value.title}}
                                                         </mat-panel-title>
+                                                        <mat-panel-description>
+                                                           
+                                                            <button class="fuse-mat-button-rounded text-on-warn-100" mat-icon-button [color]="'warn'" (click)="deleteAddress(value)">
+                                                                <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                                [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
+                                                              </button>
+
+                                                          </mat-panel-description>
                                                     </mat-expansion-panel-header>
                                                     <ng-container *ngIf="value?.isNew">
                                                         <div class="flex items-center">
@@ -179,10 +186,8 @@
                                                                     <google-map [width]="null" [height]="null"
                                                                         [center]="center" [zoom]="zoom"
                                                                         (mapClick)="addMarker($event)">
-                                                                        <map-marker
-                                                                            *ngFor="let markerPosition of markerPositions"
-                                                                            [position]="markerPosition"
-                                                                            [options]="markerOptions"></map-marker>
+                                                                        <map-marker position="{ lat: 38.9987208, lng: -77.2538699 }"></map-marker>
+ 
                                                                     </google-map>
                                                                 </div>
                                                             </div>

@@ -18,7 +18,8 @@ export class CustomersTDComponent implements OnInit {
     dataSourceDocs: any[];
     resetPassForm: FormGroup;
     addressesForm: FormGroup;
-    addressList:any[];
+    addressList:any[] = [];
+    isLoadAddress: boolean = true;
 
     center: google.maps.LatLngLiteral = {lat: 41, lng: 29};
     zoom = 7;
@@ -139,20 +140,33 @@ export class CustomersTDComponent implements OnInit {
     createAddress(){
         if(this.companyDetail) {
             this._customersService.createAddress(this.addressesForm.value).subscribe(data =>{
-                this.loadAddress()
+                //this.loadAddress();
+
             })
         }
     }
 
     newAddress()
     {
-        this.addressList.push({id:'',isNew:true,description:'',title:'',type:''})
+        let tmp ={id:'0',isNew:true,description:'',title:'',type:'',expanded:true};
+       // this.addressList.push(tmp);
+        this.addressList.splice(0, 0, tmp);
+       //this.addressList =    this.addressList.sort((n1,n2) => {});
+        this.addressesForm.reset();
     }
 
     loadAddress()
     {
+        this.isLoadAddress = false;
+        this.addressList = [];
         this._customersService.getAddressByCompanyId(this.companyDetail).subscribe(data => {
-            this.addressList=data.body;
+            data.body.forEach(element => {
+                element.expanded = false;
+                element.isNew = false;
+                this.addressList.push(element);
+            });
+        this.isLoadAddress = true;
+
         })
     }
  
@@ -179,5 +193,10 @@ export class CustomersTDComponent implements OnInit {
             files: this.filesControl,
             label: this.label,
         })
-      }
+    }
+    deleteAddress(item : any){
+        this._customersService.deleteAddress(item).subscribe(data=>{
+            this.loadAddress();
+        });
+    }
 }

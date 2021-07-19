@@ -136,11 +136,33 @@ export class CustomersService {
 
     createAddress(address: any): Observable<any>
     {
-        delete address.id;
+        
         let url = `${environment.url}/address/`;
+        console.log(123);
+        if(address.id !==''){
+            return  this._httpClient.put<any>(url+address.id, address);
+        }else{
+            delete address.id;
+            return this.addresses$.pipe(
+                take(1),
+                switchMap(addresses => this._httpClient.post<any>(url, address).pipe(
+                    map((newAddress) => {
+    
+                        this.toastr.successToastr('Address Added', 'Added!');
+    
+                        return newAddress;
+                    })
+                ))
+            );
+    
+        }
+    }
+    deleteAddress(address: any): Observable<any>
+    {
+        let url = `${environment.url}/address/delete/`;
         return this.addresses$.pipe(
             take(1),
-            switchMap(addresses => this._httpClient.post<any>(url, address).pipe(
+            switchMap(addresses => this._httpClient.put<any>(url+address.id, address).pipe(
                 map((newAddress) => {
 
                     this.toastr.successToastr('Address Added', 'Added!');
