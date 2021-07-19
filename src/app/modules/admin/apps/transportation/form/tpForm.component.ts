@@ -18,27 +18,27 @@ export class TransportationFormComponent implements OnInit {
 
     processForm: FormGroup;
     dataSourceGroup: any[];
-    dataSourceSubGroup:any[];
+    dataSourceSubGroup: any[];
     vehicleDetail: string;
     customers: any[];
     filteredOptions: Observable<string[]>;
     selectCustomerItem: any;
 
-    center: google.maps.LatLngLiteral = {lat: 41, lng: 29};
+    center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
     zoom = 7;
-    markerOptions: google.maps.MarkerOptions = {draggable: false};
+    markerOptions: google.maps.MarkerOptions = { draggable: false };
     markerPositions: google.maps.LatLngLiteral[] = [];
 
     addMarker(event: google.maps.MapMouseEvent) {
-        this.markerPositions=[];
+        this.markerPositions = [];
         this.markerPositions.push(event.latLng.toJSON());
-        this.markerPositions.forEach((element)=>(
+        this.markerPositions.forEach((element) => (
             this.processForm.patchValue({
-                latitude:element.lat,
-                longitude:element.lng
+                latitude: element.lat,
+                longitude: element.lng
             })
         ))
-      }
+    }
 
 
 
@@ -53,7 +53,7 @@ export class TransportationFormComponent implements OnInit {
 
     ) {
         this.processForm = this._formBuilder.group({
-            id:[''],
+            id: [''],
             group_id: [''],
             group_sub_id: [''],
             process_date: [null],
@@ -61,7 +61,7 @@ export class TransportationFormComponent implements OnInit {
             latitude: [''],
             longitude: [''],
         });
-        
+
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
                 this._processService.getProcessById(params.get("id")).subscribe(data => {
@@ -78,23 +78,25 @@ export class TransportationFormComponent implements OnInit {
     }
 
     changeGroup($event) {
-        this._processService.getProcessGroupById($event.value).subscribe(data=>{
-          this.dataSourceSubGroup = data.body.process_sub_groups;
-        });
-      }
-
-    addNewProcess() {
-        console.log(123);
-        this._processService.getProcessSave(this.processForm.getRawValue()).subscribe(data=>{
+        this._processService.getProcessGroupById($event.value).subscribe(data => {
             this.dataSourceSubGroup = data.body.process_sub_groups;
-          });
+        });
     }
 
-    deleteProcess()
-    {
-        console.log(123);
-        this._processService.getProcessDelete(this.processForm.getRawValue()).subscribe(data=>{
+    addNewProcess() {
+        this._processService.getProcessSave(this.processForm.getRawValue()).subscribe(data => {
             this.dataSourceSubGroup = data.body.process_sub_groups;
+            this.toastr.successToastr('Process Added/Updated', 'Added/Updated!');
+            this._router.navigate(['/apps/transportation/list']);
+        });
+    }
+
+    deleteProcess() {
+        this._processService.getProcessDelete(this.processForm.getRawValue()).subscribe(data => {
+            this.dataSourceSubGroup = data.body.process_sub_groups;
+            this.toastr.warningToastr('Process Deleted', 'Deleted!');
+            this._router.navigate(['/apps/transportation/list']);
+
         });
     }
 }
