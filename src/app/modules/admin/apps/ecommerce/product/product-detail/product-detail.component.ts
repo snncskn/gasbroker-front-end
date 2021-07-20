@@ -78,7 +78,11 @@ export class ProductDetailComponent implements OnInit {
         this._productService
           .getProductById(params.get("id"))
           .subscribe((data) => {
+
             this.productDetail = data.id;
+            this._productService.getAllByMainId(params.get("id")).subscribe(data =>{
+              console.log(data);
+            });
             this.productForm.patchValue(data);
           });
       }
@@ -91,7 +95,8 @@ export class ProductDetailComponent implements OnInit {
 
   add(item?: any) {
     const subProductForm = this._formBuilder.group({
-        //product: item.product || '',
+        product: item.product || '',
+        product_id: item.product_id || '',
         main_id: this.productForm.value.id,
         id: item.id || '',
         quantity:item.quantity || '',
@@ -131,6 +136,21 @@ get subProductItems() {
       });
     }
   }
+ 
+  deleteSubGroup(item: any,index: number) {
+    if(item.id){
+        this._productService.deleteSubProduct(item).subscribe(data => {
+            this.toastr.errorToastr('Process Sub Group deleted', 'deleted!');
+            this._router.navigateByUrl('/apps/group/form/' + data.body.id);
+        });
+    }else{
+      let tmp = this.productForm.controls["subGroupItems"] as FormArray;
+      tmp.removeAt(index);
+    }
+     
+}
+
+
   onChangeUnit(event) {
     console.log(event.value);
     this.selectedUnit = event.value;
@@ -150,18 +170,19 @@ get subProductItems() {
    *
    * @param event
    */
-     selectProduct(event: any) {
+     selectProduct(event: any,index: number) {
       let option = this.products.filter(
         (product) =>
           product.name.toUpperCase() === event.option.value.name.toUpperCase()
       );
       if (option.length > 0) {
         this.selectProductItem = option[0];
-        this.formSubProduct.get("id").setValue(option[0].id, { emitEvent: false });
+        this.formSubProduct.controls["subProductItems"].value[index].product_id =  event.option.value.id;
+        this.unit=event.option.value.unit;
+        this.name=event.option.value.name;
+        this.code=event.option.value.code;
+          //this.formSubProduct.get("id").setValue(option[0].id, { emitEvent: false });
       }
-      this.unit=event.option.value.unit;
-      this.name=event.option.value.name;
-      this.code=event.option.value.code;
 
     }
 

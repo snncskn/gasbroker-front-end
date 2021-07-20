@@ -1,5 +1,18 @@
 {
     "welcome-back": "Hoşgeldin",
     "Project": "Proje",
-    "Analytics": "Analitik"
+    "Analytics": "Analitik",
+    "dashboards": "Dashboards",
+    "dashboards.project": "Proje",
+    "app.company": "Müşteriler",
+    "app.products": "Ürünler",
+    "app.vehicles": "Araçlar",
+    "app.proposal": "Teklifler",
+    "app.users": "Kullanıcılar",
+    "app.transportaion": "Hareketler",
+    "app.group": "Gruplar",
+    "sign-out": "Çıkış",
+    "Company_Title": "Müşteriler",
+    "Company_Total_Record": "Toplam Kayıt"
+
 }

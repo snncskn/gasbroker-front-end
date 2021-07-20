@@ -30,6 +30,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
     declarations: [
@@ -65,11 +66,13 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
         CompanyRoutingModule,
         GoogleMapsModule,
         SharedModule,
-        FileUploadModule
+        FileUploadModule,
+        TranslocoModule
     ],
     providers   : [
         {
             provide : MAT_DATE_FORMATS,
+            
             useValue: {
                 parse  : {
                     dateInput: moment.ISO_8601
@@ -79,7 +82,9 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
                     monthYearLabel    : 'MMM YYYY',
                     dateA11yLabel     : 'LL',
                     monthYearA11yLabel: 'MMMM YYYY'
-                }
+                },
+                availableLangs: ['en', 'tr'],
+                defaultLang: 'en'
             }
         }
     ]

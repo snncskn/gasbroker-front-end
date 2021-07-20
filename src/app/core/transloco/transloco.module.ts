@@ -17,12 +17,10 @@ import { TranslocoHttpLoader } from 'app/core/transloco/transloco.http-loader';
                         id   : 'en',
                         label: 'English'
                     },
-                    /*
-                    {
+                   {
                         id   : 'tr',
                         label: 'Turkish'
                     }
-                    */
                 ],
                 defaultLang         : 'en',
                 fallbackLang: 'en',

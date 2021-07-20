@@ -87,7 +87,7 @@
                                             <input tabindex="-1" type="text" matInput placeholder="Select a Product" aria-label="Product"
                                                 formControlName="product" [matAutocomplete]="auto">
                                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                                (optionSelected)="selectProduct($event)" [displayWith]="displayFn">
+                                                (optionSelected)="selectProduct($event,i)" [displayWith]="displayFn">
                                                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                                                     {{option.name}}
                                                 </mat-option>

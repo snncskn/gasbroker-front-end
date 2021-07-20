@@ -47,7 +47,7 @@ export class NavigationMockApi
                     this._defaultNavigation.forEach((defaultNavItem) => {
                         if ( defaultNavItem.id === compactNavItem.id )
                         {
-                            let tmp =JSON.parse(localStorage.getItem('user'));
+                            let tmp = JSON.parse(localStorage.getItem('user'));
                           
                             let tmpChildren:any[] = [];
                             defaultNavItem.children.forEach(item =>{
@@ -94,7 +94,6 @@ export class NavigationMockApi
                         }
                     });
                 });
-                console.log(999);
                 // Return the response
                 return [
                     200,

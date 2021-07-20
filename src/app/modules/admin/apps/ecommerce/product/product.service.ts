@@ -96,14 +96,17 @@ export class ProductService {
     return this._vendors.asObservable();
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
+ 
 
-  /**
-   * Get brands
-   */
+  getAllByMainId(id: string): Observable<any> {
+    let url = `${environment.url}/product/${id}`;
+
+    return this._httpClient
+      .get<any>(url);
+  }
+
   getBrands(): Observable<InventoryBrand[]> {
+    
     return this._httpClient
       .get<InventoryBrand[]>("api/apps/ecommerce/inventory/brands")
       .pipe(
@@ -171,7 +174,6 @@ export class ProductService {
       map((products) => {
         const product = products.find((item) => item.id === id) || null;
         this._product.next(product);
-        console.log(product);
         return product;
       }),
       switchMap((product) => {
@@ -290,6 +292,12 @@ export class ProductService {
         )
       )
     );
+  }
+
+  deleteSubProduct(id: string): Observable<any> {
+    let url = `${environment.url}/product/delete/${id}`;
+
+    return  this._httpClient.put(url, { params: { id } });
   }
 
   /**

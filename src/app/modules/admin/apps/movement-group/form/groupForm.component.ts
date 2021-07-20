@@ -96,7 +96,6 @@ export class GroupFormComponent {
     }
 
     deleteSubGroup(item: any,index: number) {
-        console.log(item);
         if(item.id){
             this._groupService.deleteSubGroup(item).subscribe(data => {
                 this.toastr.errorToastr('Process Sub Group deleted', 'deleted!');
