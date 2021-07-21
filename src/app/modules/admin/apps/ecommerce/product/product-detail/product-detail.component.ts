@@ -115,7 +115,7 @@ get subProductItems() {
       this.toastr.successToastr('Product saved', 'Saved!');
       this.subProductItems.value.forEach(element => {
         element.id = element.id;
-        element.product_id = element.product.id;
+        element.product_id =  this.productDetail;
           element.quantity=element.quantity;
           this._productService.createProductItem(element).subscribe()
       });
