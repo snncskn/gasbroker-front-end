@@ -111,14 +111,13 @@ get subProductItems() {
   addNewProduct() {
     this._productService.createProduct(this.productForm.value).subscribe((data) => {
       console.log(123)
-      this.productDetail = data.body.id
+      this.productDetail = data.body.id;
       this.toastr.successToastr('Product saved', 'Saved!');
       this.subProductItems.value.forEach(element => {
-          element.main_id = this.productDetail;
-          element.name=this.name;
-          element.code=this.code;
-          element.unit=this.unit
-          this._productService.createProduct(element).subscribe()
+        element.id = element.id;
+        element.product_id = element.product.id;
+          element.quantity=element.quantity;
+          this._productService.createProductItem(element).subscribe()
       });
       this._router.navigate(["/apps/products/products"]);
     });
