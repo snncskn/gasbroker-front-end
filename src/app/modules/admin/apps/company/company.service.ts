@@ -6,6 +6,7 @@ import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Address } from 'cluster';
+import { InventoryPagination } from '../ecommerce/product/product.types';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,7 @@ export class CustomersService {
     private _companys: BehaviorSubject<Company[] | null> = new BehaviorSubject(null);
     private _companysCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
     private _addresses:BehaviorSubject<Address[] | null>= new BehaviorSubject(null);
+    private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
 
 
 
@@ -39,6 +41,12 @@ export class CustomersService {
     get customer$(): Observable<Company> {
         return this._company.asObservable();
     }
+    get pagination$(): Observable<InventoryPagination>
+    {
+        return this._pagination.asObservable();
+    }
+
+    
 
     /**
      * Getter for customers
@@ -62,11 +70,14 @@ export class CustomersService {
     /**
      * Get customers
      */
-    getCustomers(): Observable<Company[]> {
+     getCustomers(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+     Observable<{ pagination: any; customers: any[] }>{
 
-        return this._httpClient.get<any>(`${environment.url}/company`).pipe(
+        return this._httpClient.get<any>(`${environment.url}/company?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((customers) => {
-                this._companys.next(customers.body);
+                console.log(9999)
+                 this._companys.next(customers.body);
+                this._pagination.next(customers.body);
                 this._companysCount = customers.body.length;
             })
         );
@@ -138,8 +149,8 @@ export class CustomersService {
     {
         
         let url = `${environment.url}/address/`;
-        console.log(123);
-        if(address.id === null ){
+        
+        if(address.id === '' || address.id === null){
             delete address.id;
             return this.addresses$.pipe(
                 take(1),

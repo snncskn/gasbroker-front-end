@@ -168,7 +168,7 @@ export class ProductService {
   /**
    * Get product by id
    */
-  getProductById(id: string): Observable<InventoryProduct> {
+  getProductById(id: string): Observable<any> {
     return this._products.pipe(
       take(1),
       map((products) => {
@@ -185,6 +185,11 @@ export class ProductService {
       })
     );
   }
+  getProductWithItemsById(id: string): Observable<any> {
+    let url = `${environment.url}/product/${id}`;
+
+    return   this._httpClient.get<any>(url);
+   }
 
   /**
    * Create product
@@ -330,7 +335,7 @@ export class ProductService {
   }
 
   deleteSubProduct(id: string): Observable<any> {
-    let url = `${environment.url}/product/delete/${id}`;
+    let url = `${environment.url}/product-item/delete/${id}`;
 
     return  this._httpClient.put(url, { params: { id } });
   }

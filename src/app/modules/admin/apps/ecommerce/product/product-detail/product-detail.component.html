@@ -104,11 +104,12 @@
                                         </mat-form-field>
                                     </div>
                                     <div class="col-span-2 text-lg font-medium ml-5 mt-9" [formGroupName]="i">
-                                        {{unit}}
+                                         <input matInput [formControlName]="'unit'" disabled [placeholder]="'Unit *'"
+                                        [spellcheck]="false">
                                     </div>
                                     <div class="col-span-2 text-lg font-medium ml-5 mt-6" [formGroupName]="i">
                                             <button class="fuse-mat-button-rounded ml-1 text-on-warn-100"
-                                                mat-icon-button [color]="'warn'" (click)="deleteSubGroup(item,i)">
+                                                mat-icon-button [color]="'warn'" (click)="deleteSubGroup(item.value,i)">
                                                 <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                                                 [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
                                               </button>

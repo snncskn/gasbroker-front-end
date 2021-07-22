@@ -30,7 +30,7 @@
             <!-- Search -->
             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-              <input matInput [autocomplete]="'off'" [placeholder]="'Search companys'">
+              <input matInput [autocomplete]="'off'" [placeholder]="'Search'">
             </mat-form-field>
 
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newCompany()">
@@ -42,9 +42,19 @@
 
         <!-- Customers list -->
         <div class="relative">
-          <table class="w-full min-w-320 table-fixed bg-transparent" [ngClass]="{ 'pointer-events-none': isLoading }"
-            mat-table matSort [matSortActive]="'name'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
-            [multiTemplateDataRows]="true" [dataSource]="customers$" [trackBy]="trackByFn">
+          <div
+          class="overflow-x-auto sm:overflow-y-auto"
+          cdkScrollable>
+          <table class="w-full min-w-320 table-fixed bg-transparent"
+            [ngClass]="{ 'pointer-events-none': isLoading }"
+            mat-table 
+            matSort 
+            [matSortActive]="'name'" 
+            [matSortDisableClear]="true" 
+            [matSortDirection]="'asc'"
+            [multiTemplateDataRows]="true" 
+            [dataSource]="customers$" 
+            [trackBy]="trackByFn">
 
             <ng-container matColumnDef="name">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
@@ -119,11 +129,29 @@
               </td>
             </ng-container>
 
-            <tr class="shadow" mat-header-row *matHeaderRowDef="customersTableColumns; sticky: true"></tr>
-            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-              *matRowDef="let customers; columns: customersTableColumns"></tr>
+            <tr class="shadow" 
+            mat-header-row 
+            *matHeaderRowDef="customersTableColumns; sticky: true"></tr>
+            <tr 
+            class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
+            [class]="setStyle(i,row)" 
+            mat-row
+            *matRowDef="let customers; columns: customersTableColumns"></tr>
 
           </table>
+        </div>
+          <mat-paginator
+          #paginator
+          class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+          [ngClass]="{'pointer-events-none': isLoading}"
+          [length]="pagination.length"
+          [pageIndex]="pagination.page"
+          [pageSize]="pagination.size"
+          (page)="pageEvent = getServerData($event)"
+          [pageIndex]="currentPage" 
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          [showFirstLastButtons]="true"></mat-paginator>
+          
           <ng-template #noCompany>
             <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no company!
             </div>

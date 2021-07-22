@@ -27,7 +27,7 @@ export class CustomersResolver implements Resolve<any>
      * @param route
      * @param state
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Company[]>
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<{ pagination: any; customers: any[] }>
     {
         return this._customersService.getCustomers();
     }
@@ -80,59 +80,4 @@ export class CustomersCustomerResolver implements Resolve<any>
                    );
     }
 }
-
-/*@Injectable({
-    providedIn: 'root'
-})
-export class CustomersCountriesResolver implements Resolve<any>
-{
-    /**
-     * Constructor
-     
-    constructor(private _customersService: CustomersService)
-    {
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Resolver
-     *
-     * @param route
-     * @param state
-     
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Country[]>
-    {
-        return this._customersService.getCountries();
-    }
-}
-
-@Injectable({
-    providedIn: 'root'
-})
-export class CustomersTagsResolver implements Resolve<any>
-{
-    /*
-     * Constructor
-     
-    constructor(private _customersService: CustomersService)
-    {
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Resolver
-     *
-     * @param route
-     * @param state
-     
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Tag[]>
-    {
-        return this._customersService.getTags();
-    }
-}*/
+ 

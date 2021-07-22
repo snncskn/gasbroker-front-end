@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -6,32 +6,42 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Company} from 'app/modules/admin/apps/company/company.types';
+import { Company } from 'app/modules/admin/apps/company/company.types';
 import { CustomersService } from 'app/modules/admin/apps/company/company.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MatSort } from '@angular/material/sort';
+import { InventoryPagination } from '../../ecommerce/product/product.types';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
-    selector       : 'customers-list',
-    templateUrl    : './list.component.html',
-    encapsulation  : ViewEncapsulation.None,
+    selector: 'customers-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomersListComponent implements OnInit, OnDestroy
-{
-    @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
+export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy {
+
+    @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
+
+    @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
     customers$: Observable<Company[]>;
     //customer$: Observable<Customer>;
 
     customersCount: number = 0;
-    customersTableColumns: string[] = ['name', 'type', 'registered_date', 'email','phone','detail'];
+    customersTableColumns: string[] = ['name', 'type', 'registered_date', 'email', 'phone', 'detail'];
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
     selectedCustomer: Company;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
+    pagination: InventoryPagination;
+    public currentPage = 1;
+    public pageSize = 10;
+
+
 
 
     /**
@@ -45,15 +55,14 @@ export class CustomersListComponent implements OnInit, OnDestroy
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
-    )
-    {
- 
-        this._customersService.getCustomers().subscribe();
+    ) {
+
+     //   this._customersService.getCustomers().subscribe();
 
     }
- 
- 
- 
+
+
+
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
@@ -61,9 +70,17 @@ export class CustomersListComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
-        // Get the customers
+    ngOnInit(): void {
+       
+        this._customersService.pagination$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((pagination: InventoryPagination) => {
+            // Update the pagination
+            this.pagination = pagination;
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        });
         this.customers$ = this._customersService.customers$;
         this._customersService.customers$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -74,8 +91,8 @@ export class CustomersListComponent implements OnInit, OnDestroy
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
-            }); 
-            
+            });
+
         this._customersService.customer$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((customer: Company) => {
@@ -84,7 +101,8 @@ export class CustomersListComponent implements OnInit, OnDestroy
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
-            }); 
+            });
+      
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -101,15 +119,13 @@ export class CustomersListComponent implements OnInit, OnDestroy
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(({matchingAliases}) => {
+            .subscribe(({ matchingAliases }) => {
 
                 // Set the drawerMode if the given breakpoint is active
-                if ( matchingAliases.includes('lg') )
-                {
+                if (matchingAliases.includes('lg')) {
                     this.drawerMode = 'side';
                 }
-                else
-                {
+                else {
                     this.drawerMode = 'over';
                 }
 
@@ -117,34 +133,34 @@ export class CustomersListComponent implements OnInit, OnDestroy
                 this._changeDetectorRef.markForCheck();
             });
 
-          
+
     }
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
 
     ngAfterViewInit(): void {
-        console.log(123);
         this._sort.sortChange
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
-
+                this._paginator.pageIndex = 0;
             });
 
 
         // Get products if sort or page changes
         merge(this._sort.sortChange,).pipe(
             switchMap(() => {
-                return this._customersService.getCustomers();
+                this.isLoading = true;
+                return this._customersService.getCustomers(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
             }),
             map(() => {
+                this.isLoading = false;
 
             })
         ).subscribe();
@@ -157,10 +173,9 @@ export class CustomersListComponent implements OnInit, OnDestroy
     /**
      * On backdrop clicked
      */
-    onBackdropClicked(): void
-    {
+    onBackdropClicked(): void {
         // Go back to the list
-        this._router.navigate(['./'], {relativeTo: this._activatedRoute});
+        this._router.navigate(['./'], { relativeTo: this._activatedRoute });
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
@@ -169,20 +184,17 @@ export class CustomersListComponent implements OnInit, OnDestroy
     /**
      * Create customer
      */
-     newCompany(): void
-    {
+    newCompany(): void {
         this._router.navigate(['/apps/company/form']);
 
     }
 
-    openCompany(item:any)
-    {
-        this._router.navigate(['/apps/company/form/'+item.id]);
+    openCompany(item: any) {
+        this._router.navigate(['/apps/company/form/' + item.id]);
     }
 
-    deleteCompany(item:any)
-    {
-        this._customersService.deleteCompany(item.id).subscribe(data=>{
+    deleteCompany(item: any) {
+        this._customersService.deleteCompany(item.id).subscribe(data => {
             this._customersService.getCustomers().subscribe();
         });
     }
@@ -190,4 +202,21 @@ export class CustomersListComponent implements OnInit, OnDestroy
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
+
+    public setStyle(it: any, item: any): string {
+        if ((it % 2) === 0) {
+            return 'zebra';
+        } else {
+            return '';
+        }
+    }
+
+  getServerData(event?: PageEvent) {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+   this._customersService.getCustomers(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+ 
+
+  }
+
 }

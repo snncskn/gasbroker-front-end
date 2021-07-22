@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CustomersListComponent } from 'app/modules/admin/apps/company/list/list.component';
 import { CustomersTDComponent } from './tabDetails/companyTD.component';
 import { NgModule } from '@angular/core';
+import { CustomersResolver } from './company.resolvers';
 
 export const customersRoutes: Routes = [
     {
@@ -12,6 +13,9 @@ export const customersRoutes: Routes = [
       {
         path: 'list',
         component: CustomersListComponent,
+        resolve  : {
+          customer:CustomersResolver
+        }
       },
       {
         path: 'form/:id',

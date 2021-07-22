@@ -31,6 +31,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { TranslocoModule } from '@ngneat/transloco';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import { TranslocoModule } from '@ngneat/transloco';
         MatMenuModule,
         MatMomentDateModule,
         MatProgressBarModule,
+        MatPaginatorModule,
         MatRadioModule,
         MatRippleModule,
         MatSelectModule,

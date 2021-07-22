@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   OnInit,
@@ -20,7 +21,7 @@ import { ProductForm } from "../productForm";
   styleUrls: ["./product-detail.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, AfterViewInit  {
   productForm: FormGroup;
   formSubProduct: FormGroup;
   dataSourceUnits: any[];
@@ -33,12 +34,6 @@ export class ProductDetailComponent implements OnInit {
   public productsForm = new ProductForm();
   selectProductItem: any;
   products: any[];
-  unit:any;
-  name:any;
-  code:any;
-
-
-
 
   constructor(
     private router: Router,
@@ -65,59 +60,74 @@ export class ProductDetailComponent implements OnInit {
     });
 
     this.subProductForm = {
-      id: '', main_id: '', name: '', code: '', unit: '', product:''
-  }
-  this.formSubProduct = this.productsForm.convertModelToFormGroup(this.subProductForm);
+      id: '', name: '', code: '', unit: '', product: ''
+    }
+    this.formSubProduct = this.productsForm.convertModelToFormGroup(this.subProductForm);
 
     this._productService.getUnits().subscribe((res) => {
       this.dataSourceUnits = res.body;
     });
 
+    this.list();
     this.activatedRouter.paramMap.subscribe((params) => {
       if (params.has("id")) {
         this._productService
-          .getProductById(params.get("id"))
+          .getProductWithItemsById(params.get("id"))
           .subscribe((data) => {
-
-            this.productDetail = data.id;
-            this._productService.getAllByMainId(params.get("id")).subscribe(data =>{
-              console.log(data);
+            this.productDetail = data.body.id;
+            data.body.product_items.forEach(element => {
+              this.add(element);
             });
-            this.productForm.patchValue(data);
+            this.productForm.patchValue(data.body);
           });
       }
     });
 
-    this.list()
+  }
+  ngAfterViewInit(): void {
+    this.list();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   add(item?: any) {
-    const subProductForm = this._formBuilder.group({
-        product: item.product || '',
-        product_id: item.product_id || '',
-        main_id: this.productForm.value.id,
-        id: item.id || '',
-        quantity:item.quantity || '',
-    });
-    this.subProductItems.push(subProductForm);
-}
+    console.log(123);
 
-get subProductItems() {
+    let option = this.products.filter((product) => product.name === item.name);
+    let tmpProduct;
+    if(option.length>0){
+      tmpProduct = option[0];
+    }else{
+      tmpProduct = {unit: 'KG',name:''};
+
+    }
+    const subProductForm = this._formBuilder.group({
+      unit: item.unit,
+      name: item.name,
+      product: tmpProduct,
+      product_id: item.product_id || '',
+      id: item.id || '',
+      quantity: item.quantity || '',
+    });
+     
+    this.subProductItems.push(subProductForm);
+  }
+
+  get subProductItems() {
     return this.formSubProduct.controls["subProductItems"] as FormArray;
-}
+  }
 
   addNewProduct() {
     this._productService.createProduct(this.productForm.value).subscribe((data) => {
-      console.log(123)
-      this.productDetail = data.body.id;
+      
       this.toastr.successToastr('Product saved', 'Saved!');
       this.subProductItems.value.forEach(element => {
         element.id = element.id;
-        element.product_id =  this.productDetail;
-          element.quantity=element.quantity;
-          this._productService.createProductItem(element).subscribe()
+        element.product_id = data.body.id;
+        element.quantity = element.quantity;
+        element.name = element.name;
+        element.unit = element.unit;
+        this._productService.createProductItem(element).subscribe()
       });
       this._router.navigate(["/apps/products/products"]);
     });
@@ -129,25 +139,24 @@ get subProductItems() {
 
   deleteProduct() {
     if (this.productDetail) {
-      this._productService.deleteProduct(this.productDetail).subscribe(data=>{
-      this._router.navigate(["/apps/products/products"]);
+      this._productService.deleteProduct(this.productDetail).subscribe(data => {
+        this._router.navigate(["/apps/products/products"]);
 
       });
     }
   }
- 
-  deleteSubGroup(item: any,index: number) {
-    if(item.id){
-        this._productService.deleteSubProduct(item).subscribe(data => {
-            this.toastr.errorToastr('Process Sub Group deleted', 'deleted!');
-            this._router.navigateByUrl('/apps/group/form/' + data.body.id);
-        });
-    }else{
-      let tmp = this.productForm.controls["subGroupItems"] as FormArray;
-      tmp.removeAt(index);
+
+  deleteSubGroup(item: any, index: number) {
+    if (item.id) {
+      this._productService.deleteSubProduct(item.id).subscribe(data => {
+        this.toastr.errorToastr('Process Sub Group deleted', 'deleted!');
+        this._router.navigateByUrl('/apps/group/form/' + data.body.id);
+      });
     }
-     
-}
+    let tmp = this.formSubProduct.controls["subProductItems"] as FormArray;
+    tmp.removeAt(index);
+
+  }
 
 
   onChangeUnit(event) {
@@ -164,61 +173,62 @@ get subProductItems() {
     });
   }
 
-    /**
-   * Show the products
-   *
-   * @param event
-   */
-     selectProduct(event: any,index: number) {
-      let option = this.products.filter(
-        (product) =>
-          product.name.toUpperCase() === event.option.value.name.toUpperCase()
+  /**
+ * Show the products
+ *
+ * @param event
+ */
+  selectProduct(event: any, index: number) {
+    let option = this.products.filter(
+      (product) =>
+        product.name.toUpperCase() === event.option.value.name.toUpperCase()
+    );
+    if (option.length > 0) {
+      this.selectProductItem = option[0];
+      let rows = this.formSubProduct.get('subProductItems') as FormArray;
+      rows.controls[index].patchValue({product_id:event.option.value.id,unit:event.option.value.unit,name:event.option.value.name});
+
+//      this.formSubProduct.controls["subProductItems"].value[index].product_id = ;
+ //     this.formSubProduct.controls["subProductItems"].value[index].unit = event.option.value.unit;
+  //    this.formSubProduct.controls["subProductItems"].value[index].name = event.option.value.name;
+    }
+
+  }
+
+  public list() {
+    this._productService.getProductAll().subscribe((res) => {
+      this.products = res.body;
+      this.filteredOptions = this.formSubProduct.controls[
+        "product"
+      ].valueChanges.pipe(
+        startWith(""),
+        map((value) => this._filter(value === "" ? "99" : value))
       );
-      if (option.length > 0) {
-        this.selectProductItem = option[0];
-        this.formSubProduct.controls["subProductItems"].value[index].product_id =  event.option.value.id;
-        this.unit=event.option.value.unit;
-        this.name=event.option.value.name;
-        this.code=event.option.value.code;
-          //this.formSubProduct.get("id").setValue(option[0].id, { emitEvent: false });
-      }
+    });
+  }
 
+  private _filter(value: string): string[] {
+    let filterValue;
+    if (value === "99") {
+      filterValue = "";
+    } else {
+      filterValue = value;
     }
 
-    public list() {
-      this._productService.getProductAll().subscribe((res) => {
-        this.products = res.body;
-        this.filteredOptions = this.formSubProduct.controls[
-          "product"
-        ].valueChanges.pipe(
-          startWith(""),
-          map((value) => this._filter(value === "" ? "99" : value))
+    return this.products.filter((option) => {
+      if (typeof filterValue === "object") {
+        return (
+          option?.name?.indexOf(filterValue.name) === 0 ||
+          option?.name?.indexOf(filterValue.name?.toLowerCase()) === 0 ||
+          option?.name?.indexOf(filterValue.name?.toUpperCase()) === 0
         );
-      });
-    }
-  
-    private _filter(value: string): string[] {
-      let filterValue;
-      if (value === "99") {
-        filterValue = "";
       } else {
-        filterValue = value;
+        return (
+          option?.name?.indexOf(filterValue) === 0 ||
+          option?.name?.indexOf(filterValue?.toLowerCase()) === 0 ||
+          option?.name?.indexOf(filterValue?.toUpperCase()) === 0
+        );
       }
-  
-      return this.products.filter((option) => {
-        if (typeof filterValue === "object") {
-          return (
-            option?.name?.indexOf(filterValue.name) === 0 ||
-            option?.name?.indexOf(filterValue.name?.toLowerCase()) === 0 ||
-            option?.name?.indexOf(filterValue.name?.toUpperCase()) === 0
-          );
-        } else {
-          return (
-            option?.name?.indexOf(filterValue) === 0 ||
-            option?.name?.indexOf(filterValue?.toLowerCase()) === 0 ||
-            option?.name?.indexOf(filterValue?.toUpperCase()) === 0
-          );
-        }
-      });
-    }
+    });
+  }
 }

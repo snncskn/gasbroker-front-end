@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileUploadValidators } from '@iplab/ngx-file-upload';
+import { Console } from 'console';
 import { cloneDeep } from 'lodash';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { CustomersService } from '../company.service';
@@ -22,6 +23,7 @@ export class CustomersTDComponent implements OnInit {
     addressList:any[] = [];
     isLoadAddress: boolean = true;
     formStatus: boolean = true;
+    newAddressItem: any;
 
     center: google.maps.LatLngLiteral = {lat: 41, lng: 29};
     zoom = 7;
@@ -62,7 +64,8 @@ export class CustomersTDComponent implements OnInit {
 
 
     ) {
-
+        let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
+        this.newAddressItem = {expanded:true,isNew:true,position:center};
 
         this.customerForm = this._formBuilder.group({
             id: [''],
@@ -141,33 +144,33 @@ export class CustomersTDComponent implements OnInit {
         }
     }
 
-    createAddress(){
+    createAddress(){ 
         if(this.companyDetail) {
-            this.addressesForm.value.company_id = this.companyDetail;
             this.addressesForm.value.company_id = this.companyDetail;
             this.addressesForm.value.lat = String(this.addressesForm.value.lat);
             this.addressesForm.value.long = String(this.addressesForm.value.long);
             this._customersService.createAddress(this.addressesForm.value).subscribe(data =>{
+                this.addressesForm.reset();
+                this.newAddressItem = {expanded:false,isNew:false};
                 this.loadAddress();
-
-            })
-        }
+            },error=>{
+                this.loadAddress();
+            });
+        } 
     }
 
     newAddress()
     {
         let tmp ={id:'0',isNew:true,description:'',title:'',type:'',expanded:true};
-       // this.addressList.push(tmp);
         this.addressList.splice(0, 0, tmp);
-       //this.addressList =    this.addressList.sort((n1,n2) => {});
         this.addressesForm.reset();
     }
 
     loadAddress()
     {
         this.isLoadAddress = false;
+
         this.addressList = [];
-        let tmpist = [];
         this.formStatus = false;
         this._customersService.getAddressByCompanyId(this.companyDetail).subscribe(data => {
             data.body.forEach(element => {
@@ -176,9 +179,8 @@ export class CustomersTDComponent implements OnInit {
                 item.isNew = false;
                 let center: google.maps.LatLngLiteral = { lat: Number(element.latitude), lng: Number(element.longitude) };
                 item.position = center;
-                tmpist.push(item);
+                this.addressList.push(item);
             });
-            this.addressList = tmpist;
             this.isLoadAddress = true;
             this.formStatus = true;
 
