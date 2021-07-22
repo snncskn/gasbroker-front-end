@@ -14,7 +14,7 @@ export const customersRoutes: Routes = [
         path: 'list',
         component: CustomersListComponent,
         resolve  : {
-          customer:CustomersResolver
+          customers:CustomersResolver
         }
       },
       {

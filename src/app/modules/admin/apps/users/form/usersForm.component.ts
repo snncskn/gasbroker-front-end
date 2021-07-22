@@ -74,17 +74,9 @@ export class UsersFormComponent implements OnInit {
     }
 
     saveUsers() {
+        console.log(123);
         if (this.usersForm.value.id) {
-            let saveUser = {
-                id: '', name: '', email: '', username: '', website: ''
-            };
-            saveUser.id = this.usersForm.value.id
-            saveUser.name = this.usersForm.value.name
-            saveUser.email = this.usersForm.value.email
-            saveUser.username = this.usersForm.value.username
-            saveUser.website = this.usersForm.value.website
-
-            this._usersService.updateUser(this.usersForm.value.id, saveUser).subscribe(data => {
+            this._usersService.updateUser(this.usersForm.value.id, this.usersForm.value).subscribe(data => {
                 this.toastr.successToastr("User updated", "Updated!");
                 this._router.navigateByUrl('/apps/users/list');
             });

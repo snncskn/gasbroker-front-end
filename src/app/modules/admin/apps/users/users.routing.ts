@@ -3,6 +3,7 @@ import { UsersListComponent } from "app/modules/admin/apps/users/list/usersList.
 import { NgModule } from "@angular/core";
 import { UsersComponent } from "./users.component";
 import { UsersFormComponent } from "./form/usersForm.component";
+import { UsersListResolver } from "./users.resolvers";
 
 export const usersRoutes: Routes = [
   {
@@ -13,6 +14,9 @@ export const usersRoutes: Routes = [
   {
     path: "list",
     component: UsersListComponent,
+    resolve  : {
+      users: UsersListResolver
+    }
   },
   {
     path: "form",

@@ -141,22 +141,7 @@ export class UsersService {
    */
   createUser(user:any): Observable<any> {
     let url = `${environment.url}/api/user/`;
-    return this.users$
-      .pipe(
-        take(1),
-        switchMap((users) =>
-          this._httpClient.post<any>(url, user).pipe(
-            map((newUser) => {
-              // Update the users with the new
-              this._users.next([newUser.data, ...users]);
-
-              // Return the new user
-              return newUser;
-            })
-          )
-        )
-      )
-      .pipe(first());
+    return  this._httpClient.post<any>(url, user);
   }
 
   createUserSingUp(user: any): Observable<any> {
@@ -185,45 +170,11 @@ export class UsersService {
   updateUser(id: string, user: any): Observable<UsersList> {
     let url = `${environment.url}/api/user/${id}`;
 
-    return this.users$.pipe(
-      take(1),
-      switchMap((users) =>
-        this._httpClient
+    return this._httpClient
           .put<any>(url, {
             id,
             user,
-          })
-          .pipe(
-            map((updatedUser) => {
-              // Find the index of the updated user
-              const index = users.findIndex((item) => item.id === id);
-
-              // Update the user
-              users[index] = updatedUser.data;
-
-              // Update the users
-              this._users.next(users);
-
-              // Return the updated user
-
-              return updatedUser;
-            }),
-            switchMap((updatedUser) =>
-              this.user$.pipe(
-                take(1),
-                filter((item) => item && item.id === id),
-                tap(() => {
-                  // Update the user if it's selected
-                  this._user.next(updatedUser);
-
-                  // Return the updated user
-                  return updatedUser;
-                })
-              )
-            )
-          )
-      )
-    );
+          });
   }
 
   /**
