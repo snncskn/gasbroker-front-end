@@ -30,7 +30,9 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
     customers$: Observable<Company[]>;
     //customer$: Observable<Customer>;
 
-    customersCount: number = 0;
+    totalSize$: Observable<any>;
+    totalPage$: Observable<any>;
+
     customersTableColumns: string[] = ['name', 'type', 'registered_date', 'email', 'phone', 'detail'];
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
@@ -40,10 +42,8 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
     pagination: InventoryPagination;
     public currentPage = 1;
     public pageSize = 10;
-
-
-
-
+    public filter: string;
+    
     /**
      * Constructor
      */
@@ -57,7 +57,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
 
-     //   this._customersService.getCustomers().subscribe();
+        //   this._customersService.getCustomers().subscribe();
 
     }
 
@@ -71,24 +71,22 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
      * On init
      */
     ngOnInit(): void {
-       
-        this._customersService.pagination$
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((pagination: InventoryPagination) => {
-            // Update the pagination
-            this.pagination = pagination;
 
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });
+        this._customersService.pagination$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((pagination: InventoryPagination) => {
+                // Update the pagination
+                this.pagination = pagination;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
         this.customers$ = this._customersService.customers$;
+        this.totalSize$ = this._customersService.getTotalSize$;
+        this.totalPage$ = this._customersService.getTotalPage$;
         this._customersService.customers$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((customers: Company[]) => {
-
-                // Update the counts
-                this.customersCount = customers?.length;
-
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
@@ -102,7 +100,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-      
+
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -157,7 +155,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
         merge(this._sort.sortChange,).pipe(
             switchMap(() => {
                 this.isLoading = true;
-                return this._customersService.getCustomers(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+                return this._customersService.getCustomers(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter );
             }),
             map(() => {
                 this.isLoading = false;
@@ -211,12 +209,18 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
         }
     }
 
-  getServerData(event?: PageEvent) {
-    this.currentPage = event.pageIndex + 1;
-    this.pageSize = event.pageSize;
-   this._customersService.getCustomers(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
- 
+    getServerData(event?: PageEvent) {
+        console.log(8123);
+        this.currentPage = event.pageIndex + 1;
+        this.pageSize = event.pageSize;
+        this._customersService.getCustomers(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter ).subscribe();
 
-  }
+
+    }
+    public applyFilter(filterValue: string) {
+        this.filter = filterValue;
+        this._customersService.getCustomers(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, filterValue).subscribe();
+
+    }
 
 }

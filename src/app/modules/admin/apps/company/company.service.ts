@@ -15,11 +15,10 @@ export class CustomersService {
     // Private
     private _company: BehaviorSubject<Company | null> = new BehaviorSubject(null);
     private _companys: BehaviorSubject<Company[] | null> = new BehaviorSubject(null);
-    private _companysCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _addresses:BehaviorSubject<Address[] | null>= new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
-
-
 
     /**
      * Constructor
@@ -45,18 +44,19 @@ export class CustomersService {
     {
         return this._pagination.asObservable();
     }
-
+    get getTotalSize$(): Observable<any> {
+        return this._totalSize;
+    }
     
+    get getTotalPage$(): Observable<any> {
+        return this._totalPage;
+    }
 
     /**
      * Getter for customers
      */
     get customers$(): Observable<Company[]> {
         return this._companys.asObservable();
-    }
-
-    get getCount$(): Observable<any> {
-        return this._companysCount.asObservable();
     }
 
     get addresses$(): Observable<any[]> {
@@ -78,7 +78,8 @@ export class CustomersService {
                 console.log(9999)
                  this._companys.next(customers.body);
                 this._pagination.next(customers.body);
-                this._companysCount = customers.body.length;
+                this._totalSize = customers.totalSize;
+                this._totalPage = customers.totalPage;
             })
         );
     }
