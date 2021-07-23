@@ -9,6 +9,7 @@ import {
 } from "app/modules/admin/apps/users/users.types";
 import { environment } from "environments/environment";
 import { ToastrManager } from "ng6-toastr-notifications";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -30,7 +31,7 @@ export class UsersService {
   /**
    * Constructor
    */
-  constructor(private _httpClient: HttpClient, public toastr: ToastrManager) {}
+  constructor(private _httpClient: HttpClient,    private _router: Router,public toastr: ToastrManager) {}
 
   get pagination$(): Observable<UsersPagination> {
     return this._pagination.asObservable();
@@ -172,6 +173,7 @@ export class UsersService {
     .pipe(
       map((updatedUser) => {
         this.toastr.successToastr("User updated", "Updated!");
+        this._router.navigateByUrl('/apps/users/list');
       }),
       switchMap((updatedUser) =>
         this.user$.pipe(

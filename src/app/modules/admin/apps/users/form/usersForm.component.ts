@@ -138,7 +138,7 @@ export class UsersFormComponent implements OnInit {
                         username: data.body.username,
                         website: data.body.website,
                         company_id: data.body.company_id,
-                        companies: data.body.company.name
+                        companies: data.body.company?.name
                     });
                     this.selectedMenu = data.body.permissions.ids;
                     this.selectedMenuWithUser = data.body.permissions.ids;
