@@ -86,9 +86,28 @@
                                 <input [formControlName]="'pass'" type="password" matInput required>
                             </mat-form-field>
                         </div>
+                        <br>
+                        <!-- ToS and PP -->
+                        <div class="inline-flex items-end w-full mt-5">
+                            <mat-checkbox
+                                [color]="'primary'"
+                                [formControlName]="'agreements'">
+                                <span>I agree to the</span>
+                                <a
+                                    class="ml-1 text-primary-500 hover:underline"
+                                    [routerLink]="['./']">Terms of Service
+                                </a>
+                                <span>and</span>
+                                <a
+                                    class="ml-1 text-primary-500 hover:underline"
+                                    [routerLink]="['./']">Privacy Policy
+                                </a>
+                            </mat-checkbox>
+                        </div>
+                        <br><br>
                         <div class="mt-5">
-                            <button mat-button matStepperPrevious>Back</button>
-                            <button mat-button (click)="stepper.reset()">Reset</button>
+                            <button mat-flat-button matStepperPrevious>Back</button>
+                            <button mat-flat-button (click)="stepper.reset()">Reset</button>
                             <button mat-flat-button [color]="'primary'"
                             [disabled]="signUpFormStep3.stepControl.pristine || signUpFormStep3.stepControl.invalid"
                             (click)="signUp()">
@@ -97,6 +116,7 @@
                         </div>
                     </mat-step>
                 </mat-stepper>
+                
             </form>
         </div>
     </div>
@@ -127,7 +147,7 @@
         <div class="z-10 relative w-full max-w-2xl">
             <div class="text-7xl font-bold leading-none text-gray-100">
                 <div>Welcome to</div>
-                <div>our community</div>
+                <div>Gas Broker System</div>
             </div>
             <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
                 Fuse helps developers to build organized and well coded dashboards full of beautiful and rich modules.

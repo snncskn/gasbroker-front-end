@@ -168,13 +168,19 @@ export class UsersService {
    * @param user
    */
   updateUser(id: string, user: any): Observable<UsersList> {
-    let url = `${environment.url}/api/user/${id}`;
-
-    return this._httpClient
-          .put<any>(url, {
-            id,
-            user,
-          });
+    return this._httpClient.put<any>(`${environment.url}/api/user/${id}`, user)
+    .pipe(
+      map((updatedUser) => {
+        this.toastr.successToastr("User updated", "Updated!");
+      }),
+      switchMap((updatedUser) =>
+        this.user$.pipe(
+          take(1),
+          filter((item) => item && item.id === id),
+          tap(() => {})
+        )
+      )
+    );
   }
 
   /**
@@ -189,14 +195,9 @@ export class UsersService {
     return this.users$.pipe(
       take(1),
       switchMap((users) =>
-        this._httpClient
-          .put<any>(url, {
-            id,
-            user,
-          })
+      this._httpClient.put<any>(`${environment.url}/api/user/${id}`, user)
           .pipe(
             map((updatedUser) => {
-              // Return the updated user
               this.toastr.successToastr("User updated", "Updated!");
             }),
             switchMap((updatedUser) =>
@@ -238,12 +239,9 @@ export class UsersService {
     );
   }
   deleteUser(id: string): Observable<boolean> {
-    let url = `${environment.url}/api/user/delete/${id}`;
-
     return this.users$.pipe(
       take(1),
-      switchMap((users) =>
-        this._httpClient.delete(url, { params: { id } }).pipe(
+        switchMap(users => this._httpClient.put(`${environment.url}/api/user/delete/${id}`, { id }).pipe(
           map((isDeleted: any) => {
             if (isDeleted.success) {
               const index = users.findIndex((item) => item.id === id);

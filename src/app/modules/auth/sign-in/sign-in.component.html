@@ -6,9 +6,13 @@
                 <img src="assets/images/logo/logo.png">
             </div>
 
-            <!-- Title  
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign in v1.0
-            </div>-->
+            <div class="flex items-baseline mt-0.5 font-medium">
+                <div>Don't have an account?</div>
+                <a
+                    class="ml-1 text-primary-500 hover:underline"
+                    [routerLink]="['/sign-up']">Sign up
+                </a>
+            </div>
 
             <!-- Alert -->
             <fuse-alert
@@ -68,14 +72,8 @@
                     </mat-error>
                 </mat-form-field>
 
-                <div class="flex items-baseline mt-0.5 font-medium">
-                    <a
-                        class="ml-1 text-primary-500 hover:underline"
-                        [routerLink]="['/sign-up']">Create new account
-                    </a>
-                </div>
 
-                <!-- Actions  
+                <!-- Actions  -->
                 <div class="inline-flex items-end justify-between w-full mt-1.5">
                     <mat-checkbox
                         [color]="'primary'"
@@ -87,7 +85,7 @@
                         [routerLink]="['/forgot-password']">Forgot password?
                     </a>
                 </div>
- -->
+ 
                 <!-- Submit button -->
                 <button
                     class="fuse-mat-button-large w-full mt-6"
