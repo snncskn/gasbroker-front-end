@@ -99,6 +99,7 @@ export class UserMenuComponent implements OnInit, OnDestroy
 
     openProfile():void
     {
-        this._router.navigate(['/apps/profile']);
+        let tmpUser = JSON.parse(localStorage.getItem('user'));
+        this._router.navigate(['apps/company/form/'+tmpUser.company_id]);
     }
 }

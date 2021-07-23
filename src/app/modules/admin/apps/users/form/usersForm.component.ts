@@ -29,6 +29,7 @@ export class UsersFormComponent implements OnInit {
     selectedMenu: any | null = null;
     menus: any[];
     tagsEditMode: boolean = false;
+    selectedMenuWithUser: any;
 
 
 
@@ -136,9 +137,12 @@ export class UsersFormComponent implements OnInit {
                         email: data.body.email,
                         username: data.body.username,
                         website: data.body.website,
-                        company_id: data.body.company_id
+                        company_id: data.body.company_id,
+                        companies: data.body.company.name
                     });
                     this.selectedMenu = data.body.permissions.ids;
+                    this.selectedMenuWithUser = data.body.permissions.ids;
+
                     this.filteredMenus = this.menus;
                     this.resetPassForm.patchValue({
                         id: data.body.id
@@ -166,9 +170,8 @@ export class UsersFormComponent implements OnInit {
     }
 
     saveUsers() {
-        console.log(123);
         if (this.usersForm.value.id) {
-            this.usersForm.value.permissions = {ids:this.selectedMenu}; 
+            this.usersForm.value.permissions = {ids:this.selectedMenuWithUser}; 
             this._usersService.updateUser(this.usersForm.value.id, this.usersForm.value).subscribe(data => {
                 this.toastr.successToastr("User updated", "Updated!");
                 this._router.navigateByUrl('/apps/users/list');
@@ -188,7 +191,7 @@ export class UsersFormComponent implements OnInit {
                     addUser.username = this.usersForm.value.username
                     addUser.website = this.usersForm.value.website
                     addUser.password = this.usersForm.value.password
-                    addUser.permissions = {ids:this.selectedMenu}; 
+                    addUser.permissions = {ids:this.selectedMenuWithUser}; 
                     this._usersService.createUser(addUser).subscribe(data => {
                         this.toastr.successToastr("User added", "Added!");
 
@@ -226,7 +229,6 @@ export class UsersFormComponent implements OnInit {
         }
     }
     selectCompany(event: any) {
-        console.log(999);
         let option = this.companies.filter(
             (product) =>
                 product.name.toUpperCase() === event.option.value.toUpperCase()
@@ -250,7 +252,7 @@ export class UsersFormComponent implements OnInit {
     }
     filterMenus(event): void
     {
-        console.log(event);
+       
 
         // Get the value
         const value = event.target.value.toLowerCase();
@@ -260,7 +262,7 @@ export class UsersFormComponent implements OnInit {
     }
     filterMenusInputKeyDown(event): void
     {
-        console.log(event);
+       
         // Return if the pressed key is not 'Enter'
         if ( event.key !== 'Enter' )
         {
@@ -351,17 +353,17 @@ export class UsersFormComponent implements OnInit {
     {
         if ( change.checked )
         {
+            this.selectedMenuWithUser.push(tag.id);
             this.addMenuToUser(tag);
         }
         else
         {
+            this.selectedMenuWithUser = this.selectedMenuWithUser.filter(item=>item!==tag.id);
+
             this.removeMenuFromUser(tag);
         }
     }
     checkMenu(id: string){
-
-        console.log(id);
-        console.log(   this.selectedMenu );
         let checkMenu = this.selectedMenu.filter(element => element === id );
         if(checkMenu.length>0){
             return true;
