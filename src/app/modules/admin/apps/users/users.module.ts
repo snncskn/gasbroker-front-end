@@ -28,6 +28,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
 import { UsersFormComponent } from './form/usersForm.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
     declarations: [
@@ -45,6 +46,7 @@ import { UsersFormComponent } from './form/usersForm.component';
         MatIconModule,
         MatInputModule,
         MatMenuModule,
+        MatAutocompleteModule,
         MatMomentDateModule,
         MatProgressBarModule,
         MatRadioModule,

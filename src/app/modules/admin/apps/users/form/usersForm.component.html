@@ -55,6 +55,103 @@
                                         </mat-form-field>
                                     </div>
                                 </div>
+                                <div class="flex items">
+                                    <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
+                                        <mat-label>Company</mat-label>
+                                        <input tabindex="-1" type="text" matInput placeholder="Company" aria-label="Company"
+                                            formControlName="companies" [matAutocomplete]="auto">
+                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                            (optionSelected)="selectCompany($event)">
+                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                                {{option.name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <ng-container >
+                                    <span class="font-semibold">Menus</span>
+                                    <div class="mt-1 rounded-md border border-gray-300 shadow-sm overflow-hidden">
+                                        <!-- Header -->
+                                        <div class="flex items-center my-2 mx-3">
+                                            <div class="flex items-center flex-auto min-w-0">
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                                <input
+                                                    class="min-w-0 ml-2 py-1 border-0"
+                                                    type="text"
+                                                    placeholder="Enter menu name"
+                                                    (input)="filterMenus($event)"
+                                                    (keydown)="filterMenusInputKeyDown($event)"
+                                                    [maxLength]="50"
+                                                    #newTagInput>
+                                            </div>
+                                            <button
+                                                class="ml-3 w-8 h-8 min-h-8"
+                                                mat-icon-button
+                                                (click)="toggleMenuEditMode()">
+                                                <mat-icon
+                                                    *ngIf="!tagsEditMode"
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                                                <mat-icon
+                                                    *ngIf="tagsEditMode"
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                            </button>
+                                        </div>
+                                        <!-- Available tags -->
+                                        <div class="max-h-40 leading-none overflow-y-auto border-t">
+                                            <!-- Tags -->
+                                            <ng-container *ngIf="!tagsEditMode">
+                                                <ng-container *ngFor="let tag of filteredMenus; trackBy: trackByFn">
+                                                    <mat-checkbox
+                                                        class="flex items-center h-10 min-h-10 px-4"
+                                                        [color]="'primary'"
+                                                        [checked]="checkMenu(tag.id)"
+                                                        (change)="toggleUserMenu(tag, $event)">
+                                                        {{tag.title}}
+                                                    </mat-checkbox>
+                                                </ng-container>
+                                            </ng-container>
+                                            <!-- Tags editing -->
+                                            <ng-container *ngIf="tagsEditMode">
+                                                <div class="p-4 space-y-2">
+                                                    <ng-container *ngFor="let tag of filteredMenus; trackBy: trackByFn">
+                                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                                            <input
+                                                                matInput
+                                                                [value]="tag.title"
+                                                                (input)="updateMenuTitle(tag, $event)">
+                                                            <button
+                                                                mat-icon-button
+                                                                (click)="deleteTag(tag)"
+                                                                matSuffix>
+                                                                <mat-icon
+                                                                    class="icon-size-5"
+                                                                    [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                                            </button>
+                                                        </mat-form-field>
+                                                    </ng-container>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <!--
+                                        <div
+                                            class="flex items-center h-10 min-h-10 -ml-0.5 pl-4 pr-3 leading-none cursor-pointer border-t hover:bg-gray-50 dark:hover:bg-hover"
+                                            *ngIf="shouldShowCreateMenuButton(newTagInput.value)"
+                                            (click)="createMenu(newTagInput.value); newTagInput.value = ''"
+                                            matRipple>
+                                            <mat-icon
+                                                class="mr-2 icon-size-5"
+                                                [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
+                                            <div class="break-all">Create "<b>{{newTagInput.value}}</b>"</div>
+                                        </div>
+                                        -->
+                                    </div>
+                                </ng-container>
+                                
+
                                 <ng-container *ngIf="!isNew">
                                     <div class="flex items">
                                         <div class="mt-6 w-full">

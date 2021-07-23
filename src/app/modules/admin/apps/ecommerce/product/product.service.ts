@@ -149,7 +149,7 @@ export class ProductService {
     pagination: InventoryPagination;
     products: InventoryProduct[];
   }> {
-    let url = `${environment.url}/product`;
+    let url = `${environment.url}/product?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`;
     //'api/apps/ecommerce/inventory/products'
     return this._httpClient.get<any>(url).pipe(
       tap((response) => {

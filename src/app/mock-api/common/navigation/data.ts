@@ -34,7 +34,8 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon    : 'heroicons_outline:calendar',
                 link    : '/apps/calendar'
             },
-            */ {
+            */ 
+           {
                 id      : 'app.company',
                 title   : 'Company',
                 type    : 'basic',

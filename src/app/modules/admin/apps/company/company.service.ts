@@ -14,7 +14,7 @@ import { InventoryPagination } from '../ecommerce/product/product.types';
 export class CustomersService {
     // Private
     private _company: BehaviorSubject<Company | null> = new BehaviorSubject(null);
-    private _companys: BehaviorSubject<Company[] | null> = new BehaviorSubject(null);
+    private _companies: BehaviorSubject<Company[] | null> = new BehaviorSubject(null);
     private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _addresses:BehaviorSubject<Address[] | null>= new BehaviorSubject(null);
@@ -56,7 +56,7 @@ export class CustomersService {
      * Getter for customers
      */
     get customers$(): Observable<Company[]> {
-        return this._companys.asObservable();
+        return this._companies.asObservable();
     }
 
     get addresses$(): Observable<any[]> {
@@ -71,12 +71,11 @@ export class CustomersService {
      * Get customers
      */
      getCustomers(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
-     Observable<{ pagination: any; customers: any[] }>{
+     Observable<any>{
 
-        return this._httpClient.get<any>(`${environment.url}/company?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
+        return this._httpClient.get<any>(`${environment.url}/company?page=${page}&size=999999&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((customers) => {
-                console.log(9999)
-                 this._companys.next(customers.body);
+                this._companies.next(customers.body);
                 this._pagination.next(customers.body);
                 this._totalSize = customers.totalSize;
                 this._totalPage = customers.totalPage;
@@ -114,7 +113,7 @@ export class CustomersService {
 
         return this._httpClient.post<any>(`${environment.url}/company/find`, { queryParams: where }).pipe(
             tap((customers) => {
-                this._companys.next(customers.data);
+                this._companies.next(customers.data);
             })
         );
     }
@@ -123,7 +122,7 @@ export class CustomersService {
      * Get customer by id
      */
     getCustomerById(id: string): Observable<Company> {
-        return this._companys.pipe(
+        return this._companies.pipe(
             take(1),
             map((customers) => {
                 const customer = customers.find(item => item.id === id) || null;
@@ -228,7 +227,7 @@ export class CustomersService {
                 map((updatedCustomer) => {
                     const index = customers.findIndex(item => item.id === id);
                     customers[index] = updatedCustomer.body;
-                    this._companys.next(customers);
+                    this._companies.next(customers);
 
                     return updatedCustomer.body;
                 }),
@@ -266,7 +265,7 @@ export class CustomersService {
                         customers.splice(index, 1);
 
                         // Update the customers
-                        this._companys.next(customers);
+                        this._companies.next(customers);
 
                         // Return the deleted status
                     } else {

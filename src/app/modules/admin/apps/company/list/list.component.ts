@@ -210,7 +210,6 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     getServerData(event?: PageEvent) {
-        console.log(8123);
         this.currentPage = event.pageIndex + 1;
         this.pageSize = event.pageSize;
         this._customersService.getCustomers(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter ).subscribe();
