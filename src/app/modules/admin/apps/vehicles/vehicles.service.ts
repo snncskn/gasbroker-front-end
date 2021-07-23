@@ -55,10 +55,11 @@ export class VehiclesService {
 
     /**
      * Get customers
-     */
-    getVehicles(): Observable<Vehicle[]> {
+     */     
+     getVehicles(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+     Observable<{ pagination: any; customers: any[] }>{
 
-        return this._httpClient.get<any>(`${environment.url}/vehicle`).pipe(
+        return this._httpClient.get<any>(`${environment.url}/vehicle?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((vehicles) => {
                 this._vehicles.next(vehicles.body);
                 this._vehiclesCount = vehicles.body.length;

@@ -15,7 +15,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatCheckboxChange } from "@angular/material/checkbox";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { merge, Observable, Subject } from "rxjs";
 import { debounceTime, map, switchMap, takeUntil } from "rxjs/operators";
@@ -77,6 +77,14 @@ export class InventoryListComponent
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   calendarColors: any = calendarColors;
   dataSourceUnits: any[];
+
+  totalSize$: Observable<any>;
+  totalPage$: Observable<any>;
+
+  public currentPage = 1;
+  public pageSize = 10;
+  public filter: string;
+
 
 
   /**
@@ -560,4 +568,11 @@ export class InventoryListComponent
   openDetail(id: string) {
     this._router.navigate(["/apps/products/form/" + id]);
   }
+  getServerData(event?: PageEvent) {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter ).subscribe();
+
+
+}
 }

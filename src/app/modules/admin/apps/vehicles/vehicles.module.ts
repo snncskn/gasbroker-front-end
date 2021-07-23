@@ -27,6 +27,7 @@ import { VehiclesDetailsComponent } from './details/vehiclesDetails.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
     declarations: [
@@ -46,6 +47,7 @@ import { MatTabsModule } from '@angular/material/tabs';
         MatInputModule,
         MatMenuModule,
         MatMomentDateModule,
+        MatPaginatorModule,
         MatProgressBarModule,
         MatRadioModule,
         MatRippleModule,

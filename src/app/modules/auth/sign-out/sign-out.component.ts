@@ -26,6 +26,8 @@ export class AuthSignOutComponent implements OnInit, OnDestroy
         private _router: Router
     )
     {
+        localStorage.clear();
+
     }
 
     // -----------------------------------------------------------------------------------------------------
