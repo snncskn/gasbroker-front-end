@@ -117,7 +117,7 @@ export class UsersFormComponent implements OnInit {
             confirmPassword: [''],
             website: [''],
             companies: [''],
-            companyId: [''],
+            company_id: [''],
             permissions: [''],
         });
 
@@ -136,6 +136,7 @@ export class UsersFormComponent implements OnInit {
                         email: data.body.email,
                         username: data.body.username,
                         website: data.body.website,
+                        company_id: data.body.company_id
                     });
                     this.selectedMenu = data.body.permissions.ids;
                     this.filteredMenus = this.menus;
@@ -167,7 +168,7 @@ export class UsersFormComponent implements OnInit {
     saveUsers() {
         console.log(123);
         if (this.usersForm.value.id) {
-            this.usersForm.value.permissions = {ids:[this.selectedMenu]}; 
+            this.usersForm.value.permissions = {ids:this.selectedMenu}; 
             this._usersService.updateUser(this.usersForm.value.id, this.usersForm.value).subscribe(data => {
                 this.toastr.successToastr("User updated", "Updated!");
                 this._router.navigateByUrl('/apps/users/list');
@@ -180,14 +181,14 @@ export class UsersFormComponent implements OnInit {
                 }
                 else {
                     let addUser = {
-                        id: '', name: '', email: '', username: '', website: '', password: ''
+                        id: '', name: '', email: '', username: '', website: '', password: '',permissions:{}
                     };
                     addUser.name = this.usersForm.value.name
                     addUser.email = this.usersForm.value.email
                     addUser.username = this.usersForm.value.username
                     addUser.website = this.usersForm.value.website
                     addUser.password = this.usersForm.value.password
-
+                    addUser.permissions = {ids:this.selectedMenu}; 
                     this._usersService.createUser(addUser).subscribe(data => {
                         this.toastr.successToastr("User added", "Added!");
 
@@ -230,7 +231,7 @@ export class UsersFormComponent implements OnInit {
             (product) =>
                 product.name.toUpperCase() === event.option.value.toUpperCase()
         );
-        this.usersForm.get('companyId').setValue(option[0].id, { emitEvent: false });
+        this.usersForm.get('company_id').setValue(option[0].id, { emitEvent: false });
 
 
     }
