@@ -118,6 +118,7 @@ export class UsersFormComponent implements OnInit {
             website: [''],
             companies: [''],
             companyId: [''],
+            permissions: [''],
         });
 
         this.resetPassForm = this._formBuilder.group({
@@ -166,6 +167,7 @@ export class UsersFormComponent implements OnInit {
     saveUsers() {
         console.log(123);
         if (this.usersForm.value.id) {
+            this.usersForm.value.permissions = {ids:[this.selectedMenu]}; 
             this._usersService.updateUser(this.usersForm.value.id, this.usersForm.value).subscribe(data => {
                 this.toastr.successToastr("User updated", "Updated!");
                 this._router.navigateByUrl('/apps/users/list');
