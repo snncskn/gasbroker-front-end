@@ -295,7 +295,6 @@ export class CustomersService {
                                         video_url?:string, ref?: string, ref_id?:string): Observable<Company> {
         const formData = new FormData();
         let headers = new Headers();
-        console.log(123);
         headers.append('Content-Type', 'multipart/form-data');
         headers.append('Accept', 'application/json');
         formData.append("file", file);

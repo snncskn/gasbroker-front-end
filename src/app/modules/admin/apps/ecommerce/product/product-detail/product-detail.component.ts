@@ -158,7 +158,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
 
 
   onChangeUnit(event) {
-    console.log(event.value);
     this.selectedUnit = event.value;
   }
 
@@ -167,7 +166,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
     const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("Compose dialog was closed!");
     });
   }
  
@@ -187,7 +185,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   public list() {
 
     this._productService.getProductAll().subscribe((res) => {
-      console.log(333);
       this.products = res.body;
       this.filteredOptions = this.formSubProduct.controls[
         "product"

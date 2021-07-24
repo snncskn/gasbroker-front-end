@@ -40,7 +40,6 @@ export class AuthService
     get CompanyId(): string
     {
         let tmp =JSON.parse(localStorage.getItem('user'));
-        console.log(tmp)
         return tmp.company_id;
     }
 
