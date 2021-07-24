@@ -47,7 +47,6 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
                 this._proposalService.getProposalById(params.get("id")).subscribe(data => {
-                    console.log(data.body)
                     this.proposalId = data.body.id;
                     this.verticalStepperForm.patchValue({
                         step1:{
@@ -162,14 +161,12 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
        createPrp.product_id = this.selectedProdcut.id;
        createPrp.id=this.proposalId;
        this._proposalService.createProposal(createPrp).subscribe(data => {
-           console.log(123);
         this._router.navigateByUrl('/apps/proposals/list');
 
        });
     }
 
     onChangeType(event) {
-        console.log(event.value);
         if (event.value === 'Alış') {
             this.locationLabel = 'Ürünün bulunduğu yer';
         } else {

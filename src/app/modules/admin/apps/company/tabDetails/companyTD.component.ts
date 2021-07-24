@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileUploadValidators } from '@iplab/ngx-file-upload';
+import { TranslocoService } from '@ngneat/transloco';
 import { Console } from 'console';
 import { cloneDeep } from 'lodash';
 import { ToastrManager } from 'ng6-toastr-notifications';
@@ -59,6 +60,7 @@ export class CustomersTDComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _customersService: CustomersService,
         public toastr: ToastrManager,
+        private translocoService: TranslocoService,
         private _router: Router,
         private readonly activatedRouter: ActivatedRoute
 
@@ -95,10 +97,14 @@ export class CustomersTDComponent implements OnInit {
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
                 this._customersService.getCompanyById(params.get("id")).subscribe(data => {
+                    this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
                     this.companyDetail = data.body.id;
                     this.customerForm.patchValue(data.body);
                     this.addressesForm.patchValue({company_id:data.body.id})
                     this.loadAddress();
+                    
+                },error=>{
+                    
                 })
             };
         });

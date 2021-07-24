@@ -31,7 +31,7 @@ export class UsersService {
   /**
    * Constructor
    */
-  constructor(private _httpClient: HttpClient,    private _router: Router,public toastr: ToastrManager) {}
+  constructor(private _httpClient: HttpClient, private _router: Router, public toastr: ToastrManager) { }
 
   get pagination$(): Observable<UsersPagination> {
     return this._pagination.asObservable();
@@ -75,11 +75,11 @@ export class UsersService {
       })
 
       */
-      return this._httpClient.get<any>(`${environment.url}/api/user`).pipe(
-        tap((customers) => {
-            this._users.next(customers.body);
-            this._usersCount = customers.body.length;
-        })
+    return this._httpClient.get<any>(`${environment.url}/api/user`).pipe(
+      tap((customers) => {
+        this._users.next(customers.body);
+        this._usersCount = customers.body.length;
+      })
     );
   }
 
@@ -140,9 +140,9 @@ export class UsersService {
   /**
    * Create user
    */
-  createUser(user:any): Observable<any> {
+  createUser(user: any): Observable<any> {
     let url = `${environment.url}/api/user/`;
-    return  this._httpClient.post<any>(url, user);
+    return this._httpClient.post<any>(url, user);
   }
 
   createUserSingUp(user: any): Observable<any> {
@@ -153,7 +153,7 @@ export class UsersService {
         switchMap((users) =>
           this._httpClient.post<any>(url, user).pipe(
             map((newUser) => {
-              
+
               return newUser;
             })
           )
@@ -170,19 +170,19 @@ export class UsersService {
    */
   updateUser(id: string, user: any): Observable<UsersList> {
     return this._httpClient.put<any>(`${environment.url}/api/user/${id}`, user)
-    .pipe(
-      map((updatedUser) => {
-        this.toastr.successToastr("User updated", "Updated!");
-        this._router.navigateByUrl('/apps/users/list');
-      }),
-      switchMap((updatedUser) =>
-        this.user$.pipe(
-          take(1),
-          filter((item) => item && item.id === id),
-          tap(() => {})
+      .pipe(
+        map((updatedUser) => {
+          this.toastr.successToastr("User updated", "Updated!");
+          this._router.navigateByUrl('/apps/users/list');
+        }),
+        switchMap((updatedUser) =>
+          this.user$.pipe(
+            take(1),
+            filter((item) => item && item.id === id),
+            tap(() => { })
+          )
         )
-      )
-    );
+      );
   }
 
   /**
@@ -197,7 +197,7 @@ export class UsersService {
     return this.users$.pipe(
       take(1),
       switchMap((users) =>
-      this._httpClient.put<any>(`${environment.url}/api/user/${id}`, user)
+        this._httpClient.put<any>(`${environment.url}/api/user/${id}`, user)
           .pipe(
             map((updatedUser) => {
               this.toastr.successToastr("User updated", "Updated!");
@@ -206,7 +206,7 @@ export class UsersService {
               this.user$.pipe(
                 take(1),
                 filter((item) => item && item.id === id),
-                tap(() => {})
+                tap(() => { })
               )
             )
           )
@@ -233,32 +233,37 @@ export class UsersService {
               this.user$.pipe(
                 take(1),
                 filter((item) => item && item.id === id),
-                tap(() => {})
+                tap(() => { })
               )
             )
           )
       )
     );
   }
+  getMenus(): Observable<any> {
+    let url = `${environment.url}/parameter/category/PERM_MENU_IDS`;
+    return this._httpClient.get<any>(url);
+  }
+
   deleteUser(id: string): Observable<boolean> {
     return this.users$.pipe(
       take(1),
-        switchMap(users => this._httpClient.put(`${environment.url}/api/user/delete/${id}`, { id }).pipe(
-          map((isDeleted: any) => {
-            if (isDeleted.success) {
-              const index = users.findIndex((item) => item.id === id);
+      switchMap(users => this._httpClient.put(`${environment.url}/api/user/delete/${id}`, { id }).pipe(
+        map((isDeleted: any) => {
+          if (isDeleted.success) {
+            const index = users.findIndex((item) => item.id === id);
 
-              users.splice(index, 1);
+            users.splice(index, 1);
 
-              this._users.next(users);
-              this.toastr.successToastr(isDeleted.message);
-            } else {
-              this.toastr.errorToastr(isDeleted.message);
-            }
+            this._users.next(users);
+            this.toastr.successToastr(isDeleted.message);
+          } else {
+            this.toastr.errorToastr(isDeleted.message);
+          }
 
-            return isDeleted;
-          })
-        )
+          return isDeleted;
+        })
+      )
       )
     );
   }

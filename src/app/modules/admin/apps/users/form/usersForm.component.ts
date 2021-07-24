@@ -109,6 +109,10 @@ export class UsersFormComponent implements OnInit {
                 link    : '/sign-out'
             }
         ];
+        this._usersService.getMenus().subscribe(data=>{
+            this.menus = data.body;
+        });
+
         this.usersForm = this._formBuilder.group({
             id: [''],
             name: [''],

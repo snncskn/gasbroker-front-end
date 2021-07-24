@@ -4,9 +4,9 @@ import { InventoryListComponent } from "app/modules/admin/apps/ecommerce/product
 import {
   InventoryBrandsResolver,
   InventoryCategoriesResolver,
-  InventoryProductsResolver,
   InventoryPropertiesResolver,
   InventoryVendorsResolver,
+  ProductsResolver,
 } from "app/modules/admin/apps/ecommerce/product/product.resolvers";
 import { ProductDetailComponent } from "./product/product-detail/product-detail.component";
 
@@ -19,6 +19,9 @@ export const ecommerceRoutes: Route[] = [
   {
     path: "form",
     component: ProductDetailComponent,
+    resolve  : {
+      customers: ProductsResolver
+    }
   },
   {
     path: "form/:id",
@@ -34,7 +37,7 @@ export const ecommerceRoutes: Route[] = [
         resolve: {
           brands: InventoryBrandsResolver,
           categories: InventoryCategoriesResolver,
-          products: InventoryProductsResolver,
+          products: ProductsResolver,
           properties: InventoryPropertiesResolver,
           vendors: InventoryVendorsResolver,
         },

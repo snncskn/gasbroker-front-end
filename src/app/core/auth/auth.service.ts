@@ -37,6 +37,12 @@ export class AuthService
     {
         return localStorage.getItem('accessToken') ?? '';
     }
+    get CompanyId(): string
+    {
+        let tmp =JSON.parse(localStorage.getItem('user'));
+        console.log(tmp)
+        return tmp.company_id;
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods

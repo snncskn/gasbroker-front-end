@@ -73,7 +73,7 @@ export class CustomersService {
      getCustomers(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
      Observable<any>{
 
-        return this._httpClient.get<any>(`${environment.url}/company?page=${page}&size=999999&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
+        return this._httpClient.get<any>(`${environment.url}/company?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((customers) => {
                 this._companies.next(customers.body);
                 this._pagination.next(customers.body);
