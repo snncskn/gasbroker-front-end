@@ -62,6 +62,7 @@ export class AuthSignUpComponent implements OnInit {
             step3: this._formBuilder.group({
                 pass: ['', Validators.required],
                 confirmPass: ['', Validators.required],
+                agreements:['']
             })
 
         }
