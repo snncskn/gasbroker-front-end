@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
-import axios from "axios";
-import { Observable } from "rxjs";
-
+import axios from "axios"; 
 @Injectable({
   providedIn: "root",
 })
