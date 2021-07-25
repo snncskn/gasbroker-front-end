@@ -157,7 +157,6 @@ export class ProposalListComponent implements OnInit, OnDestroy {
 
     ngAfterViewInit(): void {
         
-        console.log('asd');
         this._sort.sortChange
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {

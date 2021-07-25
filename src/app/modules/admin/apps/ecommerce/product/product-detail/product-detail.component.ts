@@ -14,6 +14,9 @@ import { MatDialog } from "@angular/material/dialog";
 import { MailboxComposeComponent } from "../compose/compose.component";
 import { map, startWith } from "rxjs/operators";
 import { ProductForm } from "../productForm";
+import { forkJoin } from 'rxjs';
+import { NgxUiLoaderService } from "ngx-ui-loader";
+
 
 @Component({
   selector: "app-product-detail",
@@ -41,6 +44,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
     private _productService: ProductService,
     public toastr: ToastrManager,
     private _router: Router,
+    private readonly ngxService: NgxUiLoaderService,
     private readonly activatedRouter: ActivatedRoute,
     private _matDialog: MatDialog
   ) {
@@ -52,11 +56,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
       deleted_at: [null],
       updated_at: [null],
       unit: ["", [Validators.required]],
-      // properties: [[]],
-      // categories: [[]],
-      // images: [[]],
-      // currentImageIndex: [0],
-      // active: [true],
     });
 
     this.subProductForm = {
@@ -67,19 +66,20 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
     this._productService.getUnits().subscribe((res) => {
       this.dataSourceUnits = res.body;
     });
-
-    this.list();
     this.activatedRouter.paramMap.subscribe((params) => {
       if (params.has("id")) {
-        this._productService
-          .getProductWithItemsById(params.get("id"))
-          .subscribe((data) => {
-            this.productDetail = data.body.id;
-            data.body.product_items.forEach(element => {
-              this.add(element);
-            });
-            this.productForm.patchValue(data.body);
+        this.ngxService.start();
+        let getById =this._productService.getProductWithItemsById(params.get("id"));
+        let getProducts =  this._productService.getProductAll();
+        forkJoin(getById,getProducts).subscribe(results => {
+          this.productDetail = results[0].body.id;
+          results[0].body.product_items.forEach(element => {
+            this.add(element);
           });
+          this.productForm.patchValue(results[0].body);
+          this.products = results[1].body;
+          this.ngxService.stop();
+      });
       }
     });
 
@@ -91,11 +91,9 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   ngOnInit(): void { }
 
   add(item?: any) {
-    console.log(123);
-
-    let option = this.products.filter((product) => product.name === item.name);
+    let option = this.products?.filter((product) => product.name === item.name);
     let tmpProduct;
-    if(option.length>0){
+    if(option?.length>0){
       tmpProduct = option[0];
     }else{
       tmpProduct = {unit: 'KG',name:''};
@@ -160,7 +158,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
 
 
   onChangeUnit(event) {
-    console.log(event.value);
     this.selectedUnit = event.value;
   }
 
@@ -169,15 +166,9 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
     const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("Compose dialog was closed!");
     });
   }
-
-  /**
- * Show the products
- *
- * @param event
- */
+ 
   selectProduct(event: any, index: number) {
     let option = this.products.filter(
       (product) =>
@@ -187,15 +178,12 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
       this.selectProductItem = option[0];
       let rows = this.formSubProduct.get('subProductItems') as FormArray;
       rows.controls[index].patchValue({product_id:event.option.value.id,unit:event.option.value.unit,name:event.option.value.name});
-
-//      this.formSubProduct.controls["subProductItems"].value[index].product_id = ;
- //     this.formSubProduct.controls["subProductItems"].value[index].unit = event.option.value.unit;
-  //    this.formSubProduct.controls["subProductItems"].value[index].name = event.option.value.name;
-    }
+     }
 
   }
 
   public list() {
+
     this._productService.getProductAll().subscribe((res) => {
       this.products = res.body;
       this.filteredOptions = this.formSubProduct.controls[

@@ -112,7 +112,7 @@ export class InventoryProductResolver implements Resolve<any>
 @Injectable({
     providedIn: 'root'
 })
-export class InventoryProductsResolver implements Resolve<any>
+export class ProductsResolver implements Resolve<any>
 {
     /**
      * Constructor

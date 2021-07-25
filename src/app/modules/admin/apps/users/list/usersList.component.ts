@@ -35,6 +35,7 @@ export class UsersListComponent implements OnInit {
     selectedUserForm: FormGroup;
     calendarColors: any = calendarColors;
     drawerMode: 'side' | 'over';
+    menus: any[];
 
 
 
@@ -125,7 +126,10 @@ export class UsersListComponent implements OnInit {
     }
 
     deleteUser(item: any) {
-        this._usersService.deleteUser(item.id).subscribe()
+        this._usersService.deleteUser(item.id).subscribe(data=>{
+            this.onLoad();
+
+        });
     }
     trackByFn(index: number, item: any): any {
         return item.id || index;

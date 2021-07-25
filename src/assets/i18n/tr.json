@@ -13,6 +13,10 @@
     "app.group": "Gruplar",
     "sign-out": "Çıkış",
     "Company_Title": "Müşteriler",
-    "Company_Total_Record": "Toplam Kayıt"
+    "Company_Total_Record": "Toplam Kayıt",
+    "message.no_record": "Kayıt bulunamadı",
+
+    "app.quit": "Quit"
+
 
 }

@@ -38,7 +38,8 @@ export class AuthInterceptor implements HttpInterceptor
         {
             newReq = req.clone({
                 headers: req.headers.set('Cache-Control', 'no-cache')
-                .set('Authorization', `Bearer ${this._authService.accessToken}`)
+                .set('Authorization', `Bearer ${this._authService.accessToken}`) 
+                .set('company_id', `${this._authService.CompanyId}`) 
                 .set('Pragma', 'no-cache')
                 .set('accept', 'text/plain')
                 .set('content-type','application/json; charset=utf-8')

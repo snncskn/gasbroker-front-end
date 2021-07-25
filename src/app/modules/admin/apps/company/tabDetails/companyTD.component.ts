@@ -1,20 +1,13 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewEncapsulation,
-} from "@angular/core";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { cloneDeep } from "lodash";
-import { ToastrManager } from "ng6-toastr-notifications";
-import { CustomersService } from "../company.service";
-import { UploadService } from "app/services/upload.service";
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FileUploadValidators } from '@iplab/ngx-file-upload';
+import { TranslocoService } from '@ngneat/transloco';
+import { UploadService } from 'app/services/upload.service';
+import { Console } from 'console';
+import { cloneDeep } from 'lodash';
+import { ToastrManager } from 'ng6-toastr-notifications';
+import { CustomersService } from '../company.service';
 
 @Component({
   selector: "companyTD",
@@ -70,56 +63,63 @@ export class CustomersTDComponent implements OnInit {
     public toastr: ToastrManager,
     private _router: Router,
     private readonly activatedRouter: ActivatedRoute,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private translocoService: TranslocoService
   ) {
+   
     let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
-    this.newAddressItem = { expanded: true, isNew: true, position: center };
+    this.newAddressItem = {expanded:true,isNew:true,position:center};
 
     this.customerForm = this._formBuilder.group({
-      id: [""],
-      types: [null],
-      full_name: ["", [Validators.required]],
-      email: [null],
-      phone: [null],
-      name: ["", [Validators.required]],
-      website: [null],
-      registered_date: [null],
+        id: [''],
+        types: [null],
+        full_name: ['', [Validators.required]],
+        email: [null],
+        phone: [null],
+        name: ['', [Validators.required]],
+        website: [null],
+        registered_date: [null],
     });
 
     this.addressesForm = this._formBuilder.group({
-      id: [""],
-      company_id: this.companyDetail,
-      title: [""],
-      description: [""],
-      type: [""],
-      lat: [""],
-      long: [""],
-    });
+        id: [''],
+        company_id: this.companyDetail,
+        title: [''],
+        description: [''],
+        type: [''],
+        lat: [''],
+        long: [''],
+    })
     this.resetPassForm = this._formBuilder.group({
-      pass: ["", Validators.required],
-      confirmPass: ["", Validators.required],
+        pass: ['', Validators.required],
+        confirmPass: ['', Validators.required],
     });
 
-    this.activatedRouter.paramMap.subscribe((params) => {
-      if (params.has("id")) {
-        this._customersService
-          .getCompanyById(params.get("id"))
-          .subscribe((data) => {
-            this.companyDetail = data.body.id;
-            this.customerForm.patchValue(data.body);
-            this.addressesForm.patchValue({ company_id: data.body.id });
-            this.loadAddress();
-          });
-      }
+    this.activatedRouter.paramMap.subscribe(params => {
+        if (params.has('id')) {
+            this._customersService.getCompanyById(params.get("id")).subscribe(data => {
+                this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
+                this.companyDetail = data.body.id;
+                this.customerForm.patchValue(data.body);
+                this.addressesForm.patchValue({company_id:data.body.id})
+                this.loadAddress();
+                
+            },error=>{
+                
+            })
+        };
     });
 
-    this._customersService.getTypes().subscribe((res) => {
-      this.dataSourceTypes = res.body;
+    this._customersService.getTypes().subscribe(res => {
+        this.dataSourceTypes = res.body;
     });
-    this._customersService.getCompanyDocs().subscribe((res) => {
-      this.dataSourceDocs = res.body;
+    this._customersService.getCompanyDocs().subscribe(res => {
+        this.dataSourceDocs = res.body;
     });
-  }
+        
+        
+    }
+ 
 
   ngOnInit(): void {}
 
@@ -241,15 +241,16 @@ export class CustomersTDComponent implements OnInit {
     });
   }
 
-  formUrunEkle(val: any) {
-    return new FormBuilder().group({
-      files: this.filesControl,
-      label: this.label,
-    });
+    
+  formUrunEkle(val: any){ 
+      return new FormBuilder().group({
+          files: this.filesControl,
+          label: this.label,
+      })
   }
-  deleteAddress(item: any) {
-    this._customersService.deleteAddress(item).subscribe((data) => {
-      this.loadAddress();
-    });
+  deleteAddress(item : any){
+      this._customersService.deleteAddress(item).subscribe(data=>{
+          this.loadAddress();
+      });
   }
 }
