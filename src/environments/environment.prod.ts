@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    url: 'https://3.122.107.144:3300'
- 
+    url: 'http://localhost:3300'
+
 
 };
