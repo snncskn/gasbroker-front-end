@@ -13,6 +13,9 @@
     "app.transportaion": "Process",
     "app.group": "Group",
     "Company_Title": "Company",
-    "Company_Total_Record": "Total Record"
+    "Company_Total_Record": "Total Record",
+    "message.no_record": "No Record",
 
+
+    "app.quit": "Quit"
 }
