@@ -18,6 +18,7 @@ import { OfferListComponent } from '../offer-list/offer-list.component';
 @Component({
     selector: 'proposal-list',
     templateUrl: './proposalList.component.html',
+    styleUrls: ['./proposalList.component.scss'],
 })
 export class ProposalListComponent implements OnInit, OnDestroy {
 
@@ -166,6 +167,14 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     }
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    public setStyle(it: number): string {
+        if ((it % 2) === 0) {
+            return 'zebra';
+        } else {
+            return '';
+        }
     }
 
     openProposalOffer(item:any){

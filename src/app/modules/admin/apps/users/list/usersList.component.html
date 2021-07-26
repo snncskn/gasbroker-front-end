@@ -116,7 +116,8 @@
                                 <tr class="shadow" mat-header-row *matHeaderRowDef="usersTableColumns; sticky: true">
                                 </tr>
                                 <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-                                    *matRowDef="let user; columns: usersTableColumns;"></tr>
+                                    *matRowDef="let i = dataIndex; let user; columns: usersTableColumns;"
+                                    [class]="setStyle(i)" ></tr>
                             </table>
                         </div>
 

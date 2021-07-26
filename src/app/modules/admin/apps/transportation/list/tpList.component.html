@@ -113,7 +113,8 @@
 
             <tr class="shadow" mat-header-row *matHeaderRowDef="transportationTableColumns; sticky: true"></tr>
             <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-              *matRowDef="let processes; columns: transportationTableColumns"></tr>
+              *matRowDef="let i = dataIndex; let processes; columns: transportationTableColumns"
+              [class]="setStyle(i)" ></tr>
 
           </table>
         </div>

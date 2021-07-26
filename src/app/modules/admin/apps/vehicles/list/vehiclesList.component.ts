@@ -15,6 +15,7 @@ import { Vehicle } from '../vehicles.types';
 @Component({
     selector: 'vehicles-list',
     templateUrl: './vehiclesList.component.html',
+    styleUrls: ['./vehicleList.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -188,6 +189,15 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
+
+    public setStyle(it: number): string {
+        if ((it % 2) === 0) {
+            return 'zebra';
+        } else {
+            return '';
+        }
+    }
+
     getServerData(event?: PageEvent) {
         this.currentPage = event.pageIndex + 1;
         this.pageSize = event.pageSize;

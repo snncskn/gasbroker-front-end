@@ -33,7 +33,8 @@
 
           <tr class="shadow" mat-header-row *matHeaderRowDef="offersTableColumns; sticky: true"></tr>
           <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-            *matRowDef="let offer; columns: offersTableColumns"></tr>
+            *matRowDef="let i = dataIndex; let offer; columns: offersTableColumns"
+            [class]="setStyle(i)" ></tr>
 
         </table>
         </div>
