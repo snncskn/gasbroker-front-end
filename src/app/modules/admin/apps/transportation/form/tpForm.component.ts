@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 import { stubFalse } from 'lodash';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
@@ -49,7 +50,8 @@ export class TransportationFormComponent implements OnInit {
         public toastr: ToastrManager,
         private _router: Router,
         private _processService: ProcessService,
-        private readonly activatedRouter: ActivatedRoute
+        private readonly activatedRouter: ActivatedRoute,
+        private translocoService: TranslocoService
 
 
     ) {
@@ -96,7 +98,7 @@ export class TransportationFormComponent implements OnInit {
     addNewProcess() {
         this._processService.getProcessSave(this.processForm.getRawValue()).subscribe(data => {
             this.dataSourceSubGroup = data.body.process_sub_groups;
-            this.toastr.successToastr('Process Added/Updated', 'Added/Updated!');
+            this.toastr.successToastr(this.translocoService.translate('message.savedProcess'));
             this._router.navigate(['/apps/transportation/list']);
         });
     }
@@ -104,7 +106,7 @@ export class TransportationFormComponent implements OnInit {
     deleteProcess() {
         this._processService.getProcessDelete(this.processForm.getRawValue()).subscribe(data => {
             this.dataSourceSubGroup = data.body.process_sub_groups;
-            this.toastr.warningToastr('Process Deleted', 'Deleted!');
+            this.toastr.warningToastr(this.translocoService.translate('message.deleteProcess'));
             this._router.navigate(['/apps/transportation/list']);
 
         });

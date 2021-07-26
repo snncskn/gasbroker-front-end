@@ -10,6 +10,7 @@ import {
 import { environment } from "environments/environment";
 import { ToastrManager } from "ng6-toastr-notifications";
 import { Router } from "@angular/router";
+import { TranslocoService } from "@ngneat/transloco";
 
 @Injectable({
   providedIn: "root",
@@ -31,7 +32,8 @@ export class UsersService {
   /**
    * Constructor
    */
-  constructor(private _httpClient: HttpClient, private _router: Router, public toastr: ToastrManager) { }
+  constructor(private _httpClient: HttpClient, private _router: Router, public toastr: ToastrManager,
+    private translocoService: TranslocoService) { }
 
   get pagination$(): Observable<UsersPagination> {
     return this._pagination.asObservable();
@@ -172,7 +174,7 @@ export class UsersService {
     return this._httpClient.put<any>(`${environment.url}/api/user/${id}`, user)
       .pipe(
         map((updatedUser) => {
-          this.toastr.successToastr("User updated", "Updated!");
+          this.toastr.successToastr(this.translocoService.translate('message.updateUser'));
           this._router.navigateByUrl('/apps/users/list');
         }),
         switchMap((updatedUser) =>
@@ -200,7 +202,7 @@ export class UsersService {
         this._httpClient.put<any>(`${environment.url}/api/user/${id}`, user)
           .pipe(
             map((updatedUser) => {
-              this.toastr.successToastr("User updated", "Updated!");
+              this.toastr.successToastr(this.translocoService.translate('message.updateUser'));
             }),
             switchMap((updatedUser) =>
               this.user$.pipe(
@@ -227,7 +229,7 @@ export class UsersService {
           })
           .pipe(
             map((updatedUser) => {
-              this.toastr.successToastr("Password changed", "Updated!");
+              this.toastr.successToastr(this.translocoService.translate('message.passChanged'));
             }),
             switchMap((updatedUser) =>
               this.user$.pipe(
@@ -241,7 +243,7 @@ export class UsersService {
     );
   }
   getMenus(): Observable<any> {
-    let url = `${environment.url}/parameter/category/PERM_MENU_IDS`;
+    let url = `${environment.url}/menu`;
     return this._httpClient.get<any>(url);
   }
 

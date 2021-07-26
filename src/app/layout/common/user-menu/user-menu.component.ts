@@ -94,7 +94,8 @@ export class UserMenuComponent implements OnInit, OnDestroy
      */
     signOut(): void
     {
-        this._router.navigate(['/sign-out']);
+        localStorage.clear();
+        this._router.navigate(['/sign-out']);    
     }
 
     openProfile():void

@@ -16,6 +16,7 @@ import { map, startWith } from "rxjs/operators";
 import { ProductForm } from "../productForm";
 import { forkJoin } from 'rxjs';
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { TranslocoService } from "@ngneat/transloco";
 
 
 @Component({
@@ -46,7 +47,8 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
     private _router: Router,
     private readonly ngxService: NgxUiLoaderService,
     private readonly activatedRouter: ActivatedRoute,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private translocoService: TranslocoService
   ) {
     this.productForm = this._formBuilder.group({
       id: [""],
@@ -73,11 +75,11 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
         let getProducts =  this._productService.getProductAll();
         forkJoin(getById,getProducts).subscribe(results => {
           this.productDetail = results[0].body.id;
+          this.products = results[1].body;
           results[0].body.product_items.forEach(element => {
             this.add(element);
           });
           this.productForm.patchValue(results[0].body);
-          this.products = results[1].body;
           this.ngxService.stop();
       });
       }
@@ -91,6 +93,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   ngOnInit(): void { }
 
   add(item?: any) {
+    console.log(222)
     let option = this.products?.filter((product) => product.name === item.name);
     let tmpProduct;
     if(option?.length>0){
@@ -118,7 +121,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   addNewProduct() {
     this._productService.createProduct(this.productForm.value).subscribe((data) => {
       
-      this.toastr.successToastr('Product saved', 'Saved!');
+      this.toastr.successToastr(this.translocoService.translate('message.createProduct'));
       this.subProductItems.value.forEach(element => {
         element.id = element.id;
         element.product_id = data.body.id;
@@ -147,7 +150,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   deleteSubGroup(item: any, index: number) {
     if (item.id) {
       this._productService.deleteSubProduct(item.id).subscribe(data => {
-        this.toastr.errorToastr('Process Sub Group deleted', 'deleted!');
+        this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessSubGroup'));
         this._router.navigateByUrl('/apps/group/form/' + data.body.id);
       });
     }

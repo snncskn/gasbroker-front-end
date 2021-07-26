@@ -1,4 +1,4 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let t;">
 
     <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
   
@@ -16,9 +16,9 @@
           <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
             <!-- Title -->
             <div>
-              <div class="text-4xl font-extrabold tracking-tight leading-none">Movement Groups</div>
+              <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('group.title') }}</div>
               <div class="ml-0.5 font-medium text-secondary">
-                Total Record {{groupCount}}
+                {{ t('text.total.record') }}: {{groupCount}}
               </div>
             </div>
   
@@ -28,12 +28,12 @@
                 <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
                   <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
                   <input matInput [autocomplete]="'off'"
-                    [placeholder]="'Search groups'">
+                    placeholder="{{ t('input.search') }}">
                 </mat-form-field>
                
               <button class="ml-4" mat-flat-button (click)="newGroup()"  [color]="'primary'">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'" ></mat-icon>
-                <span class="ml-2 mr-1">Add</span>
+                <span class="ml-2 mr-1">{{ t('button.add') }}</span>
               </button>
             </div>
           </div>
@@ -47,7 +47,7 @@
               <ng-container matColumnDef="description">
                 <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5 w-full" mat-header-cell *matHeaderCellDef mat-sort-header
                   disableClear>
-                  Group
+                  {{ t('group.group') }}
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                   {{ row.description }}
@@ -75,7 +75,8 @@
   
               <tr class="shadow" mat-header-row *matHeaderRowDef="groupTableColumns; sticky: true"></tr>
               <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-                *matRowDef="let groups; columns: groupTableColumns"></tr>
+                *matRowDef="let i = dataIndex; let groups; columns: groupTableColumns"
+                [class]="setStyle(i)" ></tr>
   
             </table>
           </div>

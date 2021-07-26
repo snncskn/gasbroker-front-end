@@ -1,20 +1,20 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let t;">
     <!-- Main -->
     <div class="flex-auto">
         <!-- Header -->
         <div
             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
             <!-- Title -->
-            <div class="text-4xl font-extrabold tracking-tight">Details</div>
+            <div class="text-4xl font-extrabold tracking-tight">{{ t('text.details') }}</div>
 
             <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
                 <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteUser()">
                     <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                    <span class="ml-2 mr-1">Delete</span>
+                    <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
                 </button>
                 <button class="" mat-flat-button [color]="'primary'"
-                    [disabled]="usersForm.invalid || usersForm.pristine" (click)="saveUsers()">
-                    <span class="ml-2 mr-1">Save</span>
+                     (click)="saveUsers()">
+                    <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                 </button>
             </div>
         </div>
@@ -22,43 +22,43 @@
             <form [formGroup]="usersForm">
                 <mat-tab-group mat-align-tabs="left">
 
-                    <mat-tab label="Genel Bilgiler">
+                    <mat-tab label="{{ t('users.details.tab.generalInfo') }}">
                         <div class="flex items">
                             <div class="ml-2 w-1/3">
                                 <div class="mt-6">
                                     <mat-form-field class="fuse-mat-no-subscript w-full">
-                                        <mat-label>Name</mat-label>
-                                        <input matInput [formControlName]="'name'" [placeholder]="'Name'"
+                                        <mat-label>{{ t('users.name') }}</mat-label>
+                                        <input matInput [formControlName]="'name'" placeholder="{{ t('users.name') }}"
                                             [spellcheck]="false">
                                     </mat-form-field>
                                 </div>
                                 <div class="mt-6">
                                     <mat-form-field class="fuse-mat-no-subscript w-full">
-                                        <mat-label>User Name</mat-label>
-                                        <input matInput [formControlName]="'username'" [placeholder]="'User Name'"
+                                        <mat-label>{{ t('users.userName') }}</mat-label>
+                                        <input matInput [formControlName]="'username'" placeholder="{{ t('users.userName') }}"
                                             [spellcheck]="false">
                                     </mat-form-field>
                                 </div>
                                 <div class="flex items">
                                     <div class="mt-6 w-full">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>E mail</mat-label>
-                                            <input matInput [formControlName]="'email'" [placeholder]="'E mail'"
+                                            <mat-label>{{ t('users.email') }}</mat-label>
+                                            <input matInput [formControlName]="'email'" placeholder="{{ t('users.email') }}"
                                                 [spellcheck]="false">
                                         </mat-form-field>
                                     </div>
                                     <div class="mt-6 ml-2 w-full">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>Website</mat-label>
-                                            <input matInput [formControlName]="'website'" [placeholder]="'Website'"
+                                            <mat-label>{{ t('users.website') }}</mat-label>
+                                            <input matInput [formControlName]="'website'" placeholder="{{ t('users.website') }}"
                                                 [spellcheck]="false">
                                         </mat-form-field>
                                     </div>
                                 </div>
                                 <div class="flex items">
-                                    <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
-                                        <mat-label>Company</mat-label>
-                                        <input tabindex="-1" type="text" matInput placeholder="Company" aria-label="Company"
+                                    <mat-form-field class="fuse-mat-no-subscript flex-auto w-full mt-6">
+                                        <mat-label>{{ t('users.details.tab.generalInfo.company') }}</mat-label>
+                                        <input tabindex="-1" type="text" matInput placeholder="{{ t('users.details.tab.generalInfo.company') }}" aria-label="Company"
                                             formControlName="companies" [matAutocomplete]="auto">
                                         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
                                             (optionSelected)="selectCompany($event)">
@@ -68,8 +68,9 @@
                                         </mat-autocomplete>
                                     </mat-form-field>
                                 </div>
-                                <ng-container >
-                                    <span class="font-semibold">Menus</span>
+                                <ng-container>
+                                    <div class="mt-6">
+                                    <span class="font-semibold">{{ t('users.details.tab.generalInfo.menus') }}</span>
                                     <div class="mt-1 rounded-md border border-gray-300 shadow-sm overflow-hidden">
                                         <!-- Header -->
                                         <div class="flex items-center my-2 mx-3">
@@ -80,7 +81,7 @@
                                                 <input
                                                     class="min-w-0 ml-2 py-1 border-0"
                                                     type="text"
-                                                    placeholder="Enter menu name"
+                                                    placeholder="{{ t('users.details.tab.generalInfo.menu.text') }}"
                                                     (input)="filterMenus($event)"
                                                     (keydown)="filterMenusInputKeyDown($event)"
                                                     [maxLength]="50"
@@ -149,6 +150,7 @@
                                         </div>
                                         -->
                                     </div>
+                                </div>
                                 </ng-container>
                                 
 
@@ -156,14 +158,14 @@
                                     <div class="flex items">
                                         <div class="mt-6 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>Password</mat-label>
+                                                <mat-label>{{ t('users.details.tab.generalInfo.pass') }}</mat-label>
                                                 <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
                                                 <input type="password" [formControlName]="'password'" matInput>
                                             </mat-form-field>
                                         </div>
                                         <div class=" mt-6 ml-2 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>Confirm Password</mat-label>
+                                                <mat-label>{{ t('users.details.tab.generalInfo.confirmPass') }}</mat-label>
                                                 <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
                                                 <input type="password" [formControlName]="'confirmPassword'" matInput>
                                             </mat-form-field>
@@ -180,14 +182,14 @@
                                 <div class="w-1/3">
                                     <div class="mt-6 w-full">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>New Password</mat-label>
+                                            <mat-label>{{ t('users.details.tab.resetPass.newPass') }}</mat-label>
                                             <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
                                             <input type="password" [formControlName]="'password'" matInput required>
                                         </mat-form-field>
                                     </div>
                                     <div class="mt-6 w-full">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>Confirm New Password</mat-label>
+                                            <mat-label>{{ t('users.details.tab.resetPass.confirmNewPass') }}</mat-label>
                                             <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
                                             <input type="password" [formControlName]="'confirmPassword'" matInput
                                                 required>
@@ -197,7 +199,7 @@
                                         <button class="" mat-flat-button [color]="'primary'"
                                             [disabled]="resetPassForm.invalid || resetPassForm.pristine"
                                             (click)="resetPassword()">
-                                            <span class="ml-2 mr-1">Save</span>
+                                            <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                                         </button>
                                     </div>
                                 </div>

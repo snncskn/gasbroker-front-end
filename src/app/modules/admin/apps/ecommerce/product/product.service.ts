@@ -13,6 +13,7 @@ import {
 import { environment } from "environments/environment";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { ToastrManager } from "ng6-toastr-notifications";
+import { TranslocoService } from "@ngneat/transloco";
 
 @Injectable({
   providedIn: "root",
@@ -40,7 +41,8 @@ export class ProductService {
   constructor(
     private _httpClient: HttpClient,
     private readonly ngxService: NgxUiLoaderService,
-    public toastr: ToastrManager
+    public toastr: ToastrManager,
+    private translocoService: TranslocoService
   ) {}
 
   // -----------------------------------------------------------------------------------------------------
@@ -280,7 +282,7 @@ export class ProductService {
           map((updatedProduct) => {
             const index = products.findIndex((item) => item.id === product.id);
             products[index] = updatedProduct.body;
-            this.toastr.warningToastr("Product updated", "Updated!");
+            this.toastr.successToastr(this.translocoService.translate('message.updateProduct'));
 
             this._products.next(products);
 
@@ -322,7 +324,7 @@ export class ProductService {
 
               this._products.next(products);
               this.ngxService.stop();
-              this.toastr.errorToastr("Product deleted", "Deleted!");
+              this.toastr.errorToastr(this.translocoService.translate('message.deleteProduct'));
 
               return isDeleted.success;
             } else {

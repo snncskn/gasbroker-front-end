@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -30,7 +31,8 @@ export class VehiclesDetailsComponent implements OnInit {
         private _vehicleService: VehiclesService,
         public toastr: ToastrManager,
         private _router: Router,
-        private readonly activatedRouter: ActivatedRoute
+        private readonly activatedRouter: ActivatedRoute,
+        private translocoService: TranslocoService
 
 
     ) {
@@ -67,7 +69,7 @@ export class VehiclesDetailsComponent implements OnInit {
         createVehicle.registered_date = this.vehicleForm.value.registered_date;
 
         if(createVehicle.company_id ===''){
-            this.toastr.errorToastr('Company required', 'Required!');
+            this.toastr.errorToastr(this.translocoService.translate('message.requiredCompany'));
             return;
         }
         this._vehicleService.createVehicle(createVehicle).subscribe(data => {
