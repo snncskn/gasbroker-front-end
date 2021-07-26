@@ -1,6 +1,4 @@
 export const environment = {
     production: true,
-    url: 'http://localhost:3300'
-
-
+    url: 'https://gasbroker.herokuapp.com'
 };
