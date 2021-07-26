@@ -67,6 +67,8 @@
         "company.details.tab.generalInfo.phone": "Phone",
         "company.details.tab.generalInfo.email": "E mail",
         "company.details.tab.generalInfo.website": "Website",
+        "company.details.tab.generalInfo.taxNumber": "Tax Number",
+        "company.details.tab.generalInfo.taxOffice": "Tax Office",
     "company.details.tab.address": "Address",
         "company.details.tab.address.newAddress": "New Address",
         "company.details.tab.address.title": "Title",
