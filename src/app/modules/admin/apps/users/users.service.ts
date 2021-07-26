@@ -243,7 +243,7 @@ export class UsersService {
     );
   }
   getMenus(): Observable<any> {
-    let url = `${environment.url}/parameter/category/PERM_MENU_IDS`;
+    let url = `${environment.url}/menu`;
     return this._httpClient.get<any>(url);
   }
 

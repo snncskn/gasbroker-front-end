@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Route, RouterModule, Routes } from '@angular/router';
 import { ProposalFormComponent } from './form/proposal-form.component';
 import { ProposalListComponent } from './list/proposalList.component';
+import { ProposalResolver } from './proposals.resolvers';
 
 
 
@@ -18,6 +19,9 @@ export const routes: Routes = [
       {
         path: 'form/:id',
         component: ProposalFormComponent,
+        resolve  : {
+          proposals:ProposalResolver
+        }
       },
       {
         path: 'form',

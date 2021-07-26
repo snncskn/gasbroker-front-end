@@ -111,8 +111,14 @@ export class UsersFormComponent implements OnInit {
                 link    : '/sign-out'
             }
         ];
+        this.menus=[];
         this._usersService.getMenus().subscribe(data=>{
-            this.menus = data.body;
+            data.body.forEach(item=>{
+                this.menus.push({
+                    id:item.menu_name,
+                    title:item.title
+                })
+            })
         });
 
         this.usersForm = this._formBuilder.group({
@@ -370,6 +376,7 @@ export class UsersFormComponent implements OnInit {
         }
     }
     checkMenu(id: string){
+        console.log(222)
         let checkMenu = this.selectedMenu.filter(element => element === id );
         if(checkMenu.length>0){
             return true;

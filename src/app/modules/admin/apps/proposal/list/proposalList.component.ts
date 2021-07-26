@@ -81,16 +81,6 @@ export class ProposalListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
         });
 
-        this.matDrawer.openedChange.subscribe((opened) => {
-            if (!opened) {
-                // Remove the selected customer when drawer closed
-                this.selectedProposal = null;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            }
-        });
-
         fromEvent(this._document, 'keydown')
             .pipe(
                 takeUntil(this._unsubscribeAll),

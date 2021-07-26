@@ -460,7 +460,7 @@ export class InventoryListComponent
 
   createProduct(): void {
     this.ngxService.start();
-    let tmp = { id: "", code: "", active: "1", name: "" };
+    let tmp = { id: "", code: "", active: "1", name: "", unit: "" };
     this._inventoryService.createProduct(tmp).subscribe((newProduct) => {
       this.selectedProduct = newProduct.body;
       this.ngxService.stop();
