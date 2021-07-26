@@ -39,6 +39,7 @@ import { Router } from "@angular/router";
 @Component({
   selector: "pList-list",
   templateUrl: "./pList.component.html",
+  styleUrls: ['./pList.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: fuseAnimations,
@@ -460,7 +461,7 @@ export class InventoryListComponent
 
   createProduct(): void {
     this.ngxService.start();
-    let tmp = { id: "", code: "", active: "1", name: "" };
+    let tmp = { id: "", code: "", active: "1", name: "", unit: "" };
     this._inventoryService.createProduct(tmp).subscribe((newProduct) => {
       this.selectedProduct = newProduct.body;
       this.ngxService.stop();
@@ -530,6 +531,14 @@ export class InventoryListComponent
   trackByFn(index: number, item: any): any {
     return item.id || index;
   }
+
+  public setStyle(it: number): string {
+    if ((it % 2) === 0) {
+        return 'zebra';
+    } else {
+        return '';
+    }
+}
 
   updateActive() {
     const product = this.selectedProductForm.getRawValue();

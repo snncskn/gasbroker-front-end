@@ -30,6 +30,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import {MatDialogModule} from '@angular/material/dialog';
 import { OfferComponent } from './offer/offer.component';
 import { OfferListComponent } from './offer-list/offer-list.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
     declarations: [
@@ -63,7 +64,8 @@ import { OfferListComponent } from './offer-list/offer-list.component';
         SharedModule,
         ProposalRoutingModule,
         MatStepperModule,
-        MatDialogModule
+        MatDialogModule,
+        TranslocoModule
         
     ],
     providers   : [

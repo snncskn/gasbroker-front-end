@@ -133,7 +133,7 @@ export class AuthService
 
         // Set the authenticated flag to false
         this._authenticated = false;
-
+        localStorage.clear();
         // Return the observable
         return of(true);
     }

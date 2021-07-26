@@ -27,7 +27,6 @@ export class AuthSignOutComponent implements OnInit, OnDestroy
     )
     {
         localStorage.clear();
-
     }
 
     // -----------------------------------------------------------------------------------------------------

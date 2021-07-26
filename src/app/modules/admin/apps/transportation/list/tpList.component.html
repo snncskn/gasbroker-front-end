@@ -1,4 +1,4 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let t;">
 
   <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
 
@@ -17,12 +17,12 @@
           class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
           <!-- Title -->
           <div>
-            <div class="text-4xl font-extrabold tracking-tight leading-none">Transportation</div>
+            <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('process.title') }}</div>
             <div class="ml-0.5 font-medium text-secondary">
               <ng-container *ngIf="processCount > 0">
 
               </ng-container>
-              Total Record {{processCount}}
+              {{ t('text.total.record') }}: {{processCount}}
             </div>
           </div>
 
@@ -31,12 +31,12 @@
             <!-- Search -->
             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-              <input matInput [autocomplete]="'off'" [placeholder]="'Search processes'">
+              <input matInput [autocomplete]="'off'" placeholder="{{ t('input.search') }}">
             </mat-form-field>
 
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newProcess()">
               <mat-icon [svgIcon]="'heroicons_outline:plus'" ></mat-icon>
-              <span class="ml-2 mr-1">Add</span>
+              <span class="ml-2 mr-1">{{ t('button.add') }}</span>
             </button>
           </div>
         </div>
@@ -50,7 +50,7 @@
             <ng-container matColumnDef="process_date">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Process Date
+                {{ t('process.processDate') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.process_date | date:'dd/MM/yyyy' }}
@@ -60,7 +60,7 @@
             <ng-container matColumnDef="address">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Address
+                {{ t('process.address') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 <div class="flex items-center justify-between">
@@ -75,7 +75,7 @@
             <ng-container matColumnDef="group">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Movement Group
+                {{ t('process.movGroup') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.process_group?.description }}
@@ -84,7 +84,7 @@
             <ng-container matColumnDef="group_sub">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Sub Movement Group
+                {{ t('process.subMovGroup') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.process_sub_group?.description }}
@@ -113,7 +113,8 @@
 
             <tr class="shadow" mat-header-row *matHeaderRowDef="transportationTableColumns; sticky: true"></tr>
             <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-              *matRowDef="let processes; columns: transportationTableColumns"></tr>
+              *matRowDef="let i = dataIndex; let processes; columns: transportationTableColumns"
+              [class]="setStyle(i)" ></tr>
 
           </table>
         </div>

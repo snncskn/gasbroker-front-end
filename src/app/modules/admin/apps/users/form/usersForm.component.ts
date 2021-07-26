@@ -9,6 +9,7 @@ import { CustomersService } from '../../company/company.service';
 import { UsersService } from '../users.service';
 import { tap, startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
     selector: 'users-form',
@@ -41,6 +42,7 @@ export class UsersFormComponent implements OnInit {
         private _customersService: CustomersService,
         private _usersService: UsersService,
         private readonly activatedRouter: ActivatedRoute,
+        private translocoService: TranslocoService
 
 
     ) {
@@ -109,8 +111,14 @@ export class UsersFormComponent implements OnInit {
                 link    : '/sign-out'
             }
         ];
+        this.menus=[];
         this._usersService.getMenus().subscribe(data=>{
-            this.menus = data.body;
+            data.body.forEach(item=>{
+                this.menus.push({
+                    id:item.menu_name,
+                    title:item.title
+                })
+            })
         });
 
         this.usersForm = this._formBuilder.group({
@@ -177,14 +185,14 @@ export class UsersFormComponent implements OnInit {
         if (this.usersForm.value.id) {
             this.usersForm.value.permissions = {ids:this.selectedMenuWithUser}; 
             this._usersService.updateUser(this.usersForm.value.id, this.usersForm.value).subscribe(data => {
-                this.toastr.successToastr("User updated", "Updated!");
+                this.toastr.successToastr(this.translocoService.translate('message.updateUser'));
                 this._router.navigateByUrl('/apps/users/list');
             });
         }
         else {
             if (this.usersForm.value.password === this.usersForm.value.confirmPassword) {
                 if (!this.usersForm.value.password) {
-                    this.toastr.errorToastr("Password cannot be empty", "Check your password!");
+                    this.toastr.errorToastr(this.translocoService.translate('message.passNotEmpty'));
                 }
                 else {
                     let addUser = {
@@ -197,14 +205,14 @@ export class UsersFormComponent implements OnInit {
                     addUser.password = this.usersForm.value.password
                     addUser.permissions = {ids:this.selectedMenuWithUser}; 
                     this._usersService.createUser(addUser).subscribe(data => {
-                        this.toastr.successToastr("User added", "Added!");
+                        this.toastr.successToastr(this.translocoService.translate('message.createUser'));
 
                         this._router.navigateByUrl('/apps/users/list');
                     });
                 }
             }
             else {
-                this.toastr.errorToastr("Password does not match", "Check your password!");
+                this.toastr.errorToastr(this.translocoService.translate('message.passNotMatch'));
             }
         }
     }
@@ -224,12 +232,12 @@ export class UsersFormComponent implements OnInit {
             resetPass.password = this.usersForm.value.password
 
             this._usersService.updateUser(this.usersForm.value.id, resetPass).subscribe(data => {
-                this.toastr.successToastr("Password changed", "Changed!");
+                this.toastr.successToastr(this.translocoService.translate('message.passChanged'));
                 this._router.navigateByUrl('/apps/users/list');
             });
         }
         else {
-            this.toastr.errorToastr("Password does not match", "Check your password!");
+            this.toastr.errorToastr(this.translocoService.translate('message.passNotMatch'));
         }
     }
     selectCompany(event: any) {
@@ -368,6 +376,7 @@ export class UsersFormComponent implements OnInit {
         }
     }
     checkMenu(id: string){
+        console.log(222)
         let checkMenu = this.selectedMenu.filter(element => element === id );
         if(checkMenu.length>0){
             return true;

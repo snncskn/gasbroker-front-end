@@ -79,6 +79,8 @@ export class CustomersTDComponent implements OnInit {
         name: ['', [Validators.required]],
         website: [null],
         registered_date: [null],
+        tax_number: [''],
+        tax_office: [''],
     });
 
     this.addressesForm = this._formBuilder.group({
@@ -133,6 +135,8 @@ export class CustomersTDComponent implements OnInit {
       name: "",
       website: "",
       registered_date: "",
+      tax_number: "",
+      tax_office: "",
     };
     createCompany.id = this.companyDetail;
     createCompany.types = this.customerForm.value.types;
@@ -141,6 +145,8 @@ export class CustomersTDComponent implements OnInit {
     createCompany.phone = this.customerForm.value.phone;
     createCompany.name = this.customerForm.value.name;
     createCompany.website = this.customerForm.value.website;
+    createCompany.tax_number = this.customerForm.value.tax_number;
+    createCompany.tax_office = this.customerForm.value.tax_office;
     createCompany.registered_date = this.customerForm.value.registered_date;
 
     this._customersService.createCustomer(createCompany).subscribe((data) => {

@@ -8,6 +8,7 @@ import { VehiclesService } from '../../vehicles/vehicles.service';
 import { ProposalService } from '../proposals.service';
 import { environment } from 'environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         private _productService: ProductService,
         private _router: Router,
         private _proposalService: ProposalService,
-        private readonly activatedRouter: ActivatedRoute
+        private readonly activatedRouter: ActivatedRoute,
+        private translocoService: TranslocoService
 
     ) {
         this.fileUploadUrl = environment.url+'/media';
@@ -58,7 +60,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
                         step2:{
                             location:data.body.location,
-                            products:data.body.product.name,
+                            products:data.body.product?.name,
                             quantity:data.body.product_quantity
                         },
                     })
@@ -119,7 +121,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
             this.dataSourceDocs = res.body;
         });
 
-        this.locationLabel = 'Ürünün bulunduğu yer';
+        this.locationLabel = this.translocoService.translate('proposals.details.tab.productInfo.productLocation');
 
 
 
@@ -168,9 +170,9 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
     onChangeType(event) {
         if (event.value === 'Alış') {
-            this.locationLabel = 'Ürünün bulunduğu yer';
+            this.locationLabel = this.translocoService.translate('proposals.details.tab.productInfo.productLocation');
         } else {
-            this.locationLabel = 'Ürünün varış yeri';
+            this.locationLabel = this.translocoService.translate('proposals.details.tab.productInfo.productDestinationLocation');
         }
 
     } 

@@ -201,7 +201,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
         return item.id || index;
     }
 
-    public setStyle(it: any, item: any): string {
+    public setStyle(it: number): string {
         if ((it % 2) === 0) {
             return 'zebra';
         } else {

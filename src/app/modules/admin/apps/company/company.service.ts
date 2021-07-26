@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Address } from 'cluster';
 import { InventoryPagination } from '../ecommerce/product/product.types';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +25,8 @@ export class CustomersService {
      * Constructor
      */
     constructor(private _httpClient: HttpClient,
-        public toastr: ToastrManager
+        public toastr: ToastrManager,
+        private translocoService: TranslocoService
     ) {
     }
     adresses = [];
@@ -157,7 +159,7 @@ export class CustomersService {
                 switchMap(addresses => this._httpClient.post<any>(url, address).pipe(
                     map((newAddress) => {
     
-                        this.toastr.successToastr('Address Added', 'Added!');
+                        this.toastr.successToastr(this.translocoService.translate('message.addressAdded'));
     
                         return newAddress;
                     })
@@ -176,7 +178,7 @@ export class CustomersService {
             switchMap(addresses => this._httpClient.put<any>(url+address.id, address).pipe(
                 map((newAddress) => {
 
-                    this.toastr.successToastr('Address Added', 'Added!');
+                    this.toastr.successToastr(this.translocoService.translate('message.deleteAddress'));
 
                     return newAddress;
                 })
@@ -193,7 +195,7 @@ export class CustomersService {
                 take(1),
                 switchMap(customers => this._httpClient.put<any>(`${environment.url}/company/${item.id}`, item).pipe(
                     map((newCustomer) => {
-                        this.toastr.successToastr('Vehicle Updated', 'Updated!');
+                        this.toastr.successToastr(this.translocoService.translate('message.updateCompany'));
 
                         return newCustomer.body;
                     })
@@ -205,7 +207,7 @@ export class CustomersService {
                 take(1),
                 switchMap(customers => this._httpClient.post<any>(`${environment.url}/company/`, item).pipe(
                     map((newCustomer) => {
-                        this.toastr.successToastr('Vehicle Added', 'Added!');
+                        this.toastr.successToastr(this.translocoService.translate('message.createCompany'));
 
                         return newCustomer.body;
                     })
@@ -258,6 +260,8 @@ export class CustomersService {
             switchMap(customers => this._httpClient.put(`${environment.url}/company/delete/${company_id}`, { company_id }).pipe(
                 map((isDeleted: any) => {
                     if (isDeleted.success) {
+
+                        this.toastr.warningToastr(this.translocoService.translate('message.deleteCompany'));
                         // Find the index of the deleted customer
                         const index = customers.findIndex(item => item.id === company_id);
 
