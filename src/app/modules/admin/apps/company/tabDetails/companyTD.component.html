@@ -97,7 +97,26 @@
                                     [spellcheck]="false">
                             </mat-form-field>
                         </div>
-
+                        <div class="flex items-center mt-6">
+                            <div class="w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>{{ t('company.details.tab.generalInfo.taxOffice') }}</mat-label>
+                                    <mat-icon color="primary" matPrefix class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_outline:receipt-tax'"></mat-icon>
+                                    <input matInput [formControlName]="'tax_office'" placeholder="{{ t('company.details.tab.generalInfo.taxOffice') }}"
+                                        [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
+                            <div class="ml-5 w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>{{ t('company.details.tab.generalInfo.taxNumber') }}</mat-label>
+                                    <mat-icon color="accent" matPrefix class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_outline:receipt-tax'"></mat-icon>
+                                    <input matInput [formControlName]="'tax_number'" placeholder="{{ t('company.details.tab.generalInfo.taxNumber') }}"
+                                        [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
+                        </div>
                     </mat-tab>
                     <mat-tab label="{{ t('company.details.tab.address') }}">
                         <div class="flex items w-full" *ngIf="isLoadAddress">
