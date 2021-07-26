@@ -36,15 +36,18 @@ export class AuthInterceptor implements HttpInterceptor
         //&& !AuthUtils.isTokenExpired(this._authService.accessToken
         if ( this._authService.accessToken &&  req.url.indexOf('svg')<0)
         {
-            let companyId='';
+            let companyId='', user_id='';
+            console.log(123);
             if(this._authService.CompanyId){
-                let companyId = this._authService.CompanyId;
+                companyId = this._authService.CompanyId;
+                user_id = this._authService.user_id;
                 
             }
             newReq = req.clone({
                 headers: req.headers.set('Cache-Control', 'no-cache')
                 .set('Authorization', `Bearer ${this._authService.accessToken}`) 
                 .set('company_id', `${companyId}`) 
+                .set('user_id', `${user_id}`) 
                 .set('Pragma', 'no-cache')
                 .set('accept', 'text/plain')
                 .set('content-type','application/json; charset=utf-8')

@@ -93,7 +93,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   ngOnInit(): void { }
 
   add(item?: any) {
-    console.log(222)
     let option = this.products?.filter((product) => product.name === item.name);
     let tmpProduct;
     if(option?.length>0){

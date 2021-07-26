@@ -9,6 +9,7 @@ import { ProposalService } from '../proposals.service';
 import { environment } from 'environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
+import { AuthService } from 'app/core/auth/auth.service';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         private _productService: ProductService,
         private _router: Router,
         private _proposalService: ProposalService,
+        private _authService: AuthService,
         private readonly activatedRouter: ActivatedRoute,
         private translocoService: TranslocoService
 
@@ -77,7 +79,6 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.verticalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
-                company_id: ['2c67b871-0a77-4c8a-a4dc-4029fbea9a0c', Validators.required],
                 type: ['', Validators.required],
                 status: ['', Validators.required],
                 publish_date: ['', Validators.required],
@@ -151,7 +152,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     }
     save() {
         let createPrp = {type:'',freight_type:'',status:'',last_offer_date:'',publish_date:'',location:'',
-                product:'',product_quantity:'',product_id:'',id:'',company_id:'2c67b871-0a77-4c8a-a4dc-4029fbea9a0c'};
+                product:'',product_quantity:'',product_id:'',id:'',company_id: this._authService.CompanyId};
        createPrp.type    = this.verticalStepperForm.value.step1.type;
        createPrp.freight_type    = this.verticalStepperForm.value.step1.type;
        createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date;
