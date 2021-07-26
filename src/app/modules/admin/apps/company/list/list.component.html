@@ -18,10 +18,10 @@
           <!-- Title -->
           <div>
             <div class="text-4xl font-extrabold tracking-tight leading-none"> 
-              {{ t('Company_Title') }}
+              {{ t('company.title') }}
             </div>
             <div class="ml-0.5 font-medium text-secondary">
-              {{ t('Company_Total_Record') }}:{{totalSize$}}
+              {{ t('text.total.record') }}: {{totalSize$}}
             </div>
           </div>
 
@@ -30,12 +30,12 @@
             <!-- Search -->
             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search....">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ t('input.search') }}">
             </mat-form-field>
 
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newCompany()">
               <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-              <span class="ml-2 mr-1">Add</span>
+              <span class="ml-2 mr-1">{{ t('button.add') }}</span>
             </button>
           </div>
         </div>
@@ -59,7 +59,7 @@
             <ng-container matColumnDef="name">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Company Name
+                {{ t('company.companyName') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.name }}
@@ -69,7 +69,7 @@
             <ng-container matColumnDef="type">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Type
+                {{ t('company.type') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 <div class="flex items-center justify-between">
@@ -84,7 +84,7 @@
             <ng-container matColumnDef="registered_date">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Registered Date
+                {{ t('company.registeredDate') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.registered_date | date:'dd/MM/yyyy' }}
@@ -93,7 +93,7 @@
             <ng-container matColumnDef="email">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                E mail
+                {{ t('company.email') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.email }}
@@ -102,7 +102,7 @@
             <ng-container matColumnDef="phone">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Phone
+                {{ t('company.phone') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.phone }}
@@ -151,7 +151,7 @@
           [showFirstLastButtons]="true"></mat-paginator>
           
           <ng-template #noCompany>
-            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no company!
+            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">{{ t('company.noCompany.message') }}
             </div>
           </ng-template>
         </div>

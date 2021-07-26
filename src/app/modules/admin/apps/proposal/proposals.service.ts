@@ -6,6 +6,7 @@ import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Proposal, ProposalOffer } from './proposals.types';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +25,8 @@ export class ProposalService {
      * Constructor
      */
     constructor(private _httpClient: HttpClient,
-        public toastr: ToastrManager
+        public toastr: ToastrManager,
+        private translocoService: TranslocoService
     ) {
     }
     proposals = [];
@@ -164,7 +166,7 @@ export class ProposalService {
                     map((newVehicle) => {
     
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        this.toastr.successToastr('Proposal Updated', 'Updated!');
+                        this.toastr.successToastr(this.translocoService.translate('message.updateProposal'));
                         return newVehicle.body;
                     })
                 ))
@@ -178,7 +180,7 @@ export class ProposalService {
                     map((newVehicle) => {
     
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        this.toastr.successToastr('Proposal Created', 'Created!');
+                        this.toastr.successToastr(this.translocoService.translate('message.createProposal'));
                         return newVehicle.body;
                     })
                 ))
@@ -191,7 +193,7 @@ export class ProposalService {
             take(1),
             switchMap(offers => this._httpClient.post<any>(`${environment.url}/offer`, item).pipe(
                 map((newOffer) => {
-                    this.toastr.successToastr('Offer Received', 'Received!');
+                    this.toastr.successToastr(this.translocoService.translate('message.offerReceived'));
                     
                     return newOffer.body;
                 })
@@ -230,7 +232,7 @@ export class ProposalService {
                         this._proposals.next(proposals);
 
                     } else {
-                        this.toastr.errorToastr('Proposal was deleted !');
+                        this.toastr.errorToastr(this.translocoService.translate('message.deleteProposal'));
                     }
 
                     return isDeleted;

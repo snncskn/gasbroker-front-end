@@ -27,6 +27,7 @@ import { RouterModule } from '@angular/router';
 import { groupRoutes, GroupRoutingModule } from './group.routing';
 import { GroupListComponent } from './list/groupList.component';
 import { GroupFormComponent } from './form/groupForm.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import { GroupFormComponent } from './form/groupForm.component';
         MatTabsModule,
         FormsModule,
         GroupRoutingModule,
+        TranslocoModule,
         SharedModule
     ],
     providers   : [

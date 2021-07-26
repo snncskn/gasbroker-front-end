@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { GroupService } from '../group.service';
 import { GroupForm } from './groupForm';
@@ -26,7 +27,8 @@ export class GroupFormComponent {
         public toastr: ToastrManager,
         private _router: Router,
         private _groupService: GroupService,
-        private readonly activatedRouter: ActivatedRoute
+        private readonly activatedRouter: ActivatedRoute,
+        private translocoService: TranslocoService
     ) {
         this.groupForm = this._formBuilder.group({
             id: [''],
@@ -71,12 +73,12 @@ export class GroupFormComponent {
 
     addGroup() {
         if (this.groupForm.value.description === '') {
-            this.toastr.errorToastr('Group Name required', 'Required!');
+            this.toastr.errorToastr(this.translocoService.translate('message.groupNameRequired'));
             return;
         }
         this._groupService.createProcessGroup(this.groupForm.value).subscribe(data => {
             this.groupId = data.body.id
-            this.toastr.successToastr('Group name saved', 'Saved!');
+            this.toastr.successToastr(this.translocoService.translate('message.groupNameSaved'));
             this.subGroupItems.value.forEach(element => {
                 element.group_id = this.groupId;
                 this._groupService.createProcessSubGroup(element).subscribe()
@@ -90,7 +92,7 @@ export class GroupFormComponent {
         if (this.groupForm.value.id) {
             this._groupService.deleteGroup(this.groupForm.value).subscribe(data => {
                 this._router.navigateByUrl('/apps/group/list/');
-                this.toastr.errorToastr('Process Group deleted', 'deleted!');
+                this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
             });
         }
     }
@@ -98,7 +100,7 @@ export class GroupFormComponent {
     deleteSubGroup(item: any,index: number) {
         if(item.id){
             this._groupService.deleteSubGroup(item).subscribe(data => {
-                this.toastr.errorToastr('Process Sub Group deleted', 'deleted!');
+                this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessSubGroup'));
                 this._router.navigateByUrl('/apps/group/form/' + data.body.id);
             });
         }else{

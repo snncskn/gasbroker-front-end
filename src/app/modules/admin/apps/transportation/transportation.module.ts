@@ -29,6 +29,7 @@ import { transportationRoutes, TransportationRoutingModule } from './transportat
 import { TransportationComponent } from './transportation.component';
 import { TransportationListComponent } from './list/tpList.component';
 import { TransportationFormComponent } from './form/tpForm.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
     declarations: [
@@ -63,6 +64,7 @@ import { TransportationFormComponent } from './form/tpForm.component';
         FormsModule,
         TransportationRoutingModule,
         GoogleMapsModule,
+        TranslocoModule,
         SharedModule
     ],
     providers   : [

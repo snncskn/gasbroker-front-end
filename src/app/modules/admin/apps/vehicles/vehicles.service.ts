@@ -6,6 +6,7 @@ import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Vehicle } from './vehicles.types';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +23,8 @@ export class VehiclesService {
      * Constructor
      */
     constructor(private _httpClient: HttpClient,
-        public toastr: ToastrManager
+        public toastr: ToastrManager,
+        private translocoService: TranslocoService
     ) {
     }
     customers = [];
@@ -122,7 +124,7 @@ export class VehiclesService {
                 take(1),
                 switchMap(customers => this._httpClient.put<any>(`${environment.url}/vehicle/${item.id}`, item).pipe(
                     map((newVehicle) => {
-                        this.toastr.successToastr('Vehicle Updated', 'Updated!');
+                        this.toastr.successToastr(this.translocoService.translate('message.updateVehicle'));
 
                         return newVehicle.body;
                     })
@@ -134,7 +136,7 @@ export class VehiclesService {
                 take(1),
                 switchMap(customers => this._httpClient.post<any>(`${environment.url}/vehicle/`, item).pipe(
                     map((newVehicle) => {
-                        this.toastr.successToastr('Vehicle Added', 'Added!');
+                        this.toastr.successToastr(this.translocoService.translate('message.createdVehicle'));
 
                         return newVehicle.body;
                     })

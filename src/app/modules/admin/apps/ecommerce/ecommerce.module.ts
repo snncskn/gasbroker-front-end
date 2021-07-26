@@ -29,6 +29,7 @@ import { MailboxComposeComponent } from "./product/compose/compose.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { QuillModule } from "ngx-quill";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { TranslocoModule } from "@ngneat/transloco";
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
     MatSnackBarModule,
     FuseFindByKeyPipeModule,
     QuillModule.forRoot(),
+    TranslocoModule
   ],
 })
 export class ECommerceModule {}
