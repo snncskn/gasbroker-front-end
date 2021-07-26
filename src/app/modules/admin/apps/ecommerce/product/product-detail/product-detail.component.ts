@@ -75,11 +75,11 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
         let getProducts =  this._productService.getProductAll();
         forkJoin(getById,getProducts).subscribe(results => {
           this.productDetail = results[0].body.id;
+          this.products = results[1].body;
           results[0].body.product_items.forEach(element => {
             this.add(element);
           });
           this.productForm.patchValue(results[0].body);
-          this.products = results[1].body;
           this.ngxService.stop();
       });
       }
@@ -93,6 +93,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   ngOnInit(): void { }
 
   add(item?: any) {
+    console.log(222)
     let option = this.products?.filter((product) => product.name === item.name);
     let tmpProduct;
     if(option?.length>0){

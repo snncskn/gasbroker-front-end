@@ -313,8 +313,10 @@
             </ng-container>
 
             <tr class="shadow" mat-header-row *matHeaderRowDef="productsTableColumns; sticky: true"></tr>
-            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-              *matRowDef="let product; columns: productsTableColumns"></tr>
+            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
+              *matRowDef="let i = dataIndex; let product; columns: productsTableColumns"
+              [class]="setStyle(i)"
+              mat-row></tr>
             <tr class="h-0" mat-row *matRowDef="let row; columns: ['productDetails']"></tr>
           </table>
           <mat-paginator #paginator

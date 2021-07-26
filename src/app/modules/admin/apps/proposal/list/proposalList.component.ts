@@ -18,6 +18,7 @@ import { OfferListComponent } from '../offer-list/offer-list.component';
 @Component({
     selector: 'proposal-list',
     templateUrl: './proposalList.component.html',
+    styleUrls: ['./proposalList.component.scss'],
 })
 export class ProposalListComponent implements OnInit, OnDestroy {
 
@@ -79,16 +80,6 @@ export class ProposalListComponent implements OnInit, OnDestroy {
                 this.isLoading=false;
 
                 this._changeDetectorRef.markForCheck();
-        });
-
-        this.matDrawer.openedChange.subscribe((opened) => {
-            if (!opened) {
-                // Remove the selected customer when drawer closed
-                this.selectedProposal = null;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            }
         });
 
         fromEvent(this._document, 'keydown')
@@ -176,6 +167,14 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     }
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    public setStyle(it: number): string {
+        if ((it % 2) === 0) {
+            return 'zebra';
+        } else {
+            return '';
+        }
     }
 
     openProposalOffer(item:any){

@@ -46,4 +46,12 @@ export class OfferListComponent implements OnInit {
     return item.id || index;
 }
 
+public setStyle(it: number): string {
+  if ((it % 2) === 0) {
+      return 'zebra';
+  } else {
+      return '';
+  }
+}
+
 }

@@ -17,6 +17,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'usersList-list',
     templateUrl: './usersList.component.html',
+    styleUrls: ['./usersList.component.scss'],
+
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations
@@ -133,6 +135,14 @@ export class UsersListComponent implements OnInit {
     }
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    public setStyle(it: number): string {
+        if ((it % 2) === 0) {
+            return 'zebra';
+        } else {
+            return '';
+        }
     }
 
 }

@@ -134,9 +134,10 @@
             *matHeaderRowDef="customersTableColumns; sticky: true"></tr>
             <tr 
             class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
-            [class]="setStyle(i,row)" 
+            *matRowDef="let i = dataIndex; let customers; columns: customersTableColumns"
+            [class]="setStyle(i)" 
             mat-row
-            *matRowDef="let customers; columns: customersTableColumns"></tr>
+            ></tr>
 
           </table>
         </div>

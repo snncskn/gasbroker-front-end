@@ -60,7 +60,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
                         step2:{
                             location:data.body.location,
-                            products:data.body.product.name,
+                            products:data.body.product?.name,
                             quantity:data.body.product_quantity
                         },
                     })

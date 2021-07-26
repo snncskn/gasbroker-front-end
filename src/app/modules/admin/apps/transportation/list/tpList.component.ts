@@ -9,6 +9,7 @@ import { Process } from '../transportation.types';
 @Component({
     selector       : 'tp-list',
     templateUrl    : './tpList.component.html',
+    styleUrls: ['./tpList.component.scss'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -76,5 +77,13 @@ export class TransportationListComponent implements OnInit
 
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    public setStyle(it: number): string {
+        if ((it % 2) === 0) {
+            return 'zebra';
+        } else {
+            return '';
+        }
     }
 }

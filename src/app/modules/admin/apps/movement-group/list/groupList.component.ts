@@ -11,6 +11,7 @@ import { Group } from '../group.types';
 @Component({
     selector       : 'group-list',
     templateUrl    : './groupList.component.html',
+    styleUrls: ['./groupList.component.scss'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -82,5 +83,13 @@ export class GroupListComponent
 
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    public setStyle(it: number): string {
+        if ((it % 2) === 0) {
+            return 'zebra';
+        } else {
+            return '';
+        }
     }
 }

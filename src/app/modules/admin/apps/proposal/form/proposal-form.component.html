@@ -67,7 +67,6 @@
                         <br>
                         <div class="flex justify-end">
                             <button class="px-8" mat-flat-button [color]="'primary'"
-                                [disabled]="verticalStepperStep1.stepControl.pristine || verticalStepperStep1.stepControl.invalid"
                                 type="button" matStepperNext>
                                 {{ t('proposals.button.next') }}
                             </button>
@@ -118,7 +117,6 @@
                                 {{ t('proposals.button.back') }}
                             </button>
                             <button class="px-8" mat-flat-button [color]="'primary'"
-                                [disabled]="verticalStepperStep2.stepControl.pristine || verticalStepperStep2.stepControl.invalid"
                                 type="button" matStepperNext>
                                 {{ t('proposals.button.next') }}
                             </button>
@@ -193,11 +191,11 @@
                                 matStepperPrevious>
                                 {{ t('proposals.button.back') }}
                             </button>
-                            <button class="px-8" mat-flat-button [color]="'primary'" type="reset"
+                            <button class="px-8 mr-2" mat-flat-button [color]="'primary'" type="reset"
                                 (click)="verticalStepper.reset();">
                                 {{ t('proposals.details.tab.submit.cancel') }}
                             </button>
-                            <button class="px-8" mat-flat-button [color]="'secondary'" type="submit" (click)="save()">
+                            <button class="px-8" style="background-color: green; color:white" mat-flat-button  type="submit" (click)="save()">
                                 {{ t('proposals.details.tab.submit') }}
                             </button>
                         </div>

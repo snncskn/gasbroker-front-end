@@ -173,8 +173,10 @@
             </ng-container>
 
             <tr class="shadow" mat-header-row *matHeaderRowDef="proposalsTableColumns; sticky: true"></tr>
-            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-              *matRowDef="let product; columns: proposalsTableColumns"></tr>
+            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" 
+              *matRowDef="let i = dataIndex; let product; columns: proposalsTableColumns"
+              [class]="setStyle(i)" 
+              mat-row></tr>
 
           </table>
           <ng-template #noProposals>
