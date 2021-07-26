@@ -29,6 +29,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
 import { UsersFormComponent } from './form/usersForm.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
     declarations: [
@@ -61,6 +62,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         MatTabsModule,
         MatDialogModule,
         UsersRoutingModule,
+        TranslocoModule,
         SharedModule
     ]
 })

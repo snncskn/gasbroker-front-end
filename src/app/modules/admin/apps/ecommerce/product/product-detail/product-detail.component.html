@@ -1,20 +1,20 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let t;">
     <!-- Main -->
     <div class="flex-auto">
         <!-- Header -->
         <div
             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
             <!-- Title -->
-            <div class="text-4xl font-extrabold tracking-tight">Details</div>
+            <div class="text-4xl font-extrabold tracking-tight">{{ t('text.details') }}</div>
 
             <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
                 <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteProduct()">
                     <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                    <span class="ml-2 mr-1">Delete</span>
+                    <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
                 </button>
                 <button class="" mat-flat-button [color]="'primary'"
                     [disabled]="productForm.invalid || productForm.pristine" (click)="addNewProduct()">
-                    <span class="ml-2 mr-1">Save</span>
+                    <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                 </button>
             </div>
         </div>
@@ -25,25 +25,25 @@
                         <div class="ml-2 w-full flex items">
                             <div class="mt-6  w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Product Code</mat-label>
+                                    <mat-label>{{ t('products.productCode') }}</mat-label>
                                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                                         [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                    <input matInput [formControlName]="'code'" [placeholder]="'Product Code *'"
+                                    <input matInput [formControlName]="'code'" placeholder="{{ t('products.productCode') }} *"
                                         [spellcheck]="false">
                                 </mat-form-field>
                             </div>
                             <div class="mt-6 ml-2 w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Product Name</mat-label>
+                                    <mat-label>{{ t('products.productName') }}</mat-label>
                                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                                         [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                    <input matInput [formControlName]="'name'" [placeholder]="'Product Name *'"
+                                    <input matInput [formControlName]="'name'" placeholder="{{ t('products.productName') }} *"
                                         [spellcheck]="false">
                                 </mat-form-field>
                             </div>
                             <div class="mt-6 ml-2 w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>Unit of Measure </mat-label>
+                                    <mat-label>{{ t('products.input.unitOfMeasure') }} </mat-label>
                                     <mat-select [formControlName]="'unit'" (selectionChange)="onChangeUnit($event)">
                                         <mat-option *ngFor="let option of dataSourceUnits" [value]="option.name">
                                             <ng-container>
@@ -63,16 +63,16 @@
                             <div class="mt-6">
                                 <button mat-raised-button (click)="add({product:'',id:'',quantity:''})" >
                                     <mat-icon>add</mat-icon>
-                                    <span class="ml-2 mr-1">Define Product</span>
+                                    <span class="ml-2 mr-1">{{ t('products.details.define') }}</span>
                                 </button>
                             </div>
                         </div>
 
                             <div class="ml-12 grid grid-cols-12 gap-x-1 mt-15">
                                 <!-- Columns -->
-                                <div class="col-span-4 font-medium text-md text-secondary">Product Name</div>
-                                <div class="col-span-4 font-medium text-md text-secondary ml-5">Product Quantity</div>
-                                <div class="col-span-2 font-medium text-md text-secondary ml-5">Product Unit</div>
+                                <div class="col-span-4 font-medium text-md text-secondary">{{ t('products.productName') }}</div>
+                                <div class="col-span-4 font-medium text-md text-secondary ml-5">{{ t('products.details.productQuantity') }}</div>
+                                <div class="col-span-2 font-medium text-md text-secondary ml-5">{{ t('products.details.productUnit') }}</div>
                                 <div class="col-span-2 font-medium text-md text-secondary ml-5"></div>
 
                                 <!-- Divider -->
@@ -83,8 +83,8 @@
                                     *ngFor="let item of subProductItems.controls;let i = index;">
                                     <div class="col-span-4 text-lg font-medium" [formGroupName]="i">
                                         <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
-                                            <mat-label>Product</mat-label>
-                                            <input tabindex="-1" type="text" matInput placeholder="Select a Product" aria-label="Product"
+                                            <mat-label>{{ t('products.details.product') }}</mat-label>
+                                            <input tabindex="-1" type="text" matInput placeholder="{{ t('products.details.input.selectProduct') }}" aria-label="Product"
                                                 formControlName="product" [matAutocomplete]="auto">
                                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
                                                 (optionSelected)="selectProduct($event,i)" [displayWith]="displayFn">
@@ -96,16 +96,16 @@
                                     </div>
                                     <div class="col-span-4 text-lg font-medium ml-5" [formGroupName]="i">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>Quantity</mat-label>
+                                            <mat-label>{{ t('products.details.quantity') }}</mat-label>
                                             <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:scale'">
                                             </mat-icon>
-                                            <input matInput [formControlName]="'quantity'" [placeholder]="'Quantity *'"
+                                            <input matInput [formControlName]="'quantity'" placeholder="{{ t('products.details.quantity') }} *"
                                                 [spellcheck]="false">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-span-2 text-lg font-medium ml-5 mt-9" [formGroupName]="i">
-                                         <input matInput [formControlName]="'unit'" disabled [placeholder]="'Unit *'"
-                                        [spellcheck]="false">
+                                         <input matInput [formControlName]="'unit'" disabled placeholder="{{ t('products.unit') }} *"
+                                        [spellcheck]="false" readonly>
                                     </div>
                                     <div class="col-span-2 text-lg font-medium ml-5 mt-6" [formGroupName]="i">
                                             <button class="fuse-mat-button-rounded ml-1 text-on-warn-100"

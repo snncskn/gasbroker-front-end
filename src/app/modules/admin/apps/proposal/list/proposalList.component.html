@@ -1,4 +1,4 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let t;">
 
   <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
 
@@ -17,9 +17,9 @@
           class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
           <!-- Title -->
           <div>
-            <div class="text-4xl font-extrabold tracking-tight leading-none">Proposals</div>
+            <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('proposals.title') }}</div>
             <div class="ml-0.5 font-medium text-secondary">
-              Total Record {{proposalsCount}}
+              {{ t('text.total.record') }}: {{proposalsCount}}
             </div>
           </div>
 
@@ -28,12 +28,12 @@
             <!-- Search  -->
             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-              <input matInput [autocomplete]="'off'" [placeholder]="'Search proposals'">
+              <input matInput [autocomplete]="'off'" placeholder="{{ t('input.search') }}">
             </mat-form-field>
 
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newProposal()">
               <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-              <span class="ml-2 mr-1">Add</span>
+              <span class="ml-2 mr-1">{{ t('button.add') }}</span>
             </button>
           </div>
         </div>
@@ -47,7 +47,7 @@
             <ng-container matColumnDef="name">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Company Name
+                {{ t('proposals.companyName') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.company?.name }}
@@ -57,7 +57,7 @@
             <ng-container matColumnDef="type">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Type
+                {{ t('proposals.type') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 <div class="flex items-center justify-between">
@@ -79,7 +79,7 @@
             <ng-container matColumnDef="publish_date">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Publish Date
+                {{ t('proposals.publishDate') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.publish_date | date:'dd/MM/yyyy' }}
@@ -88,7 +88,7 @@
             <ng-container matColumnDef="last_offer_date">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Offer Date
+                {{ t('proposals.offerDate') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.last_offer_date | date:'dd/MM/yyyy' }}
@@ -97,7 +97,7 @@
             <ng-container matColumnDef="product_detail">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Product Detail
+                {{ t('proposals.productDetail') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 {{ row.product_detail }}
@@ -106,7 +106,7 @@
             <ng-container matColumnDef="status">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Status
+                {{ t('proposals.status') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 <div class="flex items-center justify-between">
@@ -135,7 +135,7 @@
             <ng-container matColumnDef="product">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                Product
+                {{ t('proposals.product') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 <div class="flex items-center justify-between">
@@ -178,7 +178,7 @@
 
           </table>
           <ng-template #noProposals>
-            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no proposal!
+            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">{{ t('proposals.noProposals.message') }}
             </div>
           </ng-template>
         </div>

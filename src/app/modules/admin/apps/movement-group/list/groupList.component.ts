@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -33,6 +34,7 @@ export class GroupListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _groupService: GroupService,
         public toastr: ToastrManager,
+        private translocoService: TranslocoService
     )
     {
         this._groupService.getGroup().subscribe();
@@ -61,7 +63,7 @@ export class GroupListComponent
         this._groupService.deleteGroup(item).subscribe(data=>{
             this._router.navigateByUrl('/apps/group/list');
             this._groupService.getGroup().subscribe();
-            this.toastr.errorToastr('Process Group deleted', 'deleted!');
+            this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
         });
     }
     openGroup(item:any)

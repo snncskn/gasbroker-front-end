@@ -1,12 +1,12 @@
-<div mat-dialog-content>
+<div mat-dialog-content *transloco="let t;">
    
         <form style="width: 450px!important" [formGroup]="offerForm">
            
             <div class="flex flex-col gt-xs:flex-row">
                 <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>Offer Date</mat-label>
+                    <mat-label>{{ t('proposals.offerList.offerDate') }}</mat-label>
                     <input matInput [matDatepicker]="Datepicker" [formControlName]="'offer_date'"
-                        [placeholder]="'Offer Date'">
+                        placeholder="{{ t('proposals.offerList.offerDate') }}">
                     <mat-datepicker-toggle matSuffix [for]="Datepicker">
                     </mat-datepicker-toggle>
                     <mat-datepicker #Datepicker></mat-datepicker>
@@ -14,7 +14,7 @@
             </div>
             <div class="flex flex-col gt-xs:flex-row mt-4">
                 <mat-form-field class="flex-auto gt-xs:pr-3">
-                    <mat-label>Payment Type</mat-label>
+                    <mat-label>{{ t('proposals.offerList.paymentType') }}</mat-label>
                     <mat-select [formControlName]="'payment_type'">
                         <mat-option *ngFor="let option of dataSourcePaymentTypes" [value]="option.description">
                             <ng-container>
@@ -29,8 +29,8 @@
 
             <div class="flex flex-col gt-xs:flex-row">
                 <mat-form-field class="flex-auto">
-                    <mat-label>Price</mat-label>
-                    <input type="text" placeholder="Price" matInput [formControlName]="'price'">
+                    <mat-label>{{ t('proposals.offerList.price') }}</mat-label>
+                    <input type="text" placeholder="{{ t('proposals.offerList.price') }}" matInput formControlName="price">
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:cash'"></mat-icon>
                     <span matSuffix>$</span>
                 </mat-form-field>
@@ -41,14 +41,14 @@
                 mat-flat-button
                 [color]="'warn'"
                 (click)="closeDialog()">
-                Close
+                {{ t('proposals.button.close') }}
             </button>
                 <button
                 class="mt-4 ml-2"
                 mat-flat-button
                 [color]="'primary'"
                 (click)="saveOffer()">
-                Save
+                {{ t('button.save') }}
             </button>
             </div>
 

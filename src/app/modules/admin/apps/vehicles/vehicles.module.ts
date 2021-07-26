@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
     declarations: [
@@ -61,6 +62,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         MatAutocompleteModule,
         FuseFindByKeyPipeModule,
         VehiclesRoutingModule,
+        TranslocoModule,
         SharedModule
     ],
     providers   : [
