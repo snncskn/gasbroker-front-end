@@ -92,10 +92,6 @@ export class CustomersTDComponent implements OnInit {
         lat: [''],
         long: [''],
     })
-    this.resetPassForm = this._formBuilder.group({
-        pass: ['', Validators.required],
-        confirmPass: ['', Validators.required],
-    });
 
     this.activatedRouter.paramMap.subscribe(params => {
         if (params.has('id')) {

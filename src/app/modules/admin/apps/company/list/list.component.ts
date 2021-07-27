@@ -10,7 +10,7 @@ import { Company } from 'app/modules/admin/apps/company/company.types';
 import { CustomersService } from 'app/modules/admin/apps/company/company.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MatSort } from '@angular/material/sort';
-import { InventoryPagination } from '../../ecommerce/product/product.types';
+import { InventoryPagination } from '../../product/product.types';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({

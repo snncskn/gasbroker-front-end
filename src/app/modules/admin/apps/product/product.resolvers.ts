@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ProductService } from 'app/modules/admin/apps/ecommerce/product/product.service';
-import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryProperty, InventoryVendor } from 'app/modules/admin/apps/ecommerce/product/product.types';
+import { ProductService } from 'app/modules/admin/apps/product/product.service';
+import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryProperty, InventoryVendor } from 'app/modules/admin/apps/product/product.types';
 
 @Injectable({
     providedIn: 'root'
