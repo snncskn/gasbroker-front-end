@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ProposalService } from '../proposals.service';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { AuthService } from 'app/core/auth/auth.service';
 @Component({
   selector: 'app-offer',
   templateUrl: './offer.component.html',
@@ -17,6 +18,7 @@ export class OfferComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _proposalService: ProposalService,
+    private _authService: AuthService,
     public dialogRef: MatDialogRef<OfferComponent>,
     private _formBuilder: FormBuilder) {
       this._proposalService.getPaymentTypes().subscribe(res => {
@@ -28,7 +30,7 @@ export class OfferComponent implements OnInit {
   ngOnInit(): void {
     this.offerForm = this._formBuilder.group({
       proposal_id: this.data.id,
-      company_id: ['2a4038f9-899c-4a51-8433-cdd8cba5edbc'],
+      company_id: [this._authService.CompanyId],
       offer_date: [''],
       payment_type: [''],
       price: [''],

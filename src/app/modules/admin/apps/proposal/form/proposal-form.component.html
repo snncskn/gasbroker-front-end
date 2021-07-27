@@ -1,210 +1,199 @@
 <div class="flex flex-col flex-auto min-w-0" *transloco="let t;">
     <div class="flex-auto">
         <!-- Header -->
-        <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+        <div
+            class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
             <!-- Title -->
             <div class="text-4xl font-extrabold tracking-tight">{{ t('text.details') }}</div>
         </div>
-    <div class="flex-auto p-6 sm:p-10">
+        <div class="flex-auto p-6 sm:p-10">
 
-        <div class="max-w-3xl">
-
-
-            <form class="p-4 bg-card shadow rounded overflow-hidden" [formGroup]="verticalStepperForm">
-                <mat-vertical-stepper [linear]="true" #verticalStepper>
-                    <mat-step [formGroupName]="'step1'" [stepControl]="verticalStepperForm.get('step1')"
-                        #verticalStepperStep1>
-                        <ng-template matStepLabel>{{ t('proposals.details.tab.generalInfo') }}</ng-template>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>{{ t('proposals.details.tab.generalInfo.processType') }}</mat-label>
-                                <mat-select [formControlName]="'type'" (selectionChange)="onChangeType($event)">
-                                    <mat-option *ngFor="let option of dataSourceTypes" [value]="option.description">
-                                        <ng-container>
-                                            {{option.description | titlecase}}
-                                        </ng-container>
-                                    </mat-option>
-                                </mat-select>
-                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:location-marker'">
-                                </mat-icon>
-                            </mat-form-field>
-                        
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <mat-label>{{ t('proposals.details.tab.generalInfo.status') }}</mat-label>
-                                <mat-select [formControlName]="'status'">
-                                    <mat-option *ngFor="let option of dataSourceStatus" [value]="option.description">
-                                        <ng-container>
-                                            {{option.description | titlecase}}
-                                        </ng-container>
-                                    </mat-option>
-                                </mat-select>
-                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:location-marker'">
-                                </mat-icon>
-                            </mat-form-field>
-                 
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                <mat-label>{{ t('proposals.details.tab.generalInfo.publishDate') }}</mat-label>
-                                <input matInput [matDatepicker]="DatepickerPublish" [formControlName]="'publish_date'"
-                                    placeholder="{{ t('proposals.details.tab.generalInfo.publishDate') }}">
-                                <mat-datepicker-toggle matSuffix [for]="DatepickerPublish">
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #DatepickerPublish></mat-datepicker>
-                            </mat-form-field>
-                            <br>
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                <mat-label>{{ t('proposals.details.tab.generalInfo.lastOfferDate') }}</mat-label>
-                                <input matInput [matDatepicker]="Datepicker" [formControlName]="'last_offer_date'"
-                                    placeholder="{{ t('proposals.details.tab.generalInfo.lastOfferDate') }}">
-                                <mat-datepicker-toggle matSuffix [for]="Datepicker">
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #Datepicker></mat-datepicker>
-                            </mat-form-field>
-
-                        </div>
-
-                        <br>
-                        <div class="flex justify-end">
-                            <button class="px-8" mat-flat-button [color]="'primary'"
-                                type="button" matStepperNext>
-                                {{ t('proposals.button.next') }}
-                            </button>
-                        </div>
-                    </mat-step>
-
-                    <mat-step [formGroupName]="'step2'" [stepControl]="verticalStepperForm.get('step2')"
-                        #verticalStepperStep2>
-                        <ng-template matStepLabel>{{ t('proposals.details.tab.productInfo') }}</ng-template>
-                        <p class="my-6 font-medium">
-                            {{ t('proposals.details.tab.productInfo.text') }}
-                        </p>
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-label>{{ t('proposals.details.tab.productInfo.product') }}</mat-label>
-                            <mat-form-field class="fuse-mat-no-subscript flex-auto">
-                                <input tabindex="-1" type="text" placeholder="{{ t('proposals.details.tab.productInfo.product') }}" matInput formControlName="products"
-                                    [matAutocomplete]="auto">
-                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                    (optionSelected)="selectProduct($event)">
-                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
-                                        <ng-container>
-                                            {{option.name | titlecase}}
-                                        </ng-container>
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto mt-2">
-                                <mat-label>{{ t('proposals.details.tab.productInfo.quantity') }}</mat-label>
-                                <input matInput [formControlName]="'quantity'" placeholder="{{ t('proposals.details.tab.productInfo.quantity') }}" required>
-                                <span matPrefix>{{ t('proposals.details.tab.productInfo.piece') }}</span>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="fuse-mat-textarea flex-auto">
-                                <mat-label>{{locationLabel}}</mat-label>
-
-                                <textarea matInput [formControlName]="'location'" placeholder="{{locationLabel}}"
-                                    [rows]="3"></textarea>
-                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:menu-alt-2'">
-                                </mat-icon>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex justify-end">
-                            <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
-                                matStepperPrevious>
-                                {{ t('proposals.button.back') }}
-                            </button>
-                            <button class="px-8" mat-flat-button [color]="'primary'"
-                                type="button" matStepperNext>
-                                {{ t('proposals.button.next') }}
-                            </button>
-                        </div>
-                    </mat-step>
-
-                    <mat-step [formGroupName]="'step3'" [stepControl]="verticalStepperForm.get('step3')">
-                        <ng-template matStepLabel>{{ t('proposals.details.tab.documents') }}</ng-template>
-                        <p class="my-6 font-medium">
-
-                        </p>
-                        <div class="flex flex-col gt-sm:flex-row">
-                            <div class="flex flex-col">
-                                <span class="font-medium mb-2">{{ t('proposals.details.tab.documents') }}</span>
+            <div class="max-w-3xl">
 
 
-                                <div class="flex flex-col" *ngFor="let item of dataSourceDocs">
-                                    {{item.description}}
-                                    <input type="file" (change)="uploadDocs(docsFileInput.files,item)" #docsFileInput>
+                <form class="p-4 bg-card shadow rounded overflow-hidden" [formGroup]="verticalStepperForm">
+                    <mat-vertical-stepper [linear]="true" #verticalStepper>
+                        <mat-step [formGroupName]="'step1'" [stepControl]="verticalStepperForm.get('step1')"
+                            #verticalStepperStep1>
+                            <ng-template matStepLabel>{{ t('proposals.details.tab.generalInfo') }}</ng-template>
 
+                            <div class="flex flex-col gt-xs:flex-row">
+
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>{{ t('proposals.details.tab.generalInfo.processType') }}</mat-label>
+                                    <mat-select [formControlName]="'type'" (selectionChange)="onChangeType($event)">
+                                        <mat-option *ngFor="let option of dataSourceTypes" [value]="option.description">
+                                            <ng-container>
+                                                {{option.description | titlecase}}
+                                            </ng-container>
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon class="icon-size-5" matPrefix
+                                        [svgIcon]="'heroicons_solid:location-marker'">
+                                    </mat-icon>
+                                </mat-form-field>
+
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>{{ t('proposals.details.tab.generalInfo.status') }}</mat-label>
+                                    <mat-select [formControlName]="'status'">
+                                        <mat-option *ngFor="let option of dataSourceStatus"
+                                            [value]="option.description">
+                                            <ng-container>
+                                                {{option.description | titlecase}}
+                                            </ng-container>
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon class="icon-size-5" matPrefix
+                                        [svgIcon]="'heroicons_solid:location-marker'">
+                                    </mat-icon>
+                                </mat-form-field>
+                                <div class="flex items w-full">
+                                    <div class="mr-5 w-full">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>{{ t('proposals.details.tab.generalInfo.publishDate') }}
+                                            </mat-label>
+                                            <input matInput [matDatepicker]="DatepickerPublish"
+                                                [formControlName]="'publish_date'"
+                                                placeholder="{{ t('proposals.details.tab.generalInfo.publishDate') }}">
+                                            <mat-datepicker-toggle matSuffix [for]="DatepickerPublish">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #DatepickerPublish></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="w-full">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label>{{ t('proposals.details.tab.generalInfo.lastOfferDate') }}
+                                            </mat-label>
+                                            <input matInput [matDatepicker]="Datepicker"
+                                                [formControlName]="'last_offer_date'"
+                                                placeholder="{{ t('proposals.details.tab.generalInfo.lastOfferDate') }}">
+                                            <mat-datepicker-toggle matSuffix [for]="Datepicker">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #Datepicker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="flex flex-wrap -m-2 mt-2" *ngFor="let file of filesUpload">
-                                    <a class="flex flex-col w-40 h-40 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card"
-                                        >
-                                        <div class="aspect-w-9 aspect-h-6">
-                                            <div class="flex items-center justify-center">
-                                                <div class="relative">
-                                                    <div>
-                                                        <mat-icon class="icon-size-14 text-hint"
-                                                            [svgIcon]="'iconsmind:file'">
-                                                        </mat-icon>
-                                                        <div class="absolute left-0 bottom-0 px-1.5 rounded text-sm font-semibold leading-5 text-white"
-                                                            [class.bg-red-600]="file.type.toUpperCase() === 'PDF'"
-                                                            [class.bg-blue-600]="file.type.toUpperCase() === 'DOC'"
-                                                            [class.bg-green-600]="file.type.toUpperCase() === 'XLS'"
-                                                            [class.bg-green-600]="file.type.toUpperCase() === 'XLSX'"
-                                                            [class.bg-gray-600]="file.type.toUpperCase() === 'TXT'"
-                                                            [class.bg-amber-600]="file.type.toUpperCase() === 'JPG'">
-                                                            {{file.name.toUpperCase()}}
+                            <br>
+                            <div class="flex justify-end">
+                                <button class="px-8" mat-flat-button [color]="'primary'" type="button" matStepperNext>
+                                    {{ t('proposals.button.next') }}
+                                </button>
+                            </div>
+                        </mat-step>
 
-                                                        </div>
-                                                        <br />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
+                        <mat-step [formGroupName]="'step2'" [stepControl]="verticalStepperForm.get('step2')"
+                            #verticalStepperStep2>
+                            <ng-template matStepLabel>{{ t('proposals.details.tab.productInfo') }}</ng-template>
+                            <p class="my-6 font-medium">
+                                {{ t('proposals.details.tab.productInfo.text') }}
+                            </p>
+                            <div class="flex flex-col gt-xs:flex-row">
+                                <mat-label>{{ t('proposals.details.tab.productInfo.product') }}</mat-label>
+                                <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                                    <input tabindex="-1" type="text"
+                                        placeholder="{{ t('proposals.details.tab.productInfo.product') }}" matInput
+                                        formControlName="products" [matAutocomplete]="auto">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                        (optionSelected)="selectProduct($event)">
+                                        <mat-option *ngFor="let option of filteredOptions | async"
+                                            [value]="option.name">
+                                            <ng-container>
+                                                {{option.name | titlecase}}
+                                            </ng-container>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="flex">
+                                <mat-form-field class="flex-auto mt-2">
+                                    <mat-label>{{ t('proposals.details.tab.productInfo.quantity') }}</mat-label>
+                                    <input matInput [formControlName]="'quantity'"
+                                        placeholder="{{ t('proposals.details.tab.productInfo.quantity') }}" required>
+                                    <span matPrefix>{{unit}}</span>
+                                </mat-form-field>
+                            </div>
+                            <div class="flex">
+                                <mat-form-field class="fuse-mat-textarea flex-auto">
+                                    <mat-label>{{locationLabel}}</mat-label>
+
+                                    <textarea matInput [formControlName]="'location'" placeholder="{{locationLabel}}"
+                                        [rows]="3"></textarea>
+                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:menu-alt-2'">
+                                    </mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="flex justify-end">
+                                <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
+                                    matStepperPrevious>
+                                    {{ t('proposals.button.back') }}
+                                </button>
+                                <button class="px-8" mat-flat-button [color]="'primary'" type="button" matStepperNext>
+                                    {{ t('proposals.button.next') }}
+                                </button>
+                            </div>
+                        </mat-step>
+
+                        <mat-step [formGroupName]="'step3'" [stepControl]="verticalStepperForm.get('step3')">
+                            <ng-template matStepLabel>{{ t('proposals.details.tab.documents') }}</ng-template>
+                            <p class="my-6 font-medium">
+
+                            </p>
+                            <div class="flex flex-col gt-sm:flex-row">
+                                <div class="flex flex-col">
+                                    <span class="font-medium mb-2">{{ t('proposals.details.tab.documents') }}</span>
+
+
+                                    <div *ngFor="let item of  dataSourceDocs">
+                                        {{item.description}}
+                                        <form [formGroup]="demoForm">
+                                            <file-upload formControlName="files" [multiple]="multiple" [animation]="animation">
+                                            </file-upload>
+                                            <input type="hidden" formControlName="label" [ngModel]="item.description">
+                                        </form>
+            
+                                    </div>
+
                                 </div>
 
                             </div>
+                            <div class="flex justify-end mt-8">
+                                <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
+                                    matStepperPrevious>
+                                    {{ t('proposals.button.back') }}
+                                </button>
+                                <button class="px-8" mat-flat-button [color]="'primary'" type="button" matStepperNext>
+                                    {{ t('proposals.button.next') }}
+                                </button>
+                            </div>
+                        </mat-step>
 
-                        </div>
-                        <div class="flex justify-end mt-8">
-                            <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
-                                matStepperPrevious>
-                                {{ t('proposals.button.back') }}
-                            </button>
-                            <button class="px-8" mat-flat-button [color]="'primary'" type="button" matStepperNext>
-                                {{ t('proposals.button.next') }}
-                            </button>
-                        </div>
-                    </mat-step>
+                        <mat-step>
+                            <ng-template matStepLabel>{{ t('proposals.details.tab.submit') }}</ng-template>
+                            <p class="my-6 font-medium">
+                                {{ t('proposals.details.tab.submit.text') }}
+                            </p>
+                            <div class="flex justify-end mt-8">
+                                <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
+                                    matStepperPrevious>
+                                    {{ t('proposals.button.back') }}
+                                </button>
+                                <button class="px-8 mr-2" mat-flat-button [color]="'primary'" type="reset"
+                                    (click)="verticalStepper.reset();">
+                                    {{ t('proposals.details.tab.submit.cancel') }}
+                                </button>
+                                <button class="px-8" style="background-color: green; color:white" mat-flat-button
+                                    type="submit" (click)="save()">
+                                    {{ t('proposals.details.tab.submit') }}
+                                </button>
+                            </div>
+                        </mat-step>
+                    </mat-vertical-stepper>
+                </form>
 
-                    <mat-step>
-                        <ng-template matStepLabel>{{ t('proposals.details.tab.submit') }}</ng-template>
-                        <p class="my-6 font-medium">
-                            {{ t('proposals.details.tab.submit.text') }}
-                        </p>
-                        <div class="flex justify-end mt-8">
-                            <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
-                                matStepperPrevious>
-                                {{ t('proposals.button.back') }}
-                            </button>
-                            <button class="px-8 mr-2" mat-flat-button [color]="'primary'" type="reset"
-                                (click)="verticalStepper.reset();">
-                                {{ t('proposals.details.tab.submit.cancel') }}
-                            </button>
-                            <button class="px-8" style="background-color: green; color:white" mat-flat-button  type="submit" (click)="save()">
-                                {{ t('proposals.details.tab.submit') }}
-                            </button>
-                        </div>
-                    </mat-step>
-                </mat-vertical-stepper>
-            </form>
+            </div>
 
         </div>
 
     </div>
-
-</div>

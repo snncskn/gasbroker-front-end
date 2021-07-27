@@ -15,17 +15,17 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatTableModule } from "@angular/material/table";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { SharedModule } from "app/shared/shared.module";
-import { ProductComponent } from "app/modules/admin/apps/ecommerce/product/product.component";
-import { InventoryListComponent } from "app/modules/admin/apps/ecommerce/product/list/pList.component";
-import { ecommerceRoutes } from "app/modules/admin/apps/ecommerce/ecommerce.routing";
-import { ProductDetailComponent } from "./product/product-detail/product-detail.component";
+import { ProductComponent } from "app/modules/admin/apps/product/product.component";
+import { InventoryListComponent } from "app/modules/admin/apps/product/list/pList.component";
+import { productRoutes } from "app/modules/admin/apps/product/product.routing";
+import { ProductDetailComponent } from "./product-detail/product-detail.component";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseFindByKeyPipeModule } from "@fuse/pipes/find-by-key";
 import { FormsModule } from "@angular/forms";
-import { MailboxComposeComponent } from "./product/compose/compose.component";
+import { MailboxComposeComponent } from "./compose/compose.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { QuillModule } from "ngx-quill";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -39,7 +39,7 @@ import { TranslocoModule } from "@ngneat/transloco";
     MailboxComposeComponent,
   ],
   imports: [
-    RouterModule.forChild(ecommerceRoutes),
+    RouterModule.forChild(productRoutes),
     MatDialogModule,
     MatAutocompleteModule,
     FormsModule,
@@ -67,4 +67,4 @@ import { TranslocoModule } from "@ngneat/transloco";
     TranslocoModule
   ],
 })
-export class ECommerceModule {}
+export class ProductModule {}

@@ -175,7 +175,7 @@
     "users.noUsers.message": "Kullanıcı Yok!",
     "users.details.tab.generalInfo": "Genel Bilgiler",
         "users.details.tab.generalInfo.company": "Müşteri",
-        "users.details.tab.generalInfo.menus": "Menüler",
+        "users.details.tab.generalInfo.menus": "Menüler & Yetkiler",
         "users.details.tab.generalInfo.menu.text": "Menü adını gir",
         "users.details.tab.generalInfo.pass": "Şifre",
         "users.details.tab.generalInfo.confirmPass": "Şifreyi Onayla",

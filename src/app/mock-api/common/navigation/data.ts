@@ -39,14 +39,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id      : 'app.company',
                 title   : 'Company',
                 type    : 'basic',
-                icon    : 'heroicons_outline:user-group',
+                icon    : 'mat_outline:business',
                 link    : '/apps/company'
             },
              {
                 id      : 'app.products',
                 title   : 'Products',
                 type    : 'basic',
-                icon    : 'heroicons_outline:user-group',
+                icon    : 'heroicons_outline:tag',
                 link    : '/apps/products'
             },
             {
@@ -88,7 +88,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id      : 'app.users',
                 title   : 'Users',
                 type    : 'basic',
-                icon    : 'heroicons_outline:user',
+                icon    : 'heroicons_outline:users',
                 link    : '/apps/users/list'
             },
             /*{
