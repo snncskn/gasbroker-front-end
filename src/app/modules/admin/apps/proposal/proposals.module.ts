@@ -31,6 +31,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { OfferComponent } from './offer/offer.component';
 import { OfferListComponent } from './offer-list/offer-list.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { FileUploadModule } from '@iplab/ngx-file-upload';
 
 @NgModule({
     declarations: [
@@ -65,6 +66,7 @@ import { TranslocoModule } from '@ngneat/transloco';
         ProposalRoutingModule,
         MatStepperModule,
         MatDialogModule,
+        FileUploadModule,
         TranslocoModule
         
     ],

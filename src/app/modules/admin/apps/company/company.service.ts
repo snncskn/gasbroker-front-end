@@ -6,7 +6,7 @@ import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Address } from 'cluster';
-import { InventoryPagination } from '../ecommerce/product/product.types';
+import { InventoryPagination } from '../product/product.types';
 import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({

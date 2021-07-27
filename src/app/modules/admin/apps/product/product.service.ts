@@ -9,7 +9,7 @@ import {
   InventoryProduct,
   InventoryProperty,
   InventoryVendor,
-} from "app/modules/admin/apps/ecommerce/product/product.types";
+} from "app/modules/admin/apps/product/product.types";
 import { environment } from "environments/environment";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { ToastrManager } from "ng6-toastr-notifications";

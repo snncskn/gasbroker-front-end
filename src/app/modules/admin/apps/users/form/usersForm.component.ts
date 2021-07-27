@@ -27,10 +27,10 @@ export class UsersFormComponent implements OnInit {
     isNew = false;
     companies: any[];
     filteredMenus: any[];
-    selectedMenu: any | null = null;
+    selectedMenu: any;
     menus: any[];
     tagsEditMode: boolean = false;
-    selectedMenuWithUser: any;
+    selectedMenuWithUser: any[] = [];
 
 
 
@@ -118,7 +118,8 @@ export class UsersFormComponent implements OnInit {
                     id:item.menu_name,
                     title:item.title
                 })
-            })
+            });
+            this.filteredMenus = this.menus;
         });
 
         this.usersForm = this._formBuilder.group({
@@ -152,8 +153,8 @@ export class UsersFormComponent implements OnInit {
                         company_id: data.body.company_id,
                         companies: data.body.company?.name
                     });
-                    this.selectedMenu = data.body.permissions.ids;
-                    this.selectedMenuWithUser = data.body.permissions.ids;
+                    this.selectedMenu = data.body.permissions?.ids;
+                    this.selectedMenuWithUser = data.body.permissions?.ids;
 
                     this.filteredMenus = this.menus;
                     this.resetPassForm.patchValue({
@@ -163,7 +164,7 @@ export class UsersFormComponent implements OnInit {
                 this.isNew = true;
             };
         });
-        this._customersService.getCustomers().subscribe(data => {
+        this._customersService.getCustomers(0,999).subscribe(data => {
             this.companies = data.body;
  
         });
@@ -242,8 +243,9 @@ export class UsersFormComponent implements OnInit {
     }
     selectCompany(event: any) {
         let option = this.companies.filter(
-            (product) =>
-                product.name.toUpperCase() === event.option.value.toUpperCase()
+            product =>
+                (product.name.toUpperCase() === event.option.value.toUpperCase() ||
+                                 product.name.toLowerCase() === event.option.value.toLowerCase())
         );
         this.usersForm.get('company_id').setValue(option[0].id, { emitEvent: false });
 
@@ -363,6 +365,9 @@ export class UsersFormComponent implements OnInit {
     }
     toggleUserMenu(tag: any, change: MatCheckboxChange): void
     {
+        if(!this.selectedMenuWithUser){
+            this.selectedMenuWithUser = [];
+        }
         if ( change.checked )
         {
             this.selectedMenuWithUser.push(tag.id);
@@ -376,9 +381,8 @@ export class UsersFormComponent implements OnInit {
         }
     }
     checkMenu(id: string){
-        console.log(222)
-        let checkMenu = this.selectedMenu.filter(element => element === id );
-        if(checkMenu.length>0){
+        let checkMenu = this.selectedMenu?.filter(element => element === id );
+        if(checkMenu?.length>0){
             return true;
         }else{
             return false;

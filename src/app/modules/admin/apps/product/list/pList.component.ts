@@ -27,8 +27,8 @@ import {
   InventoryProduct,
   InventoryProperty,
   InventoryVendor,
-} from "app/modules/admin/apps/ecommerce/product/product.types";
-import { ProductService } from "app/modules/admin/apps/ecommerce/product/product.service";
+} from "app/modules/admin/apps/product/product.types";
+import { ProductService } from "app/modules/admin/apps/product/product.service";
 import { calendarColors } from "app/modules/admin/apps/calendar/sidebar/calendar-colors";
 import { MatTableDataSource } from "@angular/material/table";
 import { NgxUiLoaderService } from "ngx-ui-loader";

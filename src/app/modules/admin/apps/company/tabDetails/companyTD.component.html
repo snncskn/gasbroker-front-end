@@ -31,7 +31,8 @@
                                     <mat-icon class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
                                         [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
                                     <input matInput [formControlName]="'full_name'"
-                                        placeholder="{{ t('company.details.tab.generalInfo.companyFullName') }} *" [spellcheck]="false">
+                                        placeholder="{{ t('company.details.tab.generalInfo.companyFullName') }} *"
+                                        [spellcheck]="false">
                                 </mat-form-field>
                             </div>
                             <div class="ml-5 w-full">
@@ -39,7 +40,8 @@
                                     <mat-label>{{ t('company.details.tab.generalInfo.companyName') }}</mat-label>
                                     <mat-icon class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
                                         [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                    <input matInput [formControlName]="'name'" placeholder="{{ t('company.details.tab.generalInfo.companyName') }} *"
+                                    <input matInput [formControlName]="'name'"
+                                        placeholder="{{ t('company.details.tab.generalInfo.companyName') }} *"
                                         [spellcheck]="false">
                                 </mat-form-field>
                             </div>
@@ -71,10 +73,33 @@
                         <div class="flex items-center mt-6">
                             <div class="w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>{{ t('company.details.tab.generalInfo.taxOffice') }}</mat-label>
+                                    <mat-icon color="primary" matPrefix class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'mat_outline:account_balance'"></mat-icon>
+                                    <input matInput [formControlName]="'tax_office'"
+                                        placeholder="{{ t('company.details.tab.generalInfo.taxOffice') }}"
+                                        [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
+                            <div class="ml-5 w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>{{ t('company.details.tab.generalInfo.taxNumber') }}</mat-label>
+                                    <mat-icon color="accent" matPrefix class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_outline:receipt-tax'"></mat-icon>
+                                    <input matInput [formControlName]="'tax_number'"
+                                        placeholder="{{ t('company.details.tab.generalInfo.taxNumber') }}"
+                                        [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-6">
+                            <div class="w-full">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>{{ t('company.details.tab.generalInfo.phone') }}</mat-label>
                                     <mat-icon color="primary" matPrefix class="hidden sm:flex icon-size-5"
                                         [svgIcon]="'heroicons_outline:phone'"></mat-icon>
-                                    <input matInput [formControlName]="'phone'" placeholder="{{ t('company.details.tab.generalInfo.phone') }}"
+                                    <input matInput [formControlName]="'phone'"
+                                        placeholder="{{ t('company.details.tab.generalInfo.phone') }}"
                                         [spellcheck]="false">
                                 </mat-form-field>
                             </div>
@@ -83,7 +108,8 @@
                                     <mat-label>{{ t('company.details.tab.generalInfo.email') }}</mat-label>
                                     <mat-icon color="accent" matPrefix class="hidden sm:flex icon-size-5"
                                         [svgIcon]="'heroicons_outline:mail'"></mat-icon>
-                                    <input matInput [formControlName]="'email'" placeholder="{{ t('company.details.tab.generalInfo.email') }}"
+                                    <input matInput [formControlName]="'email'"
+                                        placeholder="{{ t('company.details.tab.generalInfo.email') }}"
                                         [spellcheck]="false">
                                 </mat-form-field>
                             </div>
@@ -93,29 +119,10 @@
                                 <mat-label>{{ t('company.details.tab.generalInfo.website') }}</mat-label>
                                 <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                                     [svgIcon]="'heroicons_outline:globe-alt'"></mat-icon>
-                                <input matInput [formControlName]="'website'" placeholder="{{ t('company.details.tab.generalInfo.website') }}"
+                                <input matInput [formControlName]="'website'"
+                                    placeholder="{{ t('company.details.tab.generalInfo.website') }}"
                                     [spellcheck]="false">
                             </mat-form-field>
-                        </div>
-                        <div class="flex items-center mt-6">
-                            <div class="w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>{{ t('company.details.tab.generalInfo.taxOffice') }}</mat-label>
-                                    <mat-icon color="primary" matPrefix class="hidden sm:flex icon-size-5"
-                                        [svgIcon]="'heroicons_outline:receipt-tax'"></mat-icon>
-                                    <input matInput [formControlName]="'tax_office'" placeholder="{{ t('company.details.tab.generalInfo.taxOffice') }}"
-                                        [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
-                            <div class="ml-5 w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>{{ t('company.details.tab.generalInfo.taxNumber') }}</mat-label>
-                                    <mat-icon color="accent" matPrefix class="hidden sm:flex icon-size-5"
-                                        [svgIcon]="'heroicons_outline:receipt-tax'"></mat-icon>
-                                    <input matInput [formControlName]="'tax_number'" placeholder="{{ t('company.details.tab.generalInfo.taxNumber') }}"
-                                        [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
                         </div>
                     </mat-tab>
                     <mat-tab label="{{ t('company.details.tab.address') }}">
@@ -123,24 +130,24 @@
                             <div class="w-full ml-2">
                                 <div class="w-full">
                                     <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
-                                    <button class="mr-5"   mat-flat-button [color]="'primary'" (click)="newAddress()">
-                                        {{ t('company.details.tab.address.newAddress') }}
-                                    </button>
-                                     </div>
+                                        <button class="mr-5" mat-flat-button [color]="'primary'" (click)="newAddress()">
+                                            {{ t('company.details.tab.address.newAddress') }}
+                                        </button>
+                                    </div>
                                     <div class="mt-5">
-                                        <ng-container >
-                                            <mat-accordion class="fuse-mat-no-subscript mt-1" >
+                                        <ng-container>
+                                            <mat-accordion class="fuse-mat-no-subscript mt-1">
                                                 <mat-expansion-panel>
                                                     <mat-expansion-panel-header>
-                                                      <mat-panel-title>
-                                                        {{ t('company.details.tab.address.newAddress') }}
-                                                      </mat-panel-title>
-                                                      <mat-panel-description>
-                                                       
-                                                        <mat-icon>account_circle</mat-icon>
-                                                      </mat-panel-description>
+                                                        <mat-panel-title>
+                                                            {{ t('company.details.tab.address.newAddress') }}
+                                                        </mat-panel-title>
+                                                        <mat-panel-description>
+
+                                                            <mat-icon>account_circle</mat-icon>
+                                                        </mat-panel-description>
                                                     </mat-expansion-panel-header>
-                                                
+
                                                     <form [formGroup]="addressesForm">
                                                         <div class="flex items-center" *ngIf="formStatus">
                                                             <div class="ml-2 mr-5 w-1/3">
@@ -148,9 +155,10 @@
                                                                     <div class="w-full">
                                                                         <mat-form-field
                                                                             class="fuse-mat-no-subscript w-full">
-                                                                            <mat-label>{{ t('company.details.tab.address.title') }}</mat-label>
-                                                                            <input matInput
-                                                                                [formControlName]="'title'"
+                                                                            <mat-label>{{
+                                                                                t('company.details.tab.address.title')
+                                                                                }}</mat-label>
+                                                                            <input matInput [formControlName]="'title'"
                                                                                 placeholder="{{ t('company.details.tab.address.title') }}"
                                                                                 [spellcheck]="false">
                                                                         </mat-form-field>
@@ -158,9 +166,10 @@
                                                                     <div class="ml-5 w-full">
                                                                         <mat-form-field
                                                                             class="fuse-mat-no-subscript w-full">
-                                                                            <mat-label>{{ t('company.details.tab.address.type') }}</mat-label>
-                                                                            <input matInput
-                                                                                [formControlName]="'type'"
+                                                                            <mat-label>{{
+                                                                                t('company.details.tab.address.type') }}
+                                                                            </mat-label>
+                                                                            <input matInput [formControlName]="'type'"
                                                                                 placeholder="{{ t('company.details.tab.address.type') }}"
                                                                                 [spellcheck]="false">
                                                                         </mat-form-field>
@@ -169,7 +178,9 @@
                                                                 <div class="mt-6">
                                                                     <mat-form-field
                                                                         class="fuse-mat-no-subscript w-full">
-                                                                        <mat-label>{{ t('company.details.tab.address.description') }}</mat-label>
+                                                                        <mat-label>{{
+                                                                            t('company.details.tab.address.description')
+                                                                            }}</mat-label>
                                                                         <textarea matInput
                                                                             [formControlName]="'description'"
                                                                             placeholder="{{ t('company.details.tab.address.description') }}"
@@ -180,9 +191,10 @@
                                                                     <div class="w-full">
                                                                         <mat-form-field
                                                                             class="fuse-mat-no-subscript w-full">
-                                                                            <mat-label>{{ t('company.details.tab.address.latitude') }}</mat-label>
-                                                                            <input matInput
-                                                                                [formControlName]="'lat'"
+                                                                            <mat-label>{{
+                                                                                t('company.details.tab.address.latitude')
+                                                                                }}</mat-label>
+                                                                            <input matInput [formControlName]="'lat'"
                                                                                 placeholder="{{ t('company.details.tab.address.latitude') }}"
                                                                                 [spellcheck]="false">
                                                                         </mat-form-field>
@@ -190,9 +202,10 @@
                                                                     <div class="ml-5 w-full">
                                                                         <mat-form-field
                                                                             class="fuse-mat-no-subscript w-full">
-                                                                            <mat-label>{{ t('company.details.tab.address.longitude') }}</mat-label>
-                                                                            <input matInput
-                                                                                [formControlName]="'long'"
+                                                                            <mat-label>{{
+                                                                                t('company.details.tab.address.longitude')
+                                                                                }}</mat-label>
+                                                                            <input matInput [formControlName]="'long'"
                                                                                 placeholder="{{ t('company.details.tab.address.longitude') }}"
                                                                                 [spellcheck]="false">
                                                                         </mat-form-field>
@@ -200,8 +213,7 @@
                                                                 </div>
                                                                 <div class="mt-5">
                                                                     <button type="button" mat-flat-button
-                                                                        [color]="'primary'"
-                                                                        (click)="createAddress()">
+                                                                        [color]="'primary'" (click)="createAddress()">
                                                                         {{ t('button.save') }}
                                                                     </button>
                                                                 </div>
@@ -219,10 +231,10 @@
                                                             </div>
                                                         </div>
                                                     </form>
-                                                
-                                                  </mat-expansion-panel>
-                                                <mat-expansion-panel *ngFor="let item of addressList" (opened)="item.expanded"
-                                                    [expanded]="item.expanded">
+
+                                                </mat-expansion-panel>
+                                                <mat-expansion-panel *ngFor="let item of addressList"
+                                                    (opened)="item.expanded" [expanded]="item.expanded">
                                                     <mat-expansion-panel-header>
                                                         <mat-panel-title class="font-bold">{{item.title}}
                                                         </mat-panel-title>
@@ -238,10 +250,12 @@
 
                                                         </mat-panel-description>
                                                     </mat-expansion-panel-header>
-                                               
+
                                                     <ng-container *ngIf="!item.isNew">
-                                                        <p>{{ t('company.details.tab.address.description') }}: {{item.description}}</p>
-                                                        <p>{{ t('company.details.tab.address.type') }}: {{item.type}}</p>
+                                                        <p>{{ t('company.details.tab.address.description') }}:
+                                                            {{item.description}}</p>
+                                                        <p>{{ t('company.details.tab.address.type') }}: {{item.type}}
+                                                        </p>
                                                         <div class="w-full mt-5">
                                                             <div class="my-google-map">
                                                                 <google-map [width]="null" [height]="null"
@@ -281,34 +295,6 @@
                     </mat-tab>
 
                     <mat-tab label="{{ t('company.details.tab.approvalProcesses') }}">Content 3</mat-tab>
-
-                    <mat-tab label="{{ t('company.details.tab.userInfo') }}">
-                        <form [formGroup]="resetPassForm">
-                            <div class="ml-5 w-1/3">
-
-                                <div class="flex items-center mt-6">
-                                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                                        <mat-label>{{ t('company.details.tab.userInfo.newPass') }}</mat-label>
-                                        <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                                        <input type="password" [formControlName]="'confirmPass'" matInput required>
-                                    </mat-form-field>
-                                </div>
-                                <div class="flex items-center mt-6">
-                                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                                        <mat-label>{{ t('company.details.tab.userInfo.confNewPass') }}</mat-label>
-                                        <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                                        <input [formControlName]="'pass'" type="password" matInput required value="">
-                                    </mat-form-field>
-                                </div>
-                                <div class="mt-5">
-                                    <button mat-flat-button [color]="'primary'"
-                                        [disabled]="resetPassForm.pristine || resetPassForm.invalid">
-                                        {{ t('button.save') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </mat-tab>
                 </mat-tab-group>
             </form>
         </div>

@@ -1,14 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { ProductService } from '../../ecommerce/product/product.service';
-import { InventoryProduct } from '../../ecommerce/product/product.types';
+import { ProductService } from '../../product/product.service';
+import { InventoryProduct } from '../../product/product.types';
 import { tap, startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { VehiclesService } from '../../vehicles/vehicles.service';
 import { ProposalService } from '../proposals.service';
 import { environment } from 'environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
+import { AuthService } from 'app/core/auth/auth.service';
+import { UploadService } from 'app/services/upload.service';
 
 
 @Component({
@@ -21,7 +23,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
  
     verticalStepperForm: FormGroup;
     products: InventoryProduct[];
-    selectedProdcut: any;
+    selectedProduct: any;
     filteredOptions: Observable<any[]>;
     dataSourceTypes: any[];
     dataSourceStatus: any[];
@@ -30,18 +32,33 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     fileUploadUrl: string;
     filesUpload: any[] = [];
     proposalId:any;
+    unit:any;
 
     @ViewChild('docsFileInput') private docsFileInput: ElementRef;
 
 
+  //file upload
+  public animation: boolean = false;
+  public multiple: boolean = false;
+  private filesControl = new FormControl(null);
+  private label = new FormControl(null);
+
+  public demoForm = new FormGroup({
+    files: this.filesControl,
+    label: this.label,
+  });
+  //file upload
 
     constructor(private _formBuilder: FormBuilder,
         private _vehiclesService: VehiclesService,
         private _productService: ProductService,
         private _router: Router,
         private _proposalService: ProposalService,
+        private _authService: AuthService,
         private readonly activatedRouter: ActivatedRoute,
-        private translocoService: TranslocoService
+        private translocoService: TranslocoService,
+        private uploadService: UploadService,
+
 
     ) {
         this.fileUploadUrl = environment.url+'/media';
@@ -77,7 +94,6 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.verticalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
-                company_id: ['2c67b871-0a77-4c8a-a4dc-4029fbea9a0c', Validators.required],
                 type: ['', Validators.required],
                 status: ['', Validators.required],
                 publish_date: ['', Validators.required],
@@ -138,12 +154,16 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                 })
             )
     }
-
+    
     selectProduct(event: any) {
         let option = this.products.filter(item => item.name.toUpperCase() === event.option.value.toUpperCase());
         if (option.length > 0) {
-            this.selectedProdcut = option[0];
-
+            this.selectedProduct = option[0];
+            this.unit=this.selectedProduct.unit;
+            if(this.unit="Adet")
+            {
+                this.unit=this.translocoService.translate('proposals.details.tab.productInfo.piece');
+            }
             //this.eventForm.get('customersId').setValue(option[0].id, { emitEvent: false });
         }
 
@@ -151,7 +171,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     }
     save() {
         let createPrp = {type:'',freight_type:'',status:'',last_offer_date:'',publish_date:'',location:'',
-                product:'',product_quantity:'',product_id:'',id:'',company_id:'2c67b871-0a77-4c8a-a4dc-4029fbea9a0c'};
+                product:'',product_quantity:'',product_id:'',id:'',company_id: this._authService.CompanyId};
        createPrp.type    = this.verticalStepperForm.value.step1.type;
        createPrp.freight_type    = this.verticalStepperForm.value.step1.type;
        createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date;
@@ -160,12 +180,16 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
        createPrp.product          = this.verticalStepperForm.value.step2.products;
        createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
        createPrp.status = this.verticalStepperForm.value.step1.status;
-       createPrp.product_id = this.selectedProdcut.id;
+       createPrp.product_id = this.selectedProduct.id;
        createPrp.id=this.proposalId;
        this._proposalService.createProposal(createPrp).subscribe(data => {
         this._router.navigateByUrl('/apps/proposals/list');
 
        });
+       if(this.demoForm.value.files)
+       {
+        this.upload();
+       }
     }
 
     onChangeType(event) {
@@ -183,4 +207,16 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         this.filesUpload.push(tmp);
     }
 
+    upload() {
+        const file = this.demoForm.value.files[0];
+        this.uploadService.putUrl(file).then((res) => {
+          const {
+            data: { putURL },
+          } = res;
+    
+          this.uploadService.upLoad(putURL, file).then((res) => {
+            // this.mediaService.create({id:null,company_id: this.companyDetail, title: ret.putURL}).subscribe((data) => { });
+          });
+        });
+      }
 }

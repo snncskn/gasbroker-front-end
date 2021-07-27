@@ -175,7 +175,7 @@
     "users.noUsers.message": "There are no users!",
     "users.details.tab.generalInfo": "General Informations",
         "users.details.tab.generalInfo.company": "Company",
-        "users.details.tab.generalInfo.menus": "Menus",
+        "users.details.tab.generalInfo.menus": "Menus & Permissions",
         "users.details.tab.generalInfo.menu.text": "Enter menu name",
         "users.details.tab.generalInfo.pass": "Password",
         "users.details.tab.generalInfo.confirmPass": "Confirm Password",

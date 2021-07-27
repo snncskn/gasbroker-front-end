@@ -1,16 +1,16 @@
 import { Route } from "@angular/router";
-import { ProductComponent } from "app/modules/admin/apps/ecommerce/product/product.component";
-import { InventoryListComponent } from "app/modules/admin/apps/ecommerce/product/list/pList.component";
+import { ProductComponent } from "app/modules/admin/apps/product/product.component";
+import { InventoryListComponent } from "app/modules/admin/apps/product/list/pList.component";
 import {
   InventoryBrandsResolver,
   InventoryCategoriesResolver,
   InventoryPropertiesResolver,
   InventoryVendorsResolver,
   ProductsResolver,
-} from "app/modules/admin/apps/ecommerce/product/product.resolvers";
-import { ProductDetailComponent } from "./product/product-detail/product-detail.component";
+} from "app/modules/admin/apps/product/product.resolvers";
+import { ProductDetailComponent } from "./product-detail/product-detail.component";
 
-export const ecommerceRoutes: Route[] = [
+export const productRoutes: Route[] = [
   {
     path: "",
     pathMatch: "full",
