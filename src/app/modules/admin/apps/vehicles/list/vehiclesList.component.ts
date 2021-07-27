@@ -83,7 +83,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        this.matDrawer.openedChange.subscribe((opened) => {
+      /*  this.matDrawer.openedChange.subscribe((opened) => {
             if (!opened) {
                 // Remove the selected customer when drawer closed
                 this.selectedVehicle = null;
@@ -91,7 +91,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             }
-        });
+        });*/
 
         fromEvent(this._document, 'keydown')
             .pipe(

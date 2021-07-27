@@ -96,7 +96,7 @@ export class CustomersTDComponent implements OnInit {
     this.activatedRouter.paramMap.subscribe(params => {
         if (params.has('id')) {
             this._customersService.getCompanyById(params.get("id")).subscribe(data => {
-                this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
+                //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
                 this.companyDetail = data.body.id;
                 this.customerForm.patchValue(data.body);
                 this.addressesForm.patchValue({company_id:data.body.id})
