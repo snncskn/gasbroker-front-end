@@ -186,7 +186,10 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         this._router.navigateByUrl('/apps/proposals/list');
 
        });
-       this.upload();
+       if(this.demoForm.value.files)
+       {
+        this.upload();
+       }
     }
 
     onChangeType(event) {
