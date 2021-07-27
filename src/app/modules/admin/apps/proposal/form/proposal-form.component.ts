@@ -22,7 +22,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
  
     verticalStepperForm: FormGroup;
     products: InventoryProduct[];
-    selectedProdcut: any;
+    selectedProduct: any;
     filteredOptions: Observable<any[]>;
     dataSourceTypes: any[];
     dataSourceStatus: any[];
@@ -31,6 +31,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     fileUploadUrl: string;
     filesUpload: any[] = [];
     proposalId:any;
+    unit:any;
 
     @ViewChild('docsFileInput') private docsFileInput: ElementRef;
 
@@ -139,12 +140,16 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                 })
             )
     }
-
+    
     selectProduct(event: any) {
         let option = this.products.filter(item => item.name.toUpperCase() === event.option.value.toUpperCase());
         if (option.length > 0) {
-            this.selectedProdcut = option[0];
-
+            this.selectedProduct = option[0];
+            this.unit=this.selectedProduct.unit;
+            if(this.unit="Adet")
+            {
+                this.unit=this.translocoService.translate('proposals.details.tab.productInfo.piece');
+            }
             //this.eventForm.get('customersId').setValue(option[0].id, { emitEvent: false });
         }
 
@@ -161,7 +166,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
        createPrp.product          = this.verticalStepperForm.value.step2.products;
        createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
        createPrp.status = this.verticalStepperForm.value.step1.status;
-       createPrp.product_id = this.selectedProdcut.id;
+       createPrp.product_id = this.selectedProduct.id;
        createPrp.id=this.proposalId;
        this._proposalService.createProposal(createPrp).subscribe(data => {
         this._router.navigateByUrl('/apps/proposals/list');

@@ -98,7 +98,7 @@
                             <mat-form-field class="flex-auto mt-2">
                                 <mat-label>{{ t('proposals.details.tab.productInfo.quantity') }}</mat-label>
                                 <input matInput [formControlName]="'quantity'" placeholder="{{ t('proposals.details.tab.productInfo.quantity') }}" required>
-                                <span matPrefix>{{ t('proposals.details.tab.productInfo.piece') }}</span>
+                                <span matPrefix>{{unit}}</span>
                             </mat-form-field>
                         </div>
                         <div class="flex">
