@@ -145,39 +145,14 @@
                                     <span class="font-medium mb-2">{{ t('proposals.details.tab.documents') }}</span>
 
 
-                                    <div class="flex flex-col" *ngFor="let item of dataSourceDocs">
+                                    <div *ngFor="let item of  dataSourceDocs">
                                         {{item.description}}
-                                        <input type="file" (change)="uploadDocs(docsFileInput.files,item)"
-                                            #docsFileInput>
-
-                                    </div>
-
-                                    <div class="flex flex-wrap -m-2 mt-2" *ngFor="let file of filesUpload">
-                                        <a
-                                            class="flex flex-col w-40 h-40 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card">
-                                            <div class="aspect-w-9 aspect-h-6">
-                                                <div class="flex items-center justify-center">
-                                                    <div class="relative">
-                                                        <div>
-                                                            <mat-icon class="icon-size-14 text-hint"
-                                                                [svgIcon]="'iconsmind:file'">
-                                                            </mat-icon>
-                                                            <div class="absolute left-0 bottom-0 px-1.5 rounded text-sm font-semibold leading-5 text-white"
-                                                                [class.bg-red-600]="file.type.toUpperCase() === 'PDF'"
-                                                                [class.bg-blue-600]="file.type.toUpperCase() === 'DOC'"
-                                                                [class.bg-green-600]="file.type.toUpperCase() === 'XLS'"
-                                                                [class.bg-green-600]="file.type.toUpperCase() === 'XLSX'"
-                                                                [class.bg-gray-600]="file.type.toUpperCase() === 'TXT'"
-                                                                [class.bg-amber-600]="file.type.toUpperCase() === 'JPG'">
-                                                                {{file.name.toUpperCase()}}
-
-                                                            </div>
-                                                            <br />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
+                                        <form [formGroup]="demoForm">
+                                            <file-upload formControlName="files" [multiple]="multiple" [animation]="animation">
+                                            </file-upload>
+                                            <input type="hidden" formControlName="label" [ngModel]="item.description">
+                                        </form>
+            
                                     </div>
 
                                 </div>

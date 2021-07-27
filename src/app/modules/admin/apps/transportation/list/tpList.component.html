@@ -19,15 +19,12 @@
           <div>
             <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('process.title') }}</div>
             <div class="ml-0.5 font-medium text-secondary">
-              <ng-container *ngIf="processCount > 0">
-
-              </ng-container>
               {{ t('text.total.record') }}: {{processCount}}
             </div>
           </div>
 
           <!-- Main actions -->
-          <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
+          <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
@@ -91,7 +88,7 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="detail">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+              <th class="bg-gray-50 w-60 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
                 #
               </th>
