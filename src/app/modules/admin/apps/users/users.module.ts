@@ -62,6 +62,7 @@ import { TranslocoModule } from '@ngneat/transloco';
         MatTabsModule,
         MatDialogModule,
         UsersRoutingModule,
+        MatPaginatorModule,
         TranslocoModule,
         SharedModule
     ]

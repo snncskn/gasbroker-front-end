@@ -79,7 +79,7 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
                     dateInput: moment.ISO_8601
                 },
                 display: {
-                    dateInput         : 'LL',
+                    dateInput         : 'DD/MM/yyyy',
                     monthYearLabel    : 'MMM YYYY',
                     dateA11yLabel     : 'LL',
                     monthYearA11yLabel: 'MMMM YYYY'

@@ -160,7 +160,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         if (option.length > 0) {
             this.selectedProduct = option[0];
             this.unit=this.selectedProduct.unit;
-            if(this.unit="Adet")
+            if(this.unit=="Adet")
             {
                 this.unit=this.translocoService.translate('proposals.details.tab.productInfo.piece');
             }

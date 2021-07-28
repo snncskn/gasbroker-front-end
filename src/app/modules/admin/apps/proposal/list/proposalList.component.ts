@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +22,8 @@ import { OfferListComponent } from '../offer-list/offer-list.component';
 })
 export class ProposalListComponent implements OnInit, OnDestroy {
 
+    
+
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
@@ -37,7 +39,11 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
 
-
+    totalSize$: Observable<any>;
+    totalPage$: Observable<any>;
+    public currentPage = 1;
+    public pageSize = 10;
+    public filter: string;
 
 
     /**
@@ -193,7 +199,20 @@ export class ProposalListComponent implements OnInit, OnDestroy {
 
     deleteProposal(item:any)
     {
-       // this._proposalService.deleteProposal(item.id).subscribe();
+        this._proposalService.deleteProposal(item.id).subscribe();
+    }
+
+    getServerData(event?: PageEvent) {
+        this.currentPage = event.pageIndex + 1;
+        this.pageSize = event.pageSize;
+        this._proposalService.getProposals(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter ).subscribe();
+
+
+    }
+    public applyFilter(filterValue: string) {
+        this.filter = filterValue;
+        this._proposalService.getProposals(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, filterValue).subscribe();
+
     }
 
 } 

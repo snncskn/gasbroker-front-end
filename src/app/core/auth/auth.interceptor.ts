@@ -37,7 +37,6 @@ export class AuthInterceptor implements HttpInterceptor
         if ( this._authService.accessToken &&  req.url.indexOf('svg')<0)
         {
             let companyId='', user_id='';
-            console.log(123);
             if(this._authService.CompanyId){
                 companyId = this._authService.CompanyId;
                 user_id = this._authService.user_id;

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
+import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
@@ -17,6 +19,8 @@ import { Group } from '../group.types';
 })
 export class GroupListComponent
 {
+    @ViewChild(MatPaginator) private _paginator: MatPaginator;
+    @ViewChild(MatSort) private _sort: MatSort;
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
 
     groupCount: number = 0;
@@ -25,6 +29,12 @@ export class GroupListComponent
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     groupTableColumns: string[] = ['description','detail'];
     selectedGroup:any;
+
+    totalSize$: Observable<any>;
+    totalPage$: Observable<any>;
+    public currentPage = 1;
+    public pageSize = 10;
+    public filter: string;
 
     /**
      * Constructor
@@ -91,5 +101,18 @@ export class GroupListComponent
         } else {
             return '';
         }
+    }
+
+    getServerData(event?: PageEvent) {
+        this.currentPage = event.pageIndex + 1;
+        this.pageSize = event.pageSize;
+        this._groupService.getGroup(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter ).subscribe();
+
+
+    }
+    public applyFilter(filterValue: string) {
+        this.filter = filterValue;
+        this._groupService.getGroup(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, filterValue).subscribe();
+
     }
 }
