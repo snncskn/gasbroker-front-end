@@ -30,6 +30,7 @@ import { TransportationComponent } from './transportation.component';
 import { TransportationListComponent } from './list/tpList.component';
 import { TransportationFormComponent } from './form/tpForm.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
     declarations: [
@@ -62,6 +63,7 @@ import { TranslocoModule } from '@ngneat/transloco';
         FuseFindByKeyPipeModule,
         MatTabsModule,
         FormsModule,
+        MatPaginatorModule,
         TransportationRoutingModule,
         GoogleMapsModule,
         TranslocoModule,
@@ -75,7 +77,7 @@ import { TranslocoModule } from '@ngneat/transloco';
                     dateInput: moment.ISO_8601
                 },
                 display: {
-                    dateInput         : 'LL',
+                    dateInput         : 'DD/MM/yyyy',
                     monthYearLabel    : 'MMM YYYY',
                     dateA11yLabel     : 'LL',
                     monthYearA11yLabel: 'MMMM YYYY'
