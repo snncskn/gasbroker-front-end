@@ -28,6 +28,7 @@ import { groupRoutes, GroupRoutingModule } from './group.routing';
 import { GroupListComponent } from './list/groupList.component';
 import { GroupFormComponent } from './form/groupForm.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
     declarations: [
@@ -58,6 +59,7 @@ import { TranslocoModule } from '@ngneat/transloco';
         MatSortModule,
         MatExpansionModule,
         MatTabsModule,
+        MatPaginatorModule,
         FormsModule,
         GroupRoutingModule,
         TranslocoModule,
@@ -71,7 +73,7 @@ import { TranslocoModule } from '@ngneat/transloco';
                     dateInput: moment.ISO_8601
                 },
                 display: {
-                    dateInput         : 'LL',
+                    dateInput         : 'DD/MM/yyyy',
                     monthYearLabel    : 'MMM YYYY',
                     dateA11yLabel     : 'LL',
                     monthYearA11yLabel: 'MMMM YYYY'

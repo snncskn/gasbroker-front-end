@@ -51,9 +51,10 @@ export class GroupService {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    getGroup(): Observable<Group[]> {
+    getGroup(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
+    Observable<Group[]> {
 
-        return this._httpClient.get<any>(`${environment.url}/process-group`).pipe(
+        return this._httpClient.get<any>(`${environment.url}/process-group?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((groups) => {
                 this._groups.next(groups.body);
                 this._groupCount = groups.body.length;

@@ -64,9 +64,10 @@ export class ProposalService {
     /**
      * Get customers
      */
-    getProposals(): Observable<Proposal[]> {
+    getProposals(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+    Observable<any> {
 
-        return this._httpClient.get<any>(`${environment.url}/proposal`).pipe(
+        return this._httpClient.get<any>(`${environment.url}/proposal?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((proposals) => {
                 this._proposals.next(proposals.body);
                 this._proposalsCount = proposals.body.length;
