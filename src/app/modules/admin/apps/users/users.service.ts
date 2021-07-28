@@ -62,9 +62,9 @@ export class UsersService {
     sort: string = "username",
     order: "asc" | "desc" | "" = "asc",
     search: string = ""
-  ): Observable<{ pagination: UsersPagination; users: UsersList[] }> {
-    let url = `${environment.url}/api/user`;
-    /*
+  ): Observable<any> {
+    /*let url = `${environment.url}/api/user`;
+    
     return this._httpClient
       .post<{ pagination: UsersPagination; users: UsersList[] }>(url, {
         queryParams: {
@@ -77,7 +77,7 @@ export class UsersService {
       })
 
       */
-    return this._httpClient.get<any>(`${environment.url}/api/user`).pipe(
+    return this._httpClient.get<any>(`${environment.url}/api/user?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
       tap((customers) => {
         this._users.next(customers.body);
         this._usersCount = customers.body.length;
