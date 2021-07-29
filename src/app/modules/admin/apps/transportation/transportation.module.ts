@@ -31,6 +31,7 @@ import { TransportationListComponent } from './list/tpList.component';
 import { TransportationFormComponent } from './form/tpForm.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ConfirmationModule } from '../delete-dialog/delete.module';
 
 @NgModule({
     declarations: [
@@ -67,6 +68,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         TransportationRoutingModule,
         GoogleMapsModule,
         TranslocoModule,
+        ConfirmationModule,
         SharedModule
     ],
     providers   : [

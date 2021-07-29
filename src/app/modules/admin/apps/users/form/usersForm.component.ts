@@ -10,6 +10,8 @@ import { UsersService } from '../users.service';
 import { tap, startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { TranslocoService } from '@ngneat/transloco';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 
 @Component({
     selector: 'users-form',
@@ -18,6 +20,8 @@ import { TranslocoService } from '@ngneat/transloco';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersFormComponent implements OnInit {
+
+    dialogRef: MatDialogRef<ConfirmationDialog>;
 
     usersForm: FormGroup;
     resetPassForm: FormGroup;
@@ -42,7 +46,8 @@ export class UsersFormComponent implements OnInit {
         private _customersService: CustomersService,
         private _usersService: UsersService,
         private readonly activatedRouter: ActivatedRoute,
-        private translocoService: TranslocoService
+        private translocoService: TranslocoService,
+        private dialog: MatDialog
 
 
     ) {
@@ -220,7 +225,15 @@ export class UsersFormComponent implements OnInit {
 
     deleteUser() {
         if (this.usersForm.value.id) {
-            this._usersService.deleteUser(this.usersForm.value.id).subscribe()
+            this.dialogRef = this.dialog.open(ConfirmationDialog, {
+                disableClose: false
+              });
+              this.dialogRef.afterClosed().subscribe(result => {
+                if(result) {
+                    this._usersService.deleteUser(this.usersForm.value.id).subscribe()
+                }
+                this.dialogRef = null;
+              });
         }
     }
 

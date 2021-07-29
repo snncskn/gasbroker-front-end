@@ -11,9 +11,10 @@ import { takeUntil, filter, switchMap, map } from 'rxjs/operators';
 import { ProposalService } from '../proposals.service';
 import { Proposal } from '../proposals.types';
 import { merge, fromEvent, Observable, Subject } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OfferComponent } from '../offer/offer.component';
 import { OfferListComponent } from '../offer-list/offer-list.component';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 
 @Component({
     selector: 'proposal-list',
@@ -22,7 +23,8 @@ import { OfferListComponent } from '../offer-list/offer-list.component';
 })
 export class ProposalListComponent implements OnInit, OnDestroy {
 
-    
+    dialogRef: MatDialogRef<ConfirmationDialog>;
+
 
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
@@ -199,7 +201,15 @@ export class ProposalListComponent implements OnInit, OnDestroy {
 
     deleteProposal(item:any)
     {
-        this._proposalService.deleteProposal(item.id).subscribe();
+        this.dialogRef = this.dialog.open(ConfirmationDialog, {
+            disableClose: false
+          });
+          this.dialogRef.afterClosed().subscribe(result => {
+            if(result) {
+                this._proposalService.deleteProposal(item.id).subscribe();
+            }
+            this.dialogRef = null;
+          });
     }
 
     getServerData(event?: PageEvent) {

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
@@ -7,6 +8,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { GroupService } from '../group.service';
 import { Group } from '../group.types';
 
@@ -19,6 +21,8 @@ import { Group } from '../group.types';
 })
 export class GroupListComponent
 {
+    dialogRef: MatDialogRef<ConfirmationDialog>;
+
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
@@ -45,7 +49,9 @@ export class GroupListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _groupService: GroupService,
         public toastr: ToastrManager,
-        private translocoService: TranslocoService
+        private translocoService: TranslocoService,
+        private dialog: MatDialog
+
     )
     {
         this._groupService.getGroup().subscribe();
@@ -71,11 +77,19 @@ export class GroupListComponent
     }
 
     deleteGroup(item :any){
-        this._groupService.deleteGroup(item).subscribe(data=>{
-            this._router.navigateByUrl('/apps/group/list');
-            this._groupService.getGroup().subscribe();
-            this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
-        });
+        this.dialogRef = this.dialog.open(ConfirmationDialog, {
+            disableClose: false
+          });
+          this.dialogRef.afterClosed().subscribe(result => {
+            if(result) {
+                this._groupService.deleteGroup(item).subscribe(data=>{
+                    this._router.navigateByUrl('/apps/group/list');
+                    this._groupService.getGroup().subscribe();
+                    this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
+                });
+            }
+            this.dialogRef = null;
+          });
     }
     openGroup(item:any)
     {

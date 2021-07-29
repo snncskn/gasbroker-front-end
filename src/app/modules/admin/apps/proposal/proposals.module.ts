@@ -32,6 +32,7 @@ import { OfferComponent } from './offer/offer.component';
 import { OfferListComponent } from './offer-list/offer-list.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
+import { ConfirmationModule } from '../delete-dialog/delete.module';
 
 @NgModule({
     declarations: [
@@ -67,6 +68,7 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
         MatStepperModule,
         MatDialogModule,
         FileUploadModule,
+        ConfirmationModule,
         TranslocoModule
         
     ],
