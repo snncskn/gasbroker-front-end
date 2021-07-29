@@ -12,6 +12,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MatSort } from '@angular/material/sort';
 import { InventoryPagination } from '../../product/product.types';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 
 @Component({
     selector: 'customers-list',
@@ -21,6 +23,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy {
+
+    dialogRef: MatDialogRef<ConfirmationDialog>;
 
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
@@ -54,7 +58,9 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
         private _customersService: CustomersService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private dialog: MatDialog
+
     ) {
 
         //   this._customersService.getCustomers().subscribe();
@@ -192,9 +198,17 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     deleteCompany(item: any) {
-        this._customersService.deleteCompany(item.id).subscribe(data => {
-            this._customersService.getCustomers().subscribe();
-        });
+        this.dialogRef = this.dialog.open(ConfirmationDialog, {
+            disableClose: false
+          });
+          this.dialogRef.afterClosed().subscribe(result => {
+            if(result) {
+                this._customersService.deleteCompany(item.id).subscribe(data => {
+                    this._customersService.getCustomers().subscribe();
+                });
+            }
+            this.dialogRef = null;
+          });
     }
 
     trackByFn(index: number, item: any): any {

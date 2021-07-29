@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { ProcessService } from '../transportation.service';
 import { Process } from '../transportation.types';
 
@@ -17,6 +19,8 @@ import { Process } from '../transportation.types';
 })
 export class TransportationListComponent implements OnInit
 {
+
+    dialogRef: MatDialogRef<ConfirmationDialog>;
 
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
@@ -45,6 +49,7 @@ export class TransportationListComponent implements OnInit
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _processService: ProcessService,
+        private dialog: MatDialog
 
 
     )

@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { stubFalse } from 'lodash';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { ProcessService } from '../transportation.service';
 
 @Component({
@@ -16,6 +18,8 @@ import { ProcessService } from '../transportation.service';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransportationFormComponent implements OnInit {
+
+    dialogRef: MatDialogRef<ConfirmationDialog>;
 
     processForm: FormGroup;
     dataSourceGroup: any[];
@@ -51,7 +55,9 @@ export class TransportationFormComponent implements OnInit {
         private _router: Router,
         private _processService: ProcessService,
         private readonly activatedRouter: ActivatedRoute,
-        private translocoService: TranslocoService
+        private translocoService: TranslocoService,
+        private dialog: MatDialog
+
 
 
     ) {
@@ -104,11 +110,20 @@ export class TransportationFormComponent implements OnInit {
     }
 
     deleteProcess() {
-        this._processService.getProcessDelete(this.processForm.getRawValue()).subscribe(data => {
-            this.dataSourceSubGroup = data.body.process_sub_groups;
-            this.toastr.warningToastr(this.translocoService.translate('message.deleteProcess'));
-            this._router.navigate(['/apps/transportation/list']);
+        this.dialogRef = this.dialog.open(ConfirmationDialog, {
+            disableClose: false
+          });
+          this.dialogRef.afterClosed().subscribe(result => {
+            if(result) {
+                this._processService.getProcessDelete(this.processForm.getRawValue()).subscribe(data => {
+                    this.dataSourceSubGroup = data.body.process_sub_groups;
+                    this.toastr.warningToastr(this.translocoService.translate('message.deleteProcess'));
+                    this._router.navigate(['/apps/transportation/list']);
+        
+                });
+            }
+            this.dialogRef = null;
+          });
 
-        });
     }
 }

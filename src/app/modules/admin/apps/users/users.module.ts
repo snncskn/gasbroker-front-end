@@ -30,6 +30,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { UsersFormComponent } from './form/usersForm.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TranslocoModule } from '@ngneat/transloco';
+import { ConfirmationModule } from '../delete-dialog/delete.module';
 
 @NgModule({
     declarations: [
@@ -64,6 +65,7 @@ import { TranslocoModule } from '@ngneat/transloco';
         UsersRoutingModule,
         MatPaginatorModule,
         TranslocoModule,
+        ConfirmationModule,
         SharedModule
     ]
 })

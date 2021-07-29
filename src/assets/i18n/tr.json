@@ -14,6 +14,10 @@
     "sign-out": "Çıkış",
     "app.quit": "Quit",
 
+    "delete.dialog.confirm":"Onayla",
+    "delete.dialog.cancel":"İptal",
+    "delete.dialog.text":"Silmek istediğine emin misin ?",
+
     "message.no_record": "Kayıt bulunamadı",
     "message.deleteAddress": "Adres silindi !",
     "message.addressAdded": "Adres eklendi",

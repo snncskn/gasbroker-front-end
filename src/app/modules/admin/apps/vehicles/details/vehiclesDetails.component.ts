@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { VehiclesService } from '../vehicles.service';
 
 @Component({
@@ -14,6 +16,8 @@ import { VehiclesService } from '../vehicles.service';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VehiclesDetailsComponent implements OnInit {
+
+    dialogRef: MatDialogRef<ConfirmationDialog>;
 
     vehicleForm: FormGroup;
     dataSourceTypes: any[];
@@ -32,7 +36,9 @@ export class VehiclesDetailsComponent implements OnInit {
         public toastr: ToastrManager,
         private _router: Router,
         private readonly activatedRouter: ActivatedRoute,
-        private translocoService: TranslocoService
+        private translocoService: TranslocoService,
+        private dialog: MatDialog
+
 
 
     ) {
@@ -132,7 +138,15 @@ export class VehiclesDetailsComponent implements OnInit {
     {
         if(this.vehicleDetail)
         {
-            this._vehicleService.deleteVehicle(this.vehicleDetail).subscribe();
+            this.dialogRef = this.dialog.open(ConfirmationDialog, {
+                disableClose: false
+              });
+              this.dialogRef.afterClosed().subscribe(result => {
+                if(result) {
+                    this._vehicleService.deleteVehicle(this.vehicleDetail).subscribe();
+                }
+                this.dialogRef = null;
+              });
         }
     }
 }
