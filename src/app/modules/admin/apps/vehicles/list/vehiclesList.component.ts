@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
@@ -9,6 +10,7 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { takeUntil, filter, switchMap, map } from 'rxjs/operators';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { VehiclesService } from '../vehicles.service';
 import { Vehicle } from '../vehicles.types';
 
@@ -21,6 +23,8 @@ import { Vehicle } from '../vehicles.types';
 })
 export class VehiclesListComponent implements OnInit, OnDestroy {
 
+    dialogRef: MatDialogRef<ConfirmationDialog>;
+    
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -55,7 +59,9 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         private _vehicleService: VehiclesService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private dialog: MatDialog
+
     ) {
         this._vehicleService.getVehicles().subscribe();
     }
@@ -173,9 +179,18 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
 
     deleteVehicle(item:any)
     {
-        this._vehicleService.deleteVehicle(item.id).subscribe(data=>{
-            this._vehicleService.getVehicles().subscribe();
-        });
+        this.dialogRef = this.dialog.open(ConfirmationDialog, {
+            disableClose: false
+          });
+          this.dialogRef.afterClosed().subscribe(result => {
+            if(result) {
+                this._vehicleService.deleteVehicle(item.id).subscribe(data=>{
+                    this._vehicleService.getVehicles().subscribe();
+                });
+            }
+            this.dialogRef = null;
+          });
+
     }
 
     onBackdropClicked(): void {

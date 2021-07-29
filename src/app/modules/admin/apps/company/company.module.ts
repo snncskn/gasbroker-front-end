@@ -32,12 +32,13 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { TranslocoModule } from '@ngneat/transloco';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ConfirmationModule } from '../delete-dialog/delete.module';
 
 @NgModule({
     declarations: [
         CustomersComponent,
         CustomersListComponent,
-        CustomersTDComponent
+        CustomersTDComponent,
 
     ],
     imports     : [
@@ -69,7 +70,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         GoogleMapsModule,
         SharedModule,
         FileUploadModule,
-        TranslocoModule
+        TranslocoModule,
+        ConfirmationModule    
     ],
     providers   : [
         {
@@ -89,7 +91,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
                 defaultLang: 'en'
             }
         }
-    ]
+    ],
 })
 export class CompanyModule
 {

@@ -6,11 +6,12 @@ import { MatSort } from '@angular/material/sort';
 import { merge, Observable, Subject } from 'rxjs';
 import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UsersPagination, UsersList } from 'app/modules/admin/apps/users/users.types';
 import { UsersService } from 'app/modules/admin/apps/users/users.service';
 import { calendarColors } from 'app/modules/admin/apps/calendar/sidebar/calendar-colors';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 
 
 
@@ -24,6 +25,9 @@ import { ActivatedRoute, Router } from '@angular/router';
     animations: fuseAnimations
 })
 export class UsersListComponent implements OnInit {
+
+    dialogRef: MatDialogRef<ConfirmationDialog>;
+
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -133,10 +137,18 @@ export class UsersListComponent implements OnInit {
     }
 
     deleteUser(item: any) {
-        this._usersService.deleteUser(item.id).subscribe(data=>{
-            this.onLoad();
+        this.dialogRef = this._dialog.open(ConfirmationDialog, {
+            disableClose: false
+          });
+          this.dialogRef.afterClosed().subscribe(result => {
+            if(result) {
+                this._usersService.deleteUser(item.id).subscribe(data=>{
+                    this.onLoad();
+                });
+            }
+            this.dialogRef = null;
+          });
 
-        });
     }
     trackByFn(index: number, item: any): any {
         return item.id || index;

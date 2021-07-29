@@ -113,19 +113,17 @@
               *matRowDef="let i = dataIndex; let processes; columns: transportationTableColumns"
               [class]="setStyle(i)" ></tr>
 
-          </table>
-
-          <mat-paginator
-          #paginator
-          class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-          [ngClass]="{'pointer-events-none': isLoading}"
-          [length]="totalSize$"
-          (page)="getServerData($event)"
-          [pageIndex]="currentPage" 
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          [showFirstLastButtons]="true"></mat-paginator>
-          
+          </table>        
         </div>
+        <mat-paginator
+        #paginator
+        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+        [ngClass]="{'pointer-events-none': isLoading}"
+        [length]="totalSize$"
+        (page)="getServerData($event)"
+        [pageIndex]="currentPage" 
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        [showFirstLastButtons]="true"></mat-paginator>
       </div>
 </mat-drawer-content>
 </mat-drawer-container>

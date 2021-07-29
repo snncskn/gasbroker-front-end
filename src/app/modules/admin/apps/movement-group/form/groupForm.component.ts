@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { GroupService } from '../group.service';
 import { GroupForm } from './groupForm';
 
@@ -13,6 +15,8 @@ import { GroupForm } from './groupForm';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GroupFormComponent {
+
+    dialogRef: MatDialogRef<ConfirmationDialog>;
 
     groupForm: FormGroup;
     subGroupForm: any;
@@ -28,7 +32,8 @@ export class GroupFormComponent {
         private _router: Router,
         private _groupService: GroupService,
         private readonly activatedRouter: ActivatedRoute,
-        private translocoService: TranslocoService
+        private translocoService: TranslocoService,
+        private dialog: MatDialog
     ) {
         this.groupForm = this._formBuilder.group({
             id: [''],
@@ -90,10 +95,19 @@ export class GroupFormComponent {
 
     deleteGroup() {
         if (this.groupForm.value.id) {
-            this._groupService.deleteGroup(this.groupForm.value).subscribe(data => {
-                this._router.navigateByUrl('/apps/group/list/');
-                this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
-            });
+            this.dialogRef = this.dialog.open(ConfirmationDialog, {
+                disableClose: false
+              });
+              this.dialogRef.afterClosed().subscribe(result => {
+                if(result) {
+                    this._groupService.deleteGroup(this.groupForm.value).subscribe(data => {
+                        this._router.navigateByUrl('/apps/group/list/');
+                        this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
+                    });
+                }
+                this.dialogRef = null;
+              });
+
         }
     }
 

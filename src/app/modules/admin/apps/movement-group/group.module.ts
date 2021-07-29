@@ -18,7 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import * as moment from 'moment';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -29,6 +29,10 @@ import { GroupListComponent } from './list/groupList.component';
 import { GroupFormComponent } from './form/groupForm.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ConfirmationDialog } from '../delete-dialog/delete.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationModule } from '../delete-dialog/delete.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -62,7 +66,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         MatPaginatorModule,
         FormsModule,
         GroupRoutingModule,
+        ReactiveFormsModule,
+        MatDialogModule,
         TranslocoModule,
+        CommonModule, 
+        ConfirmationModule,
         SharedModule
     ],
     providers   : [
@@ -80,7 +88,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
                 }
             }
         }
-    ]
+    ],
 })
 export class GroupModule
 {
