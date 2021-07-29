@@ -11,6 +11,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { takeUntil, filter, switchMap, map } from 'rxjs/operators';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { InventoryPagination } from '../../product/product.types';
 import { VehiclesService } from '../vehicles.service';
 import { Vehicle } from '../vehicles.types';
 
@@ -24,7 +25,7 @@ import { Vehicle } from '../vehicles.types';
 export class VehiclesListComponent implements OnInit, OnDestroy {
 
     dialogRef: MatDialogRef<ConfirmationDialog>;
-    
+
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -35,11 +36,12 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
 
     vehiclesCount: number = 0;
     selectedVehicle: Vehicle;
-    vehiclesTableColumn: string[] = ['company_id', 'name', 'type', 'registered_date','detail'];
+    vehiclesTableColumn: string[] = ['company_id', 'name', 'type', 'registered_date', 'detail'];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
-    isLoading: boolean=false;
+    isLoading: boolean = false;
+    pagination: InventoryPagination;
 
     totalSize$: Observable<any>;
     totalPage$: Observable<any>;
@@ -66,15 +68,21 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         this._vehicleService.getVehicles().subscribe();
     }
     ngOnInit(): void {
-        // Get the customers
+        this._vehicleService.pagination$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((pagination: InventoryPagination) => {
+                // Update the pagination
+                this.pagination = pagination;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
         this.vehicles$ = this._vehicleService.vehicles$;
+        this.totalSize$ = this._vehicleService.getTotalSize$;
+        this.totalPage$ = this._vehicleService.getTotalPage$;
         this._vehicleService.vehicles$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((vehicles: Vehicle[]) => {
-
-                // Update the counts
-                this.vehiclesCount = vehicles?.length;
-
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
@@ -89,15 +97,15 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-      /*  this.matDrawer.openedChange.subscribe((opened) => {
-            if (!opened) {
-                // Remove the selected customer when drawer closed
-                this.selectedVehicle = null;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            }
-        });*/
+        /*  this.matDrawer.openedChange.subscribe((opened) => {
+              if (!opened) {
+                  // Remove the selected customer when drawer closed
+                  this.selectedVehicle = null;
+  
+                  // Mark for check
+                  this._changeDetectorRef.markForCheck();
+              }
+          });*/
 
         fromEvent(this._document, 'keydown')
             .pipe(
@@ -166,30 +174,27 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
- 
-    newVehicle(): void
-    {
+
+    newVehicle(): void {
         this._router.navigate(['/apps/vehicles/form']);
     }
 
-    openVehicle(item:any)
-    {
-        this._router.navigate(['/apps/vehicles/form/'+item.id]);
+    openVehicle(item: any) {
+        this._router.navigate(['/apps/vehicles/form/' + item.id]);
     }
 
-    deleteVehicle(item:any)
-    {
+    deleteVehicle(item: any) {
         this.dialogRef = this.dialog.open(ConfirmationDialog, {
             disableClose: false
-          });
-          this.dialogRef.afterClosed().subscribe(result => {
-            if(result) {
-                this._vehicleService.deleteVehicle(item.id).subscribe(data=>{
+        });
+        this.dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this._vehicleService.deleteVehicle(item.id).subscribe(data => {
                     this._vehicleService.getVehicles().subscribe();
                 });
             }
             this.dialogRef = null;
-          });
+        });
 
     }
 
@@ -216,7 +221,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
     getServerData(event?: PageEvent) {
         this.currentPage = event.pageIndex + 1;
         this.pageSize = event.pageSize;
-        this._vehicleService.getVehicles(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter ).subscribe();
+        this._vehicleService.getVehicles(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter).subscribe();
 
 
     }

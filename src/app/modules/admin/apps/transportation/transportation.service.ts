@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Process } from './transportation.types';
 import { items } from 'app/mock-api/apps/file-manager/data';
+import { InventoryPagination } from '../product/product.types';
 @Injectable({
     providedIn: 'root'
 })
@@ -15,6 +16,10 @@ export class ProcessService {
     private _process: BehaviorSubject<Process | null> = new BehaviorSubject(null);
     private _processes: BehaviorSubject<Process[] | null> = new BehaviorSubject(null);
     private _processesCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
+
 
 
 
@@ -48,17 +53,31 @@ export class ProcessService {
         return this._processesCount.asObservable();
     }
 
+    get pagination$(): Observable<InventoryPagination>
+    {
+        return this._pagination.asObservable();
+    }
+    get getTotalSize$(): Observable<any> {
+        return this._totalSize;
+    }
+    
+    get getTotalPage$(): Observable<any> {
+        return this._totalPage;
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    getProcess(page: number = 0, size: number = 5, sort: string = null, order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
+    getProcess(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
     Observable<Process[]> {
 
         return this._httpClient.get<any>(`${environment.url}/process?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((processes) => {
                 this._processes.next(processes.body);
-                this._processesCount = processes.body.length;
+                this._pagination.next(processes.body);
+                this._totalSize = processes.totalSize;
+                this._totalPage = processes.totalPage;
             })
         );
     }

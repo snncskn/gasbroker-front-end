@@ -34,7 +34,8 @@ export class ProductService {
     new BehaviorSubject(null);
   private _vendors: BehaviorSubject<InventoryVendor[] | null> =
     new BehaviorSubject(null);
-
+    private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
   /**
    * Constructor
    */
@@ -98,6 +99,14 @@ export class ProductService {
     return this._vendors.asObservable();
   }
 
+  get getTotalSize$(): Observable<any> {
+    return this._totalSize;
+}
+
+get getTotalPage$(): Observable<any> {
+    return this._totalPage;
+}
+
  
 
   getAllByMainId(id: string): Observable<any> {
@@ -144,7 +153,7 @@ export class ProductService {
   getProducts(
     page: number = 0,
     size: number = 10,
-    sort: string = "name",
+    sort: string = "created_at",
     order: "asc" | "desc" | "" = "asc",
     search: string = ""
   ): Observable<{
@@ -157,6 +166,8 @@ export class ProductService {
       tap((response) => {
         // this._pagination.next(response.pagination);
         this._products.next(response.body);
+        this._totalSize = response.totalSize;
+        this._totalPage = response.totalPage;
       })
     );
   }

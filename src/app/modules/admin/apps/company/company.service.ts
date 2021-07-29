@@ -16,9 +16,9 @@ export class CustomersService {
     // Private
     private _company: BehaviorSubject<Company | null> = new BehaviorSubject(null);
     private _companies: BehaviorSubject<Company[] | null> = new BehaviorSubject(null);
+    private _addresses:BehaviorSubject<Address[] | null>= new BehaviorSubject(null);
     private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
-    private _addresses:BehaviorSubject<Address[] | null>= new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
 
     /**
@@ -72,7 +72,7 @@ export class CustomersService {
     /**
      * Get customers
      */
-     getCustomers(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+     getCustomers(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
      Observable<any>{
 
         return this._httpClient.get<any>(`${environment.url}/company?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(

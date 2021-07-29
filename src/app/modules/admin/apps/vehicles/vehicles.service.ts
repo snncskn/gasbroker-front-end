@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Vehicle } from './vehicles.types';
 import { TranslocoService } from '@ngneat/transloco';
+import { InventoryPagination } from '../product/product.types';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,9 @@ export class VehiclesService {
     private _vehicle: BehaviorSubject<Vehicle | null> = new BehaviorSubject(null);
     private _vehicles: BehaviorSubject<Vehicle[] | null> = new BehaviorSubject(null);
     private _vehiclesCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
 
 
 
@@ -51,6 +55,18 @@ export class VehiclesService {
         return this._vehiclesCount.asObservable();
     }
 
+    get pagination$(): Observable<InventoryPagination>
+    {
+        return this._pagination.asObservable();
+    }
+    get getTotalSize$(): Observable<any> {
+        return this._totalSize;
+    }
+    
+    get getTotalPage$(): Observable<any> {
+        return this._totalPage;
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -58,13 +74,14 @@ export class VehiclesService {
     /**
      * Get customers
      */     
-     getVehicles(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+     getVehicles(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
      Observable<{ pagination: any; customers: any[] }>{
 
         return this._httpClient.get<any>(`${environment.url}/vehicle?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((vehicles) => {
                 this._vehicles.next(vehicles.body);
-                this._vehiclesCount = vehicles.body.length;
+                this._totalSize = vehicles.totalSize;
+                this._totalPage = vehicles.totalPage;
             })
         );
     }

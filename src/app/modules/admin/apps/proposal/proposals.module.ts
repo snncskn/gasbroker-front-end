@@ -33,6 +33,7 @@ import { OfferListComponent } from './offer-list/offer-list.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { ConfirmationModule } from '../delete-dialog/delete.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
     declarations: [
@@ -67,6 +68,7 @@ import { ConfirmationModule } from '../delete-dialog/delete.module';
         ProposalRoutingModule,
         MatStepperModule,
         MatDialogModule,
+        MatPaginatorModule,
         FileUploadModule,
         ConfirmationModule,
         TranslocoModule

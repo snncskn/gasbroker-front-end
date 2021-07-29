@@ -41,7 +41,7 @@
           <!-- Customers list -->
           <div class="relative">
             <table class="w-full min-w-320 table-fixed bg-transparent"
-              mat-table matSort [matSortActive]="'description'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
+              mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'"
               [multiTemplateDataRows]="true" [dataSource]="groups$" [trackBy]="trackByFn">
   
               <ng-container matColumnDef="description">
@@ -80,16 +80,16 @@
   
             </table>
           </div>
-          <mat-paginator
-          #paginator
-          class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-          [ngClass]="{'pointer-events-none': isLoading}"
-          [length]="totalSize$"
-          (page)="getServerData($event)"
-          [pageIndex]="currentPage" 
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          [showFirstLastButtons]="true"></mat-paginator>
         </div>
       </mat-drawer-content>
     </mat-drawer-container>
+    <mat-paginator
+    #paginator
+    class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+    [ngClass]="{'pointer-events-none': isLoading}"
+    [length]="totalSize$"
+    (page)="getServerData($event)"
+    [pageIndex]="currentPage" 
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    [showFirstLastButtons]="true"></mat-paginator>
   </div>

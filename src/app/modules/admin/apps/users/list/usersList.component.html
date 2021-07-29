@@ -21,7 +21,7 @@
                     <div>
                         <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('users.title') }}</div>
                         <div class="ml-0.5 font-medium text-secondary">
-                            {{ t('text.total.record') }}: {{usersCount}}
+                            {{ t('text.total.record') }}: {{totalSize$}}
                         </div>
                     </div>
                     <!-- Actions -->
@@ -45,7 +45,7 @@
 
                     <!-- Table -->
                     <table class="w-full min-w-320 table-fixed bg-transparent"
-                        [ngClass]="{'pointer-events-none': isLoading}" mat-table matSort [matSortActive]="'name'"
+                        [ngClass]="{'pointer-events-none': isLoading}" mat-table matSort
                         [matSortDisableClear]="true" [matSortDirection]="'asc'" [multiTemplateDataRows]="true"
                         [dataSource]="users$" [trackBy]="trackByFn">
 
@@ -122,13 +122,16 @@
                     </ng-template>
 
                 </div>
-                <mat-paginator #paginator
-                class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                [ngClass]="{'pointer-events-none': isLoading}" [length]="totalSize$"
-                (page)="getServerData($event)" [pageIndex]="currentPage" [pageSizeOptions]="[5, 10, 25, 100]"
-                [showFirstLastButtons]="true"></mat-paginator>
             </div>
-
         </mat-drawer-content>
     </mat-drawer-container>
+    <mat-paginator
+    #paginator
+    class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+    [ngClass]="{'pointer-events-none': isLoading}"
+    [length]="totalSize$"
+    (page)="getServerData($event)"
+    [pageIndex]="currentPage" 
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    [showFirstLastButtons]="true"></mat-paginator>
 </div>
