@@ -29,6 +29,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoModule } from '@ngneat/transloco';
+import { ConfirmationModule } from '../delete-dialog/delete.module';
 
 @NgModule({
     declarations: [
@@ -63,6 +64,7 @@ import { TranslocoModule } from '@ngneat/transloco';
         FuseFindByKeyPipeModule,
         VehiclesRoutingModule,
         TranslocoModule,
+        ConfirmationModule,
         SharedModule
     ],
     providers   : [

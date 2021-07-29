@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileUploadValidators } from '@iplab/ngx-file-upload';
 import { TranslocoService } from '@ngneat/transloco';
@@ -7,6 +8,7 @@ import { UploadService } from 'app/services/upload.service';
 import { Console } from 'console';
 import { cloneDeep } from 'lodash';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { CustomersService } from '../company.service';
 
 @Component({
@@ -17,6 +19,9 @@ import { CustomersService } from '../company.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomersTDComponent implements OnInit {
+
+  dialogRef: MatDialogRef<ConfirmationDialog>;
+
   customerForm: FormGroup;
   dataSourceTypes: any[];
   dataSourceDocs: any[];
@@ -64,7 +69,9 @@ export class CustomersTDComponent implements OnInit {
     private _router: Router,
     private readonly activatedRouter: ActivatedRoute,
     private uploadService: UploadService,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
+    private dialog: MatDialog
+
   ) {
    
     let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
@@ -151,12 +158,22 @@ export class CustomersTDComponent implements OnInit {
   }
 
   deleteCompany() {
+    
     if (this.companyDetail) {
-      this._customersService
-        .deleteCompany(this.companyDetail)
-        .subscribe((data) => {
-          this._router.navigateByUrl("/apps/company/list");
-        });
+      this.dialogRef = this.dialog.open(ConfirmationDialog, {
+        disableClose: false
+      });
+      this.dialogRef.afterClosed().subscribe(result => {
+        if(result) {
+          this._customersService
+          .deleteCompany(this.companyDetail)
+          .subscribe((data) => {
+            this._router.navigateByUrl("/apps/company/list");
+          });
+        }
+        this.dialogRef = null;
+      });
+
     }
   }
 

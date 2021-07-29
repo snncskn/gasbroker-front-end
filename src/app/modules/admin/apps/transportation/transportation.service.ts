@@ -52,7 +52,7 @@ export class ProcessService {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    getProcess(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
+    getProcess(page: number = 0, size: number = 5, sort: string = null, order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
     Observable<Process[]> {
 
         return this._httpClient.get<any>(`${environment.url}/process?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(

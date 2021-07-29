@@ -64,7 +64,7 @@ export class ProposalService {
     /**
      * Get customers
      */
-    getProposals(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+    getProposals(page: number = 0, size: number = 5, sort: string = null, order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
     Observable<any> {
 
         return this._httpClient.get<any>(`${environment.url}/proposal?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(

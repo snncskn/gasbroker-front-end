@@ -14,6 +14,10 @@
     "app.group": "Group",
     "app.quit": "Quit",
 
+    "delete.dialog.confirm":"Confirm",
+    "delete.dialog.cancel":"Cancel",
+    "delete.dialog.text":"Are you sure you want to delete ?",
+
     "message.no_record": "No Record",
     "message.deleteAddress": "Address deleted !",
     "message.addressAdded": "Address added",
