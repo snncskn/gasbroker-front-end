@@ -9,6 +9,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { InventoryPagination } from '../../product/product.types';
 import { GroupService } from '../group.service';
 import { Group } from '../group.types';
 
@@ -33,6 +34,7 @@ export class GroupListComponent
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     groupTableColumns: string[] = ['description','detail'];
     selectedGroup:any;
+    pagination: InventoryPagination;
 
     totalSize$: Observable<any>;
     totalPage$: Observable<any>;
@@ -59,7 +61,18 @@ export class GroupListComponent
 
     ngOnInit(): void{
 
+        this._groupService.pagination$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((pagination: InventoryPagination) => {
+                // Update the pagination
+                this.pagination = pagination;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
         this.groups$ = this._groupService.groups$;
+        this.totalSize$ = this._groupService.getTotalSize$;
+        this.totalPage$ = this._groupService.getTotalPage$;
         this._groupService.groups$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((group: Group[]) => {

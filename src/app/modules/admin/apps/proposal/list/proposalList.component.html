@@ -19,7 +19,7 @@
           <div>
             <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('proposals.title') }}</div>
             <div class="ml-0.5 font-medium text-secondary">
-              {{ t('text.total.record') }}: {{proposalsCount}}
+              {{ t('text.total.record') }}: {{totalSize$}}
             </div>
           </div>
 
@@ -41,7 +41,7 @@
         <!-- Customers list -->
         <div class="relative">
           <table class="w-full min-w-320 table-fixed bg-transparent" [ngClass]="{ 'pointer-events-none': isLoading }"
-            mat-table matSort [matSortActive]="'name'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
+            mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'"
             [multiTemplateDataRows]="true" [dataSource]="proposals$" [trackBy]="trackByFn">
 
             <ng-container matColumnDef="name">
@@ -183,17 +183,20 @@
             <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">{{ t('proposals.noProposals.message') }}
             </div>
           </ng-template>
+          
         </div>
-        <mat-paginator
-        #paginator
-        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-        [ngClass]="{'pointer-events-none': isLoading}"
-        [length]="totalSize$"
-        (page)="getServerData($event)"
-        [pageIndex]="currentPage" 
-        [pageSizeOptions]="[5, 10, 25, 100]"
-        [showFirstLastButtons]="true"></mat-paginator>
       </div>
+      
     </mat-drawer-content>
+    
   </mat-drawer-container>
+  <mat-paginator
+  #paginator
+  class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+  [ngClass]="{'pointer-events-none': isLoading}"
+  [length]="totalSize$"
+  (page)="getServerData($event)"
+  [pageIndex]="currentPage" 
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  [showFirstLastButtons]="true"></mat-paginator>
 </div>

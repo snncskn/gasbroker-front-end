@@ -6,6 +6,7 @@ import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Group } from './group.types';
+import { InventoryPagination } from '../product/product.types';
 @Injectable({
     providedIn: 'root'
 })
@@ -14,6 +15,10 @@ export class GroupService {
     private _group: BehaviorSubject<Group | null> = new BehaviorSubject(null);
     private _groups: BehaviorSubject<Group[] | null> = new BehaviorSubject(null);
     private _groupCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
+
 
 
 
@@ -47,17 +52,31 @@ export class GroupService {
         return this._groupCount.asObservable();
     }
 
+    get pagination$(): Observable<InventoryPagination>
+    {
+        return this._pagination.asObservable();
+    }
+    get getTotalSize$(): Observable<any> {
+        return this._totalSize;
+    }
+    
+    get getTotalPage$(): Observable<any> {
+        return this._totalPage;
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    getGroup(page: number = 0, size: number = 5, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
+    getGroup(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
     Observable<Group[]> {
 
         return this._httpClient.get<any>(`${environment.url}/process-group?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((groups) => {
                 this._groups.next(groups.body);
                 this._groupCount = groups.body.length;
+                this._totalSize = groups.totalSize;
+                this._totalPage = groups.totalPage;
             })
         );
     }

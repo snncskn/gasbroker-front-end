@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Proposal, ProposalOffer } from './proposals.types';
 import { TranslocoService } from '@ngneat/transloco';
+import { InventoryPagination } from '../product/product.types';
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +18,9 @@ export class ProposalService {
     private _proposals: BehaviorSubject<Proposal[] | null> = new BehaviorSubject(null);
     private _proposalsCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
     private _offers: BehaviorSubject<ProposalOffer[] | null> = new BehaviorSubject(null);
+    private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
+    private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
 
 
 
@@ -41,7 +45,10 @@ export class ProposalService {
     get proposal$(): Observable<Proposal> {
         return this._proposal.asObservable();
     }
-
+    get pagination$(): Observable<InventoryPagination>
+    {
+        return this._pagination.asObservable();
+    }
     /**
      * Getter for customers
      */
@@ -57,6 +64,14 @@ export class ProposalService {
         return this._offers.asObservable();
     }
 
+    get getTotalSize$(): Observable<any> {
+        return this._totalSize;
+    }
+    
+    get getTotalPage$(): Observable<any> {
+        return this._totalPage;
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -64,13 +79,16 @@ export class ProposalService {
     /**
      * Get customers
      */
-    getProposals(page: number = 0, size: number = 5, sort: string = null, order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+    getProposals(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
     Observable<any> {
 
         return this._httpClient.get<any>(`${environment.url}/proposal?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((proposals) => {
                 this._proposals.next(proposals.body);
+                this._pagination.next(proposals.body);
                 this._proposalsCount = proposals.body.length;
+                this._totalSize = proposals.totalSize;
+                this._totalPage = proposals.totalPage;
             })
         );
     }

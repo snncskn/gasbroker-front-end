@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { InventoryPagination } from '../../product/product.types';
 import { ProcessService } from '../transportation.service';
 import { Process } from '../transportation.types';
 
@@ -34,6 +35,7 @@ export class TransportationListComponent implements OnInit
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     transportationTableColumns: string[] = ['process_date', 'address', 'group', 'group_sub','detail'];
     selectedProcess:any;
+    pagination: InventoryPagination;
 
     totalSize$: Observable<any>;
     totalPage$: Observable<any>;
@@ -59,7 +61,18 @@ export class TransportationListComponent implements OnInit
 
     ngOnInit(): void{
 
-        this.processes$ = this._processService.processes$;
+        this._processService.pagination$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((pagination: InventoryPagination) => {
+            // Update the pagination
+            this.pagination = pagination;
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        });
+    this.processes$ = this._processService.processes$;
+    this.totalSize$ = this._processService.getTotalSize$;
+    this.totalPage$ = this._processService.getTotalPage$;
         this._processService.processes$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((process: Process[]) => {

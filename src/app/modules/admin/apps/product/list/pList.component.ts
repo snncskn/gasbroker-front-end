@@ -127,7 +127,9 @@ export class InventoryListComponent
         // Mark for check
         this._changeDetectorRef.markForCheck();
       });
-
+      this.products$ = this._productService.products$;
+      this.totalSize$ = this._productService.getTotalSize$;
+      this.totalPage$ = this._productService.getTotalPage$;
     this._inventoryService.properties$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((properties: InventoryProperty[]) => {
