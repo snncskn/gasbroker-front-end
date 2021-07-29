@@ -15,6 +15,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OfferComponent } from '../offer/offer.component';
 import { OfferListComponent } from '../offer-list/offer-list.component';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { InventoryPagination } from '../../product/product.types';
 
 @Component({
     selector: 'proposal-list',
@@ -40,6 +41,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
+    pagination: InventoryPagination;
 
     totalSize$: Observable<any>;
     totalPage$: Observable<any>;
@@ -62,11 +64,21 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
 
-        this._proposalService.getProposals().subscribe(data=>{
-        });
+        this._proposalService.getProposals().subscribe(data=>{});
     }
     ngOnInit(): void {
+        this._proposalService.pagination$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((pagination: InventoryPagination) => {
+            // Update the pagination
+            this.pagination = pagination;
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        });
         this.proposals$ = this._proposalService.proposals$;
+        this.totalSize$ = this._proposalService.getTotalSize$;
+        this.totalPage$ = this._proposalService.getTotalPage$;
         this._proposalService.proposals$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((proposal: Proposal[]) => {
@@ -77,7 +89,6 @@ export class ProposalListComponent implements OnInit, OnDestroy {
                }
                 this._changeDetectorRef.markForCheck();
             });
-
         this.isLoading=true;
         // Get the customer
         // this.customer$ = this._customersService.customer$;
@@ -89,7 +100,6 @@ export class ProposalListComponent implements OnInit, OnDestroy {
 
                 this._changeDetectorRef.markForCheck();
         });
-
         fromEvent(this._document, 'keydown')
             .pipe(
                 takeUntil(this._unsubscribeAll),
@@ -166,10 +176,11 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         // Get products if sort or page changes
         merge(this._sort.sortChange,).pipe(
             switchMap(() => {
+                this.isLoading = true;
                 return this._proposalService.getProposals();
             }),
             map(() => {
-
+                this.isLoading = false;
             })
         ).subscribe();
     }

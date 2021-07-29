@@ -12,6 +12,7 @@ import { UsersService } from 'app/modules/admin/apps/users/users.service';
 import { calendarColors } from 'app/modules/admin/apps/calendar/sidebar/calendar-colors';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { InventoryPagination } from '../../product/product.types';
 
 
 
@@ -66,14 +67,20 @@ export class UsersListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.selectedUserForm = this._formBuilder.group({
-            id: [''],
-            username: [''],
-            email: [''],
-            name: [''],
-        });
 
+        this._usersService.pagination$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((pagination: InventoryPagination) => {
+                // Update the pagination
+                this.pagination = pagination;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
         this.users$ = this._usersService.users$;
+        this.totalSize$ = this._usersService.getTotalSize$;
+        this.totalPage$ = this._usersService.getTotalPage$;
+        //this.users$ = this._usersService.users$;
         this._usersService.users$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((users: UsersList[]) => {

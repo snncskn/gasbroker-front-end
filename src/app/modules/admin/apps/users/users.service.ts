@@ -27,6 +27,8 @@ export class UsersService {
     null
   );
   private _usersCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
+  private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
+  private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
 
 
   /**
@@ -38,6 +40,14 @@ export class UsersService {
   get pagination$(): Observable<UsersPagination> {
     return this._pagination.asObservable();
   }
+
+  get getTotalSize$(): Observable<any> {
+    return this._totalSize;
+}
+
+get getTotalPage$(): Observable<any> {
+    return this._totalPage;
+}
 
   get user$(): Observable<UsersList> {
     return this._user.asObservable();
@@ -59,7 +69,7 @@ export class UsersService {
   getUsers(
     page: number = 0,
     size: number = 10,
-    sort: string = "username",
+    sort: string = "created_at",
     order: "asc" | "desc" | "" = "asc",
     search: string = ""
   ): Observable<any> {
@@ -81,6 +91,9 @@ export class UsersService {
       tap((customers) => {
         this._users.next(customers.body);
         this._usersCount = customers.body.length;
+        this._pagination.next(customers.body);
+        this._totalSize = customers.totalSize;
+        this._totalPage = customers.totalPage;
       })
     );
   }
