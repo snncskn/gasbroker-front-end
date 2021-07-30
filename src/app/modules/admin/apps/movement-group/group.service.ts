@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { Company } from 'app/modules/admin/apps/company/company.types';
@@ -7,6 +7,8 @@ import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Group } from './group.types';
 import { InventoryPagination } from '../product/product.types';
+import { catchError } from 'rxjs/operators';
+import { TranslocoService } from '@ngneat/transloco';
 @Injectable({
     providedIn: 'root'
 })
@@ -18,6 +20,7 @@ export class GroupService {
     private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
+    private _statusCode: BehaviorSubject<any | null> = new BehaviorSubject(null);
 
 
 
@@ -26,7 +29,8 @@ export class GroupService {
      * Constructor
      */
     constructor(private _httpClient: HttpClient,
-        public toastr: ToastrManager
+        public toastr: ToastrManager,
+        private translocoService: TranslocoService
     ) {
     }
 
@@ -64,17 +68,22 @@ export class GroupService {
         return this._totalPage;
     }
 
+    get getStatusCode$(): Observable<any> {
+        return this._statusCode;
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
     getGroup(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
-    Observable<Group[]> {
+    Observable<any> {
 
         return this._httpClient.get<any>(`${environment.url}/process-group?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((groups) => {
                 this._groups.next(groups.body);
                 this._groupCount = groups.body.length;
+                this._pagination.next(groups.body);
                 this._totalSize = groups.totalSize;
                 this._totalPage = groups.totalPage;
             })
@@ -88,7 +97,15 @@ export class GroupService {
     deleteGroup(item:any):
         Observable<any> {
         let url = `${environment.url}/process-group/delete/${item.id}`;
-        return this._httpClient.put<any>(url,item);
+        return this._httpClient.put<any>(url,item).pipe(
+            catchError((error)=>{
+                if(error instanceof HttpErrorResponse && error.status == 601)
+                {
+                    this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+                }
+                return throwError(error);
+            })
+        );
     }
 
     deleteSubGroup(item:any):

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { BehaviorSubject, Observable, of, throwError } from "rxjs";
-import { filter, first, map, switchMap, take, tap } from "rxjs/operators";
+import { catchError, filter, first, map, switchMap, take, tap } from "rxjs/operators";
 import {
   UsersList,
   UsersPagination,
@@ -271,15 +271,20 @@ get getTotalPage$(): Observable<any> {
             users.splice(index, 1);
 
             this._users.next(users);
-            this.toastr.successToastr(isDeleted.message);
-          } else {
-            this.toastr.errorToastr(isDeleted.message);
-          }
 
+          } else {
+            this.toastr.warningToastr(this.translocoService.translate('message.deleteUsers'));
+          }
           return isDeleted;
         })
-      )
-      )
+      )),
+      catchError((error)=>{
+        if(error instanceof HttpErrorResponse && error.status == 601)
+        {
+            this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+        }
+        return throwError(error);
+    })
     );
   }
 }

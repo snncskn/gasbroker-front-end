@@ -88,9 +88,9 @@ export class GroupFormComponent {
                 element.group_id = this.groupId;
                 this._groupService.createProcessSubGroup(element).subscribe()
             });
-            this._router.navigateByUrl('/apps/group/form/' + data.body.id);
-
         });
+        this._router.navigateByUrl('/apps/group/list');
+
     }
 
     deleteGroup() {

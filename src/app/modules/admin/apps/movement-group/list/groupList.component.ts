@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -6,8 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { merge, Observable, Subject } from 'rxjs';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { InventoryPagination } from '../../product/product.types';
 import { GroupService } from '../group.service';
@@ -20,7 +20,7 @@ import { Group } from '../group.types';
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GroupListComponent
+export class GroupListComponent implements OnInit
 {
     dialogRef: MatDialogRef<ConfirmationDialog>;
 
@@ -35,7 +35,7 @@ export class GroupListComponent
     groupTableColumns: string[] = ['description','detail'];
     selectedGroup:any;
     pagination: InventoryPagination;
-
+    isLoading: boolean = false;
     totalSize$: Observable<any>;
     totalPage$: Observable<any>;
     public currentPage = 1;
@@ -56,7 +56,7 @@ export class GroupListComponent
 
     )
     {
-        this._groupService.getGroup().subscribe();
+        this.onLoad();
     }
 
     ngOnInit(): void{
@@ -75,14 +75,42 @@ export class GroupListComponent
         this.totalPage$ = this._groupService.getTotalPage$;
         this._groupService.groups$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((group: Group[]) => {
+            .subscribe((groups: Group[]) => {
 
-               if(group){
-                this.selectedGroup=group
-                this.groupCount = group.length;
-               }
+                this.groupCount = groups?.length;
+                
                 this._changeDetectorRef.markForCheck();
             });
+        this._groupService.group$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((group: Group) => {
+                // Update the counts
+                this.selectedGroup = group;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+    }
+    ngAfterViewInit(): void {
+        // If the user changes the sort order...
+        this._sort.sortChange
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
+            });
+        // Get products if sort or page changes
+        merge(this._sort.sortChange,).pipe(
+            switchMap(() => {
+                this.isLoading = true;
+                return this._groupService.getGroup();
+            }),
+            map(() => {
+                this.isLoading = false;
+            })
+        ).subscribe();
+    }
+
+    onLoad() {
+        this._groupService.getGroup().subscribe();
     }
 
     newGroup(){
@@ -95,12 +123,13 @@ export class GroupListComponent
           });
           this.dialogRef.afterClosed().subscribe(result => {
             if(result) {
+
                 this._groupService.deleteGroup(item).subscribe(data=>{
                     this._router.navigateByUrl('/apps/group/list');
                     this._groupService.getGroup().subscribe();
                     this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
                 });
-            }
+            }                
             this.dialogRef = null;
           });
     }

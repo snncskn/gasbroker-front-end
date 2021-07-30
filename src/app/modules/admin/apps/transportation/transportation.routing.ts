@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { TransportationListComponent } from './list/tpList.component';
 import { TransportationFormComponent } from './form/tpForm.component';
+import { ProcessesResolver } from './transportation.resolvers';
 
 export const transportationRoutes: Routes = [
     {
@@ -12,6 +13,9 @@ export const transportationRoutes: Routes = [
       {
         path: 'list',
         component: TransportationListComponent,
+        resolve  : {
+          processes: ProcessesResolver
+        }
       },
       {
         path: 'form',

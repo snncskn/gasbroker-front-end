@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
@@ -260,8 +260,6 @@ export class CustomersService {
             switchMap(customers => this._httpClient.put(`${environment.url}/company/delete/${company_id}`, { company_id }).pipe(
                 map((isDeleted: any) => {
                     if (isDeleted.success) {
-
-                        this.toastr.warningToastr(this.translocoService.translate('message.deleteCompany'));
                         // Find the index of the deleted customer
                         const index = customers.findIndex(item => item.id === company_id);
 
@@ -272,13 +270,21 @@ export class CustomersService {
                         this._companies.next(customers);
 
                         // Return the deleted status
-                    } else {
-                        this.toastr.errorToastr(isDeleted.message);
                     }
-
+                    else
+                    {
+                        this.toastr.warningToastr(this.translocoService.translate('message.deleteCompany'));
+                    }
                     return isDeleted;
                 })
-            ))
+            )),
+            catchError((error)=>{
+                if(error instanceof HttpErrorResponse && error.status == 601)
+                {
+                    this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+                }
+                return throwError(error);
+            })
         );
     }
 

@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { VehiclesDetailsComponent } from './details/vehiclesDetails.component';
 import { VehiclesListComponent } from './list/vehiclesList.component';
+import { VehiclesResolver } from './vehicles.resolvers';
 
 export const vehiclesRoutes: Routes = [
     {
@@ -12,6 +13,9 @@ export const vehiclesRoutes: Routes = [
       {
         path: 'list',
         component: VehiclesListComponent,
+        resolve: {
+          vehicles:VehiclesResolver,
+        }
       },
       {
         path: 'form/:id',
