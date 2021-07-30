@@ -28,7 +28,7 @@
             <!-- Search  -->
             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-              <input matInput [autocomplete]="'off'" placeholder="{{ t('input.search') }}">
+              <input matInput (keyup)="applyFilter($event.target.value)" [autocomplete]="'off'" placeholder="{{ t('input.search') }}">
             </mat-form-field>
 
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newProposal()">

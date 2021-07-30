@@ -64,7 +64,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
 
-        this._proposalService.getProposals().subscribe(data=>{});
+        this.onload();
     }
     ngOnInit(): void {
         this._proposalService.pagination$
@@ -142,6 +142,10 @@ export class ProposalListComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
+    onload()
+    {
+        this._proposalService.getProposals().subscribe(data=>{});
+    }
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
@@ -218,6 +222,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
           this.dialogRef.afterClosed().subscribe(result => {
             if(result) {
                 this._proposalService.deleteProposal(item.id).subscribe(data=>{
+                    this.onload();
                     this._changeDetectorRef.markForCheck();
                 });
             }

@@ -64,6 +64,7 @@ import { ConfirmationModule } from "../delete-dialog/delete.module";
     MatSidenavModule,
     MatSnackBarModule,
     FuseFindByKeyPipeModule,
+    //ConfirmationModule,
     QuillModule.forRoot(),
     TranslocoModule
   ],
