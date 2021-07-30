@@ -152,7 +152,7 @@ get getTotalPage$(): Observable<any> {
    */
   getProducts(
     page: number = 0,
-    size: number = 10,
+    size: number = 5,
     sort: string = "created_at",
     order: "asc" | "desc" | "" = "asc",
     search: string = ""
