@@ -149,8 +149,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   deleteSubGroup(item: any, index: number) {
     if (item.id) {
       this._productService.deleteSubProduct(item.id).subscribe(data => {
-        this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessSubGroup'));
-        this._router.navigateByUrl('/apps/group/form/' + data.body.id);
       });
     }
     let tmp = this.formSubProduct.controls["subProductItems"] as FormArray;

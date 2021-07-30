@@ -117,13 +117,11 @@ export class TransportationFormComponent implements OnInit {
             if(result) {
                 this._processService.getProcessDelete(this.processForm.getRawValue()).subscribe(data => {
                     this.dataSourceSubGroup = data.body.process_sub_groups;
-                    this.toastr.warningToastr(this.translocoService.translate('message.deleteProcess'));
                     this._router.navigate(['/apps/transportation/list']);
         
                 });
             }
             this.dialogRef = null;
           });
-
     }
 }

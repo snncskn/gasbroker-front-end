@@ -27,7 +27,7 @@ export class VehiclesResolver implements Resolve<any>
      * @param route
      * @param state
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Vehicle[]>
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any[]>
     {
         return this._vehiclesService.getVehicles();
     }

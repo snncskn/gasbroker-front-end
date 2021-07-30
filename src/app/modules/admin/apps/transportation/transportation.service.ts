@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Process } from './transportation.types';
 import { items } from 'app/mock-api/apps/file-manager/data';
 import { InventoryPagination } from '../product/product.types';
+import { TranslocoService } from '@ngneat/transloco';
 @Injectable({
     providedIn: 'root'
 })
@@ -27,7 +28,8 @@ export class ProcessService {
      * Constructor
      */
     constructor(private _httpClient: HttpClient,
-        public toastr: ToastrManager
+        public toastr: ToastrManager,
+        private translocoService: TranslocoService
     ) {
     }
 
@@ -70,7 +72,7 @@ export class ProcessService {
     // -----------------------------------------------------------------------------------------------------
 
     getProcess(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''): 
-    Observable<Process[]> {
+    Observable<any> {
 
         return this._httpClient.get<any>(`${environment.url}/process?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((processes) => {
@@ -113,7 +115,19 @@ export class ProcessService {
     getProcessDelete(item: any):
         Observable<any> {
         let url = `${environment.url}/process/${item.id}`;
-        return this._httpClient.put<any>(url, item);
+        return this._httpClient.put<any>(url, item).pipe(
+            catchError((error)=>{
+                if(error instanceof HttpErrorResponse && error.status == 601)
+                {
+                    this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+                }
+                else
+                {
+                    this.toastr.warningToastr(this.translocoService.translate('message.deleteProcess'));
+                }
+                return throwError(error);
+            })
+        )
     }
 
     getCustomers():
