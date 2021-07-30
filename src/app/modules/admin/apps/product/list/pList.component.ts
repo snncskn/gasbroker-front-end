@@ -35,6 +35,9 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Console } from "console";
 import { Router } from "@angular/router";
+import { MatDrawer } from "@angular/material/sidenav";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { ConfirmationDialog } from "../../delete-dialog/delete.component";
 
 @Component({
   selector: "pList-list",
@@ -45,15 +48,19 @@ import { Router } from "@angular/router";
   animations: fuseAnimations,
 })
 export class InventoryListComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
+
+    
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
+  @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
   products$: Observable<InventoryProduct[]>;
+  dialogRef: MatDialogRef<ConfirmationDialog>;
 
   brands: InventoryBrand[];
   categories: InventoryCategory[];
+  drawerMode: 'side' | 'over';
   filteredProperties: InventoryProperty[];
   flashMessage: "success" | "error" | null = null;
   isLoading: boolean = false;
@@ -62,11 +69,10 @@ export class InventoryListComponent
   productsTableColumns: string[] = [
     "code",
     "name",
-     "unit",
+    "unit",
     // "categories",
     // "images",
     // "currentImageIndex",
-    "active",
     "details",
   ];
   searchInputControl: FormControl = new FormControl();
@@ -97,8 +103,9 @@ export class InventoryListComponent
     private _router: Router,
     private _productService: ProductService,
     private readonly ngxService: NgxUiLoaderService,
-    private _inventoryService: ProductService
-  ) {}
+    private _inventoryService: ProductService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     // Create the selected product form
@@ -127,9 +134,9 @@ export class InventoryListComponent
         // Mark for check
         this._changeDetectorRef.markForCheck();
       });
-      this.products$ = this._productService.products$;
-      this.totalSize$ = this._productService.getTotalSize$;
-      this.totalPage$ = this._productService.getTotalPage$;
+    this.products$ = this._productService.products$;
+    this.totalSize$ = this._productService.getTotalSize$;
+    this.totalPage$ = this._productService.getTotalPage$;
     this._inventoryService.properties$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((properties: InventoryProperty[]) => {
@@ -447,6 +454,19 @@ export class InventoryListComponent
     }
   }
 
+  deleteProduct(item:any) {
+    this.dialogRef = this.dialog.open(ConfirmationDialog, {
+      disableClose: false
+    });
+    this.dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this._productService.deleteProduct(item.id).subscribe(data => {
+          this._inventoryService.getProducts().subscribe();
+        })
+      }                
+      this.dialogRef = null;
+    });
+  }
   /**
    * Should the create property button be visible
    *
@@ -536,11 +556,11 @@ export class InventoryListComponent
 
   public setStyle(it: number): string {
     if ((it % 2) === 0) {
-        return 'zebra';
+      return 'zebra';
     } else {
-        return '';
+      return '';
     }
-}
+  }
 
   updateActive() {
     const product = this.selectedProductForm.getRawValue();
@@ -582,8 +602,8 @@ export class InventoryListComponent
   getServerData(event?: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter ).subscribe();
+    this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.filter).subscribe();
 
 
-}
+  }
 }

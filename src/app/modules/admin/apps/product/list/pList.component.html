@@ -1,6 +1,18 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let t;">
-  <!-- Header -->
-  <div class="
+
+  <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
+    <!-- Drawer -->
+    <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
+      [disableClose]="true" #matDrawer>
+      <router-outlet></router-outlet>
+    </mat-drawer>
+
+    <mat-drawer-content class="flex flex-col">
+
+    <!-- Header -->
+    <div class="flex-auto">
+
+      <div class="
       relative
       flex flex-col
       sm:flex-row
@@ -11,50 +23,51 @@
       md:px-8
       border-b
     ">
-    <!-- Loader -->
-    <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
-      <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
-    </div>
-    <!-- Title -->
-    <div>
-      <div class="text-4xl font-extrabold tracking-tight">{{ t('products.title') }}</div>
-      <div class="ml-0.5 font-medium text-secondary">
-        {{ t('text.total.record') }}: {{totalSize$}}
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+          <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div>
+          <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('products.title') }}</div>
+          <div class="ml-0.5 font-medium text-secondary">
+            {{ t('text.total.record') }}: {{totalSize$}}
+          </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+          <!-- Search -->
+          <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
+            <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_outline:search'"></mat-icon>
+            <input matInput [formControl]="searchInputControl" [autocomplete]="'off'"
+              placeholder="{{ t('input.search') }}" />
+          </mat-form-field>
+          <!--Add product button -->
+          <button class="ml-4" mat-flat-button [color]="'primary'" (click)="createProduct()">
+            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+            <span class="ml-2 mr-1">{{ t('button.add') }}</span>
+          </button>
+        </div>
       </div>
-    </div>
-    <!-- Actions -->
-    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-      <!-- Search -->
-      <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
-        <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_outline:search'"></mat-icon>
-        <input matInput [formControl]="searchInputControl" [autocomplete]="'off'" placeholder="{{ t('input.search') }}" />
-      </mat-form-field>
-      <!--Add product button -->
-      <button class="ml-4" mat-flat-button [color]="'primary'" (click)="createProduct()">
-        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-        <span class="ml-2 mr-1">{{ t('button.add') }}</span>
-      </button>
-    </div>
-  </div>
-  <!-- Main -->
-  <div class="flex flex-auto overflow-hidden">
-    <!-- Products list -->
-    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
-      <ng-container *ngIf="productsCount > 0; else noProducts">
-        <!-- Table wrapper -->
-        <div class="overflow-x-auto sm:overflow-y-auto" cdkScrollable>
-          <!-- Table -->
-          <table class="w-full min-w-320 table-fixed bg-transparent" [ngClass]="{ 'pointer-events-none': isLoading }"
-            mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'"
-            [multiTemplateDataRows]="true" [dataSource]="products$" [trackBy]="trackByFn">
-            <ng-container matColumnDef="code">
-              <th class="w-56 pl-26 bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
-                mat-sort-header disableClear>
-                {{ t('products.productCode') }}
-              </th>
-              <td class="px-8" mat-cell *matCellDef="let product">
-                <div class="flex items-center">
-                  <span class="
+      <!-- Main -->
+
+      <!-- Products list -->
+      <div class="relative">
+        <ng-container *ngIf="productsCount > 0; else noProducts">
+          <!-- Table wrapper -->
+          <div class="overflow-x-auto sm:overflow-y-auto" cdkScrollable>
+            <!-- Table -->
+            <table class="w-full min-w-320 table-fixed bg-transparent" [ngClass]="{ 'pointer-events-none': isLoading }"
+              mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'" [multiTemplateDataRows]="true"
+              [dataSource]="products$" [trackBy]="trackByFn">
+              <ng-container matColumnDef="code">
+                <th class=" pl-26 bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
+                  mat-sort-header disableClear>
+                  {{ t('products.productCode') }}
+                </th>
+                <td class="px-8" mat-cell *matCellDef="let product">
+                  <div class="flex items-center">
+                    <span class="
                       relative
                       flex flex-0
                       items-center
@@ -66,8 +79,8 @@
                       overflow-hidden
                       border
                     ">
-                    <img class="w-8" *ngIf="product.thumbnail" [src]="product.thumbnail" />
-                    <span class="
+                      <img class="w-8" *ngIf="product.thumbnail" [src]="product.thumbnail" />
+                      <span class="
                         flex
                         items-center
                         justify-center
@@ -79,120 +92,111 @@
                         text-center
                         uppercase
                       " *ngIf="!product.thumbnail">
-                      NO IMAGE
+                        NO IMAGE
+                      </span>
                     </span>
-                  </span>
-                  <span class="truncate">{{ product.code }}</span>
-                </div>
-              </td>
-            </ng-container>
+                    <span class="truncate">{{ product.code }}</span>
+                  </div>
+                </td>
+              </ng-container>
 
-            <!-- Name -->
-            <ng-container matColumnDef="name">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                {{ t('products.productName') }}
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let product">
-                {{ product.name }}
-              </td>
+              <!-- Name -->
+              <ng-container matColumnDef="name">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  {{ t('products.productName') }}
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let product">
+                  {{ product.name }}
+                </td>
 
-            </ng-container>
+              </ng-container>
 
-            <ng-container matColumnDef="unit">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                {{ t('products.unit') }}
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let product">
-                {{ product.unit }}
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="unit">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  {{ t('products.unit') }}
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let product">
+                  {{ product.unit }}
+                </td>
+              </ng-container>
 
-            <!-- Active -->
-            <ng-container matColumnDef="active">
-              <th class="
-                  w-24
-                  md:w-auto
-                  bg-gray-50
-                  dark:bg-black dark:bg-opacity-5
-                " mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-                {{ t('products.active') }}
-              </th>
-              <td class="pr-4" mat-cell *matCellDef="let product">
-                <mat-icon class="text-green-400 icon-size-5" *ngIf="product.active" [svgIcon]="'heroicons_solid:check'">
-                </mat-icon>
-                <mat-icon class="text-gray-400 icon-size-5" *ngIf="!product.active" [svgIcon]="'heroicons_solid:x'">
-                </mat-icon>
-              </td>
-            </ng-container>
-
-            <!-- Details -->
-            <ng-container matColumnDef="details">
-              <th class="
-                  w-24
-                  md:w-auto
+              <!-- Details -->
+              <ng-container matColumnDef="details">
+                <th class="
+                  w-60
                   pr-8
                   bg-gray-50
                   dark:bg-black dark:bg-opacity-5
                 " mat-header-cell *matHeaderCellDef>
-                {{ t('products.details') }}
-              </th>
-              <td class="pr-8" mat-cell *matCellDef="let product">
-                <button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button
-                  (click)="toggleDetails(product.id)">
-                  <mat-icon class="icon-size-5" [svgIcon]="
+                  {{ t('products.details') }}
+                </th>
+                <td class="pr-8" mat-cell *matCellDef="let product">
+                  <button class="fuse-mat-button-rounded" (click)="openDetail(product.id)" mat-icon-button
+                    [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
+                    </mat-icon>
+                  </button>
+                  <button class="fuse-mat-button-rounded text-on-warn-100 ml-1 mr-10" (click)="deleteProduct(product)"
+                    mat-icon-button [color]="'warn'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
+                    </mat-icon>
+                  </button>
+                  <button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button
+                    (click)="toggleDetails(product.id)">
+                    <mat-icon class="icon-size-5" [svgIcon]="
                       selectedProduct?.id === product.id
                         ? 'heroicons_solid:chevron-up'
                         : 'heroicons_solid:chevron-down'
                     ">
-                  </mat-icon>
-                </button>
-              </td>
-            </ng-container>
+                    </mat-icon>
+                  </button>
+                </td>
+              </ng-container>
 
-            <!-- Product details row -->
-            <ng-container matColumnDef="productDetails">
-              <td class="p-0 border-b-0" mat-cell *matCellDef="let product"
-                [attr.colspan]="productsTableColumns.length">
-                <ng-container *ngIf="selectedProduct?.id === product.id">
-                  <ng-container *ngTemplateOutlet="
+              <!-- Product details row -->
+              <ng-container matColumnDef="productDetails">
+                <td class="p-0 border-b-0" mat-cell *matCellDef="let product"
+                  [attr.colspan]="productsTableColumns.length">
+                  <ng-container *ngIf="selectedProduct?.id === product.id">
+                    <ng-container *ngTemplateOutlet="
                       rowDetailsTemplate;
                       context: { $implicit: product }
                     ">
+                    </ng-container>
                   </ng-container>
-                </ng-container>
-              </td>
+                </td>
 
-              <ng-template #rowDetailsTemplate let-product>
-                <div class="shadow-lg overflow-hidden" [@expandCollapse]="
+                <ng-template #rowDetailsTemplate let-product>
+                  <div class="shadow-lg overflow-hidden" [@expandCollapse]="
                     selectedProduct?.id === product.id
                       ? 'expanded'
                       : 'collapsed'
                   ">
-                  <div class="flex border-b">
-                    <!-- Selected product form -->
-                    <form class="flex flex-col w-full" [formGroup]="selectedProductForm">
-                      <div class="flex p-8">
-                        <!-- Product images and status -->
-                        <div class="flex flex-col">
-                          <div class="flex flex-col items-center">
-                            <div class="p-3 border rounded">
-                              <ng-container *ngIf="
+                    <div class="flex border-b">
+                      <!-- Selected product form -->
+                      <form class="flex flex-col w-full" [formGroup]="selectedProductForm">
+                        <div class="flex p-8">
+                          <!-- Product images and status -->
+                          <div class="flex flex-col">
+                            <div class="flex flex-col items-center">
+                              <div class="p-3 border rounded">
+                                <ng-container *ngIf="
                                   selectedProductForm?.get('images').value
                                     .length;
                                   else noImage
                                 ">
-                                <img class="w-30 min-w-30" [src]="
+                                  <img class="w-30 min-w-30" [src]="
                                     selectedProductForm.get('images').value[
                                       selectedProductForm.get(
                                         'currentImageIndex'
                                       ).value
                                     ]
                                   " />
-                              </ng-container>
-                              <ng-template #noImage>
-                                <span class="
+                                </ng-container>
+                                <ng-template #noImage>
+                                  <span class="
                                     flex
                                     items-center
                                     min-h-20
@@ -201,87 +205,68 @@
                                     text-center
                                     justify-center
                                   ">NO IMAGE</span>
-                              </ng-template>
-                            </div>
-                            <div class="flex items-center mt-2" *ngIf="
+                                </ng-template>
+                              </div>
+                              <div class="flex items-center mt-2" *ngIf="
                                 selectedProductForm.get('images').value.length
                               ">
-                              <button mat-icon-button (click)="cycleImages(false)">
-                                <mat-icon class="icon-size-5" [svgIcon]="
+                                <button mat-icon-button (click)="cycleImages(false)">
+                                  <mat-icon class="icon-size-5" [svgIcon]="
                                     'heroicons_solid:arrow-narrow-left'
                                   "></mat-icon>
-                              </button>
-                              <span class="font-sm mx-2">
-                                {{
-                                selectedProductForm.get("currentImageIndex")
-                                .value + 1
-                                }}
-                                of
-                                {{
-                                selectedProductForm.get("images").value.length
-                                }}
-                              </span>
-                              <button mat-icon-button (click)="cycleImages(true)">
-                                <mat-icon class="icon-size-5" [svgIcon]="
+                                </button>
+                                <span class="font-sm mx-2">
+                                  {{
+                                  selectedProductForm.get("currentImageIndex")
+                                  .value + 1
+                                  }}
+                                  of
+                                  {{
+                                  selectedProductForm.get("images").value.length
+                                  }}
+                                </span>
+                                <button mat-icon-button (click)="cycleImages(true)">
+                                  <mat-icon class="icon-size-5" [svgIcon]="
                                     'heroicons_solid:arrow-narrow-right'
                                   "></mat-icon>
-                              </button>
+                                </button>
+                              </div>
+                            </div>
+
+                          </div>
+
+                          <div class="flex flex-auto">
+
+                            <div class="flex flex-col w-1/4 pl-8">
+                              <mat-form-field class="w-full">
+                                <mat-label>{{ t('products.input.code') }}</mat-label>
+                                <input matInput [formControlName]="'code'" />
+                              </mat-form-field>
+                            </div>
+
+                            <div class="flex flex-col w-1/4 pl-8">
+                              <mat-form-field class="w-full">
+                                <mat-label>{{ t('products.input.name') }}</mat-label>
+                                <input matInput [formControlName]="'name'" />
+                              </mat-form-field>
+                            </div>
+                            <div class="flex flex-col w-1/4 pl-8">
+                              <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>{{ t('products.input.unitOfMeasure') }} </mat-label>
+                                <mat-select [formControlName]="'unit'">
+                                  <mat-option *ngFor="let option of dataSourceUnits" [value]="option.name">
+                                    <ng-container>
+                                      {{option.description | titlecase}}
+                                    </ng-container>
+                                  </mat-option>
+                                </mat-select>
+                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:selector'">
+                                </mat-icon>
+                              </mat-form-field>
                             </div>
                           </div>
-
                         </div>
-
-                        <div class="flex flex-auto">
-
-                          <div class="flex flex-col w-1/4 pl-8">
-                            <mat-form-field class="w-full">
-                              <mat-label>{{ t('products.input.code') }}</mat-label>
-                              <input matInput [formControlName]="'code'" />
-                            </mat-form-field>
-                          </div>
-
-                          <div class="flex flex-col w-1/4 pl-8">
-                            <mat-form-field class="w-full">
-                              <mat-label>{{ t('products.input.name') }}</mat-label>
-                              <input matInput [formControlName]="'name'" />
-                            </mat-form-field>
-                          </div>
-                          <div class="flex flex-col w-1/4 pl-8">
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                              <mat-label>{{ t('products.input.unitOfMeasure') }} </mat-label>
-                              <mat-select [formControlName]="'unit'">
-                                <mat-option *ngFor="let option of dataSourceUnits" [value]="option.name">
-                                  <ng-container>
-                                    {{option.description | titlecase}}
-                                  </ng-container>
-                                </mat-option>
-                              </mat-select>
-                              <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:selector'">
-                              </mat-icon>
-                            </mat-form-field>
-                          </div>
-
-                          <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
-                            <mat-slide-toggle [formControlName]="'active'" (click)="updateActive()" [color]="'primary'">
-                              {{
-                              selectedProductForm.get("active").value === true
-                              ? "Active"
-                              : "Disabled"
-                              }}
-                            </mat-slide-toggle>
-
-                          </div>
-
-                          <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
-                            <button type="button" mat-flat-button [color]="'primary'" (click)="openDetail(product.id)">
-                              {{ t('products.button.details') }}
-                            </button>
-                          </div>
-
-
-                        </div>
-                      </div>
-                      <div class="
+                        <div class="
                           flex
                           items-center
                           justify-between
@@ -290,40 +275,40 @@
                           px-8
                           py-4
                         ">
-                        <div class="flex items-center">
-                          <div class="flex items-center mr-4" *ngIf="flashMessage">
-                            <ng-container *ngIf="flashMessage === 'success'">
-                              <mat-icon class="text-green-500" [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                              <span class="ml-2">{{ t('products.update.message') }}</span>
-                            </ng-container>
-                            <ng-container *ngIf="flashMessage === 'error'">
-                              <mat-icon class="text-red-500" [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                              <span class="ml-2">{{ t('products.update.error.message') }}</span>
-                            </ng-container>
+                          <div class="flex items-center">
+                            <div class="flex items-center mr-4" *ngIf="flashMessage">
+                              <ng-container *ngIf="flashMessage === 'success'">
+                                <mat-icon class="text-green-500" [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                <span class="ml-2">{{ t('products.update.message') }}</span>
+                              </ng-container>
+                              <ng-container *ngIf="flashMessage === 'error'">
+                                <mat-icon class="text-red-500" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                <span class="ml-2">{{ t('products.update.error.message') }}</span>
+                              </ng-container>
+                            </div>
+                            <button mat-flat-button [color]="'primary'" (click)="updateSelectedProduct()">
+                              {{ t('button.save') }}
+                            </button>
                           </div>
-                          <button mat-flat-button [color]="'primary'" (click)="updateSelectedProduct()">
-                            {{ t('products.button.update') }}
-                          </button>
                         </div>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              </ng-template>
-            </ng-container>
+                </ng-template>
+              </ng-container>
 
-            <tr class="shadow" mat-header-row *matHeaderRowDef="productsTableColumns; sticky: true"></tr>
-            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
-              *matRowDef="let i = dataIndex; let product; columns: productsTableColumns"
-              [class]="setStyle(i)"
-              mat-row></tr>
-            <tr class="h-0" mat-row *matRowDef="let row; columns: ['productDetails']"></tr>
-          </table>
-        </div>
-      </ng-container>
+              <tr class="shadow" mat-header-row *matHeaderRowDef="productsTableColumns; sticky: true"></tr>
+              <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
+                *matRowDef="let i = dataIndex; let product; columns: productsTableColumns" [class]="setStyle(i)"
+                mat-row>
+              </tr>
+              <tr class="h-0" mat-row *matRowDef="let row; columns: ['productDetails']"></tr>
+            </table>
+          </div>
+        </ng-container>
 
-      <ng-template #noProducts>
-        <div class="
+        <ng-template #noProducts>
+          <div class="
             p-8
             sm:p-16
             border-t
@@ -332,18 +317,15 @@
             tracking-tight
             text-center
           ">
-          {{ t('products.noProducts.message') }}
-        </div>
-      </ng-template>
+            {{ t('products.noProducts.message') }}
+          </div>
+        </ng-template>
+      </div>
     </div>
-  </div>
-  <mat-paginator
-  #paginator
-  class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-  [ngClass]="{'pointer-events-none': isLoading}"
-  [length]="totalSize$"
-  (page)="getServerData($event)"
-  [pageIndex]="currentPage" 
-  [pageSizeOptions]="[5, 10, 25, 100]"
-  [showFirstLastButtons]="true"></mat-paginator>
+  </mat-drawer-content>
+  </mat-drawer-container>
+  <mat-paginator #paginator
+    class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+    [ngClass]="{'pointer-events-none': isLoading}" [length]="totalSize$" (page)="getServerData($event)"
+    [pageIndex]="currentPage" [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator>
 </div>

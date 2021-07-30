@@ -1,4 +1,4 @@
-import { Route } from "@angular/router";
+import { Route, RouterModule, Routes } from "@angular/router";
 import { ProductComponent } from "app/modules/admin/apps/product/product.component";
 import { InventoryListComponent } from "app/modules/admin/apps/product/list/pList.component";
 import {
@@ -9,60 +9,35 @@ import {
   ProductsResolver,
 } from "app/modules/admin/apps/product/product.resolvers";
 import { ProductDetailComponent } from "./product-detail/product-detail.component";
+import { NgModule } from "@angular/core";
 
-export const productRoutes: Route[] = [
+export const productRoutes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    redirectTo: "products",
+    redirectTo: "list",
+  },
+  {
+    path: "list",
+    component: InventoryListComponent,
+    resolve: {
+      products: ProductsResolver,
+    },
   },
   {
     path: "form",
     component: ProductDetailComponent,
     resolve  : {
-      customers: ProductsResolver
+      products: ProductsResolver
     }
   },
   {
     path: "form/:id",
     component: ProductDetailComponent,
   },
-  {
-    path: "products",
-    component: ProductComponent,
-    children: [
-      {
-        path: "",
-        component: InventoryListComponent,
-        resolve: {
-          brands: InventoryBrandsResolver,
-          categories: InventoryCategoriesResolver,
-          products: ProductsResolver,
-          properties: InventoryPropertiesResolver,
-          vendors: InventoryVendorsResolver,
-        },
-      },
-    ],
-    /*children : [
-            {
-                path     : '',
-                component: ContactsListComponent,
-                resolve  : {
-                    tasks    : ContactsResolver,
-                    countries: ContactsCountriesResolver
-                },
-                children : [
-                    {
-                        path         : ':id',
-                        component    : ContactsDetailsComponent,
-                        resolve      : {
-                            task     : ContactsContactResolver,
-                            countries: ContactsCountriesResolver
-                        },
-                        canDeactivate: [CanDeactivateContactsDetails]
-                    }
-                ]
-            }
-        ]*/
-  },
 ];
+@NgModule({
+  imports: [RouterModule.forChild(productRoutes)],
+  exports: [RouterModule]
+})
+export class ProductRoutingModule {}

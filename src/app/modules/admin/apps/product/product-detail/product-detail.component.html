@@ -18,6 +18,7 @@
                 </button>
             </div>
         </div>
+        <mat-sidenav-container>
         <div class="relative flex mt-6 p-12 bg-card shadow overflow-hidden ng-pristine">
             <mat-form class="flex flex-col w-full" [formGroup]="productForm">
                 <mat-tab-group  dynamicHeight>
@@ -32,7 +33,7 @@
                                         [spellcheck]="false">
                                 </mat-form-field>
                             </div>
-                            <div class="mt-6 ml-2 w-full">
+                            <div class="mt-6 ml-5 w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>{{ t('products.productName') }}</mat-label>
                                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
@@ -41,7 +42,7 @@
                                         [spellcheck]="false">
                                 </mat-form-field>
                             </div>
-                            <div class="mt-6 ml-2 w-full">
+                            <div class="mt-6 ml-5 w-full">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>{{ t('products.input.unitOfMeasure') }} </mat-label>
                                     <mat-select [formControlName]="'unit'" (selectionChange)="onChangeUnit($event)">
@@ -55,18 +56,15 @@
                                     </mat-icon>
                                 </mat-form-field>
                             </div>
-                        </div>
-                    <form [formGroup]="formSubProduct">
-
-                        <div class="ml-2" dir="rtl">
-
-                            <div class="mt-6">
+                            <div class="mt-13 ml-5 w-full">
                                 <button mat-raised-button (click)="add({product:'',id:'',quantity:''})" >
                                     <mat-icon>add</mat-icon>
                                     <span class="ml-2 mr-1">{{ t('products.details.define') }}</span>
                                 </button>
                             </div>
                         </div>
+                    <form [formGroup]="formSubProduct">
+
 
                             <div class="ml-12 grid grid-cols-12 gap-x-1 mt-15">
                                 <!-- Columns -->
@@ -123,5 +121,6 @@
                 </mat-tab-group>
             </mat-form>
         </div>
+        </mat-sidenav-container>
     </div>
 </div>
