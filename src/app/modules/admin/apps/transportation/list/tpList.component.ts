@@ -94,6 +94,22 @@ export class TransportationListComponent implements OnInit
         this._router.navigate(['/apps/transportation/form/'+item.id]);
     }
 
+    deleteProcess(item:any)
+    {
+        this.dialogRef = this.dialog.open(ConfirmationDialog, {
+            disableClose: false
+          });
+          this.dialogRef.afterClosed().subscribe(result => {
+            if(result) {
+                this._processService.getProcessDelete(item).subscribe(data => {
+                    this._router.navigate(['/apps/transportation/list']);
+                    this._changeDetectorRef.markForCheck();
+                });
+            }
+            this.dialogRef = null;
+          });
+    }
+
     onBackdropClicked(): void
     {
         // Go back to the list

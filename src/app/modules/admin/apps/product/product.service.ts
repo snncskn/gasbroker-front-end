@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { BehaviorSubject, Observable, of, throwError } from "rxjs";
-import { filter, map, switchMap, take, tap } from "rxjs/operators";
+import { catchError, filter, map, switchMap, take, tap } from "rxjs/operators";
 import {
   InventoryBrand,
   InventoryCategory,
@@ -335,22 +335,40 @@ get getTotalPage$(): Observable<any> {
 
               this._products.next(products);
               this.ngxService.stop();
-              this.toastr.errorToastr(this.translocoService.translate('message.deleteProduct'));
 
               return isDeleted.success;
             } else {
-              this.toastr.warningToastr(isDeleted.message, "Warning!");
+              this.toastr.warningToastr(this.translocoService.translate('message.deleteProduct'));
             }
           })
         )
-      )
+      ),
+      catchError((error)=>{
+        if(error instanceof HttpErrorResponse && error.status == 601)
+        {
+            this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+        }
+        return throwError(error);
+    })
     );
   }
 
   deleteSubProduct(id: string): Observable<any> {
     let url = `${environment.url}/product-item/delete/${id}`;
 
-    return  this._httpClient.put(url, { params: { id } });
+    return  this._httpClient.put(url, { params: { id } }).pipe(
+      catchError((error)=>{
+        if(error instanceof HttpErrorResponse && error.status == 601)
+        {
+            this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+        }
+        else
+        {
+          this.toastr.warningToastr(this.translocoService.translate('message.deleteProcessSubGroup'));
+        }
+        return throwError(error);
+    })
+    )
   }
 
   /**

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { Company } from 'app/modules/admin/apps/company/company.types';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
@@ -75,7 +75,7 @@ export class VehiclesService {
      * Get customers
      */     
      getVehicles(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
-     Observable<{ pagination: any; customers: any[] }>{
+     Observable<any>{
 
         return this._httpClient.get<any>(`${environment.url}/vehicle?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((vehicles) => {
@@ -217,8 +217,9 @@ export class VehiclesService {
             return this.vehicles$.pipe(
                 take(1),
                 switchMap(vehicles => this._httpClient.put(`${environment.url}/vehicle/delete/${vehilce_id}`, { vehilce_id }).pipe(
+                   
                     map((isDeleted: any) => {
-                        if (isDeleted.success) {
+                        if (isDeleted.success) { 
                             // Find the index of the deleted customer
                             const index = vehicles.findIndex(item => item.id === vehilce_id);
     
@@ -229,13 +230,21 @@ export class VehiclesService {
                             this._vehicles.next(vehicles);
     
                             // Return the deleted status
-                        } else {
-                            this.toastr.errorToastr(isDeleted.message);
                         }
-    
+                        else
+                        {
+                            this.toastr.warningToastr(this.translocoService.translate('message.deleteCompany'));
+                        }
                         return isDeleted;
                     })
-                ))
+                )),
+                catchError((error)=>{
+                    if(error instanceof HttpErrorResponse && error.status == 601)
+                    {
+                        this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+                    }
+                    return throwError(error);
+                })
             );
         }
 

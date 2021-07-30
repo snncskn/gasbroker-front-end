@@ -42,7 +42,7 @@ export class ProposalDetailsResolver implements Resolve<any>
      * Constructor
      */
     constructor(
-        private _vehiclesService: ProposalService,
+        private _proposalService: ProposalService,
         private _router: Router
     )
     {
@@ -60,7 +60,7 @@ export class ProposalDetailsResolver implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Proposal>
     {
-        return this._vehiclesService.getVehicleById(route.paramMap.get('id'))
+        return this._proposalService.getProposalById(route.paramMap.get('id'))
                    .pipe(
                        // Error here means the requested customer is not available
                        catchError((error) => {

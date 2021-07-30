@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { GroupListComponent } from './list/groupList.component';
 import { GroupFormComponent } from './form/groupForm.component';
+import { GroupsResolver } from './group.resolvers';
 
 export const groupRoutes: Routes = [
     {
@@ -12,6 +13,9 @@ export const groupRoutes: Routes = [
       {
         path: 'list',
         component: GroupListComponent,
+        resolve  : {
+          groups: GroupsResolver
+        }
       },
       {
         path: 'form',

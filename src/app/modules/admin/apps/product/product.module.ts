@@ -30,6 +30,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { QuillModule } from "ngx-quill";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { TranslocoModule } from "@ngneat/transloco";
+import { ConfirmationModule } from "../delete-dialog/delete.module";
 
 @NgModule({
   declarations: [
