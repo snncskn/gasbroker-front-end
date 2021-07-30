@@ -217,7 +217,9 @@ export class ProposalListComponent implements OnInit, OnDestroy {
           });
           this.dialogRef.afterClosed().subscribe(result => {
             if(result) {
-                this._proposalService.deleteProposal(item.id).subscribe();
+                this._proposalService.deleteProposal(item.id).subscribe(data=>{
+                    this._changeDetectorRef.markForCheck();
+                });
             }
             this.dialogRef = null;
           });

@@ -14,14 +14,14 @@ export const routes: Routes = [
       },
       {
         path: 'list',
-        component: ProposalListComponent
+        component: ProposalListComponent,
+        resolve  : {
+          proposals:ProposalResolver
+        }
       },
       {
         path: 'form/:id',
         component: ProposalFormComponent,
-        resolve  : {
-          proposals:ProposalResolver
-        }
       },
       {
         path: 'form',
