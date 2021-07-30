@@ -17,7 +17,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { SharedModule } from "app/shared/shared.module";
 import { ProductComponent } from "app/modules/admin/apps/product/product.component";
 import { InventoryListComponent } from "app/modules/admin/apps/product/list/pList.component";
-import { productRoutes } from "app/modules/admin/apps/product/product.routing";
+import { productRoutes, ProductRoutingModule } from "app/modules/admin/apps/product/product.routing";
 import { ProductDetailComponent } from "./product-detail/product-detail.component";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatDividerModule } from "@angular/material/divider";
@@ -27,10 +27,10 @@ import { FuseFindByKeyPipeModule } from "@fuse/pipes/find-by-key";
 import { FormsModule } from "@angular/forms";
 import { MailboxComposeComponent } from "./compose/compose.component";
 import { MatDialogModule } from "@angular/material/dialog";
-import { QuillModule } from "ngx-quill";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { TranslocoModule } from "@ngneat/transloco";
 import { ConfirmationModule } from "../delete-dialog/delete.module";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 
 @NgModule({
   declarations: [
@@ -41,6 +41,7 @@ import { ConfirmationModule } from "../delete-dialog/delete.module";
   ],
   imports: [
     RouterModule.forChild(productRoutes),
+    ProductRoutingModule,
     MatDialogModule,
     MatAutocompleteModule,
     FormsModule,
@@ -64,9 +65,9 @@ import { ConfirmationModule } from "../delete-dialog/delete.module";
     MatSidenavModule,
     MatSnackBarModule,
     FuseFindByKeyPipeModule,
-    //ConfirmationModule,
-    QuillModule.forRoot(),
-    TranslocoModule
-  ],
+    ScrollingModule,
+    TranslocoModule,
+    ConfirmationModule
+  ]
 })
 export class ProductModule {}

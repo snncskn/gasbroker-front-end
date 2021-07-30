@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  ViewChild,
   ViewEncapsulation,
 } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -10,13 +11,15 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrManager } from "ng6-toastr-notifications";
 import { Observable } from "rxjs";
 import { ProductService } from "../product.service";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MailboxComposeComponent } from "../compose/compose.component";
 import { map, startWith } from "rxjs/operators";
 import { ProductForm } from "../productForm";
 import { forkJoin } from 'rxjs';
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { TranslocoService } from "@ngneat/transloco";
+import { ConfirmationDialog } from "../../delete-dialog/delete.component";
+import { MatSidenavContainer } from "@angular/material/sidenav";
 
 
 @Component({
@@ -26,6 +29,11 @@ import { TranslocoService } from "@ngneat/transloco";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent implements OnInit, AfterViewInit  {
+
+  @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
+  
+  dialogRef: MatDialogRef<ConfirmationDialog>;
+
   productForm: FormGroup;
   formSubProduct: FormGroup;
   dataSourceUnits: any[];
@@ -129,7 +137,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
         element.unit = element.unit;
         this._productService.createProductItem(element).subscribe()
       });
-      this._router.navigate(["/apps/products/products"]);
+      this._router.navigate(["/apps/products/list"]);
     });
   }
 
@@ -138,22 +146,38 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   }
 
   deleteProduct() {
-    if (this.productDetail) {
-      this._productService.deleteProduct(this.productDetail).subscribe(data => {
-        this._router.navigate(["/apps/products/products"]);
+    this.dialogRef = this._matDialog.open(ConfirmationDialog, {
+      disableClose: false
+    });
+    this.dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        if (this.productDetail) {
+          this._productService.deleteProduct(this.productDetail).subscribe(data => {
+            this._router.navigate(["/apps/products/list"]);
+          });
+        }
+      }                
+      this.dialogRef = null;
+    });
 
-      });
-    }
   }
 
   deleteSubGroup(item: any, index: number) {
-    if (item.id) {
-      this._productService.deleteSubProduct(item.id).subscribe(data => {
-      });
-    }
-    let tmp = this.formSubProduct.controls["subProductItems"] as FormArray;
-    tmp.removeAt(index);
-
+    this.dialogRef = this._matDialog.open(ConfirmationDialog, {
+      disableClose: false
+    });
+    this.dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        if (item.id) {
+          this._productService.deleteSubProduct(item.id).subscribe(data => {
+          });
+        }
+        let tmp = this.formSubProduct.controls["subProductItems"] as FormArray;
+        tmp.removeAt(index);  
+      }
+      console.log(333)
+      this.dialogRef = null;
+    });
   }
 
 
