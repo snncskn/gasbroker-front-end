@@ -240,7 +240,7 @@ export class ProposalService {
     deleteProposal(id: string): Observable<boolean> {
         return this.proposals$.pipe(
             take(1),
-            switchMap(proposals => this._httpClient.put(`${environment.url}/company/delete/${id}`, { id }).pipe(
+            switchMap(proposals => this._httpClient.put(`${environment.url}/proposal/delete/${id}`, { id }).pipe(
                 map((isDeleted: any) => {
                     if (isDeleted.success) {
 
