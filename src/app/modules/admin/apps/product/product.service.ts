@@ -156,10 +156,7 @@ get getTotalPage$(): Observable<any> {
     sort: string = "created_at",
     order: "asc" | "desc" | "" = "asc",
     search: string = ""
-  ): Observable<{
-    pagination: InventoryPagination;
-    products: InventoryProduct[];
-  }> {
+  ): Observable<any> {
     let url = `${environment.url}/product?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`;
     //'api/apps/ecommerce/inventory/products'
     return this._httpClient.get<any>(url).pipe(
