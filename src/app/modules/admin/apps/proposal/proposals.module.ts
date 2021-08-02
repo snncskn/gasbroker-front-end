@@ -34,6 +34,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { ConfirmationModule } from '../delete-dialog/delete.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ProposalProcessComponent } from './process/process.component';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         ProposalListComponent,
         ProposalFormComponent,
         OfferComponent,
-        OfferListComponent
+        OfferListComponent,
+        ProposalProcessComponent
     ],
     imports     : [
         MatButtonModule,
