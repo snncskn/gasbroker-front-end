@@ -12,11 +12,14 @@ export class ProcessForm implements IModelConvert{
     const group: any = {};    
 
     group.id = new FormControl(model.id || '');
-    group.main_id = new FormControl(model.main_id || '');
-    group.name = new FormControl(model.name || '');
-    group.code = new FormControl(model.code || '');
-    group.unit = new FormControl(model.unit || '');
-    group.product = new FormControl(model.product || '');
+    group.process_id = new FormControl(model.process_id || '');
+    group.group_id = new FormControl(model.group_id || '');
+    group.group_sub_id = new FormControl(model.group_sub_id || '');
+    group.process_date = new FormControl(model.process_date || '');
+    group.address = new FormControl(model.address || '');
+    group.latitude = new FormControl(model.latitude || '');
+    group.longitude = new FormControl(model.longitude || '');
+    group.map = new FormControl(model.map || '');
 
 
 

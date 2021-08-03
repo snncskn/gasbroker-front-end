@@ -35,6 +35,7 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { ConfirmationModule } from '../delete-dialog/delete.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProposalProcessComponent } from './process/process.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
     declarations: [
@@ -52,6 +53,7 @@ import { ProposalProcessComponent } from './process/process.component';
         MatDividerModule,
         MatFormFieldModule,
         MatIconModule,
+        MatAutocompleteModule,
         MatInputModule,
         MatMenuModule,
         MatMomentDateModule,
@@ -71,6 +73,7 @@ import { ProposalProcessComponent } from './process/process.component';
         MatStepperModule,
         MatDialogModule,
         MatPaginatorModule,
+        GoogleMapsModule,
         FileUploadModule,
         ConfirmationModule,
         TranslocoModule
