@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { merge } from 'lodash-es';
 import { FUSE_APP_CONFIG } from '@fuse/services/config/config.constants';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +15,8 @@ export class FuseConfigService
     /**
      * Constructor
      */
-    constructor(@Inject(FUSE_APP_CONFIG) config: any)
+    constructor(@Inject(FUSE_APP_CONFIG) config: any,
+                private _httpClient: HttpClient)
     {
         // Private
         this._config = new BehaviorSubject(config);
@@ -30,7 +33,10 @@ export class FuseConfigService
     {
         // Merge the new config over to the current config
         const config = merge({}, this._config.getValue(), value);
-
+        let tmp =JSON.parse(localStorage.getItem('user'));
+        this._httpClient.put<any>(`${environment.url}/api/user/settings/${tmp.user_id}`, { setting:config }).subscribe(data=>{
+            console.log('güncelleme başarılı');
+        });
         // Execute the observable
         this._config.next(config);
     }
