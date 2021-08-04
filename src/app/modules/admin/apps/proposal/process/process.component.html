@@ -160,8 +160,9 @@
                                             </button>
                                         </div>
                                     </div>
+                                    {{isLoading}}
                                     <ng-container *ngFor="let item of items, let i = index;">
-                                        <mat-accordion>
+                                        <mat-accordion  *ngIf="isLoading">
                                             <mat-expansion-panel class="example-headers-align">
                                                 <mat-expansion-panel-header>
                                                     <mat-panel-title>
@@ -219,8 +220,10 @@
                                                             <mat-form-field class="fuse-mat-no-subscript w-full">
                                                                 <mat-label>{{ t('process.details.date') }}
                                                                 </mat-label>
-                                                                <input matInput [matDatepicker]="Datepicker"
-                                                                    [(value)]="item.process_date"
+                                                                <input matInput 
+                                                                    [matDatepicker]="Datepicker"
+                                                                    #ref 
+                                                                    (dateChange)="processDateChange(item,ref.value)"
                                                                     placeholder="{{ t('process.details.date') }}">
                                                                 <mat-datepicker-toggle matSuffix [for]="Datepicker">
                                                                 </mat-datepicker-toggle>
