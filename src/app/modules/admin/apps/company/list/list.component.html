@@ -114,12 +114,12 @@
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                 <div>
-                  <button class="fuse-mat-button-rounded" (click)="openCompany(row)" mat-icon-button
+                  <button class="fuse-mat-button-rounded" (click)="openCompany(row)" matTooltip="{{ t('tooltip.edit') }}" mat-icon-button
                     [color]="'primary'">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
                     </mat-icon>
                   </button>
-                  <button class="fuse-mat-button-rounded text-on-warn-100" mat-icon-button [color]="'warn'"
+                  <button class="fuse-mat-button-rounded text-on-warn-100" mat-icon-button matTooltip="{{ t('tooltip.delete') }}" [color]="'warn'"
                     (click)="deleteCompany(row)">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
                     </mat-icon>

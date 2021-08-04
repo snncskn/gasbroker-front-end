@@ -21,7 +21,7 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProposalsComponent } from './proposals.component';
-import { routes, ProposalRoutingModule } from './proposals.routing';
+import { ProposalRoutingModule, proposalRoutes } from './proposals.routing';
 import { ProposalListComponent } from './list/proposalList.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProposalFormComponent } from './form/proposal-form.component';
@@ -34,6 +34,9 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { ConfirmationModule } from '../delete-dialog/delete.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ProposalProcessComponent } from './process/process.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
     declarations: [
@@ -41,15 +44,18 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         ProposalListComponent,
         ProposalFormComponent,
         OfferComponent,
-        OfferListComponent
+        OfferListComponent,
+        ProposalProcessComponent
     ],
     imports     : [
+        RouterModule.forChild(proposalRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
         MatDividerModule,
         MatFormFieldModule,
         MatIconModule,
+        MatAutocompleteModule,
         MatInputModule,
         MatMenuModule,
         MatMomentDateModule,
@@ -69,6 +75,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         MatStepperModule,
         MatDialogModule,
         MatPaginatorModule,
+        MatExpansionModule,
+        GoogleMapsModule,
         FileUploadModule,
         ConfirmationModule,
         TranslocoModule

@@ -160,6 +160,10 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         this._router.navigateByUrl('/apps/proposals/form/'+item.id)
     }
 
+    openProcess(item:any){
+        this._router.navigateByUrl('/apps/proposals/process/'+item.id)
+    }
+
     onBackdropClicked(): void {
         // Go back to the list
         this._router.navigate(['./'], { relativeTo: this._activatedRoute });

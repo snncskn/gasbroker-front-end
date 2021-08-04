@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { Route, RouterModule, Routes } from '@angular/router';
 import { ProposalFormComponent } from './form/proposal-form.component';
 import { ProposalListComponent } from './list/proposalList.component';
+import { ProposalProcessComponent } from './process/process.component';
 import { ProposalResolver } from './proposals.resolvers';
 
 
 
-export const routes: Routes = [
+export const proposalRoutes: Routes = [
     {
         path: '',
         redirectTo: 'list',
@@ -26,12 +27,16 @@ export const routes: Routes = [
       {
         path: 'form',
         component: ProposalFormComponent,
+      },
+      {
+        path: 'process/:id',
+        component:ProposalProcessComponent,
       }
  
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
+    imports: [RouterModule.forChild(proposalRoutes)],
     exports: [RouterModule]
   })
   export class ProposalRoutingModule {}
