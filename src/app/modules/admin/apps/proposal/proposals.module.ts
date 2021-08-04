@@ -21,7 +21,7 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProposalsComponent } from './proposals.component';
-import { routes, ProposalRoutingModule } from './proposals.routing';
+import { ProposalRoutingModule, proposalRoutes } from './proposals.routing';
 import { ProposalListComponent } from './list/proposalList.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProposalFormComponent } from './form/proposal-form.component';
@@ -36,6 +36,7 @@ import { ConfirmationModule } from '../delete-dialog/delete.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProposalProcessComponent } from './process/process.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
         ProposalProcessComponent
     ],
     imports     : [
+        RouterModule.forChild(proposalRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -73,6 +75,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
         MatStepperModule,
         MatDialogModule,
         MatPaginatorModule,
+        MatExpansionModule,
         GoogleMapsModule,
         FileUploadModule,
         ConfirmationModule,

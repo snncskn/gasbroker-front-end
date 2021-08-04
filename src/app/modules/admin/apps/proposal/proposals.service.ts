@@ -17,6 +17,7 @@ export class ProposalService {
     private _proposal: BehaviorSubject<Proposal | null> = new BehaviorSubject(null);
     private _proposals: BehaviorSubject<Proposal[] | null> = new BehaviorSubject(null);
     private _process: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _process_items: BehaviorSubject<any[] | null> = new BehaviorSubject(null);
     private _processes: BehaviorSubject<any[] | null> = new BehaviorSubject(null);
     private _proposalsCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
     private _offers: BehaviorSubject<ProposalOffer[] | null> = new BehaviorSubject(null);
@@ -64,6 +65,10 @@ export class ProposalService {
 
     get processes$(): Observable<any[]> {
         return this._processes.asObservable();
+    }
+
+    get process_items$(): Observable<any[]> {
+        return this._process_items.asObservable();
     }
 
     get getCount$(): Observable<any> {
@@ -277,6 +282,42 @@ export class ProposalService {
         }
     }
 
+    createProcessItem(item: any): Observable<any> {
+        if(item.id)
+        {
+            return this.process_items$.pipe(
+                take(1),
+                switchMap(processes => this._httpClient.put<any>(`${environment.url}/process-item/`+item.id, item).pipe(
+                    map((newProcess) => {
+    
+                        //this._proposals.next([newVehicle.body, ...proposals]);
+                        this.toastr.successToastr(this.translocoService.translate('message.updateProposal'));
+                        return newProcess.body;
+                    })
+                ))
+            );
+        }
+        else
+        {
+            return this.process_items$.pipe(
+                take(1),
+                switchMap(proposals => this._httpClient.post<any>(`${environment.url}/process-item`, item).pipe(
+                    map((newProcess) => {
+    
+                        //this._proposals.next([newVehicle.body, ...proposals]);
+                        this.toastr.successToastr(this.translocoService.translate('message.createProposal'));
+                        return newProcess.body;
+                    })
+                ))
+            );
+        }
+    }
+
+    getProcessItemsByProcessId(id: string): Observable<any> {
+        let url = `${environment.url}/process-item/items/${id}`;
+        return   this._httpClient.get<any>(url);
+       }
+
 
     newVehicle(): Observable<any> {
         const today = new Date();
@@ -373,8 +414,65 @@ export class ProposalService {
         return this._httpClient.get<any>(url);
     }
 
+    deleteProcess(id: string): Observable<boolean> {
+        return this.processes$.pipe(
+            take(1),
+            switchMap(processes => this._httpClient.put(`${environment.url}/process/delete/${id}`, { id }).pipe(
+                map((isDeleted: any) => {
+                    if (isDeleted.success) {
 
+                        const index = processes.findIndex(item => item.id === id);
 
+                        processes.splice(index, 1);
+
+                        this._processes.next(processes);
+
+                    } else {
+                        this.toastr.warningToastr(this.translocoService.translate('message.deleteProposal'));
+                    }
+
+                    return isDeleted;
+                })
+            )),
+            catchError((error)=>{
+                if(error instanceof HttpErrorResponse && error.status == 601)
+                {
+                    this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+                }
+                return throwError(error);
+            })
+        );
+    }
+
+    deleteProcessItem(id: string): Observable<boolean> {
+        return this.process_items$.pipe(
+            take(1),
+            switchMap(process_items => this._httpClient.put(`${environment.url}/process-item/delete/${id}`, { id }).pipe(
+                map((isDeleted: any) => {
+                    if (isDeleted.success) {
+
+                        const index = process_items.findIndex(item => item.id === id);
+
+                        process_items.splice(index, 1);
+
+                        this._processes.next(process_items);
+
+                    } else {
+                        this.toastr.warningToastr(this.translocoService.translate('message.deleteProposal'));
+                    }
+
+                    return isDeleted;
+                })
+            )),
+            catchError((error)=>{
+                if(error instanceof HttpErrorResponse && error.status == 601)
+                {
+                    this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+                }
+                return throwError(error);
+            })
+        );
+    }
     /**
      * Create customer
      */

@@ -1,126 +1,155 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let t;">
-    <!-- Main -->
-    <div class="flex-auto">
-        <!-- Header -->
-        <div
-            class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
-            <!-- Title -->
-            <div class="text-4xl font-extrabold tracking-tight">{{ t('text.details') }}</div>
+<div class="absolute inset-0 flex flex-col min-w-0" *transloco="let t;">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
 
-            <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
-                <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteProduct()">
-                    <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                    <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
-                </button>
-                <button class="" mat-flat-button [color]="'primary'"
-                    (click)="addNewProduct()">
-                    <span class="ml-2 mr-1">{{ t('button.save') }}</span>
-                </button>
-            </div>
-        </div>
-        <mat-sidenav-container>
-        <div class="relative mt-5 ml-5 pb-4 p-8 mr-5 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
-            <mat-form class="flex flex-col w-full" [formGroup]="productForm">
-                <mat-tab-group  dynamicHeight>
-                    <mat-tab label="Genel Bilgiler">
-                        <div class="ml-2 w-full flex items">
-                            <div class="mt-6  w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>{{ t('products.productCode') }}</mat-label>
-                                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                                        [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                    <input matInput [formControlName]="'code'" placeholder="{{ t('products.productCode') }} *"
-                                        [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
-                            <div class="mt-6 ml-5 w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>{{ t('products.productName') }}</mat-label>
-                                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                                        [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                    <input matInput [formControlName]="'name'" placeholder="{{ t('products.productName') }} *"
-                                        [spellcheck]="false">
-                                </mat-form-field>
-                            </div>
-                            <div class="mt-6 ml-5 w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>{{ t('products.input.unitOfMeasure') }} </mat-label>
-                                    <mat-select [formControlName]="'unit'" (selectionChange)="onChangeUnit($event)">
-                                        <mat-option *ngFor="let option of dataSourceUnits" [value]="option.name">
-                                            <ng-container>
-                                                {{option.description | titlecase}}
-                                            </ng-container>
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:selector'">
-                                    </mat-icon>
-                                </mat-form-field>
-                            </div>
-                            <div class="mt-13 ml-5 w-full">
-                                <button mat-raised-button (click)="add({product:'',id:'',quantity:''})" >
-                                    <mat-icon>add</mat-icon>
-                                    <span class="ml-2 mr-1">{{ t('products.details.define') }}</span>
-                                </button>
-                            </div>
-                        </div>
-                    <form [formGroup]="formSubProduct">
+        <!-- Drawer -->
+        <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
+            [disableClose]="true" #matDrawer>
+            <router-outlet></router-outlet>
+        </mat-drawer>
 
+        <mat-drawer-content class="flex flex-col">
+            <!-- Main -->
+            <div class="flex-auto">
+                <!-- Header -->
+                <div
+                    class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+                    <!-- Title -->
+                    <div class="text-4xl font-extrabold tracking-tight">{{ t('text.details') }}</div>
 
-                            <div class="ml-12 grid grid-cols-12 gap-x-1 mt-15">
-                                <!-- Columns -->
-                                <div class="col-span-4 font-medium text-md text-secondary">{{ t('products.productName') }}</div>
-                                <div class="col-span-4 font-medium text-md text-secondary ml-5">{{ t('products.details.productQuantity') }}</div>
-                                <div class="col-span-2 font-medium text-md text-secondary ml-5">{{ t('products.details.productUnit') }}</div>
-                                <div class="col-span-2 font-medium text-md text-secondary ml-5"></div>
-
-                                <!-- Divider -->
-                                <div class="col-span-12 my-4 border-b"></div>
-    
-                                <!-- Item -->
-                                <ng-container formArrayName="subProductItems"
-                                    *ngFor="let item of subProductItems.controls;let i = index;">
-                                    <div class="col-span-4 text-lg font-medium" [formGroupName]="i">
-                                        <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
-                                            <mat-label>{{ t('products.details.product') }}</mat-label>
-                                            <input tabindex="-1" type="text" matInput placeholder="{{ t('products.details.input.selectProduct') }}" aria-label="Product"
-                                                formControlName="product" [matAutocomplete]="auto">
-                                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                                (optionSelected)="selectProduct($event,i)" [displayWith]="displayFn">
-                                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                                    {{option.name}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-span-4 text-lg font-medium ml-5" [formGroupName]="i">
-                                        <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>{{ t('products.details.quantity') }}</mat-label>
-                                            <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:scale'">
-                                            </mat-icon>
-                                            <input matInput [formControlName]="'quantity'" placeholder="{{ t('products.details.quantity') }} *"
-                                                [spellcheck]="false">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-span-2 text-lg font-medium ml-5 mt-9" [formGroupName]="i">
-                                         <input matInput [formControlName]="'unit'" disabled placeholder="{{ t('products.unit') }} *"
-                                        [spellcheck]="false" readonly>
-                                    </div>
-                                    <div class="col-span-2 text-lg font-medium ml-5 mt-6" [formGroupName]="i">
-                                            <button class="fuse-mat-button-rounded ml-1 text-on-warn-100"
-                                                mat-icon-button [color]="'warn'" (click)="deleteSubGroup(item.value,i)">
+                    <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
+                        <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteProduct()">
+                            <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                            <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
+                        </button>
+                        <button class="" mat-flat-button [color]="'primary'" (click)="addNewProduct()">
+                            <span class="ml-2 mr-1">{{ t('button.save') }}</span>
+                        </button>
+                    </div>
+                </div>
+                <mat-sidenav-container>
+                    <div
+                        class="relative mt-5 ml-5 pb-4 p-8 mr-5 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
+                        <mat-form class="flex flex-col w-full" [formGroup]="productForm">
+                            <mat-tab-group dynamicHeight>
+                                <mat-tab label="Genel Bilgiler">
+                                    <div class="ml-2 w-full flex items">
+                                        <div class="mt-6  w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>{{ t('products.productCode') }}</mat-label>
                                                 <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                                                [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
-                                              </button>
+                                                    [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
+                                                <input matInput [formControlName]="'code'"
+                                                    placeholder="{{ t('products.productCode') }} *"
+                                                    [spellcheck]="false">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="mt-6 ml-5 w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>{{ t('products.productName') }}</mat-label>
+                                                <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                    [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
+                                                <input matInput [formControlName]="'name'"
+                                                    placeholder="{{ t('products.productName') }} *"
+                                                    [spellcheck]="false">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="mt-6 ml-5 w-full">
+                                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                <mat-label>{{ t('products.input.unitOfMeasure') }} </mat-label>
+                                                <mat-select [formControlName]="'unit'"
+                                                    (selectionChange)="onChangeUnit($event)">
+                                                    <mat-option *ngFor="let option of dataSourceUnits"
+                                                        [value]="option.name">
+                                                        <ng-container>
+                                                            {{option.description | titlecase}}
+                                                        </ng-container>
+                                                    </mat-option>
+                                                </mat-select>
+                                                <mat-icon class="icon-size-5" matPrefix
+                                                    [svgIcon]="'heroicons_outline:selector'">
+                                                </mat-icon>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="mt-13 ml-5 w-full">
+                                            <button mat-raised-button (click)="add({product:'',id:'',quantity:''})">
+                                                <mat-icon>add</mat-icon>
+                                                <span class="ml-2 mr-1">{{ t('products.details.define') }}</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <!-- Divider -->
-                                    <div class="col-span-12 my-4 border-b"></div>
-                                </ng-container>
-                            </div>
-                            </form>
-                    </mat-tab>
-                </mat-tab-group>
-            </mat-form>
-        </div>
-        </mat-sidenav-container>
-    </div>
+                                    <form [formGroup]="formSubProduct">
+
+
+                                        <div class="ml-12 grid grid-cols-12 gap-x-1 mt-15">
+                                            <!-- Columns -->
+                                            <div class="col-span-4 font-medium text-md text-secondary">{{
+                                                t('products.productName') }}</div>
+                                            <div class="col-span-4 font-medium text-md text-secondary ml-5">{{
+                                                t('products.details.productQuantity') }}</div>
+                                            <div class="col-span-2 font-medium text-md text-secondary ml-5">{{
+                                                t('products.details.productUnit') }}</div>
+                                            <div class="col-span-2 font-medium text-md text-secondary ml-5"></div>
+
+                                            <!-- Divider -->
+                                            <div class="col-span-12 my-4 border-b"></div>
+
+                                            <!-- Item -->
+                                            <ng-container formArrayName="subProductItems"
+                                                *ngFor="let item of subProductItems.controls;let i = index;">
+                                                <div class="col-span-4 text-lg font-medium" [formGroupName]="i">
+                                                    <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
+                                                        <mat-label>{{ t('products.details.product') }}</mat-label>
+                                                        <input tabindex="-1" type="text" matInput
+                                                            placeholder="{{ t('products.details.input.selectProduct') }}"
+                                                            aria-label="Product" formControlName="product"
+                                                            [matAutocomplete]="auto">
+                                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                                            (optionSelected)="selectProduct($event,i)"
+                                                            [displayWith]="displayFn">
+                                                            <mat-option *ngFor="let option of filteredOptions | async"
+                                                                [value]="option">
+                                                                {{option.name}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-span-4 text-lg font-medium ml-5" [formGroupName]="i">
+                                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                        <mat-label>{{ t('products.details.quantity') }}</mat-label>
+                                                        <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                            [svgIcon]="'heroicons_outline:scale'">
+                                                        </mat-icon>
+                                                        <input matInput [formControlName]="'quantity'"
+                                                            placeholder="{{ t('products.details.quantity') }} *"
+                                                            [spellcheck]="false">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-span-2 text-lg font-medium ml-5 mt-9"
+                                                    [formGroupName]="i">
+                                                    <input matInput [formControlName]="'unit'" disabled
+                                                        placeholder="{{ t('products.unit') }} *" [spellcheck]="false"
+                                                        readonly>
+                                                </div>
+                                                <div class="col-span-2 text-lg font-medium ml-5 mt-6"
+                                                    [formGroupName]="i">
+                                                    <button class="fuse-mat-button-rounded ml-1 text-on-warn-100"
+                                                        mat-icon-button [color]="'warn'"
+                                                        (click)="deleteSubGroup(item.value,i)">
+                                                        <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                            [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                                    </button>
+                                                </div>
+                                                <!-- Divider -->
+                                                <div class="col-span-12 my-4 border-b"></div>
+                                            </ng-container>
+                                        </div>
+                                    </form>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </mat-form>
+                    </div>
+                </mat-sidenav-container>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
 </div>

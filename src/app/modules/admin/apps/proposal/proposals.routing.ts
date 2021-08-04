@@ -7,7 +7,7 @@ import { ProposalResolver } from './proposals.resolvers';
 
 
 
-export const routes: Routes = [
+export const proposalRoutes: Routes = [
     {
         path: '',
         redirectTo: 'list',
@@ -36,7 +36,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
+    imports: [RouterModule.forChild(proposalRoutes)],
     exports: [RouterModule]
   })
   export class ProposalRoutingModule {}

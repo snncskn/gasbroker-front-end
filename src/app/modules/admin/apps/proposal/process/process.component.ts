@@ -34,6 +34,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
 
+  isLoading:boolean=false;
   processForm: FormGroup;
   dataSourceGroup: any[];
   dataSourceSubGroup: any[];
@@ -100,6 +101,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
      this.activatedRouter.paramMap.subscribe((params) => {
        if (params.has("id")) {
+        this.isLoading=false;
          this.ngxService.start();
          this.list();
          this.processForm.patchValue({
@@ -110,7 +112,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
         forkJoin(processByID,customer).subscribe(result => {
           this.customers = result[1].body;
           let bodyForm  = result[0].body;
-
+          
           this.processForm.patchValue({
             id:bodyForm.id,
             voyage_code:bodyForm.voyage_code,
@@ -126,12 +128,10 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
             vendor_id:bodyForm.vendor_id,
             recipient:this.customers.find(item =>item.id === bodyForm.recipient_id),
             recipient_id:bodyForm.recipient_id,
-
            });
+           this.listItems();
            this.ngxService.stop();
-
         });
-
        }
      });
   }
@@ -146,10 +146,9 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
         this.dataSourceSubGroup = data.body.process_sub_groups;
         if(this.selectedItem){
             this.processItemsForm.patchValue({group_sub_id: this.selectedItem.group_sub_id, group_id:val});
-            console.log(222)
         }
     });
-}
+  }
 
   add(item?: any) {
     const processItemsForm = this._formBuilder.group({
@@ -170,6 +169,15 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     return this.formProcessItems.controls["processItems"] as FormArray;
   }
 
+  listItems(){
+    this._proposalService.getProcessItemsByProcessId(this.processForm.value.id).subscribe(data =>{
+      data.body.forEach(element => {
+       this.changeGroup(element.group_id);
+        this.add(element)
+      });
+      this.isLoading=true;
+    });
+  }
   /*addNewProduct() {
     this._productService.createProduct(this.productForm.value).subscribe((data) => {
       
@@ -190,7 +198,6 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
     this._proposalService.getCustomers().subscribe(data => {
       this.customers = data.body;
-      console.log(22222);
       this.array.forEach(element => {
         this.filteredOptions = this.processForm.controls[element].valueChanges.pipe(
           startWith(''),
@@ -244,7 +251,6 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   }
 
   position(item: any){
-    console.log(item);
     let center: google.maps.LatLngLiteral = {
       lat: Number(item.value.latitude),
       lng: Number(item.value.longitude),
@@ -252,9 +258,33 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     return center;
   }
 
-  saveProcessItems()
+  saveProcessItems(index:number)
   {
+    let tempItem = this.formProcessItems.controls["processItems"] as FormArray;
 
-   // console.log(this.processItemsForm.getRawValue())
+    let saveItem = tempItem.value[index];
+    saveItem.process_id = this.processForm.value.id;
+    this._proposalService.createProcessItem(saveItem).subscribe();
+    console.log(saveItem)
+  }
+
+  deleteProcess()
+  {
+    let tempItem = this.formProcessItems.controls["processItems"] as FormArray;
+
+    this._proposalService.deleteProcess(this.processForm.value.id).subscribe(data =>{
+      tempItem.value.forEach(element => {
+        this._proposalService.deleteProcessItem(element.id).subscribe();
+      });
+    })
+  }
+
+  deleteProcessItem(index:number)
+  {
+    let tempItem = this.formProcessItems.controls["processItems"] as FormArray;
+
+    this._proposalService.deleteProcessItem(tempItem.value[index].id).subscribe(data=>{
+      //window.location.reload();
+    });
   }
 }
