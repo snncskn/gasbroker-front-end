@@ -36,6 +36,7 @@
     "message.createProposal": "Proposal created",
     "message.deleteProposal": "Proposal deleted!",
     "message.offerReceived": "Offer received",
+    "message.updateProcess": "Process updated",
     "message.savedProcess": "Process saved",
     "message.deleteProcess": "Process deleted!",
     "message.updateUser": "User updated",
@@ -48,6 +49,9 @@
     "message.error.601": "The row you want to delete is in used!",
     "message.deleteVehicles": "Vehicle deleted!",
     "message.deleteUsers": "User deleted!",
+    "message.updateProcessItem": "Process item updated",
+    "message.savedProcessItem": "Process item saved",
+    "message.deleteProcessItem": "Process item deleted!",
 
 
     "input.search": "Search...",
@@ -165,6 +169,14 @@
         "process.details.subGroup": "Sub Group",
         "process.details.date": "Process Date",
         "process.details.address": "Address",
+    "process.voyageCode": "Voyage Code",
+    "process.vendor": "Vendor",
+    "process.recipient": "Recipient",
+    "process.broker": "Broker",
+    "process.captain": "Captain",
+    "process.agency": "Agency",
+    "process.loadingMaster": "Loading Master",
+    "process.newProcess": "New Process",
 
     "group.title": "Process Groups",
     "group.group": "Group",

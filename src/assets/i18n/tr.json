@@ -36,8 +36,9 @@
     "message.createProposal": "Teklif oluşturuldu",
     "message.deleteProposal": "Teklif silindi!",
     "message.offerReceived": "Teklif alındı",
-    "message.savedProcess": "Hareket kaydedildi",
-    "message.deleteProcess": "Hareket silindi !",
+    "message.updateProcess": "İşlem güncellendi",
+    "message.savedProcess": "İşlem kaydedildi",
+    "message.deleteProcess": "İşlem silindi!",
     "message.updateUser": "Kullanıcı güncellendi",
     "message.passChanged": "Şifre değiştirildi",
     "message.createUser": "Kullanıcı oluşturuldu",
@@ -48,6 +49,10 @@
     "message.error.601": "Silmek istediğiniz satır kullanılıyor!",
     "message.deleteVehicles": "Araç silindi!",
     "message.deleteUsers": "Kullanıcı silindi!",
+    "message.updateProcessItem": "İşlem öğesi güncellendi",
+    "message.savedProcessItem": "İşlem öğesi kaydedildi",
+    "message.deleteProcessItem": "İşlem öğesi silindi!",
+
 
 
     "input.search": "Arama...",
@@ -167,6 +172,14 @@
         "process.details.subGroup": "Alt Grup",
         "process.details.date": "Hareket Tarihi",
         "process.details.address": "Adres",
+    "process.voyageCode": "Yolculuk Kodu",
+    "process.vendor": "Satıcı",
+    "process.recipient": "Alıcı",
+    "process.broker": "Komisyoncu",
+    "process.captain": "Kaptan",
+    "process.agency": "Ajans",
+    "process.loadingMaster": "Yükleme Yöneticisi",
+    "process.newProcess": "Yeni İşlem",
 
     "group.title": "Hareket Grupları",
     "group.group": "Grup",

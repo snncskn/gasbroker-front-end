@@ -260,7 +260,7 @@ export class ProposalService {
                     map((newProcess) => {
     
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        this.toastr.successToastr(this.translocoService.translate('message.updateProposal'));
+                        this.toastr.successToastr(this.translocoService.translate('message.updateProcess'));
                         return newProcess.body;
                     })
                 ))
@@ -274,7 +274,7 @@ export class ProposalService {
                     map((newProcess) => {
     
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        this.toastr.successToastr(this.translocoService.translate('message.createProposal'));
+                        this.toastr.successToastr(this.translocoService.translate('message.savedProcess'));
                         return newProcess.body;
                     })
                 ))
@@ -291,7 +291,7 @@ export class ProposalService {
                     map((newProcess) => {
     
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        this.toastr.successToastr(this.translocoService.translate('message.updateProposal'));
+                        this.toastr.successToastr(this.translocoService.translate('message.updateProcessItem'));
                         return newProcess.body;
                     })
                 ))
@@ -305,7 +305,7 @@ export class ProposalService {
                     map((newProcess) => {
     
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        this.toastr.successToastr(this.translocoService.translate('message.createProposal'));
+                        this.toastr.successToastr(this.translocoService.translate('message.savedProcessItem'));
                         return newProcess.body;
                     })
                 ))
@@ -428,7 +428,7 @@ export class ProposalService {
                         this._processes.next(processes);
 
                     } else {
-                        this.toastr.warningToastr(this.translocoService.translate('message.deleteProposal'));
+                        this.toastr.warningToastr(this.translocoService.translate('message.deleteProcess'));
                     }
 
                     return isDeleted;
@@ -457,8 +457,6 @@ export class ProposalService {
 
                         this._processes.next(process_items);
 
-                    } else {
-                        this.toastr.warningToastr(this.translocoService.translate('message.deleteProposal'));
                     }
 
                     return isDeleted;

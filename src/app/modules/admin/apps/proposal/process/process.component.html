@@ -29,25 +29,24 @@
                 </div>
                 <mat-sidenav-container>
                     <div
-                        class="relative mt-5 ml-5 pb-4 p-8 mr-5 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
+                        class="relative my-5 mx-5 pb-4 p-8 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
                         <mat-form class="flex flex-col w-full" [formGroup]="processForm">
                             <mat-tab-group dynamicHeight>
                                 <mat-tab label="Genel Bilgiler">
-                                    <div class="mt-6 w-1/3">
+                                    <div class="mt-6 ml-7 w-1/3">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>Voyage Code</mat-label>
+                                            <mat-label>{{ t('process.voyageCode') }}</mat-label>
                                             <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                                                 [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                            <input matInput [formControlName]="'voyage_code'" placeholder="Voyage Code"
-                                                [spellcheck]="false">
+                                            <input matInput [formControlName]="'voyage_code'"
+                                                placeholder="{{ t('process.voyageCode') }}" [spellcheck]="false">
                                         </mat-form-field>
                                     </div>
                                     <div class="ml-2 w-full flex items">
                                         <div class="mt-6 ml-5 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>Vendor</mat-label>
-                                                <input tabindex="-1" type="text"
-                                                    placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}"
+                                                <mat-label>{{ t('process.vendor') }}</mat-label>
+                                                <input tabindex="-1" type="text" placeholder="{{ t('process.vendor') }}"
                                                     matInput formControlName="vendor" [matAutocomplete]="vendor">
                                                 <mat-autocomplete autoActiveFirstOption #vendor="matAutocomplete"
                                                     (optionSelected)="selectCustomer($event,'vendor_id')"
@@ -63,10 +62,10 @@
                                         </div>
                                         <div class="mt-6 ml-5 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>Recipient</mat-label>
+                                                <mat-label>{{ t('process.recipient') }}</mat-label>
                                                 <input tabindex="-1" type="text"
-                                                    placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}"
-                                                    matInput formControlName="recipient" [matAutocomplete]="recipient">
+                                                    placeholder="{{ t('process.recipient') }}" matInput
+                                                    formControlName="recipient" [matAutocomplete]="recipient">
                                                 <mat-autocomplete #recipient="matAutocomplete"
                                                     (optionSelected)="selectCustomer($event,'recipient_id')"
                                                     [displayWith]="displayFn">
@@ -81,9 +80,8 @@
                                         </div>
                                         <div class="mt-6 ml-5 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>Broker</mat-label>
-                                                <input tabindex="-1" type="text"
-                                                    placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}"
+                                                <mat-label>{{ t('process.broker') }}</mat-label>
+                                                <input tabindex="-1" type="text" placeholder="{{ t('process.broker') }}"
                                                     matInput formControlName="broker" [matAutocomplete]="broker">
                                                 <mat-autocomplete autoActiveFirstOption #broker="matAutocomplete"
                                                     (optionSelected)="selectCustomer($event,'broker_id')"
@@ -101,10 +99,10 @@
                                     <div class="ml-2 w-full flex items">
                                         <div class="mt-6 ml-5 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>Captain</mat-label>
+                                                <mat-label>{{ t('process.captain') }}</mat-label>
                                                 <input tabindex="-1" type="text"
-                                                    placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}"
-                                                    matInput formControlName="captain" [matAutocomplete]="captain">
+                                                    placeholder="{{ t('process.captain') }}" matInput
+                                                    formControlName="captain" [matAutocomplete]="captain">
                                                 <mat-autocomplete autoActiveFirstOption #captain="matAutocomplete"
                                                     (optionSelected)="selectCustomer($event,'captain_id')"
                                                     [displayWith]="displayFn">
@@ -119,9 +117,8 @@
                                         </div>
                                         <div class="mt-6 ml-5 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>Agency</mat-label>
-                                                <input tabindex="-1" type="text"
-                                                    placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}"
+                                                <mat-label>{{ t('process.agency') }}</mat-label>
+                                                <input tabindex="-1" type="text" placeholder="{{ t('process.agency') }}"
                                                     matInput formControlName="agency" [matAutocomplete]="agency">
                                                 <mat-autocomplete autoActiveFirstOption #agency="matAutocomplete"
                                                     (optionSelected)="selectCustomer($event,'agency_id')"
@@ -137,11 +134,10 @@
                                         </div>
                                         <div class="mt-6 ml-5 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>Loading Master</mat-label>
+                                                <mat-label>{{ t('process.loadingMaster') }}</mat-label>
                                                 <input tabindex="-1" type="text"
-                                                    placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}"
-                                                    matInput formControlName="loading_master"
-                                                    [matAutocomplete]="loading_master">
+                                                    placeholder="{{ t('process.loadingMaster') }}" matInput
+                                                    formControlName="loading_master" [matAutocomplete]="loading_master">
                                                 <mat-autocomplete #loading_master="matAutocomplete"
                                                     (optionSelected)="selectCustomer($event,'loading_master_id')"
                                                     [displayWith]="displayFn">
@@ -160,7 +156,7 @@
                                             <button mat-raised-button
                                                 (click)="add({id: '', process_id: '', group_id: '', group_sub_id: '', process_date: '', address: '', latitude: '', longitude: ''})">
                                                 <mat-icon>add</mat-icon>
-                                                <span class="ml-2 mr-1">New Process</span>
+                                                <span class="ml-2 mr-1">{{ t('process.newProcess') }}</span>
                                             </button>
                                         </div>
                                     </div>
@@ -263,7 +259,7 @@
                                         </mat-accordion>
 
                                     </ng-container>
-      </mat-tab>
+                                </mat-tab>
                             </mat-tab-group>
                         </mat-form>
                     </div>

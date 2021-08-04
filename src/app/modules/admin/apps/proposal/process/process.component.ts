@@ -240,6 +240,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     if(item.id){
       this._proposalService.deleteProcessItem(item.id).subscribe(data=>{
         this.items = this.items.filter(it => it.id !==item.id);
+        this.toastr.successToastr(this.translocoService.translate('message.deleteProcessItem'));
       });
   
     }else{
