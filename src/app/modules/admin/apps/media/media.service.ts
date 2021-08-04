@@ -43,34 +43,28 @@ export class MediaService {
       );
   }
 
-  /**
-   * Create customer
-   */
-  create(item: Media): Observable<any> {
+  createMedia(item: any): Observable<any> {
     if (item.id) {
-      return this.medias$.pipe(
-        take(1),
-        map(() =>
-          this._httpClient
-            .put<any>(`${environment.url}/media/${item.id}`, item)
-            .pipe(
-              map((newMedia) => {
-                return newMedia.body;
-              })
-            )
-        )
-      );
-    } else {
-      return this.medias$.pipe(
-        take(1),
-        map(() =>
-          this._httpClient.post<any>(`${environment.url}/media/`, item).pipe(
-            map((newMedia) => {
-              return newMedia.body;
-            })
-          )
-        )
-      );
+        return this.medias$.pipe(
+            take(1),
+            switchMap(items => this._httpClient.put<any>(`${environment.url}/media/${item.id}`, item).pipe(
+                map((media) => {
+                   console.log();
+                    return media.body;
+                })
+            ))
+        );
     }
-  }
+    else {
+        return this.medias$.pipe(
+            take(1),
+            switchMap(customers => this._httpClient.post<any>(`${environment.url}/media/`, item).pipe(
+                map((media) => {
+                  console.log();
+                    return media.body;
+                })
+            ))
+        );
+    }
+}
 }

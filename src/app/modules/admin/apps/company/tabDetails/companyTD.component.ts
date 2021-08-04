@@ -1,15 +1,27 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FileUploadValidators } from '@iplab/ngx-file-upload';
-import { TranslocoService } from '@ngneat/transloco';
-import { UploadService } from 'app/services/upload.service';
-import { Console } from 'console';
-import { cloneDeep } from 'lodash';
-import { ToastrManager } from 'ng6-toastr-notifications';
-import { ConfirmationDialog } from '../../delete-dialog/delete.component';
-import { CustomersService } from '../company.service';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+} from "@angular/core";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FileUploadValidators } from "@iplab/ngx-file-upload";
+import { TranslocoService } from "@ngneat/transloco";
+import { FileService } from"app/services/file.service";
+import { Console } from "console";
+import { cloneDeep } from "lodash";
+import { ToastrManager } from "ng6-toastr-notifications";
+import { ConfirmationDialog } from "../../delete-dialog/delete.component";
+import { CustomersService } from "../company.service";
+import { MediaService } from "../../media/media.service";
+import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
   selector: "companyTD",
@@ -19,7 +31,6 @@ import { CustomersService } from '../company.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomersTDComponent implements OnInit {
-
   dialogRef: MatDialogRef<ConfirmationDialog>;
 
   customerForm: FormGroup;
@@ -68,63 +79,60 @@ export class CustomersTDComponent implements OnInit {
     public toastr: ToastrManager,
     private _router: Router,
     private readonly activatedRouter: ActivatedRoute,
-    private uploadService: UploadService,
+    private fileService: FileService,
     private translocoService: TranslocoService,
-    private dialog: MatDialog
-
+    private dialog: MatDialog,
+    private mediaService: MediaService,
+    private _authService: AuthService,
   ) {
-   
     let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
-    this.newAddressItem = {expanded:true,isNew:true,position:center};
+    this.newAddressItem = { expanded: true, isNew: true, position: center };
 
     this.customerForm = this._formBuilder.group({
-        id: [''],
-        types: [null],
-        full_name: ['', [Validators.required]],
-        email: [null],
-        phone: [null],
-        name: ['', [Validators.required]],
-        website: [null],
-        registered_date: [null],
-        tax_number: [''],
-        tax_office: [''],
+      id: [""],
+      types: [null],
+      full_name: ["", [Validators.required]],
+      email: [null],
+      phone: [null],
+      name: ["", [Validators.required]],
+      website: [null],
+      registered_date: [null],
+      tax_number: [""],
+      tax_office: [""],
     });
 
     this.addressesForm = this._formBuilder.group({
-        id: [''],
-        company_id: this.companyDetail,
-        title: [''],
-        description: [''],
-        type: [''],
-        lat: [''],
-        long: [''],
-    })
-
-    this.activatedRouter.paramMap.subscribe(params => {
-        if (params.has('id')) {
-            this._customersService.getCompanyById(params.get("id")).subscribe(data => {
-                //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
-                this.companyDetail = data.body.id;
-                this.customerForm.patchValue(data.body);
-                this.addressesForm.patchValue({company_id:data.body.id})
-                this.loadAddress();
-                
-            },error=>{
-                
-            })
-        };
+      id: [""],
+      company_id: this.companyDetail,
+      title: [""],
+      description: [""],
+      type: [""],
+      lat: [""],
+      long: [""],
     });
 
-    this._customersService.getTypes().subscribe(res => {
-        this.dataSourceTypes = res.body;
+    this.activatedRouter.paramMap.subscribe((params) => {
+      if (params.has("id")) {
+        this._customersService.getCompanyById(params.get("id")).subscribe(
+          (data) => {
+            //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
+            this.companyDetail = data.body.id;
+            this.customerForm.patchValue(data.body);
+            this.addressesForm.patchValue({ company_id: data.body.id });
+            this.loadAddress();
+          },
+          (error) => {}
+        );
+      }
     });
-    this._customersService.getCompanyDocs().subscribe(res => {
-        this.dataSourceDocs = res.body;
+
+    this._customersService.getTypes().subscribe((res) => {
+      this.dataSourceTypes = res.body;
     });
-        
-        
-    }
- 
+    this._customersService.getCompanyDocs().subscribe((res) => {
+      this.dataSourceDocs = res.body;
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -158,22 +166,20 @@ export class CustomersTDComponent implements OnInit {
   }
 
   deleteCompany() {
-    
     if (this.companyDetail) {
       this.dialogRef = this.dialog.open(ConfirmationDialog, {
-        disableClose: false
+        disableClose: false,
       });
-      this.dialogRef.afterClosed().subscribe(result => {
-        if(result) {
+      this.dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
           this._customersService
-          .deleteCompany(this.companyDetail)
-          .subscribe((data) => {
-            this._router.navigateByUrl("/apps/company/list");
-          });
+            .deleteCompany(this.companyDetail)
+            .subscribe((data) => {
+              this._router.navigateByUrl("/apps/company/list");
+            });
         }
         this.dialogRef = null;
       });
-
     }
   }
 
@@ -248,28 +254,83 @@ export class CustomersTDComponent implements OnInit {
 
   upload() {
     const file = this.demoForm.value.files[0];
-    this.uploadService.putUrl(file).then((res) => {
+    this.fileService.putUrl(file).then((res) => {
       const {
         data: { putURL },
       } = res;
 
-      this.uploadService.upLoad(putURL, file).then((res) => {
-        this.toastr.warningToastr("Yuppii...", "Success!");
-        // this.mediaService.create({id:null,company_id: this.companyDetail, title: ret.putURL}).subscribe((data) => { });
-      });
+      this.fileService.upLoad(putURL, file).then(
+        (res) => {
+          this.toastr.successToastr(
+            this.translocoService.translate("message.fileUpload")
+          );
+
+          let key = this._authService.user_id + '/'+ file.name;
+
+          this.mediaService
+            .createMedia({
+              id: null,
+              company_id: this.companyDetail,
+              title: "CompanyFile",
+              user_id: this._authService.user_id,
+              path: JSON.stringify(key),
+            })
+            .subscribe((data) => {
+              this.toastr.successToastr(
+                this.translocoService.translate("message.createMedia")
+              );
+            });
+        },
+        (error) => {
+          this.toastr.errorToastr(
+            this.translocoService.translate("message.error")
+          );
+
+          let key = this._authService.user_id + '/'+ file.name;
+
+          this.mediaService
+          .createMedia({
+            id: null,
+            company_id: this.companyDetail,
+            title: "CompanyFile",
+            user_id: this._authService.user_id,
+            path: JSON.stringify(key),
+          })
+          .subscribe((data) => {
+            this.toastr.successToastr(
+              this.translocoService.translate("message.createMedia")
+            );
+          });
+        }
+      );
     });
   }
 
-    
-  formUrunEkle(val: any){ 
-      return new FormBuilder().group({
-          files: this.filesControl,
-          label: this.label,
-      })
+  download(key: string) {
+    this.fileService.download(key).then(
+      (res) => {
+        this.toastr.successToastr(
+          this.translocoService.translate("message.fileUpload")
+        );
+      },
+      (error) => {
+        this.toastr.errorToastr(
+          this.translocoService.translate("message.error")
+        );
+      }
+    );
   }
-  deleteAddress(item : any){
-      this._customersService.deleteAddress(item).subscribe(data=>{
-          this.loadAddress();
-      });
+
+  formUrunEkle(val: any) {
+    return new FormBuilder().group({
+      files: this.filesControl,
+      label: this.label,
+    });
+  }
+
+  deleteAddress(item: any) {
+    this._customersService.deleteAddress(item).subscribe((data) => {
+      this.loadAddress();
+    });
   }
 }

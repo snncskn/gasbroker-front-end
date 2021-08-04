@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
-import axios from "axios"; 
+import axios from "axios";
 @Injectable({
   providedIn: "root",
 })
-export class UploadService {
+export class FileService {
   /**
    * Constructor
    */
@@ -26,5 +26,16 @@ export class UploadService {
 
   upLoad(putURL: string, file: File): Promise<any> {
     return axios.put(putURL, file);
+  }
+
+  download(key: string): Promise<any> {
+    const generateGetUrl = `${environment.url}/media/s3/generateGetUrl`;
+    const options = {
+      params: {
+        Key: key,
+        ContentType: "image/jpeg",
+      },
+    };
+    return axios.get(generateGetUrl, options);
   }
 }

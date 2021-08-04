@@ -4,9 +4,7 @@
 
 export const environment = {
     production: false,
-    url: 'https://gasbroker.herokuapp.com'
-    
-
+    url: 'http://localhost:3300'
 };
 
 /*

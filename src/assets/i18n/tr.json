@@ -48,7 +48,12 @@
     "message.error.601": "Silmek istediğiniz satır kullanılıyor!",
     "message.deleteVehicles": "Araç silindi!",
     "message.deleteUsers": "Kullanıcı silindi!",
-
+    "message.success": "İşlem Tamamlandı!",
+    "message.error": "İşlem başarısız",
+    "message.fileUpload": "Media Yükleme işlemi tamamlandı!",
+    "message.fileDownload":"Media İndirme işlemi tamamlandı!",
+    "message.createMedia": "Media kaydedildi",
+    
 
     "input.search": "Arama...",
     "text.total.record": "Toplam Kayıt",

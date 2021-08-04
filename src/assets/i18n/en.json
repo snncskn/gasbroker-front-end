@@ -48,7 +48,11 @@
     "message.error.601": "The row you want to delete is in used!",
     "message.deleteVehicles": "Vehicle deleted!",
     "message.deleteUsers": "User deleted!",
-
+    "message.success": "Successfully!",
+    "message.error": "Unsuccessfull",
+    "message.fileUpload": "File upload completed!",
+    "message.fileDownload": "File download completed!",
+    "message.createMedia": "Media saved",
 
     "input.search": "Search...",
     "text.total.record": "Total Record",
