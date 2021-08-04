@@ -116,18 +116,15 @@
                       class="py-0.5 px-3 rounded-full text-sm font-semibold text-blue-800 bg-blue-100 dark:text-blue-50 dark:bg-blue-500">
                       {{ row.status }}
                     </div>
+                    <mat-icon *ngIf="row.status==='OK'" class="mr-8 icon-size-5 text-green-600"
+                    [svgIcon]="'heroicons_solid:badge-check'" [matTooltip]="'Teklif tamamlanmıştır'"></mat-icon>
                     <div *ngIf="row.status==='NOT OK'"
                       class="py-0.5 px-3 rounded-full text-sm font-semibold text-pink-800 bg-pink-100 dark:text-pink-50 dark:bg-pink-500">
                       {{ row.status }}
                     </div>
+                    <mat-icon *ngIf="row.status==='NOT OK'" class="mr-8 icon-size-5 text-red-600"
+                    [svgIcon]="'heroicons_solid:x-circle'" [matTooltip]="'Teklif tamamlanmmamıştır'"></mat-icon>
                   </ng-container>
-
-                  <div class="flex items-center">
-
-                    <mat-icon *ngIf="row.status==='OK'" class="icon-size-5 text-green-600"
-                      [svgIcon]="'heroicons_solid:badge-check'" [matTooltip]="'Teklif tamamlanmıştır'"></mat-icon>
-
-                  </div>
                 </div>
 
               </td>
@@ -152,19 +149,23 @@
                 #
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <button class="fuse-mat-button-rounded" (click)="openProposal(row)"  mat-icon-button [color]="'primary'">
+                <button class="fuse-mat-button-rounded" (click)="openProposal(row)" matTooltip="{{ t('tooltip.edit') }}"  mat-icon-button [color]="'primary'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                   [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon> 
                 </button>
-                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)" mat-icon-button [color]="'primary'">
+                <button class="fuse-mat-button-rounded" (click)="openProcess(row)" matTooltip="{{ t('tooltip.process') }}" mat-icon-button [color]="'primary'">
+                  <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                  [svgIcon]="'heroicons_outline:archive'" ></mat-icon> 
+                </button>
+                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)" matTooltip="{{ t('tooltip.offer') }}" mat-icon-button [color]="'primary'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                   [svgIcon]="'heroicons_outline:cash'" ></mat-icon> 
                 </button>
-                <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)" mat-icon-button [color]="'primary'">
+                <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)" matTooltip="{{ t('tooltip.offerList') }}" mat-icon-button [color]="'primary'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                   [svgIcon]="'heroicons_outline:search'"></mat-icon> 
                 </button>
-                <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" (click)="deleteProposal(row)"
+                <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" matTooltip="{{ t('tooltip.delete') }}" (click)="deleteProposal(row)"
                   mat-icon-button [color]="'warn'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
                   </mat-icon>

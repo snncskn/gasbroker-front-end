@@ -65,11 +65,11 @@
                 </th>
                 <td class="pr-8 truncate" mat-cell *matCellDef="let row">
                   <div>
-                  <button class="fuse-mat-button-rounded" (click)="openGroup(row)" mat-icon-button [color]="'primary'">
+                  <button class="fuse-mat-button-rounded" (click)="openGroup(row)" mat-icon-button matTooltip="{{ t('tooltip.edit') }}" [color]="'primary'">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                     [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon>
                   </button>
-                  <button class="fuse-mat-button-rounded ml-1 text-on-warn-100" mat-icon-button [color]="'warn'" (click)="deleteGroup(row)">
+                  <button class="fuse-mat-button-rounded ml-1 text-on-warn-100" mat-icon-button [color]="'warn'" matTooltip="{{ t('tooltip.delete') }}" (click)="deleteGroup(row)">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                     [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
                   </button>

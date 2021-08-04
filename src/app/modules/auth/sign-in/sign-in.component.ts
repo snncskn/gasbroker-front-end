@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
+import { FuseConfigService } from '@fuse/services/config';
 import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
@@ -29,7 +30,8 @@ export class AuthSignInComponent implements OnInit
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
-        private _router: Router
+        private _router: Router,
+        private _fuseConfigService: FuseConfigService,
     )
     {
     }
@@ -76,9 +78,8 @@ export class AuthSignInComponent implements OnInit
         this._authService.signIn(this.signInForm.value)
             .subscribe(
                 () => {
-                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/apps/customers';
+                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/apps/company';
                     this._router.navigateByUrl(redirectURL);
-
                 },
                 (response) => {
 
