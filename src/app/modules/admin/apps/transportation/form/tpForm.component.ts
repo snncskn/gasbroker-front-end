@@ -95,7 +95,7 @@ export class TransportationFormComponent implements OnInit {
     changeGroup(val: string) {
         this._processService.getProcessGroupById(val).subscribe(data => {
             this.dataSourceSubGroup = data.body.process_sub_groups;
-            if( this.selectedItem){
+            if(this.selectedItem){
                 this.processForm.patchValue({group_sub_id: this.selectedItem.group_sub_id});
             }
         });

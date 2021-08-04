@@ -16,6 +16,9 @@ export class ProposalService {
     // Private
     private _proposal: BehaviorSubject<Proposal | null> = new BehaviorSubject(null);
     private _proposals: BehaviorSubject<Proposal[] | null> = new BehaviorSubject(null);
+    private _process: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _process_items: BehaviorSubject<any[] | null> = new BehaviorSubject(null);
+    private _processes: BehaviorSubject<any[] | null> = new BehaviorSubject(null);
     private _proposalsCount: BehaviorSubject<any | null> = new BehaviorSubject(null);
     private _offers: BehaviorSubject<ProposalOffer[] | null> = new BehaviorSubject(null);
     private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
@@ -54,6 +57,18 @@ export class ProposalService {
      */
     get proposals$(): Observable<Proposal[]> {
         return this._proposals.asObservable();
+    }
+
+    get process$(): Observable<any> {
+        return this._process.asObservable();
+    }
+
+    get processes$(): Observable<any[]> {
+        return this._processes.asObservable();
+    }
+
+    get process_items$(): Observable<any[]> {
+        return this._process_items.asObservable();
     }
 
     get getCount$(): Observable<any> {
@@ -97,7 +112,11 @@ export class ProposalService {
     Observable<any> {
     let url = `${environment.url}/proposal/${id}`;
     return this._httpClient.get<any>(url);
-}
+    }
+
+    getProcessByProposalId(id:any): Observable<any> {
+        return this._httpClient.get<any>(`${environment.url}/process/processes/${id}`)
+    }
 
     getOffers(id: any): Observable<ProposalOffer[]> {
 
@@ -107,6 +126,18 @@ export class ProposalService {
                 this._proposalsCount = offers.body.length;
             })
         );
+    }
+
+    getProcessGroup():
+    Observable<any> {
+    let url = `${environment.url}/process-group`;
+    return this._httpClient.get<any>(url);
+    }
+
+    getProcessGroupById(id: any):
+    Observable<any> {
+    let url = `${environment.url}/process-group/${id}`;
+    return this._httpClient.get<any>(url);
     }
 
     public CustomersFind(search: string): Observable<any> {
@@ -128,6 +159,12 @@ export class ProposalService {
         Observable<any> {
         let url = `${environment.url}/parameter/category/VEHICLE_TYPE`;
         return this._httpClient.get<any>(url);
+    }
+
+    getCurrency():
+    Observable<any> {
+    let url = `${environment.url}/parameter/category/CURRENCY_TYPES`;
+    return this._httpClient.get<any>(url);
     }
 
     getCustomers():
@@ -219,6 +256,73 @@ export class ProposalService {
             ))
         );
     }
+
+    createProcess(item: any): Observable<any> {
+        if(item.id)
+        {
+            return this.processes$.pipe(
+                take(1),
+                switchMap(processes => this._httpClient.put<any>(`${environment.url}/process/`+item.id, item).pipe(
+                    map((newProcess) => {
+    
+                        //this._proposals.next([newVehicle.body, ...proposals]);
+                        this.toastr.successToastr(this.translocoService.translate('message.updateProcess'));
+                        return newProcess.body;
+                    })
+                ))
+            );
+        }
+        else
+        {
+            return this.processes$.pipe(
+                take(1),
+                switchMap(proposals => this._httpClient.post<any>(`${environment.url}/process`, item).pipe(
+                    map((newProcess) => {
+    
+                        //this._proposals.next([newVehicle.body, ...proposals]);
+                        this.toastr.successToastr(this.translocoService.translate('message.savedProcess'));
+                        return newProcess.body;
+                    })
+                ))
+            );
+        }
+    }
+
+    createProcessItem(item: any): Observable<any> {
+        if(item.id)
+        {
+            return this.process_items$.pipe(
+                take(1),
+                switchMap(processes => this._httpClient.put<any>(`${environment.url}/process-item/`+item.id, item).pipe(
+                    map((newProcess) => {
+    
+                        //this._proposals.next([newVehicle.body, ...proposals]);
+                        this.toastr.successToastr(this.translocoService.translate('message.updateProcessItem'));
+                        return newProcess.body;
+                    })
+                ))
+            );
+        }
+        else
+        {
+            return this.process_items$.pipe(
+                take(1),
+                switchMap(proposals => this._httpClient.post<any>(`${environment.url}/process-item`, item).pipe(
+                    map((newProcess) => {
+    
+                        //this._proposals.next([newVehicle.body, ...proposals]);
+                        this.toastr.successToastr(this.translocoService.translate('message.savedProcessItem'));
+                        return newProcess.body;
+                    })
+                ))
+            );
+        }
+    }
+
+    getProcessItemsByProcessId(id: string): Observable<any> {
+        let url = `${environment.url}/process-item/items/${id}`;
+        return   this._httpClient.get<any>(url);
+       }
 
 
     newVehicle(): Observable<any> {
@@ -316,8 +420,63 @@ export class ProposalService {
         return this._httpClient.get<any>(url);
     }
 
+    deleteProcess(id: string): Observable<boolean> {
+        return this.processes$.pipe(
+            take(1),
+            switchMap(processes => this._httpClient.put(`${environment.url}/process/delete/${id}`, { id }).pipe(
+                map((isDeleted: any) => {
+                    if (isDeleted.success) {
 
+                        const index = processes.findIndex(item => item.id === id);
 
+                        processes.splice(index, 1);
+
+                        this._processes.next(processes);
+
+                    } else {
+                        this.toastr.warningToastr(this.translocoService.translate('message.deleteProcess'));
+                    }
+
+                    return isDeleted;
+                })
+            )),
+            catchError((error)=>{
+                if(error instanceof HttpErrorResponse && error.status == 601)
+                {
+                    this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+                }
+                return throwError(error);
+            })
+        );
+    }
+
+    deleteProcessItem(id: string): Observable<boolean> {
+        return this.process_items$.pipe(
+            take(1),
+            switchMap(process_items => this._httpClient.put(`${environment.url}/process-item/delete/${id}`, { id }).pipe(
+                map((isDeleted: any) => {
+                    if (isDeleted.success) {
+
+                        const index = process_items.findIndex(item => item.id === id);
+
+                        process_items.splice(index, 1);
+
+                        this._processes.next(process_items);
+
+                    }
+
+                    return isDeleted;
+                })
+            )),
+            catchError((error)=>{
+                if(error instanceof HttpErrorResponse && error.status == 601)
+                {
+                    this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+                }
+                return throwError(error);
+            })
+        );
+    }
     /**
      * Create customer
      */

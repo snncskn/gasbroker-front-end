@@ -1,6 +1,6 @@
 <div mat-dialog-content *transloco="let t;">
     <div >
-        <table style="width: 700px!important" class="w-full table-fixed bg-transparent"
+        <table style="width: 900px!important" class="w-full table-fixed bg-transparent"
           mat-table matSort [matSortActive]="'price'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
           [multiTemplateDataRows]="true" [dataSource]="offers$" [trackBy]="trackByFn">
 
@@ -28,6 +28,35 @@
             </th>
             <td class="pr-8 truncate" mat-cell *matCellDef="let row">
               {{ row.price }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="deal_status">
+            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{ t('proposals.status') }}
+            </th>
+            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+              <div class="flex items-center justify-between">
+                <ng-container>
+                  <div *ngIf="row.deal_status==='OK'">
+                    <mat-icon *ngIf="row.deal_status==='OK'" class="mr-8 icon-size-5 text-green-600"
+                    [svgIcon]="'heroicons_solid:badge-check'" matTooltip="{{ t('tooltip.ok') }}"></mat-icon>
+                  </div>
+                  <div *ngIf="row.deal_status==='NOT OK'">
+                    <mat-icon *ngIf="row.deal_status==='NOT OK'" class="mr-8 icon-size-5 text-red-600"
+                    [svgIcon]="'heroicons_solid:x-circle'" matTooltip="{{ t('tooltip.notOk') }}"></mat-icon>
+                  </div>
+                </ng-container>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="currency">
+            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{ t('proposals.offerList.currency') }}
+            </th>
+            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+              {{ row.currency }}
             </td>
           </ng-container>
 

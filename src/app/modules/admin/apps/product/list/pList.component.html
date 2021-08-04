@@ -133,12 +133,12 @@
                   {{ t('products.details') }}
                 </th>
                 <td class="pr-8" mat-cell *matCellDef="let product">
-                  <button class="fuse-mat-button-rounded" (click)="openDetail(product.id)" mat-icon-button
+                  <button class="fuse-mat-button-rounded" (click)="openDetail(product.id)" matTooltip="{{ t('tooltip.edit') }}" mat-icon-button
                     [color]="'primary'">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
                     </mat-icon>
                   </button>
-                  <button class="fuse-mat-button-rounded text-on-warn-100 ml-1 mr-10" (click)="deleteProduct(product)"
+                  <button class="fuse-mat-button-rounded text-on-warn-100 ml-1 mr-10" (click)="deleteProduct(product)" matTooltip="{{ t('tooltip.delete') }}"
                     mat-icon-button [color]="'warn'">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
                     </mat-icon>

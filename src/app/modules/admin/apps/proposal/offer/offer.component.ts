@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProposalService } from '../proposals.service';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from 'app/core/auth/auth.service';
@@ -13,6 +13,7 @@ export class OfferComponent implements OnInit {
 
   offerForm: FormGroup;
 
+  dataSourceCurrencyTypes: any[];
   dataSourcePaymentTypes: any[];
 
   constructor(
@@ -21,22 +22,26 @@ export class OfferComponent implements OnInit {
     private _authService: AuthService,
     public dialogRef: MatDialogRef<OfferComponent>,
     private _formBuilder: FormBuilder) {
-      this._proposalService.getPaymentTypes().subscribe(res => {
-        this.dataSourcePaymentTypes = res.body;
+
+    this._proposalService.getPaymentTypes().subscribe(res => {
+      this.dataSourcePaymentTypes = res.body;
     });
 
+    this._proposalService.getCurrency().subscribe(res => {
+      this.dataSourceCurrencyTypes = res.body;
+    });
      }
 
   ngOnInit(): void {
     this.offerForm = this._formBuilder.group({
       proposal_id: this.data.id,
       company_id: [this._authService.CompanyId],
-      offer_date: [''],
-      payment_type: [''],
-      price: [''],
+      offer_date: ['', Validators.required],
+      payment_type: ['', Validators.required],
+      price: ['', Validators.required],
       id: [''],
-      deal_status:this.data.status
-
+      deal_status:['', Validators.required],
+      currency:['', Validators.required],
     });
   }
 

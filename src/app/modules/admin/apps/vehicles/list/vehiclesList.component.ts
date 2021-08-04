@@ -18,7 +18,7 @@ import { Vehicle } from '../vehicles.types';
 @Component({
     selector: 'vehicles-list',
     templateUrl: './vehiclesList.component.html',
-    styleUrls: ['./vehicleList.component.scss'],
+    styleUrls: ['./vehiclesList.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })

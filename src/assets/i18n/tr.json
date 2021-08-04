@@ -14,6 +14,14 @@
     "sign-out": "Çıkış",
     "app.quit": "Quit",
 
+    "tooltip.edit": "Düzenle",
+    "tooltip.process": "İşlemler",
+    "tooltip.offer": "Teklif",
+    "tooltip.offerList": "Teklifler",
+    "tooltip.delete": "Sil",
+    "tooltip.ok": "Tamamlandı",
+    "tooltip.notOk": "Tamamlanmadı",
+
     "delete.dialog.confirm":"Onayla",
     "delete.dialog.cancel":"İptal",
     "delete.dialog.text":"Silmek istediğine emin misin ?",
@@ -36,8 +44,9 @@
     "message.createProposal": "Teklif oluşturuldu",
     "message.deleteProposal": "Teklif silindi!",
     "message.offerReceived": "Teklif alındı",
-    "message.savedProcess": "Hareket kaydedildi",
-    "message.deleteProcess": "Hareket silindi !",
+    "message.updateProcess": "İşlem güncellendi",
+    "message.savedProcess": "İşlem kaydedildi",
+    "message.deleteProcess": "İşlem silindi!",
     "message.updateUser": "Kullanıcı güncellendi",
     "message.passChanged": "Şifre değiştirildi",
     "message.createUser": "Kullanıcı oluşturuldu",
@@ -48,12 +57,15 @@
     "message.error.601": "Silmek istediğiniz satır kullanılıyor!",
     "message.deleteVehicles": "Araç silindi!",
     "message.deleteUsers": "Kullanıcı silindi!",
+    "message.updateProcessItem": "İşlem öğesi güncellendi",
+    "message.savedProcessItem": "İşlem öğesi kaydedildi",
+    "message.deleteProcessItem": "İşlem öğesi silindi!",
     "message.success": "İşlem Tamamlandı!",
     "message.error": "İşlem başarısız",
     "message.fileUpload": "Media Yükleme işlemi tamamlandı!",
     "message.fileDownload":"Media İndirme işlemi tamamlandı!",
     "message.createMedia": "Media kaydedildi",
-    
+
 
     "input.search": "Arama...",
     "text.total.record": "Toplam Kayıt",
@@ -160,6 +172,7 @@
         "proposals.offerList.paymentType": "Ödeme Türü",
         "proposals.offerList.price": "Fiyat",
         "proposals.offerList.offerDate": "Teklif Tarihi",
+        "proposals.offerList.currency": "Para Birimi",
     
 
     "process.title": "Hareketler",
@@ -172,6 +185,14 @@
         "process.details.subGroup": "Alt Grup",
         "process.details.date": "Hareket Tarihi",
         "process.details.address": "Adres",
+    "process.voyageCode": "Yolculuk Kodu",
+    "process.vendor": "Satıcı",
+    "process.recipient": "Alıcı",
+    "process.broker": "Komisyoncu",
+    "process.captain": "Kaptan",
+    "process.agency": "Ajans",
+    "process.loadingMaster": "Yükleme Yöneticisi",
+    "process.newProcess": "Yeni İşlem",
 
     "group.title": "Hareket Grupları",
     "group.group": "Grup",
