@@ -5,6 +5,10 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { environment } from 'environments/environment';
+import { FuseConfigService } from '@fuse/services/config';
+import { Router } from '@angular/router';
+import { Scheme } from '../config/app.config';
+import { Theme } from '@fullcalendar/core';
 
 @Injectable()
 export class AuthService
@@ -16,7 +20,10 @@ export class AuthService
      */
     constructor(
         private _httpClient: HttpClient,
-        private _userService: UserService
+        private _userService: UserService,
+        private _fuseConfigService: FuseConfigService,
+        private _router: Router,
+
     )
     {
     }
@@ -91,10 +98,37 @@ export class AuthService
                 this._authenticated = true;
                 this._userService.user = response.user.data;
                 localStorage.setItem('user', JSON.stringify(response.user.data));
-
+                this.setLayout(response.user.data.settings.layout);
+                this.setScheme(response.user.data.settings.scheme);
+                this.setTheme(response.user.data.settings.theme);
                 return of(response.user.data); 
             })
         );
+    }
+
+    setLayout(layout: string): void
+    {
+        // Clear the 'layout' query param to allow layout changes
+        this._router.navigate([], {
+            queryParams        : {
+                layout: null
+            },
+            queryParamsHandling: 'merge'
+        }).then(() => {
+
+            // Set the config
+            this._fuseConfigService.config = {layout};
+        });
+    }
+
+    setScheme(scheme: Scheme): void
+    {
+        this._fuseConfigService.config = {scheme};
+    }
+
+    setTheme(theme: Theme): void
+    {
+        this._fuseConfigService.config = {theme};
     }
 
     /**

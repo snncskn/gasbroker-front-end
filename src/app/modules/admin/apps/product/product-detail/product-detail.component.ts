@@ -175,7 +175,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
         let tmp = this.formSubProduct.controls["subProductItems"] as FormArray;
         tmp.removeAt(index);  
       }
-      console.log(333)
       this.dialogRef = null;
     });
   }

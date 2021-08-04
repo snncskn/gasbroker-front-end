@@ -14,6 +14,14 @@
     "sign-out": "Çıkış",
     "app.quit": "Quit",
 
+    "tooltip.edit": "Düzenle",
+    "tooltip.process": "İşlemler",
+    "tooltip.offer": "Teklif",
+    "tooltip.offerList": "Teklifler",
+    "tooltip.delete": "Sil",
+    "tooltip.ok": "Tamamlandı",
+    "tooltip.notOk": "Tamamlanmadı",
+
     "delete.dialog.confirm":"Onayla",
     "delete.dialog.cancel":"İptal",
     "delete.dialog.text":"Silmek istediğine emin misin ?",
@@ -160,6 +168,7 @@
         "proposals.offerList.paymentType": "Ödeme Türü",
         "proposals.offerList.price": "Fiyat",
         "proposals.offerList.offerDate": "Teklif Tarihi",
+        "proposals.offerList.currency": "Para Birimi",
     
 
     "process.title": "Hareketler",

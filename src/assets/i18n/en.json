@@ -14,6 +14,14 @@
     "app.group": "Group",
     "app.quit": "Quit",
 
+    "tooltip.edit": "Edit",
+    "tooltip.process": "Process",
+    "tooltip.offer": "Offer",
+    "tooltip.offerList": "Offers",
+    "tooltip.delete": "Delete",
+    "tooltip.ok": "Ok",
+    "tooltip.notOk": "Not Ok",
+
     "delete.dialog.confirm":"Confirm",
     "delete.dialog.cancel":"Cancel",
     "delete.dialog.text":"Are you sure you want to delete ?",
@@ -158,6 +166,7 @@
         "proposals.offerList.paymentType": "Payment Type",
         "proposals.offerList.price": "Price",
         "proposals.offerList.offerDate": "Offer Date",
+        "proposals.offerList.currency": "Currency",
 
     "process.title": "Process",
     "process.processDate": "Process Date",

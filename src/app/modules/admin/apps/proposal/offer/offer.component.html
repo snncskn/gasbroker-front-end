@@ -27,14 +27,42 @@
                 </mat-form-field>
             </div>
 
-            <div class="flex flex-col gt-xs:flex-row">
-                <mat-form-field class="flex-auto">
+            <div class="flex flex-col-2 gt-xs:flex-row">
+                <mat-form-field class="w-3/4">
                     <mat-label>{{ t('proposals.offerList.price') }}</mat-label>
                     <input type="text" placeholder="{{ t('proposals.offerList.price') }}" matInput formControlName="price">
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:cash'"></mat-icon>
-                    <span matSuffix>$</span>
+                </mat-form-field>
+                <mat-form-field class="w-1/4 ml-2">
+                    <mat-label>{{ t('proposals.offerList.currency') }}</mat-label>
+                    <mat-select [formControlName]="'currency'">
+                        <mat-option *ngFor="let option of dataSourceCurrencyTypes" [value]="option.description">
+                            <ng-container>
+                                {{option.description | titlecase}}
+                            </ng-container>
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
+
+            <div class="flex flex-col gt-xs:flex-row">
+                <mat-form-field class="flex-auto gt-xs:pr-3">
+                    <mat-label>{{ t('proposals.status') }}</mat-label>
+                    <mat-select [formControlName]="'deal_status'">
+                        <ng-container>
+                            <mat-option value="OK">
+                                Ok
+                            </mat-option>
+                            <mat-option value="NOT OK">
+                                Not Ok
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:question-mark-circle'">
+                    </mat-icon>
+                </mat-form-field>
+            </div>
+
             <div class="flex">
                 <button
                 class="mt-4"

@@ -190,12 +190,10 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     */
   }
   selectCustomer(event: any,prm:string) {
-    console.log(event);
     let option = this.customers.filter(item => item.full_name.toUpperCase() === event.option.value.full_name.toUpperCase());
     if (option.length > 0) {
       this.selectCustomerItem = option[0];
       this.processForm.get(prm).setValue(option[0].id, { emitEvent: false });
-      console.log(prm)
     }
   }
   displayFn(x) {
@@ -221,7 +219,6 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   {
     item.proposal_id = this.processForm.value.proposal_id;
     this._proposalService.createProcessItem(item).subscribe(data=>{
-      console.log(data);
     });
   }
 

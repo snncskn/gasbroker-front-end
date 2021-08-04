@@ -161,6 +161,12 @@ export class ProposalService {
         return this._httpClient.get<any>(url);
     }
 
+    getCurrency():
+    Observable<any> {
+    let url = `${environment.url}/parameter/category/CURRENCY_TYPES`;
+    return this._httpClient.get<any>(url);
+    }
+
     getCustomers():
         Observable<any> {
         let url = `${environment.url}/company`;
