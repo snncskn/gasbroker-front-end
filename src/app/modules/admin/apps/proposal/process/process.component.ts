@@ -38,8 +38,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   processForm: FormGroup;
   dataSourceGroup: any[];
   dataSourceSubGroup: any[];
-  selectedItem:any;
-  formProcessItems: FormGroup;
+  selectedItem:any; 
   productDetail: string;
   customers: any[];
   filteredOptions: Observable<string[]>;
@@ -55,6 +54,10 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   zoom = 7;
   markerOptions: google.maps.MarkerOptions = { draggable: false };
   markerPositions: google.maps.LatLngLiteral[] = [];
+
+  //uzeyr
+  items: any[] = [];
+  //uzeyr
 
   addMarker(event: google.maps.MapMouseEvent, item:any) {
       this.markerPositions = [];
@@ -94,11 +97,6 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     this._proposalService.getProcessGroup().subscribe(res => {
       this.dataSourceGroup = res.body;
   });
-    this.processItemsForm = {
-      id: '', process_id: '', group_id: '', group_sub_id: '', process_date: '', address: '', latitude: '', longitude: '', map: ''
-    }
-    this.formProcessItems = this.processesItemsForm.convertModelToFormGroup(this.processItemsForm);
-
      this.activatedRouter.paramMap.subscribe((params) => {
        if (params.has("id")) {
         this.isLoading=false;
@@ -109,7 +107,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
         })
         let processByID = this._proposalService.getProcessByProposalId(params.get("id"));
         let customer = this._proposalService.getCustomers();
-        forkJoin(processByID,customer).subscribe(result => {
+        let detail = this._proposalService.getProcessItemsByProcessId(params.get("id"));
+        forkJoin(processByID,customer,detail).subscribe(result => {
           this.customers = result[1].body;
           let bodyForm  = result[0].body;
           
@@ -129,7 +128,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
             recipient:this.customers.find(item =>item.id === bodyForm.recipient_id),
             recipient_id:bodyForm.recipient_id,
            });
-           this.listItems();
+           this.items = result[2].body;
+           this.isLoading = true;
            this.ngxService.stop();
         });
        }
@@ -151,49 +151,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   }
 
   add(item?: any) {
-    const processItemsForm = this._formBuilder.group({
-      process_id: item.process_id || '',
-      id: item.id || '',
-      group_id: item.group_id || '',
-      group_sub_id: item.group_sub_id || '',
-      process_date: item.process_date || '',
-      address: item.address || '',
-      latitude: item.latitude || '',
-      longitude: item.longitude || '',
-    });
-     
-    this.processItems.push(processItemsForm);
+    this.items.push(item);
   }
-
-  get processItems() {
-    return this.formProcessItems.controls["processItems"] as FormArray;
-  }
-
-  listItems(){
-    this._proposalService.getProcessItemsByProcessId(this.processForm.value.id).subscribe(data =>{
-      data.body.forEach(element => {
-       this.changeGroup(element.group_id);
-        this.add(element)
-      });
-      this.isLoading=true;
-    });
-  }
-  /*addNewProduct() {
-    this._productService.createProduct(this.productForm.value).subscribe((data) => {
-      
-      this.toastr.successToastr(this.translocoService.translate('message.createProduct'));
-      this.processItems.value.forEach(element => {
-        element.id = element.id;
-        element.product_id = data.body.id;
-        element.quantity = element.quantity;
-        element.name = element.name;
-        element.unit = element.unit;
-        this._productService.createProductItem(element).subscribe()
-      });
-      this._router.navigate(["/apps/products/list"]);
-    });
-  }*/
-
   public list() {
 
     this._proposalService.getCustomers().subscribe(data => {
@@ -258,33 +217,33 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     return center;
   }
 
-  saveProcessItems(index:number)
+  saveProcessItems(item: any)
   {
-    let tempItem = this.formProcessItems.controls["processItems"] as FormArray;
-
-    let saveItem = tempItem.value[index];
-    saveItem.process_id = this.processForm.value.id;
-    this._proposalService.createProcessItem(saveItem).subscribe();
-    console.log(saveItem)
+    item.proposal_id = this.processForm.value.proposal_id;
+    this._proposalService.createProcessItem(item).subscribe(data=>{
+      console.log(data);
+    });
   }
 
   deleteProcess()
   {
-    let tempItem = this.formProcessItems.controls["processItems"] as FormArray;
 
     this._proposalService.deleteProcess(this.processForm.value.id).subscribe(data =>{
-      tempItem.value.forEach(element => {
+      this.items.forEach(element => {
         this._proposalService.deleteProcessItem(element.id).subscribe();
       });
     })
   }
 
-  deleteProcessItem(index:number)
+  deleteProcessItem(item: any,i: number)
   {
-    let tempItem = this.formProcessItems.controls["processItems"] as FormArray;
-
-    this._proposalService.deleteProcessItem(tempItem.value[index].id).subscribe(data=>{
-      //window.location.reload();
-    });
+    if(item.id){
+      this._proposalService.deleteProcessItem(item.id).subscribe(data=>{
+        this.items = this.items.filter(it => it.id !==item.id);
+      });
+  
+    }else{
+      this.items = this.items.filter((it,index) => index !==i);
+    }
   }
 }
