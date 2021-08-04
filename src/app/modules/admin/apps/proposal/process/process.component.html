@@ -151,7 +151,7 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                    <div class="grid justify-items-end mt-13 w-full">
+                                    <div class="grid justify-items-end mt-13 mb-5 w-full">
                                         <div>
                                             <button mat-raised-button
                                                 (click)="add({id: '', process_id: '', group_id: '', group_sub_id: '', process_date: '', address: '', latitude: '', longitude: ''})">
@@ -160,9 +160,8 @@
                                             </button>
                                         </div>
                                     </div>
-                                    {{isLoading}}
                                     <ng-container *ngFor="let item of items, let i = index;">
-                                        <mat-accordion  *ngIf="isLoading">
+                                        <mat-accordion *ngIf="isLoading">
                                             <mat-expansion-panel class="example-headers-align">
                                                 <mat-expansion-panel-header>
                                                     <mat-panel-title>
@@ -260,7 +259,6 @@
                                                 </div>
                                             </mat-expansion-panel>
                                         </mat-accordion>
-
                                     </ng-container>
                                 </mat-tab>
                             </mat-tab-group>
