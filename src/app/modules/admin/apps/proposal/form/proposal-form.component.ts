@@ -11,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { AuthService } from 'app/core/auth/auth.service';
 import { UploadService } from 'app/services/upload.service';
+import { ToastrManager } from 'ng6-toastr-notifications';
+import { GeneralFunction } from 'app/shared/GeneralFunction';
 
 
 @Component({
@@ -21,6 +23,8 @@ import { UploadService } from 'app/services/upload.service';
 })
 export class ProposalFormComponent implements OnInit, OnDestroy {
  
+    public generalFunction = new GeneralFunction();
+
     verticalStepperForm: FormGroup;
     products: InventoryProduct[];
     selectedProduct: any;
@@ -57,6 +61,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         private _authService: AuthService,
         private readonly activatedRouter: ActivatedRoute,
         private translocoService: TranslocoService,
+        public toastr: ToastrManager,
         private uploadService: UploadService,
 
 
@@ -219,4 +224,22 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
           });
         });
       }
+
+    step1Next()
+    {
+        let status = this.generalFunction.formValidationCheck(this.verticalStepperForm,this.toastr,this.translocoService);
+        if(status)
+        {
+          return
+        }
+    }
+
+    step2Next()
+    {
+        let status = this.generalFunction.formValidationCheck(this.verticalStepperForm,this.toastr,this.translocoService);
+        if(status)
+        {
+          return
+        }
+    }
 }

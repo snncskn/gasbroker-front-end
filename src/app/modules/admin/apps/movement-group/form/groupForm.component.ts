@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
+import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { GroupService } from '../group.service';
@@ -17,6 +18,7 @@ import { GroupForm } from './groupForm';
 export class GroupFormComponent {
 
     dialogRef: MatDialogRef<ConfirmationDialog>;
+    public generalFunction = new GeneralFunction();
 
     groupForm: FormGroup;
     subGroupForm: any;
@@ -37,7 +39,7 @@ export class GroupFormComponent {
     ) {
         this.groupForm = this._formBuilder.group({
             id: [''],
-            description: [''],
+            description: ['', Validators.required],
         });
 
         this.subGroupForm = {
@@ -65,7 +67,7 @@ export class GroupFormComponent {
 
     add(item?: any) {
         const subGroupForm = this._formBuilder.group({
-            description: item.description || '',
+            description: [item.description || '', Validators.required],
             group_id: this.groupForm.value.id,
             id: item.id || ''
         });
@@ -77,9 +79,15 @@ export class GroupFormComponent {
     }
 
     addGroup() {
-        if (this.groupForm.value.description === '') {
-            this.toastr.errorToastr(this.translocoService.translate('message.groupNameRequired'));
-            return;
+        let status = this.generalFunction.formValidationCheck(this.groupForm,this.toastr,this.translocoService);
+        let status2 = this.generalFunction.formValidationCheck(this.formSubGroup,this.toastr,this.translocoService);
+        if(status)
+        {
+          return
+        }
+        if(status2)
+        {
+          return
         }
         this._groupService.createProcessGroup(this.groupForm.value).subscribe(data => {
             this.groupId = data.body.id

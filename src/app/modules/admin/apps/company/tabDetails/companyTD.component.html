@@ -29,7 +29,7 @@
                             <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
                         </button>
                         <button class="" mat-flat-button [color]="'primary'"
-                            [disabled]="customerForm.invalid || customerForm.pristine" (click)="addNewCompany()">
+                             (click)="addNewCompany()">
                             <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                         </button>
                     </div>
@@ -146,6 +146,7 @@
                                     </mat-form-field>
                                 </div>
                             </mat-tab>
+                            <ng-container *ngIf="isEditUser">
                             <mat-tab label="{{ t('company.details.tab.address') }}">
                                 <div class="flex items w-full" *ngIf="isLoadAddress">
                                     <div class="w-full ml-2">
@@ -329,6 +330,7 @@
                             </mat-tab>
 
                             <mat-tab label="{{ t('company.details.tab.approvalProcesses') }}">Content 3</mat-tab>
+                        </ng-container>
                         </mat-tab-group>
                     </form>
                 </div>
