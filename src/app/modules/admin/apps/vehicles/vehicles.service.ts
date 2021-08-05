@@ -248,6 +248,11 @@ export class VehiclesService {
             );
         }
 
+    getVehicleDocs():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/COMPANY_DOCS`; //Vehicle Docs eklenince değiştirilecek..
+        return this._httpClient.get<any>(url);
+    }
     /**
      * Create customer
      */
