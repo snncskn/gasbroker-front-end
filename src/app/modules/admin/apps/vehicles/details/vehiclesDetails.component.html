@@ -84,7 +84,22 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="{{ t('vehicles.details.tab.documentList') }}">Content 3</mat-tab>
+                    <mat-tab label="{{ t('vehicles.details.tab.documentList') }}">
+                        <div *ngFor="let item of  dataSourceDocs">
+                            {{item.description}}
+                            <form [formGroup]="demoForm">
+                                <file-upload formControlName="files" [multiple]="multiple"
+                                    [animation]="animation">
+                                </file-upload>
+                                <input type="hidden" formControlName="label" [ngModel]="item.description">
+                            </form>
+
+                        </div>
+
+                        <button mat-flat-button [color]="'primary'" (click)="upload()">
+                            {{ t('company.details.tab.documentList.button.upload') }}
+                        </button>
+                    </mat-tab>
 
                     <mat-tab label="{{ t('vehicles.details.tab.approvalProcesses') }}">Content 3</mat-tab>
                 </mat-tab-group>

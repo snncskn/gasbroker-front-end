@@ -30,6 +30,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ConfirmationModule } from '../delete-dialog/delete.module';
+import { FileUploadModule } from '@iplab/ngx-file-upload';
 
 @NgModule({
     declarations: [
@@ -64,6 +65,7 @@ import { ConfirmationModule } from '../delete-dialog/delete.module';
         FuseFindByKeyPipeModule,
         VehiclesRoutingModule,
         TranslocoModule,
+        FileUploadModule,
         ConfirmationModule,
         SharedModule
     ],
