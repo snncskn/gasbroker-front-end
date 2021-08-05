@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
+import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -18,6 +19,7 @@ import { VehiclesService } from '../vehicles.service';
 export class VehiclesDetailsComponent implements OnInit {
 
     dialogRef: MatDialogRef<ConfirmationDialog>;
+    public generalFunction = new GeneralFunction();
 
     vehicleForm: FormGroup;
     dataSourceTypes: any[];
@@ -45,11 +47,11 @@ export class VehiclesDetailsComponent implements OnInit {
         this.list();
         this.vehicleForm = this._formBuilder.group({
             id: [''],
-            type: [''],
-            name: ['', [Validators.required]],
-            company: ['',[Validators.required]],
             company_id: [''],
-            registered_date: [null],
+            company: ['',[Validators.required]],
+            name: ['', [Validators.required]],
+            type: ['',[Validators.required]],
+            registered_date: [null,[Validators.required]],
         });
         
      
@@ -58,6 +60,7 @@ export class VehiclesDetailsComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
         this._vehicleService.getTypes().subscribe(res => {
             this.dataSourceTypes = res.body;
         });
@@ -65,6 +68,12 @@ export class VehiclesDetailsComponent implements OnInit {
     }
 
     addNewVehicle() {
+        let status = this.generalFunction.formValidationCheck(this.vehicleForm,this.toastr,this.translocoService);
+        if(status)
+        {
+          return
+        }
+        
         let createVehicle = {
             id: '', type: '', name: '', company_id: '', registered_date: ''};
 

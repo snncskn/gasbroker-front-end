@@ -20,6 +20,7 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { TranslocoService } from "@ngneat/transloco";
 import { ConfirmationDialog } from "../../delete-dialog/delete.component";
 import { MatSidenavContainer } from "@angular/material/sidenav";
+import { GeneralFunction } from "app/shared/GeneralFunction";
 
 
 @Component({
@@ -33,6 +34,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
   
   dialogRef: MatDialogRef<ConfirmationDialog>;
+  public generalFunction = new GeneralFunction();
 
   productForm: FormGroup;
   formSubProduct: FormGroup;
@@ -110,12 +112,12 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
 
     }
     const subProductForm = this._formBuilder.group({
-      unit: item.unit,
+      unit: [item.unit],
       name: item.name,
-      product: tmpProduct,
+      product: [tmpProduct, Validators.required],
       product_id: item.product_id || '',
       id: item.id || '',
-      quantity: item.quantity || '',
+      quantity: [item.quantity || '', Validators.required],
     });
      
     this.subProductItems.push(subProductForm);
@@ -126,6 +128,16 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
   }
 
   addNewProduct() {
+    let status = this.generalFunction.formValidationCheck(this.productForm,this.toastr,this.translocoService);
+    let status2 = this.generalFunction.formValidationCheck(this.formSubProduct,this.toastr,this.translocoService);
+    if(status)
+    {
+      return
+    }
+    if(status2)
+    {
+      return
+    }
     this._productService.createProduct(this.productForm.value).subscribe((data) => {
       
       this.toastr.successToastr(this.translocoService.translate('message.createProduct'));
