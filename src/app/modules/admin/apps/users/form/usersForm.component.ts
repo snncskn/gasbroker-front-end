@@ -12,6 +12,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { TranslocoService } from '@ngneat/transloco';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { GeneralFunction } from 'app/shared/GeneralFunction';
 
 @Component({
     selector: 'users-form',
@@ -22,6 +23,7 @@ import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 export class UsersFormComponent implements OnInit {
 
     dialogRef: MatDialogRef<ConfirmationDialog>;
+    public generalFunction = new GeneralFunction();
 
     usersForm: FormGroup;
     resetPassForm: FormGroup;
@@ -129,9 +131,9 @@ export class UsersFormComponent implements OnInit {
 
         this.usersForm = this._formBuilder.group({
             id: [''],
-            name: [''],
-            email: [''],
-            username: [''],
+            name: ['', Validators.required],
+            username: ['', Validators.required],
+            email: ['', Validators.required],
             password: [''],
             confirmPassword: [''],
             website: [''],
@@ -188,6 +190,11 @@ export class UsersFormComponent implements OnInit {
     }
 
     saveUsers() {
+        let status = this.generalFunction.formValidationCheck(this.usersForm,this.toastr,this.translocoService);
+        if(status)
+        {
+          return
+        }
         if (this.usersForm.value.id) {
             this.usersForm.value.permissions = {ids:this.selectedMenuWithUser}; 
             this._usersService.updateUser(this.usersForm.value.id, this.usersForm.value).subscribe(data => {

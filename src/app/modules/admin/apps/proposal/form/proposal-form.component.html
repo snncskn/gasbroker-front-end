@@ -84,7 +84,7 @@
 
                             <br>
                             <div class="flex justify-end">
-                                <button class="px-8" mat-flat-button [color]="'primary'" type="button" matStepperNext>
+                                <button class="px-8" mat-flat-button [color]="'primary'" (click)="step1Next()" type="button" matStepperNext>
                                     {{ t('proposals.button.next') }}
                                 </button>
                             </div>
@@ -136,7 +136,7 @@
                                     matStepperPrevious>
                                     {{ t('proposals.button.back') }}
                                 </button>
-                                <button class="px-8" mat-flat-button [color]="'primary'" type="button" matStepperNext>
+                                <button class="px-8" mat-flat-button [color]="'primary'" (click)="step2Next()" type="button" matStepperNext>
                                     {{ t('proposals.button.next') }}
                                 </button>
                             </div>

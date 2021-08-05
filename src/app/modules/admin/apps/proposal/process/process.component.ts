@@ -20,6 +20,8 @@ import { ConfirmationDialog } from "../../delete-dialog/delete.component";
 import { MatSidenavContainer } from "@angular/material/sidenav";
 import { ProductService } from "../../product/product.service";
 import { ProposalService } from "../proposals.service";
+import moment from "moment";
+import { GeneralFunction } from "app/shared/GeneralFunction";
 
 
 @Component({
@@ -33,8 +35,9 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
+  public generalFunction = new GeneralFunction();
 
-  isLoading:boolean=false;
+  isLoading:boolean =  false;
   processForm: FormGroup;
   dataSourceGroup: any[];
   dataSourceSubGroup: any[];
@@ -86,12 +89,12 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
       captain_id: [''],
       agency_id: [''],
       loading_master_id: [''],
-      vendor: [''],
-      recipient: [''],
-      broker: [''],
-      captain: [''],
-      agency: [''],
-      loading_master: [''],
+      vendor: ['', Validators.required],
+      recipient: ['', Validators.required],
+      broker: ['', Validators.required],
+      captain: ['', Validators.required],
+      agency: ['', Validators.required],
+      loading_master: ['', Validators.required],
 
     });
     this._proposalService.getProcessGroup().subscribe(res => {
@@ -107,11 +110,11 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
         })
         let processByID = this._proposalService.getProcessByProposalId(params.get("id"));
         let customer = this._proposalService.getCustomers();
-        let detail = this._proposalService.getProcessItemsByProcessId(params.get("id"));
-        forkJoin(processByID,customer,detail).subscribe(result => {
+      
+        forkJoin(processByID,customer).subscribe(result => {
           this.customers = result[1].body;
           let bodyForm  = result[0].body;
-          
+          this.isLoading = true;
           this.processForm.patchValue({
             id:bodyForm.id,
             voyage_code:bodyForm.voyage_code,
@@ -128,8 +131,12 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
             recipient:this.customers.find(item =>item.id === bodyForm.recipient_id),
             recipient_id:bodyForm.recipient_id,
            });
-           this.items = result[2].body;
-           this.isLoading = true;
+           this._proposalService.getProcessItemsByProcessId(bodyForm.id).subscribe( items =>{
+            this.items = items.body;
+            this.isLoading = true;
+           },error=>{
+            this.isLoading = true;
+           });
            this.ngxService.stop();
         });
        }
@@ -202,6 +209,11 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
   addNewProcess()
   {
+    let status = this.generalFunction.formValidationCheck(this.processForm,this.toastr,this.translocoService);
+    if(status)
+    {
+      return
+    }
     this._proposalService.createProcess(this.processForm.value).subscribe(data=>{
       this._router.navigate(["/apps/proposals/list"]);
     })
@@ -217,7 +229,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
   saveProcessItems(item: any)
   {
-    item.proposal_id = this.processForm.value.proposal_id;
+    item.process_id = this.processForm.value.id;
     this._proposalService.createProcessItem(item).subscribe(data=>{
     });
   }
@@ -243,5 +255,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     }else{
       this.items = this.items.filter((it,index) => index !==i);
     }
+  }
+  processDateChange(item,value){
+    item.process_date = moment(value,"DD-MM-YYYY");
   }
 }

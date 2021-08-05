@@ -1,28 +1,16 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewEncapsulation,
-} from "@angular/core";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router";
-import { FileUploadValidators } from "@iplab/ngx-file-upload";
-import { TranslocoService } from "@ngneat/transloco";
-import { FileService } from"app/services/file.service";
-import { Console } from "console";
-import { cloneDeep } from "lodash";
-import { ToastrManager } from "ng6-toastr-notifications";
-import { ConfirmationDialog } from "../../delete-dialog/delete.component";
-import { CustomersService } from "../company.service";
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
+import { GeneralFunction } from 'app/shared/GeneralFunction';
+import { cloneDeep, isNull } from 'lodash';
+import { ToastrManager } from 'ng6-toastr-notifications';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { CustomersService } from '../company.service';
 import { MediaService } from "../../media/media.service";
 import { AuthService } from 'app/core/auth/auth.service';
-
+import { FileService } from 'app/services/file.service';
 @Component({
   selector: "companyTD",
   templateUrl: "./companyTD.component.html",
@@ -32,7 +20,9 @@ import { AuthService } from 'app/core/auth/auth.service';
 })
 export class CustomersTDComponent implements OnInit {
   dialogRef: MatDialogRef<ConfirmationDialog>;
+  public generalFunction = new GeneralFunction();
 
+  isEditUser:boolean=false;
   customerForm: FormGroup;
   dataSourceTypes: any[];
   dataSourceDocs: any[];
@@ -89,16 +79,16 @@ export class CustomersTDComponent implements OnInit {
     this.newAddressItem = { expanded: true, isNew: true, position: center };
 
     this.customerForm = this._formBuilder.group({
-      id: [""],
-      types: [null],
-      full_name: ["", [Validators.required]],
-      email: [null],
-      phone: [null],
-      name: ["", [Validators.required]],
-      website: [null],
-      registered_date: [null],
-      tax_number: [""],
-      tax_office: [""],
+        id: [''],
+        full_name: ['', [Validators.required]],
+        name: ['', [Validators.required]],
+        types: ['', Validators.required],
+        registered_date: [null,Validators.required],
+        tax_office: ['', Validators.required],
+        tax_number: ['', Validators.required],
+        phone: [null, Validators.required],
+        email: [null, Validators.required],
+        website: [null],
     });
 
     this.addressesForm = this._formBuilder.group({
@@ -111,19 +101,20 @@ export class CustomersTDComponent implements OnInit {
       long: [""],
     });
 
-    this.activatedRouter.paramMap.subscribe((params) => {
-      if (params.has("id")) {
-        this._customersService.getCompanyById(params.get("id")).subscribe(
-          (data) => {
-            //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
-            this.companyDetail = data.body.id;
-            this.customerForm.patchValue(data.body);
-            this.addressesForm.patchValue({ company_id: data.body.id });
-            this.loadAddress();
-          },
-          (error) => {}
-        );
-      }
+    this.activatedRouter.paramMap.subscribe(params => {
+        if (params.has('id')) {
+          this.isEditUser=true;
+            this._customersService.getCompanyById(params.get("id")).subscribe(data => {
+                //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
+                this.companyDetail = data.body.id;
+                this.customerForm.patchValue(data.body);
+                this.addressesForm.patchValue({company_id:data.body.id})
+                this.loadAddress();
+                
+            },error=>{
+                
+            })
+        };
     });
 
     this._customersService.getTypes().subscribe((res) => {
@@ -137,6 +128,11 @@ export class CustomersTDComponent implements OnInit {
   ngOnInit(): void {}
 
   addNewCompany() {
+    let status = this.generalFunction.formValidationCheck(this.customerForm,this.toastr,this.translocoService);
+    if(status)
+    {
+      return
+    }
     let createCompany = {
       id: "",
       types: "",
