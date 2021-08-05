@@ -19,8 +19,7 @@
                     <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                     <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
                 </button>
-                <button class="" mat-flat-button [color]="'primary'"
-                    [disabled]="vehicleForm.invalid || vehicleForm.pristine" (click)="addNewVehicle()">
+                <button class="" mat-flat-button [color]="'primary'" (click)="addNewVehicle()">
                     <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                 </button>
             </div>

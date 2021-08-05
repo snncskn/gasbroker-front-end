@@ -5,8 +5,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FileUploadValidators } from '@iplab/ngx-file-upload';
 import { TranslocoService } from '@ngneat/transloco';
 import { UploadService } from 'app/services/upload.service';
+import { GeneralFunction } from 'app/shared/GeneralFunction';
+import { valid } from 'chroma-js';
 import { Console } from 'console';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isNull } from 'lodash';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { CustomersService } from '../company.service';
@@ -21,7 +23,9 @@ import { CustomersService } from '../company.service';
 export class CustomersTDComponent implements OnInit {
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
+  public generalFunction = new GeneralFunction();
 
+  isEditUser:boolean=false;
   customerForm: FormGroup;
   dataSourceTypes: any[];
   dataSourceDocs: any[];
@@ -79,15 +83,15 @@ export class CustomersTDComponent implements OnInit {
 
     this.customerForm = this._formBuilder.group({
         id: [''],
-        types: [null],
         full_name: ['', [Validators.required]],
-        email: [null],
-        phone: [null],
         name: ['', [Validators.required]],
+        types: ['', Validators.required],
+        registered_date: [null,Validators.required],
+        tax_office: ['', Validators.required],
+        tax_number: ['', Validators.required],
+        phone: [null, Validators.required],
+        email: [null, Validators.required],
         website: [null],
-        registered_date: [null],
-        tax_number: [''],
-        tax_office: [''],
     });
 
     this.addressesForm = this._formBuilder.group({
@@ -102,6 +106,7 @@ export class CustomersTDComponent implements OnInit {
 
     this.activatedRouter.paramMap.subscribe(params => {
         if (params.has('id')) {
+          this.isEditUser=true;
             this._customersService.getCompanyById(params.get("id")).subscribe(data => {
                 //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
                 this.companyDetail = data.body.id;
@@ -129,6 +134,11 @@ export class CustomersTDComponent implements OnInit {
   ngOnInit(): void {}
 
   addNewCompany() {
+    let status = this.generalFunction.formValidationCheck(this.customerForm,this.toastr,this.translocoService);
+    if(status)
+    {
+      return
+    }
     let createCompany = {
       id: "",
       types: "",

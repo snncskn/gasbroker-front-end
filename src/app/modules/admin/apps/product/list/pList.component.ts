@@ -38,6 +38,9 @@ import { Router } from "@angular/router";
 import { MatDrawer } from "@angular/material/sidenav";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ConfirmationDialog } from "../../delete-dialog/delete.component";
+import { GeneralFunction } from "app/shared/GeneralFunction";
+import { ToastrManager } from "ng6-toastr-notifications";
+import { TranslocoService } from "@ngneat/transloco";
 
 @Component({
   selector: "pList-list",
@@ -54,7 +57,7 @@ export class InventoryListComponent
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
-
+  public generalFunction = new GeneralFunction();
   products$: Observable<InventoryProduct[]>;
   dialogRef: MatDialogRef<ConfirmationDialog>;
 
@@ -104,16 +107,18 @@ export class InventoryListComponent
     private _productService: ProductService,
     private readonly ngxService: NgxUiLoaderService,
     private _inventoryService: ProductService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public toastr: ToastrManager,
+    private translocoService: TranslocoService,
   ) { }
 
   ngOnInit(): void {
     // Create the selected product form
     this.selectedProductForm = this._formBuilder.group({
       id: [""],
-      code: [""],
-      name: [""],
-      unit: [""],
+      code: ["",Validators.required],
+      name: ["",Validators.required],
+      unit: ["",Validators.required],
       // properties: [[]],
       // categories: [[]],
       images: [[]],
@@ -494,6 +499,11 @@ export class InventoryListComponent
   }
 
   updateSelectedProduct(): void {
+    let status = this.generalFunction.formValidationCheck(this.selectedProductForm,this.toastr,this.translocoService);
+    if(status)
+    {
+      return
+    }
     // Get the product object
     const product = this.selectedProductForm.getRawValue();
     this.ngxService.start();
