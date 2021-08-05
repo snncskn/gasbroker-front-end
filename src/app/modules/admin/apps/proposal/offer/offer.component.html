@@ -30,12 +30,13 @@
             <div class="flex flex-col-2 gt-xs:flex-row">
                 <mat-form-field class="w-3/4">
                     <mat-label>{{ t('proposals.offerList.price') }}</mat-label>
-                    <input type="text" placeholder="{{ t('proposals.offerList.price') }}" matInput formControlName="price">
+                    <input type="text" placeholder="{{ t('proposals.offerList.price') }}" matInput formControlName="price" 
+                    mvndrMatCurrencyFormat [allowNegative]="false" currencyCode="{{currency}}" [value]="usAmount" (blur)="updateUSAmount($event)">
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:cash'"></mat-icon>
                 </mat-form-field>
                 <mat-form-field class="w-1/4 ml-2">
                     <mat-label>{{ t('proposals.offerList.currency') }}</mat-label>
-                    <mat-select [formControlName]="'currency'">
+                    <mat-select [formControlName]="'currency'" (selectionChange)="selectedCurrency($event.value)">
                         <mat-option *ngFor="let option of dataSourceCurrencyTypes" [value]="option.description">
                             <ng-container>
                                 {{option.description | titlecase}}
