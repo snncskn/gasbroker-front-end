@@ -19,6 +19,11 @@ export class OfferComponent implements OnInit {
   dataSourceCurrencyTypes: any[];
   dataSourcePaymentTypes: any[];
 
+  currency = "$";
+  usAmount = 100;
+  updateUSAmount(event) {
+    this.usAmount = event.target.value;
+  }
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _proposalService: ProposalService,
@@ -48,6 +53,11 @@ export class OfferComponent implements OnInit {
       currency:['', Validators.required],
       deal_status:['', Validators.required],
     });
+  }
+
+  selectedCurrency(value)
+  {
+    this.currency=value;
   }
 
   saveOffer(){
