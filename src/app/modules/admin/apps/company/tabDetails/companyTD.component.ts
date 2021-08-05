@@ -249,6 +249,7 @@ export class CustomersTDComponent implements OnInit {
   }
 
   upload() {
+    
     const file = this.demoForm.value.files[0];
     this.fileService.putUrl(file).then((res) => {
       const {
@@ -281,22 +282,6 @@ export class CustomersTDComponent implements OnInit {
           this.toastr.errorToastr(
             this.translocoService.translate("message.error")
           );
-
-          let key = this._authService.user_id + '/'+ file.name;
-
-          this.mediaService
-          .createMedia({
-            id: null,
-            company_id: this.companyDetail,
-            title: "CompanyFile",
-            user_id: this._authService.user_id,
-            path: JSON.stringify(key),
-          })
-          .subscribe((data) => {
-            this.toastr.successToastr(
-              this.translocoService.translate("message.createMedia")
-            );
-          });
         }
       );
     });

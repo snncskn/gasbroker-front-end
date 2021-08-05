@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
-import { UploadService } from 'app/services/upload.service';
+import { FileService } from 'app/services/file.service';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
@@ -49,7 +49,7 @@ export class VehiclesDetailsComponent implements OnInit {
         private _vehicleService: VehiclesService,
         public toastr: ToastrManager,
         private _router: Router,
-        private uploadService: UploadService,
+        private fileService: FileService,
         private readonly activatedRouter: ActivatedRoute,
         private translocoService: TranslocoService,
         private dialog: MatDialog
@@ -190,12 +190,12 @@ export class VehiclesDetailsComponent implements OnInit {
     
       upload() {
         const file = this.demoForm.value.files[0];
-        this.uploadService.putUrl(file).then((res) => {
+        this.fileService.putUrl(file).then((res) => {
           const {
             data: { putURL },
           } = res;
     
-          this.uploadService.upLoad(putURL, file).then((res) => {
+          this.fileService.upLoad(putURL, file).then((res) => {
             this.toastr.warningToastr("Yuppii...", "Success!");
             // this.mediaService.create({id:null,company_id: this.companyDetail, title: ret.putURL}).subscribe((data) => { });
           });
