@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
+import { UploadService } from 'app/services/upload.service';
+import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -18,6 +20,7 @@ import { VehiclesService } from '../vehicles.service';
 export class VehiclesDetailsComponent implements OnInit {
 
     dialogRef: MatDialogRef<ConfirmationDialog>;
+    public generalFunction = new GeneralFunction();
 
     vehicleForm: FormGroup;
     dataSourceTypes: any[];
@@ -25,8 +28,19 @@ export class VehiclesDetailsComponent implements OnInit {
     customers: any[];
     filteredOptions: Observable<string[]>;
     selectCustomerItem: any;
+    dataSourceDocs: any[];
 
+  //file upload
+  public animation: boolean = false;
+  public multiple: boolean = false;
+  private filesControl = new FormControl(null);
+  private label = new FormControl(null);
 
+  public demoForm = new FormGroup({
+    files: this.filesControl,
+    label: this.label,
+  });
+  //file upload
 
 
     constructor(
@@ -35,6 +49,7 @@ export class VehiclesDetailsComponent implements OnInit {
         private _vehicleService: VehiclesService,
         public toastr: ToastrManager,
         private _router: Router,
+        private uploadService: UploadService,
         private readonly activatedRouter: ActivatedRoute,
         private translocoService: TranslocoService,
         private dialog: MatDialog
@@ -45,11 +60,11 @@ export class VehiclesDetailsComponent implements OnInit {
         this.list();
         this.vehicleForm = this._formBuilder.group({
             id: [''],
-            type: [''],
-            name: ['', [Validators.required]],
-            company: ['',[Validators.required]],
             company_id: [''],
-            registered_date: [null],
+            company: ['',[Validators.required]],
+            name: ['', [Validators.required]],
+            type: ['',[Validators.required]],
+            registered_date: [null,[Validators.required]],
         });
         
      
@@ -58,13 +73,22 @@ export class VehiclesDetailsComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
         this._vehicleService.getTypes().subscribe(res => {
             this.dataSourceTypes = res.body;
         });
-       
+        this._vehicleService.getVehicleDocs().subscribe(res => {
+            this.dataSourceDocs = res.body;
+        });
     }
 
     addNewVehicle() {
+        let status = this.generalFunction.formValidationCheck(this.vehicleForm,this.toastr,this.translocoService);
+        if(status)
+        {
+          return
+        }
+        
         let createVehicle = {
             id: '', type: '', name: '', company_id: '', registered_date: ''};
 
@@ -149,4 +173,32 @@ export class VehiclesDetailsComponent implements OnInit {
               });
         }
     }
+
+    public toggleStatus(): void {
+        this.filesControl.disabled
+          ? this.filesControl.enable()
+          : this.filesControl.disable();
+      }
+    
+      public toggleMultiple() {
+        this.multiple = !this.multiple;
+      }
+    
+      public clear(): void {
+        this.filesControl.setValue([]);
+      }
+    
+      upload() {
+        const file = this.demoForm.value.files[0];
+        this.uploadService.putUrl(file).then((res) => {
+          const {
+            data: { putURL },
+          } = res;
+    
+          this.uploadService.upLoad(putURL, file).then((res) => {
+            this.toastr.warningToastr("Yuppii...", "Success!");
+            // this.mediaService.create({id:null,company_id: this.companyDetail, title: ret.putURL}).subscribe((data) => { });
+          });
+        });
+      }
 }

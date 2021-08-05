@@ -60,6 +60,7 @@
     "message.updateProcessItem": "İşlem öğesi güncellendi",
     "message.savedProcessItem": "İşlem öğesi kaydedildi",
     "message.deleteProcessItem": "İşlem öğesi silindi!",
+    "message.required": " Zorunludur",
 
 
 
@@ -210,5 +211,37 @@
         "users.details.tab.generalInfo.confirmPass": "Şifreyi Onayla",
     "users.details.tab.resetPass": "Şifre Sıfırla",
         "users.details.tab.resetPass.newPass": "Yeni Şifre",
-        "users.details.tab.resetPass.confirmNewPass": "Yeni Şifreyi Onayla"
+        "users.details.tab.resetPass.confirmNewPass": "Yeni Şifreyi Onayla",
+
+    
+    "types": "Tür ",
+    "full_name": "Tüm Adı ",
+    "email": "E posta ",
+    "phone": "Telefon ",
+    "name": "Ad ",
+    "registered_date": "Kayıt Tarihi ",
+    "tax_number": "Vergi Numarası ",
+    "tax_office": "Vergi Dairesi ",
+    "code": "Kod ",
+    "unit": "Birim ",
+    "product": "Ürün ",
+    "quantity": "Miktar ",
+    "subProductItems": "Alt Ürün ",
+    "company": "Müşteri ",
+    "description": "Grup Adı ",
+    "subGroupItems": "Alt Grup Adı ",
+    "username": "Kullanıcı Adı ",
+    "offer_date": "Teklif Tarihi ",
+    "payment_type": "Ödeme Türü ",
+    "price": "Fiyat ",
+    "currency": "Para Birimi ",
+    "deal_status": "Anlaşma Durumu ",
+    "vendor": "Satıcı ",
+    "recipient": "Alıcı ",
+    "broker": "Komisyoncu ",
+    "captain": "Kaptan ",
+    "agency": "Ajans ",
+    "loading_master": "Yükleme Yöneticisi ",
+    "step1": "Adım-1 Alanlar ",
+    "step2": "Adım-2 Alanlar "
 }

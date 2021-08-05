@@ -21,6 +21,7 @@ import { MatSidenavContainer } from "@angular/material/sidenav";
 import { ProductService } from "../../product/product.service";
 import { ProposalService } from "../proposals.service";
 import moment from "moment";
+import { GeneralFunction } from "app/shared/GeneralFunction";
 
 
 @Component({
@@ -34,6 +35,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
+  public generalFunction = new GeneralFunction();
 
   isLoading:boolean =  false;
   processForm: FormGroup;
@@ -87,12 +89,12 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
       captain_id: [''],
       agency_id: [''],
       loading_master_id: [''],
-      vendor: [''],
-      recipient: [''],
-      broker: [''],
-      captain: [''],
-      agency: [''],
-      loading_master: [''],
+      vendor: ['', Validators.required],
+      recipient: ['', Validators.required],
+      broker: ['', Validators.required],
+      captain: ['', Validators.required],
+      agency: ['', Validators.required],
+      loading_master: ['', Validators.required],
 
     });
     this._proposalService.getProcessGroup().subscribe(res => {
@@ -207,6 +209,11 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
   addNewProcess()
   {
+    let status = this.generalFunction.formValidationCheck(this.processForm,this.toastr,this.translocoService);
+    if(status)
+    {
+      return
+    }
     this._proposalService.createProcess(this.processForm.value).subscribe(data=>{
       this._router.navigate(["/apps/proposals/list"]);
     })

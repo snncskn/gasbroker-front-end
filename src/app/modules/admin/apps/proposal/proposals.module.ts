@@ -37,6 +37,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProposalProcessComponent } from './process/process.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCurrencyFormatModule } from 'mat-currency-format';
 
 @NgModule({
     declarations: [
@@ -77,6 +78,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
         MatPaginatorModule,
         MatExpansionModule,
         GoogleMapsModule,
+        MatCurrencyFormatModule,
         FileUploadModule,
         ConfirmationModule,
         TranslocoModule

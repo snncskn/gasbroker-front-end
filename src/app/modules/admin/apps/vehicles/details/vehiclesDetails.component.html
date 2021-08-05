@@ -19,8 +19,7 @@
                     <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                     <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
                 </button>
-                <button class="" mat-flat-button [color]="'primary'"
-                    [disabled]="vehicleForm.invalid || vehicleForm.pristine" (click)="addNewVehicle()">
+                <button class="" mat-flat-button [color]="'primary'" (click)="addNewVehicle()">
                     <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                 </button>
             </div>
@@ -85,7 +84,22 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="{{ t('vehicles.details.tab.documentList') }}">Content 3</mat-tab>
+                    <mat-tab label="{{ t('vehicles.details.tab.documentList') }}">
+                        <div *ngFor="let item of  dataSourceDocs">
+                            {{item.description}}
+                            <form [formGroup]="demoForm">
+                                <file-upload formControlName="files" [multiple]="multiple"
+                                    [animation]="animation">
+                                </file-upload>
+                                <input type="hidden" formControlName="label" [ngModel]="item.description">
+                            </form>
+
+                        </div>
+
+                        <button mat-flat-button [color]="'primary'" (click)="upload()">
+                            {{ t('company.details.tab.documentList.button.upload') }}
+                        </button>
+                    </mat-tab>
 
                     <mat-tab label="{{ t('vehicles.details.tab.approvalProcesses') }}">Content 3</mat-tab>
                 </mat-tab-group>
