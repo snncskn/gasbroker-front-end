@@ -17,6 +17,7 @@ export class CustomersService {
     private _company: BehaviorSubject<Company | null> = new BehaviorSubject(null);
     private _companies: BehaviorSubject<Company[] | null> = new BehaviorSubject(null);
     private _addresses:BehaviorSubject<Address[] | null>= new BehaviorSubject(null);
+    private _approvals:BehaviorSubject<any[] | null>= new BehaviorSubject(null);
     private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
@@ -65,6 +66,10 @@ export class CustomersService {
         return this._addresses.asObservable();
     }
 
+    get approvals$(): Observable<any[]> {
+        return this._approvals.asObservable();
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -102,6 +107,21 @@ export class CustomersService {
         Observable<any> {
         let url = `${environment.url}/parameter/category/COMPANY_DOCS`;
         return this._httpClient.get<any>(url);
+    }
+
+    getCompanyApprovalStatus():
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/COMPANY_APPROVAL_STATUS`;
+        return this._httpClient.get<any>(url);
+    }
+
+    getApprovals(id:any): Observable<any>
+    {
+        return this._httpClient.get<any[]>(`${environment.url}/company-approval/approvals/${id}`).pipe(
+            tap((response: any[]) => {
+                this._approvals.next(response);
+            })
+        );
     }
 
     /**
@@ -170,6 +190,19 @@ export class CustomersService {
     
         }
     }
+
+    createApproval(approval: any): Observable<any>
+    {
+        return this.approvals$.pipe(
+            take(1),
+            switchMap(approvals => this._httpClient.post<any>(`${environment.url}/company-approval`, approval).pipe(
+                map((newApproval) => {
+                    return newApproval;
+                })
+            ))
+        );
+    }
+
     deleteAddress(address: any): Observable<any>
     {
         let url = `${environment.url}/address/delete/`;
