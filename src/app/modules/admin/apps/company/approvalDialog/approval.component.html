@@ -1,0 +1,29 @@
+<div mat-dialog-content *transloco="let t;">
+    <form style="width: 450px!important" [formGroup]="approvalForm">
+        <div class="flex p-3 w-full">
+            <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+                <mat-label>Description</mat-label>
+                <textarea matInput matTextareaAutosize [formControlName]="'description'" [placeholder]="'Description'"
+                    [spellcheck]="false">
+                </textarea>
+            </mat-form-field>
+        </div>
+        <div class="grid justify-items-end mt-2 w-full">
+            <div class="flex">
+                <button
+                    mat-flat-button
+                    [color]="'warn'"
+                    (click)="closeDialog()">
+                    {{ t('proposals.button.close') }}
+                </button>
+                <button
+                    class="ml-2"
+                    mat-flat-button
+                    [color]="'primary'"
+                    (click)="saveApproval()">
+                    {{ t('button.save') }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
