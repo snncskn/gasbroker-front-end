@@ -13,7 +13,7 @@ import { authResetPasswordRoutes } from 'app/modules/auth/reset-password/reset-p
 
 @NgModule({
     declarations: [
-        AuthResetPasswordComponent
+        AuthResetPasswordComponent,
     ],
     imports     : [
         RouterModule.forChild(authResetPasswordRoutes),

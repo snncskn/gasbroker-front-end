@@ -5,6 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseValidators } from '@fuse/validators';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector     : 'auth-reset-password',
@@ -16,6 +17,7 @@ export class AuthResetPasswordComponent implements OnInit
 {
     @ViewChild('resetPasswordNgForm') resetPasswordNgForm: NgForm;
 
+    isToken: boolean = false;
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
         message: ''
@@ -28,9 +30,22 @@ export class AuthResetPasswordComponent implements OnInit
      */
     constructor(
         private _authService: AuthService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _router: Router,
+        private readonly activatedRouter: ActivatedRoute,
     )
     {
+        this.activatedRouter.paramMap.subscribe(params => {
+            if (params.has('id')) {
+                this._authService.getToken().subscribe(tokens => {
+                    console.log(tokens)
+                })
+                if(params.get('id')=='4444')
+                {
+                    this.isToken=true;
+                }
+            }
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
