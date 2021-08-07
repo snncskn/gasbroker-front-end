@@ -17,10 +17,11 @@
                     <!-- Title -->
                     <div class="text-4xl font-extrabold tracking-tight">
                         <button class="fuse-mat-button-rounded mt-2" [routerLink]="['/apps/proposals']" mat-icon-button
-                        [color]="'primary'">
-                        <mat-icon matPrefix class="hidden sm:flex icon-size-6" [svgIcon]="'heroicons_outline:arrow-left'">
-                        </mat-icon>
-                      </button>
+                            [color]="'primary'">
+                            <mat-icon matPrefix class="hidden sm:flex icon-size-6"
+                                [svgIcon]="'heroicons_outline:arrow-left'">
+                            </mat-icon>
+                        </button>
                         {{ t('text.details') }}
                     </div>
 
@@ -35,8 +36,7 @@
                     </div>
                 </div>
                 <mat-sidenav-container>
-                    <div
-                        class="relative my-5 mx-5 pb-4 p-8 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
+                    <div class="relative my-5 mx-5 pb-4 p-8 bg-card shadow overflow-hidden ng-pristine rounded-2xl">
                         <mat-form class="flex flex-col w-full" [formGroup]="processForm">
                             <mat-tab-group dynamicHeight>
                                 <mat-tab label="Genel Bilgiler">
@@ -167,106 +167,112 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <ng-container *ngFor="let item of items, let i = index;">
-                                        <mat-accordion *ngIf="isLoading">
-                                            <mat-expansion-panel class="example-headers-align">
-                                                <mat-expansion-panel-header>
-                                                    <mat-panel-title>
-                                                        Process Item
-                                                    </mat-panel-title>
-                                                    <mat-panel-description>
-                                                        <br>
-                                                        <button class="fuse-mat-button-rounded text-on-warn-100 ml-1"
-                                                            (click)="deleteProcessItem(item,i)" mat-icon-button
-                                                            [color]="'warn'">
-                                                            <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                                                                [svgIcon]="'heroicons_outline:trash'">
-                                                            </mat-icon>
-                                                        </button>
-                                                    </mat-panel-description>
-                                                </mat-expansion-panel-header>
-                                                <div class="flex items">
-                                                    <div class="ml-2 w-1/3">
-                                                        <div class="mt-6">
-                                                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                                <mat-label>{{ t('process.details.group') }}
-                                                                </mat-label>
-                                                                <mat-select
-                                                                    placeholder="{{ t('process.details.group') }}"
-                                                                    [(value)]="item.group_id"
-                                                                    (selectionChange)="changeGroup($event.value)">
-                                                                    <mat-option *ngFor="let option of dataSourceGroup"
-                                                                        [value]="option.id">
-                                                                        <ng-container>
-                                                                            {{option.description |
-                                                                            titlecase}}
-                                                                        </ng-container>
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="mt-6">
-                                                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                                <mat-label>{{ t('process.details.subGroup')
-                                                                    }}</mat-label>
-                                                                <mat-select [(value)]="item.group_sub_id"
-                                                                    placeholder="{{ t('process.details.subGroup') }}">
-                                                                    <mat-option
-                                                                        *ngFor="let option of dataSourceSubGroup"
-                                                                        [value]="option.id">
-                                                                        <ng-container>
-                                                                            {{option.description |
-                                                                            titlecase}}
-                                                                        </ng-container>
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="mt-6">
-                                                            <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                                <mat-label>{{ t('process.details.date') }}
-                                                                </mat-label>
-                                                                <input matInput 
-                                                                    [matDatepicker]="Datepicker"
-                                                                    #ref 
-                                                                    (dateChange)="processDateChange(item,ref.value)"
-                                                                    placeholder="{{ t('process.details.date') }}">
-                                                                <mat-datepicker-toggle matSuffix [for]="Datepicker">
-                                                                </mat-datepicker-toggle>
-                                                                <mat-datepicker #Datepicker>
-                                                                </mat-datepicker>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="mt-6 mb-6">
-                                                            <mat-form-field
-                                                                class="fuse-mat-textarea fuse-mat-no-subscript w-full">
-                                                                <mat-label>{{ t('process.details.address')
-                                                                    }}</mat-label>
-                                                                <textarea matInput matTextareaAutosize
-                                                                    [(value)]="item.address"
-                                                                    placeholder="{{ t('process.details.address') }}">
-                                                                 </textarea>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <button class="" mat-flat-button [color]="'primary'"
-                                                            (click)="saveProcessItems(item)">
-                                                            <span class="ml-2 mr-1">{{ t('button.save')
-                                                                }}</span>
-                                                        </button>
+                                    <div *ngIf="isLoading">
+                                        <div >
+                                            <mat-accordion >
+                                                <mat-expansion-panel  *ngFor="let item of items;let i = index; trackBy: trackItem;" 
+                                                [expanded]="item.open"     class="example-headers-align">
+                                                    <mat-expansion-panel-header >
+                                                        <mat-panel-title style="width: 450px;" >
+                                                         {{item.process_group.description}}->{{item.process_sub_group.description}}
+                                                        </mat-panel-title>
+                                                        <mat-panel-description>
+                                                            <br>
+                                                            <button
+                                                                class="fuse-mat-button-rounded text-on-warn-100 ml-1"
+                                                                (click)="deleteProcessItem(item,i)" mat-icon-button
+                                                                [color]="'warn'">
+                                                                <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                                    [svgIcon]="'heroicons_outline:trash'">
+                                                                </mat-icon>
+                                                            </button>
+                                                        </mat-panel-description>
+                                                    </mat-expansion-panel-header>
+                                                    <div class="flex items">
+                                                        <div class="ml-2 w-1/3">
+                                                            <div class="mt-6">
+                                                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                                    <mat-label>{{ t('process.details.group') }}
+                                                                    </mat-label>
+                                                                    <mat-select
+                                                                        placeholder="{{ t('process.details.group') }}"
+                                                                        [(value)]="item.group_id"
+                                                                        (selectionChange)="changeGroup($event.value,item)">
+                                                                        <mat-option
+                                                                            *ngFor="let option of item.dataSourceGroup"
+                                                                            [value]="option.id">
+                                                                            <ng-container>
+                                                                                {{option.description |
+                                                                                titlecase}}
+                                                                            </ng-container>
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="mt-6">
+                                                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                                    <mat-label>{{ t('process.details.subGroup')
+                                                                        }}</mat-label>
+                                                                    <mat-select [(value)]="item.group_sub_id"
+                                                                        placeholder="{{ t('process.details.subGroup') }}">
+                                                                        <mat-option
+                                                                            *ngFor="let option of item.dataSourceSubGroup"
+                                                                            [value]="option.id">
+                                                                            <ng-container>
+                                                                                {{option.description |
+                                                                                titlecase}}
+                                                                            </ng-container>
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="mt-6">
+                                                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                                    <mat-label>{{ t('process.details.date') }}
+                                                                    </mat-label>
+                                                                    <input matInput 
+                                                                        [matDatepicker]="Datepicker" #ref
+                                                                        [(value)]="item.process_date"
+                                                                        (dateChange)="processDateChange(item,ref.value)"
+                                                                        placeholder="{{ t('process.details.date') }}">
+                                                                    <mat-datepicker-toggle matSuffix [for]="Datepicker">
+                                                                    </mat-datepicker-toggle>
+                                                                    <mat-datepicker #Datepicker>
+                                                                    </mat-datepicker>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="mt-6 mb-6">
+                                                                <mat-form-field
+                                                                    class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+                                                                    <mat-label>{{ t('process.details.address')
+                                                                        }}</mat-label>
+                                                                    <input matInput    #address
+                                                                        [(value)]="item.address"
+                                                                        placeholder="{{ t('process.details.address') }}">
+                                                                  
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <button class="" mat-flat-button [color]="'primary'"
+                                                                (click)="saveProcessItems(item,address.value)">
+                                                                <span class="ml-2 mr-1">{{ t('button.save')
+                                                                    }}</span>
+                                                            </button>
 
-                                                    </div>
-                                                    <div class="ml-5 w-2/3 mt-15">
-                                                        <div class="my-google-map">
-                                                            <google-map [width]="null" [height]="null" [center]="center"
-                                                                [zoom]="zoom" (mapClick)="addMarker($event,item)">
+                                                        </div>
+                                                        <div class="ml-5 w-2/3 mt-15">
+                                                            <div class="my-google-map">
+                                                                <google-map [width]="null" [height]="null"
+                                                                    [center]="center" [zoom]="zoom"
+                                                                    (mapClick)="addMarker($event,item)">
 
-                                                            </google-map>
+                                                                </google-map>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </mat-expansion-panel>
-                                        </mat-accordion>
-                                    </ng-container>
+                                                </mat-expansion-panel>
+                                            </mat-accordion>
+                                        </div>
+                                    </div>
                                 </mat-tab>
                             </mat-tab-group>
                         </mat-form>
