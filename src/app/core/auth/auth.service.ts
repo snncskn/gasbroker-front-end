@@ -94,13 +94,14 @@ export class AuthService
     //return this._httpClient.post(`api/auth/sign-in`, credentials).pipe(
     return this._httpClient.post(`${environment.url}/api/auth/signin`, credentials).pipe(
             switchMap((response: any) => {
+                console.log('44444');
                 this.accessToken = response.access_token;
                 this._authenticated = true;
                 this._userService.user = response.user.data;
                 localStorage.setItem('user', JSON.stringify(response.user.data));
-                this.setLayout(response.user.data.settings.layout);
-                this.setScheme(response.user.data.settings.scheme);
-                this.setTheme(response.user.data.settings.theme);
+                this.setLayout(response.user.data.settings?.layout);
+                this.setScheme(response.user.data.settings?.scheme);
+                this.setTheme(response.user.data.settings?.theme);
                 return of(response.user.data); 
             })
         );
