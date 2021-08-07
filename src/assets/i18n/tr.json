@@ -61,7 +61,11 @@
     "message.savedProcessItem": "İşlem öğesi kaydedildi",
     "message.deleteProcessItem": "İşlem öğesi silindi!",
     "message.required": " Zorunludur",
-
+    "message.success": "İşlem Tamamlandı!",
+    "message.error": "İşlem başarısız",
+    "message.fileUpload": "Media Yükleme işlemi tamamlandı!",
+    "message.fileDownload":"Media İndirme işlemi tamamlandı!",
+    "message.createMedia": "Media kaydedildi",
 
 
     "input.search": "Arama...",

@@ -114,7 +114,7 @@ export class ProcessService {
     }
     getProcessDelete(item: any):
         Observable<any> {
-        let url = `${environment.url}/process/${item.id}`;
+        let url = `${environment.url}/process/delete/${item.id}`;
         return this._httpClient.put<any>(url, item).pipe(
             catchError((error)=>{
                 if(error instanceof HttpErrorResponse && error.status == 601)

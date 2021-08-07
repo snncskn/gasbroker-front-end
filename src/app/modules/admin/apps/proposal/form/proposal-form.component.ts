@@ -10,7 +10,7 @@ import { environment } from 'environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { AuthService } from 'app/core/auth/auth.service';
-import { UploadService } from 'app/services/upload.service';
+import { FileService } from 'app/services/file.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
 
@@ -62,9 +62,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         private readonly activatedRouter: ActivatedRoute,
         private translocoService: TranslocoService,
         public toastr: ToastrManager,
-        private uploadService: UploadService,
-
-
+        private fileService: FileService,
     ) {
         this.fileUploadUrl = environment.url+'/media';
 
@@ -214,12 +212,12 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
     upload() {
         const file = this.demoForm.value.files[0];
-        this.uploadService.putUrl(file).then((res) => {
+        this.fileService.putUrl(file).then((res) => {
           const {
             data: { putURL },
           } = res;
     
-          this.uploadService.upLoad(putURL, file).then((res) => {
+          this.fileService.upLoad(putURL, file).then((res) => {
             // this.mediaService.create({id:null,company_id: this.companyDetail, title: ret.putURL}).subscribe((data) => { });
           });
         });
