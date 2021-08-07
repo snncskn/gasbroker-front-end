@@ -78,7 +78,6 @@ export class AuthSignInComponent implements OnInit
         this._authService.signIn(this.signInForm.value)
             .subscribe(
                 () => {
-                    console.log('3333');
                     const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/apps/company';
                     this._router.navigateByUrl(redirectURL);
                 },

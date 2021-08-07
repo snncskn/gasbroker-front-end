@@ -36,7 +36,6 @@ export class AuthInterceptor implements HttpInterceptor
         //&& !AuthUtils.isTokenExpired(this._authService.accessToken
         if ( this._authService.accessToken &&  req.url.indexOf('svg')<0)
         {
-            console.log('22222');
             let companyId='', user_id='';
             if(this._authService.CompanyId){
                 companyId = this._authService.CompanyId;

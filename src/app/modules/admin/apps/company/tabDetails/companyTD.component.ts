@@ -118,8 +118,7 @@ export class CustomersTDComponent implements OnInit {
                 this.addressesForm.patchValue({company_id:data.body.id})
                 this.loadAddress();
                 this._customersService.getApprovals(params.get("id")).subscribe(res => {
-                  this.dataSourceApprovals= res.body;
-                  console.log(this.dataSourceApprovals);
+                this.dataSourceApprovals= res.body;
                 });
             },error=>{
                 
@@ -332,7 +331,6 @@ export class CustomersTDComponent implements OnInit {
 
   approvalStatusDialog(status:string)
   {
-    console.log(this.dataSourceApprovalStatus);
     const dialogRef = this.dialog.open(ApprovalComponent, { data:{company:this.companyDetail, status:status} });
     dialogRef.afterClosed().subscribe();
   }

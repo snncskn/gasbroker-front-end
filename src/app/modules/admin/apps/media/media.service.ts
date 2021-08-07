@@ -49,7 +49,6 @@ export class MediaService {
             take(1),
             switchMap(items => this._httpClient.put<any>(`${environment.url}/media/${item.id}`, item).pipe(
                 map((media) => {
-                   console.log();
                     return media.body;
                 })
             ))
@@ -60,7 +59,6 @@ export class MediaService {
             take(1),
             switchMap(customers => this._httpClient.post<any>(`${environment.url}/media/`, item).pipe(
                 map((media) => {
-                  console.log();
                     return media.body;
                 })
             ))
