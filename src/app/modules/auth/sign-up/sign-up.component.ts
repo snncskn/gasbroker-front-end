@@ -79,7 +79,6 @@ export class AuthSignUpComponent implements OnInit {
     signUp(): void {
         // Get the user object
         const user = this.signUpForm.getRawValue();
-
         let tmpUser = {
             name: user.step1.name,
             username: user.step1.username,
@@ -87,20 +86,32 @@ export class AuthSignUpComponent implements OnInit {
             mobilePhone: user.step2.mobilePhone,
             pass: user.step3.pass,
             gender: '',
-            roles:['user']
+            roles:['user'],
+            permissions:{ids:["app.proposal","app.transportaion","sign-out"]},
+            
         };
 
         // Update the user on the server
-        this._usersService.createUserSingUp(tmpUser).subscribe(() => {
+        this._usersService.createUserSingUp(tmpUser).subscribe(
+            result => {
+                // Show a success message
+                this.toastr.successToastr('New User Added', 'New User!');
+                const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/sign-in';
+                // Navigate to the redirect url
+                this._router.navigateByUrl(redirectURL);
+          },
+          error => {
+            this.toastr.errorToastr('Hata oluştu, Lütfen, girilen verileri kontrol ediniz...');
+          },
+          () => {
+            // 'onCompleted' callback.
+            // No errors, route to new page here
+          }
 
-            // Show a success message
-            this.toastr.successToastr('New User Added', 'New User!');
+        );
 
-            const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/sign-in';
 
-            // Navigate to the redirect url
-            this._router.navigateByUrl(redirectURL);
+       
 
-        });
     }
 }

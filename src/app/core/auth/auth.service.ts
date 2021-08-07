@@ -98,9 +98,9 @@ export class AuthService
                 this._authenticated = true;
                 this._userService.user = response.user.data;
                 localStorage.setItem('user', JSON.stringify(response.user.data));
-                this.setLayout(response.user.data.settings.layout);
-                this.setScheme(response.user.data.settings.scheme);
-                this.setTheme(response.user.data.settings.theme);
+                this.setLayout(response.user.data.settings?.layout);
+                this.setScheme(response.user.data.settings?.scheme);
+                this.setTheme(response.user.data.settings?.theme);
                 return of(response.user.data); 
             })
         );
