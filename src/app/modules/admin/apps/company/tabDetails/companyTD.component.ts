@@ -5,8 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { cloneDeep, isNull } from 'lodash';
+import moment from 'moment';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { Observable } from 'rxjs';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { ApprovalComponent } from '../approvalDialog/approval.component';
 import { CustomersService } from '../company.service';
 import { MediaService } from "../../media/media.service";
 import { AuthService } from 'app/core/auth/auth.service';
@@ -22,10 +25,13 @@ export class CustomersTDComponent implements OnInit {
   dialogRef: MatDialogRef<ConfirmationDialog>;
   public generalFunction = new GeneralFunction();
 
+  approvals$: Observable<any[]>;
   isEditUser:boolean=false;
   customerForm: FormGroup;
   dataSourceTypes: any[];
   dataSourceDocs: any[];
+  dataSourceApprovalStatus: any[];
+  dataSourceApprovals: any[];
   resetPassForm: FormGroup;
   addressesForm: FormGroup;
   addressList: any[] = [];
@@ -71,9 +77,10 @@ export class CustomersTDComponent implements OnInit {
     private readonly activatedRouter: ActivatedRoute,
     private fileService: FileService,
     private translocoService: TranslocoService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private mediaService: MediaService,
-    private _authService: AuthService,
+    private authService: AuthService,
+
   ) {
     let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
     this.newAddressItem = { expanded: true, isNew: true, position: center };
@@ -110,22 +117,30 @@ export class CustomersTDComponent implements OnInit {
                 this.customerForm.patchValue(data.body);
                 this.addressesForm.patchValue({company_id:data.body.id})
                 this.loadAddress();
-                
+                this._customersService.getApprovals(params.get("id")).subscribe(res => {
+                  this.dataSourceApprovals= res.body;
+                  console.log(this.dataSourceApprovals);
+                });
             },error=>{
                 
             })
         };
     });
 
-    this._customersService.getTypes().subscribe((res) => {
+    this._customersService.getTypes().subscribe(res => {
       this.dataSourceTypes = res.body;
     });
-    this._customersService.getCompanyDocs().subscribe((res) => {
+    this._customersService.getCompanyDocs().subscribe(res => {
       this.dataSourceDocs = res.body;
     });
-  }
+    this._customersService.getCompanyApprovalStatus().subscribe(res => {
+      this.dataSourceApprovalStatus = res.body;
+    });
+    }
+ 
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   addNewCompany() {
     let status = this.generalFunction.formValidationCheck(this.customerForm,this.toastr,this.translocoService);
@@ -262,14 +277,14 @@ export class CustomersTDComponent implements OnInit {
             this.translocoService.translate("message.fileUpload")
           );
 
-          let key = this._authService.user_id + '/'+ file.name;
+          let key = this.authService.user_id + '/'+ file.name;
 
           this.mediaService
             .createMedia({
               id: null,
               company_id: this.companyDetail,
               title: "CompanyFile",
-              user_id: this._authService.user_id,
+              user_id: this.authService.user_id,
               path: JSON.stringify(key),
             })
             .subscribe((data) => {
@@ -314,4 +329,59 @@ export class CustomersTDComponent implements OnInit {
       this.loadAddress();
     });
   }
+
+  approvalStatusDialog(status:string)
+  {
+    console.log(this.dataSourceApprovalStatus);
+    const dialogRef = this.dialog.open(ApprovalComponent, { data:{company:this.companyDetail, status:status} });
+    dialogRef.afterClosed().subscribe();
+  }
+
+
+      /**
+     * Returns whether the given dates are different days
+     *
+     * @param current
+     * @param compare
+     */
+       isSameDay(current: string, compare: string): boolean
+       {
+           return moment(current, moment.ISO_8601).isSame(moment(compare, moment.ISO_8601), 'day');
+       }
+   
+       /**
+        * Get the relative format of the given date
+        *
+        * @param date
+        */
+       getRelativeFormat(date: string): string
+       {
+           const today = moment().startOf('day');
+           const yesterday = moment().subtract(1, 'day').startOf('day');
+   
+           // Is today?
+           if ( moment(date, moment.ISO_8601).isSame(today, 'day') )
+           {
+               return 'Today';
+           }
+   
+           // Is yesterday?
+           if ( moment(date, moment.ISO_8601).isSame(yesterday, 'day') )
+           {
+               return 'Yesterday';
+           }
+   
+           return moment(date, moment.ISO_8601).fromNow();
+       }
+   
+       /**
+        * Track by function for ngFor loops
+        *
+        * @param index
+        * @param item
+        */
+       trackByFn(index: number, item: any): any
+       {
+           return item.id || index;
+       }
 }
