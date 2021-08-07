@@ -33,12 +33,15 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { TranslocoModule } from '@ngneat/transloco';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ConfirmationModule } from '../delete-dialog/delete.module';
+import { ApprovalComponent } from './approvalDialog/approval.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
         CustomersComponent,
         CustomersListComponent,
         CustomersTDComponent,
+        ApprovalComponent,
 
     ],
     imports     : [
@@ -61,6 +64,7 @@ import { ConfirmationModule } from '../delete-dialog/delete.module';
         MatTableModule,
         MatTooltipModule,
         MatSnackBarModule,
+        MatDialogModule,
         MatSortModule,
         MatExpansionModule,
         FuseFindByKeyPipeModule,
