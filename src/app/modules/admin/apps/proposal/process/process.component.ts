@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   ViewChild,
@@ -28,7 +29,7 @@ import { GeneralFunction } from "app/shared/GeneralFunction";
   selector: "proposal-process",
   templateUrl: "./process.component.html",
   styleUrls: ['./process.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
@@ -77,6 +78,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     private readonly ngxService: NgxUiLoaderService,
     private readonly activatedRouter: ActivatedRoute,
     private _matDialog: MatDialog,
+    private changeDetection: ChangeDetectorRef,
     private translocoService: TranslocoService
   ) {
     this.processForm = this._formBuilder.group({
@@ -131,8 +133,11 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
             recipient:this.customers.find(item =>item.id === bodyForm.recipient_id),
             recipient_id:bodyForm.recipient_id,
            });
+           this.items = [];
            this._proposalService.getProcessItemsByProcessId(bodyForm.id).subscribe( items =>{
-            this.items = items.body;
+            this.isLoading = false;
+            this.items = items.body;;
+            this.changeDetection.detectChanges();
             this.isLoading = true;
            },error=>{
             this.isLoading = true;
@@ -158,7 +163,10 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   }
 
   add(item?: any) {
+    this.addNewProcess(true);
     this.items.push(item);
+    this.changeDetection.detectChanges();
+
   }
   public list() {
 
@@ -207,7 +215,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     return x.full_name;
   }
 
-  addNewProcess()
+  addNewProcess(router?:boolean)
   {
     let status = this.generalFunction.formValidationCheck(this.processForm,this.toastr,this.translocoService);
     if(status)
@@ -215,7 +223,9 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
       return
     }
     this._proposalService.createProcess(this.processForm.value).subscribe(data=>{
-      this._router.navigate(["/apps/proposals/list"]);
+      if(!router){
+        this._router.navigate(["/apps/proposals/list"]);
+      }
     })
   }
 
@@ -241,6 +251,9 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
       this.items.forEach(element => {
         this._proposalService.deleteProcessItem(element.id).subscribe();
       });
+      this._router.navigate(["/apps/proposals/list"]);
+
+
     })
   }
 
@@ -249,6 +262,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     if(item.id){
       this._proposalService.deleteProcessItem(item.id).subscribe(data=>{
         this.items = this.items.filter(it => it.id !==item.id);
+        this.changeDetection.detectChanges();
+
         this.toastr.successToastr(this.translocoService.translate('message.deleteProcessItem'));
       });
   
@@ -258,5 +273,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   }
   processDateChange(item,value){
     item.process_date = moment(value,"DD-MM-YYYY");
+  }
+  public trackItem (index: number, item: any) {
+    return item.id;
   }
 }
