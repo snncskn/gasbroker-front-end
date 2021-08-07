@@ -168,12 +168,13 @@
                                         </div>
                                     </div>
                                     <div *ngIf="isLoading">
-                                        <div *ngFor="let item of items;let i = index; trackBy: trackItem;">
-                                            <mat-accordion>
-                                                <mat-expansion-panel class="example-headers-align">
-                                                    <mat-expansion-panel-header>
-                                                        <mat-panel-title>
-                                                            Process Item
+                                        <div >
+                                            <mat-accordion >
+                                                <mat-expansion-panel  *ngFor="let item of items;let i = index; trackBy: trackItem;" 
+                                                [expanded]="item.open"     class="example-headers-align">
+                                                    <mat-expansion-panel-header >
+                                                        <mat-panel-title style="width: 450px;" >
+                                                         {{item.process_group.description}}->{{item.process_sub_group.description}}
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <br>
@@ -196,9 +197,9 @@
                                                                     <mat-select
                                                                         placeholder="{{ t('process.details.group') }}"
                                                                         [(value)]="item.group_id"
-                                                                        (selectionChange)="changeGroup($event.value)">
+                                                                        (selectionChange)="changeGroup($event.value,item)">
                                                                         <mat-option
-                                                                            *ngFor="let option of dataSourceGroup"
+                                                                            *ngFor="let option of item.dataSourceGroup"
                                                                             [value]="option.id">
                                                                             <ng-container>
                                                                                 {{option.description |
@@ -215,7 +216,7 @@
                                                                     <mat-select [(value)]="item.group_sub_id"
                                                                         placeholder="{{ t('process.details.subGroup') }}">
                                                                         <mat-option
-                                                                            *ngFor="let option of dataSourceSubGroup"
+                                                                            *ngFor="let option of item.dataSourceSubGroup"
                                                                             [value]="option.id">
                                                                             <ng-container>
                                                                                 {{option.description |
@@ -229,7 +230,9 @@
                                                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                                                     <mat-label>{{ t('process.details.date') }}
                                                                     </mat-label>
-                                                                    <input matInput [matDatepicker]="Datepicker" #ref
+                                                                    <input matInput 
+                                                                        [matDatepicker]="Datepicker" #ref
+                                                                        [(value)]="item.process_date"
                                                                         (dateChange)="processDateChange(item,ref.value)"
                                                                         placeholder="{{ t('process.details.date') }}">
                                                                     <mat-datepicker-toggle matSuffix [for]="Datepicker">
@@ -243,14 +246,14 @@
                                                                     class="fuse-mat-textarea fuse-mat-no-subscript w-full">
                                                                     <mat-label>{{ t('process.details.address')
                                                                         }}</mat-label>
-                                                                    <textarea matInput matTextareaAutosize
+                                                                    <input matInput    #address
                                                                         [(value)]="item.address"
                                                                         placeholder="{{ t('process.details.address') }}">
-                                                                 </textarea>
+                                                                  
                                                                 </mat-form-field>
                                                             </div>
                                                             <button class="" mat-flat-button [color]="'primary'"
-                                                                (click)="saveProcessItems(item)">
+                                                                (click)="saveProcessItems(item,address.value)">
                                                                 <span class="ml-2 mr-1">{{ t('button.save')
                                                                     }}</span>
                                                             </button>

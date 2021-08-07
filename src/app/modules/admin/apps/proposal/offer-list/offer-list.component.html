@@ -1,79 +1,91 @@
 <div mat-dialog-content *transloco="let t;">
-    <div >
-        <table style="width: 900px!important" class="w-full table-fixed bg-transparent"
-          mat-table matSort [matSortActive]="'price'" [matSortDisableClear]="true" [matSortDirection]="'asc'"
-          [multiTemplateDataRows]="true" [dataSource]="offers$" [trackBy]="trackByFn">
+  <div>
+    <table style="width: 940px!important" class="w-full table-fixed bg-transparent" mat-table matSort
+      [matSortActive]="'price'" [matSortDisableClear]="true" [matSortDirection]="'asc'" [multiTemplateDataRows]="true"
+      [dataSource]="offers$" [trackBy]="trackByFn">
 
-          <ng-container matColumnDef="company_name">
-            <th class="bg-gray-50 w-80 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{ t('proposals.companyName') }}
-            </th>
-            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-              {{ row.company?.name }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="company_name">
+        <th class="bg-gray-20 w-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ t('proposals.companyName') }}
+        </th>
+        <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+          {{ row.company?.name }}
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="payment_type">
-            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{ t('proposals.offerList.paymentType') }}
-            </th>
-            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-              {{ row.payment_type }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="payment_type">
+        <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ t('proposals.offerList.paymentType') }}
+        </th>
+        <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+          {{ row.payment_type }}
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="price">
-            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{ t('proposals.offerList.price') }}
-            </th>
-            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-              {{ row.price }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="price">
+        <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ t('proposals.offerList.price') }}
+        </th>
+        <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+          {{ row.price }}   {{ row.currency }}
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="deal_status">
-            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{ t('proposals.status') }}
-            </th>
-            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-              <div class="flex items-center justify-between">
-                <ng-container>
-                  <div *ngIf="row.deal_status==='OK'">
-                    <mat-icon *ngIf="row.deal_status==='OK'" class="mr-8 icon-size-5 text-green-600"
-                    [svgIcon]="'heroicons_solid:badge-check'" matTooltip="{{ t('tooltip.ok') }}"></mat-icon>
-                  </div>
-                  <div *ngIf="row.deal_status==='NOT OK'">
-                    <mat-icon *ngIf="row.deal_status==='NOT OK'" class="mr-8 icon-size-5 text-red-600"
-                    [svgIcon]="'heroicons_solid:x-circle'" matTooltip="{{ t('tooltip.notOk') }}"></mat-icon>
-                  </div>
-                </ng-container>
+      <ng-container matColumnDef="deal_status">
+        <th class="bg-gray-10 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ t('proposals.status') }}
+        </th>
+        <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+          <div class="flex items-center justify-between">
+            <ng-container>
+              <div *ngIf="row.deal_status==='OK'">
+                <mat-icon *ngIf="row.deal_status==='OK'" class="mr-8 icon-size-5 text-green-600"
+                  [svgIcon]="'heroicons_solid:badge-check'" matTooltip="{{ t('tooltip.ok') }}"></mat-icon>
               </div>
-            </td>
-          </ng-container>
+              <div *ngIf="row.deal_status !=='OK'">
+                <mat-icon *ngIf="row.deal_status !== 'OK'" class="mr-8 icon-size-5 text-red-600"
+                  [svgIcon]="'heroicons_solid:x-circle'" matTooltip="{{ t('tooltip.notOk') }}"></mat-icon>
+              </div>
+            </ng-container>
+            
+          </div>
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="currency">
-            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{ t('proposals.offerList.currency') }}
-            </th>
-            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-              {{ row.currency }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="deal_status_btn">
+        <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ t('proposals.status') }}
+        </th>
+        <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+          <div class="flex items-center justify-between">
+            
+            <ng-container>
+              <button class="mr-3" mat-flat-button [color]="'warn'" (click)="sendStatus(row,'REJECT')">
+                 Reject 
+              </button>
+              <button class="mr-3" mat-flat-button style="background-color: green; color:white"
+                (click)="sendStatus(row,'OK')">
+                Approval 
+              </button>
+            </ng-container>
+          </div>
+        </td>
+      </ng-container>
+      
 
-          <ng-container matColumnDef="offer_date">
-            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{ t('proposals.offerList.offerDate') }}
-            </th>
-            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-              {{ row.offer_date | date:'dd/MM/yyyy' }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="offer_date">
+        <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ t('proposals.offerList.offerDate') }}
+        </th>
+        <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+          {{ row.offer_date | date:'dd/MM/yyyy' }}
+        </td>
+      </ng-container>
 
-          <tr class="shadow" mat-header-row *matHeaderRowDef="offersTableColumns; sticky: true"></tr>
-          <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-            *matRowDef="let i = dataIndex; let offer; columns: offersTableColumns"
-            [class]="setStyle(i)" ></tr>
+      <tr class="shadow" mat-header-row *matHeaderRowDef="offersTableColumns; sticky: true"></tr>
+      <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
+        *matRowDef="let i = dataIndex; let offer; columns: offersTableColumns" [class]="setStyle(i)"></tr>
 
-        </table>
-        </div>
+    </table>
+  </div>
 </div>

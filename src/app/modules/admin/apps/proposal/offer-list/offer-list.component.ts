@@ -13,7 +13,7 @@ import { ProposalOffer } from '../proposals.types';
 export class OfferListComponent implements OnInit {
 
   offers$:Observable<ProposalOffer[]>;
-  offersTableColumns: string[] = ['company_name','payment_type','price','deal_status','currency','offer_date'];
+  offersTableColumns: string[] = ['company_name','payment_type','price','offer_date','deal_status','deal_status_btn'];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   offersCount: number=0;
 
@@ -52,6 +52,13 @@ public setStyle(it: number): string {
   } else {
       return '';
   }
+}
+sendStatus(item: any,status : string){
+
+  item.deal_status= status;
+  this._proposalService.updateProposalOffer(item).subscribe(data=>{
+
+  });
 }
 
 }
