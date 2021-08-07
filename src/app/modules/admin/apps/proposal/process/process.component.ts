@@ -64,10 +64,9 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
   addMarker(event: google.maps.MapMouseEvent, item:any) {
       this.markerPositions = [];
-      item.value.latitude = event.latLng.toJSON();
-      item.value.longitude = event.latLng.toJSON();
+      item.value.latitude = event.latLng.toJSON().lat;
+      item.value.longitude = event.latLng.toJSON().lng;
   }
-
   constructor(
     private router: Router,
     private _formBuilder: FormBuilder,
@@ -116,27 +115,29 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
           let bodyForm  = result[0].body;
           this.isLoading = true;
           this.processForm.patchValue({
-            id:bodyForm.id,
-            voyage_code:bodyForm.voyage_code,
-            agency:this.customers.find(item =>item.id === bodyForm.agency_id),
-            agency_id:bodyForm.agency_id,
-            broker: this.customers.find(item =>item.id === bodyForm.broker_id),
-            broker_id:bodyForm.broker_id,
-            captain:this.customers.find(item =>item.id === bodyForm.captain_id),
-            captain_id:bodyForm.captain_id,
-            loading_master:this.customers.find(item =>item.id === bodyForm.loading_master_id),
-            loading_master_id:bodyForm.loading_master_id,
-            vendor:this.customers.find(item =>item.id === bodyForm.vendor_id),
-            vendor_id:bodyForm.vendor_id,
-            recipient:this.customers.find(item =>item.id === bodyForm.recipient_id),
-            recipient_id:bodyForm.recipient_id,
+            id:bodyForm?.id,
+            voyage_code:bodyForm?.voyage_code,
+            agency:this.customers.find(item =>item.id === bodyForm?.agency_id),
+            agency_id:bodyForm?.agency_id,
+            broker: this.customers.find(item =>item.id === bodyForm?.broker_id),
+            broker_id:bodyForm?.broker_id,
+            captain:this.customers.find(item =>item.id === bodyForm?.captain_id),
+            captain_id:bodyForm?.captain_id,
+            loading_master:this.customers.find(item =>item.id === bodyForm?.loading_master_id),
+            loading_master_id:bodyForm?.loading_master_id,
+            vendor:this.customers.find(item =>item.id === bodyForm?.vendor_id),
+            vendor_id:bodyForm?.vendor_id,
+            recipient:this.customers.find(item =>item.id === bodyForm?.recipient_id),
+            recipient_id:bodyForm?.recipient_id,
            });
-           this._proposalService.getProcessItemsByProcessId(bodyForm.id).subscribe( items =>{
-            this.items = items.body;
-            this.isLoading = true;
-           },error=>{
-            this.isLoading = true;
-           });
+           if(bodyForm) {
+              this._proposalService.getProcessItemsByProcessId(bodyForm?.id).subscribe( items =>{
+                this.items = items.body;
+                this.isLoading = true;
+              },error=>{
+                this.isLoading = true;
+              });
+           }
            this.ngxService.stop();
         });
        }
@@ -204,7 +205,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     }
   }
   displayFn(x) {
-    return x.full_name;
+    return x?.full_name;
   }
 
   addNewProcess()
