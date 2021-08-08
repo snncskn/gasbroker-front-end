@@ -167,11 +167,7 @@ export class CustomersService {
         console.log(id);
         return this._httpClient.get<any>(`${environment.url}/company/${id}`)
     }
-    getCompanyByUuId(id: string): Observable<any> {
-        console.log(id);
-        return this._httpClient.get<any>(`${environment.url}/company/uuid/${id}`)
-    }
-
+   
 
     createAddress(address: any): Observable<any>
     {

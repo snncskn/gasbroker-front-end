@@ -340,7 +340,7 @@
                                         <div class="mt-8">
                                             <ol>
                                                 <!-- Activities -->
-                                                <ng-container *ngFor="let approval of approvals; let i = index; let first = first; let last = last; trackBy: trackByFn">
+                                                <ng-container *ngFor="let approval of approvals; let i = index; let first = first; let last = last;">
                     
                                                     <!-- Date separator -->
                                                     <ng-container *ngIf="first || !isSameDay(approval.created_at, approvals[i - 1].created_at)">

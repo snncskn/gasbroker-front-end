@@ -113,13 +113,14 @@ export class CustomersTDComponent implements OnInit {
         if (params.has('id')) {
           this.isEditUser=true;
           this.companyDetail  = params.get("id");
-          this._customersService.getCompanyByUuId(params.get("id")).subscribe(data => {
+          this._customersService.getCompanyById(params.get("id")).subscribe(data => {
                 //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
                 this.customerForm.patchValue(data?.body);
                 this.addressesForm.patchValue({company_id:data.body?.id})
                 this.loadAddress();
+                this.dataSourceApprovals = [];
                 this._customersService.getApprovals(params.get("id")).subscribe(res => {
-                this.dataSourceApprovals= res.body;
+                  this.dataSourceApprovals = res.body;
                 });
             },error=>{
                 
@@ -336,6 +337,12 @@ export class CustomersTDComponent implements OnInit {
   {
     const dialogRef = this.dialog.open(ApprovalComponent, { data:{company:this.companyDetail, status:status} });
     dialogRef.afterClosed().subscribe();
+    this.dataSourceApprovals = [];
+    this._customersService.getApprovals(this.companyDetail).subscribe(res => {
+      
+      this.dataSourceApprovals = res.body;
+      this.changeDetection.detectChanges();
+    });
   }
 
 
@@ -383,6 +390,7 @@ export class CustomersTDComponent implements OnInit {
         */
        trackByFn(index: number, item: any): any
        {
+         console.log(item);
            return item.id || index;
        }
 }
