@@ -75,7 +75,7 @@
                                         </div>
                                         <div class="col-span-6 text-lg font-medium" [formGroupName]="i">
                                             <button class="fuse-mat-button-rounded ml-1 text-on-warn-100"
-                                                mat-icon-button [color]="'warn'" (click)="deleteSubGroup(item,i)">
+                                                mat-icon-button [color]="'warn'" (click)="deleteSubGroup(item.value,i)">
                                                 <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                                                     [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                                             </button>
