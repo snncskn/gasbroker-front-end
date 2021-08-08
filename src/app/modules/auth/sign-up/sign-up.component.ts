@@ -87,7 +87,7 @@ export class AuthSignUpComponent implements OnInit {
             pass: user.step3.pass,
             gender: '',
             roles:['user'],
-            permissions:{ids:["app.proposal","app.transportaion","sign-out"]},
+            permissions:{ids:["app.proposal","app.transportaion","app.help-center","sign-out"]},
             
         };
 

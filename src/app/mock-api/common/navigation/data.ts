@@ -99,6 +99,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link    : '/pages/settings'
             },*/
             {
+                id      : 'app.help-center',
+                title   : 'Help center',
+                type    : 'basic',
+                icon    : 'heroicons_outline:support',
+                link    : '/apps/help-center'           
+            },
+            {
                 id      : 'sign-out',
                 title   : 'Sign Out',
                 type    : 'basic',

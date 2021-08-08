@@ -19,7 +19,7 @@
 
 
                 <form class="p-4 bg-card shadow rounded overflow-hidden" [formGroup]="verticalStepperForm">
-                    <mat-vertical-stepper [linear]="true" class="w-1/2" #verticalStepper>
+                    <mat-horizontal-stepper [linear]="true" class="w-1/2" #verticalStepper>
                         <mat-step [formGroupName]="'step1'" [stepControl]="verticalStepperForm.get('step1')"
                             #verticalStepperStep1>
                             <ng-template matStepLabel>{{ t('proposals.details.tab.generalInfo') }}</ng-template>
@@ -196,9 +196,12 @@
                                 </button>
                             </div>
                         </mat-step>
-                    </mat-vertical-stepper>
-                </form>
+                        
+                    </mat-horizontal-stepper>
+ 
+            </form>
 
+                
             </div>
 
         </div>

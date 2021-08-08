@@ -174,7 +174,7 @@
                                                 [expanded]="item.open"     class="example-headers-align">
                                                     <mat-expansion-panel-header >
                                                         <mat-panel-title style="width: 450px;" >
-                                                         {{item.process_group?.description}}->{{item.process_sub_group?.description}}
+                                                            <em><b>    {{item.process_date?.substring(0,10) }} [  {{item.process_group?.description}} | {{item.process_sub_group?.description}}  | {{item.address}}  ] </b></em> 
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <br>
@@ -266,7 +266,9 @@
                                                                     (mapClick)="addMarker($event,item)">
 
                                                                 </google-map>
+
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </mat-expansion-panel>
