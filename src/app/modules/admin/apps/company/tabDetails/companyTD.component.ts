@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,8 +18,8 @@ import { FileService } from 'app/services/file.service';
   selector: "companyTD",
   templateUrl: "./companyTD.component.html",
   styleUrls: ["./companyTD.component.scss"],
+  changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomersTDComponent implements OnInit {
   dialogRef: MatDialogRef<ConfirmationDialog>;
@@ -79,6 +79,7 @@ export class CustomersTDComponent implements OnInit {
     private translocoService: TranslocoService,
     public dialog: MatDialog,
     private mediaService: MediaService,
+    private changeDetection: ChangeDetectorRef,
     private authService: AuthService,
 
   ) {
@@ -111,9 +112,9 @@ export class CustomersTDComponent implements OnInit {
     this.activatedRouter.paramMap.subscribe(params => {
         if (params.has('id')) {
           this.isEditUser=true;
-            this._customersService.getCompanyById(params.get("id")).subscribe(data => {
+          this.companyDetail  = params.get("id");
+          this._customersService.getCompanyByUuId(params.get("id")).subscribe(data => {
                 //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
-                this.companyDetail = data.body?.id;
                 this.customerForm.patchValue(data?.body);
                 this.addressesForm.patchValue({company_id:data.body?.id})
                 this.loadAddress();
@@ -232,6 +233,7 @@ export class CustomersTDComponent implements OnInit {
     this._customersService
       .getAddressByCompanyId(this.companyDetail)
       .subscribe((data) => {
+        this.addressList = [];
         data.body.forEach((element) => {
           const item = cloneDeep(element);
           item.expanded = false;
@@ -242,6 +244,7 @@ export class CustomersTDComponent implements OnInit {
           };
           item.position = center;
           this.addressList.push(item);
+          this.changeDetection.detectChanges();
         });
         this.isLoadAddress = true;
         this.formStatus = true;

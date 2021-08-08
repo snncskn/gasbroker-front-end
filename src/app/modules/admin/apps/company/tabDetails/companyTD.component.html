@@ -158,16 +158,10 @@
                                 </div>
                             </mat-tab>
                             <ng-container *ngIf="isEditUser">
-                            <mat-tab label="{{ t('company.details.tab.address') }}">
+                            <mat-tab label="{{ t('company.details.tab.address') }}" (click)="loadAddress()">
                                 <div class="flex items w-full" *ngIf="isLoadAddress">
                                     <div class="w-full ml-2">
                                         <div class="w-full">
-                                            <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
-                                                <button class="mr-5" mat-flat-button [color]="'primary'"
-                                                    (click)="newAddress()">
-                                                    {{ t('company.details.tab.address.newAddress') }}
-                                                </button>
-                                            </div>
                                             <div class="mt-5">
                                                 <ng-container>
                                                     <mat-accordion class="fuse-mat-no-subscript mt-1">

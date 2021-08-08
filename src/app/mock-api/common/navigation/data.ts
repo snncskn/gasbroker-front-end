@@ -1411,6 +1411,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:home',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     },
+    /*
     {
         id      : 'apps',
         title   : 'Apps',
@@ -1439,4 +1440,5 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:menu',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     }
+    */
 ];
