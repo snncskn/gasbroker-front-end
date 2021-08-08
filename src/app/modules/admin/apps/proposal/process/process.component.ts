@@ -173,8 +173,12 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   }
 
   add(item?: any) {
+    item.dataSourceGroup = this.dataSourceGroup;
     this.addNewProcess(true);
     this.items.push(item);
+    this.items.forEach(item=>{
+      item.open = false;
+    })
     this.changeDetection.detectChanges();
 
   }
@@ -233,6 +237,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
       return
     }
     this._proposalService.createProcess(this.processForm.value).subscribe(data=>{
+    
+      this.processForm.value.id = data.id;
       if(!router){
         this._router.navigate(["/apps/proposals/list"]);
       }
@@ -255,7 +261,23 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     item.address = address;
     item.process_id = this.processForm.value.id;
     this._proposalService.createProcessItem(item).subscribe(data=>{
+      this._proposalService.getProcessItemsByProcessId(this.processForm.value.id).subscribe( items =>{
+        this.items = [];
+        items.body.forEach(element => {
+          element.open = true;
+          element.dataSourceGroup = this.dataSourceGroup;
+          this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
+            element.dataSourceSubGroup = data.body.process_sub_groups;
+            this.items.push(element);
+          });
+        
+        });
+        this.isLoading = true;
+      },error=>{
+        this.isLoading = true;
+      });
     });
+
     this.changeDetection.detectChanges();
 
   }
