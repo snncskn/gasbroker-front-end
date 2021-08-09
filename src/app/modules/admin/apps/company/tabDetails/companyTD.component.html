@@ -218,32 +218,6 @@
                                                                                     [spellcheck]="false"></textarea>
                                                                             </mat-form-field>
                                                                         </div>
-                                                                        <div class="flex items-center mt-6">
-                                                                            <div class="w-full">
-                                                                                <mat-form-field
-                                                                                    class="fuse-mat-no-subscript w-full">
-                                                                                    <mat-label>{{
-                                                                                        t('company.details.tab.address.latitude')
-                                                                                        }}</mat-label>
-                                                                                    <input matInput
-                                                                                        [formControlName]="'lat'"
-                                                                                        placeholder="{{ t('company.details.tab.address.latitude') }}"
-                                                                                        [spellcheck]="false">
-                                                                                </mat-form-field>
-                                                                            </div>
-                                                                            <div class="ml-5 w-full">
-                                                                                <mat-form-field
-                                                                                    class="fuse-mat-no-subscript w-full">
-                                                                                    <mat-label>{{
-                                                                                        t('company.details.tab.address.longitude')
-                                                                                        }}</mat-label>
-                                                                                    <input matInput
-                                                                                        [formControlName]="'long'"
-                                                                                        placeholder="{{ t('company.details.tab.address.longitude') }}"
-                                                                                        [spellcheck]="false">
-                                                                                </mat-form-field>
-                                                                            </div>
-                                                                        </div>
                                                                         <div class="mt-5">
                                                                             <button type="button" mat-flat-button
                                                                                 [color]="'primary'"
@@ -258,7 +232,8 @@
                                                                                 [center]="center" [zoom]="zoom"
                                                                                 (mapClick)="addMarker($event)">
                                                                                 <map-marker
-                                                                                    [position]="newAddressItem.position"
+                                                                                    *ngFor="let marker of markerPositions"   
+                                                                                    [position]="marker"
                                                                                     [options]="markerOptions">
                                                                                 </map-marker>
 

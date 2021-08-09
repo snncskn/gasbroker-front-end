@@ -198,6 +198,7 @@
     "group.noGroup.message": "There are no groups!",
         "group.details.groupName": "Group Name",
         "group.details.subGroupName": "Sub Group Name",
+        "group.details.newSubGroup": "New Sub Group",
 
     "users.title": "Users",
     "users.name": "Name",

@@ -50,10 +50,12 @@
                             <form [formGroup]="formSubGroup">
 
                                 <div class="flex-auto ml-12  mt-8 gt-xs:pl-3">
-                                    <button class="add" mat-flat-button type="button" [color]="'primary'"
+                                    <button mat-raised-button
                                         (click)="add({description:'',id:''})" style="float: right;">
-                                        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                                        <mat-icon>add</mat-icon>
+                                        <span class="ml-2 mr-1">{{ t('group.details.newSubGroup') }}</span>
                                     </button>
+                                    
                                 </div>
 
                                 <div class="ml-12 grid grid-cols-12 gap-x-1 mt-15">

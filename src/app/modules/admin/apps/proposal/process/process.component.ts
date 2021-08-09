@@ -67,6 +67,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
       this.markerPositions = [];
       item.latitude = event.latLng.toJSON().lat;
       item.longitude = event.latLng.toJSON().lng;
+      this.markerPositions.push(event.latLng.toJSON());
   }
   constructor(
     private router: Router,

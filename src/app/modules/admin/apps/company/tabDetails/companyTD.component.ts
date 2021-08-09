@@ -45,6 +45,7 @@ export class CustomersTDComponent implements OnInit {
   markerPositions: google.maps.LatLngLiteral[] = [];
 
   addMarker(event: google.maps.MapMouseEvent) {
+    console.log(22)
     this.markerPositions = [];
     this.markerPositions.push(event.latLng.toJSON());
     this.markerPositions.forEach((element) =>
