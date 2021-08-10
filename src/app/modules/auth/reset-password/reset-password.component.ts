@@ -26,6 +26,7 @@ export class AuthResetPasswordComponent implements OnInit
 
     @ViewChild('resetPasswordNgForm') resetPasswordNgForm: NgForm;
 
+    isToken: boolean = false;
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
         message: ''
@@ -43,6 +44,17 @@ export class AuthResetPasswordComponent implements OnInit
         private router: Router,
     )
     {
+        this.activatedRouter.paramMap.subscribe(params => {
+            if (params.has('id')) {
+                this._authService.getToken().subscribe(tokens => {
+                    console.log(tokens)
+                })
+                if(params.get('id')=='4444')
+                {
+                    this.isToken=true;
+                }
+            }
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
