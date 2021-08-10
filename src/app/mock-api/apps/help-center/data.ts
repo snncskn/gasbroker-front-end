@@ -1,52 +1,167 @@
 /* eslint-disable */
 export const faqCategories = [
     {
-        id   : '28924eab-97cc-465a-ba21-f232bb95843f',
-        slug : 'most-asked',
-        title: 'Most asked'
+        id   : '395b0d41-b9a8-4cd6-8b5c-f07855e82d62',
+        slug : 'gas-broker',
+        title: 'Gaz Broker Nedir ?'
     },
     {
-        id   : '395b0d41-b9a8-4cd6-8b5c-f07855e82d62',
-        slug : 'general-inquiries',
-        title: 'General inquiries'
+        id   : '325b0d41-b9a8-4cd6-8b5c-f07855e82d62',
+        slug : 'create-account',
+        title: 'Hesap Oluşturma ve Kimlik Doğrulama'
     },
     {
         id   : 'b388a87f-bfbb-44d0-800c-0ddbce2a5d22',
-        slug : 'licenses',
-        title: 'Licenses'
+        slug : 'validate-email',
+        title: 'E-Posta Doğrulama'
     },
     {
         id   : '71c34043-d89d-4aca-951d-8606c3943c43',
-        slug : 'payments',
-        title: 'Payments'
+        slug : 'security',
+        title: 'Güvenlik Ayarları'
     },
     {
         id   : 'bea49ee0-26da-46ad-97be-116cd7ab416d',
-        slug : 'support',
-        title: 'Support'
+        slug : 'access-account',
+        title: 'Hesap Erişimi ve Güvenlik'
+    },
+    {
+        id   : 'b388a87f-bfbb-42d0-800c-0ddbce2a5d22',
+        slug : 'update-account',
+        title: 'Üye Bilgileri Güncelleme'
+    },
+    {
+        id   : '71c34023-d89d-4aca-911d-8606c3943c43',
+        slug : 'assign',
+        title: 'Kurumsal Üyelik ve Başvuru'
+    },
+    {
+        id   : 'bea29ee0-26da-46ad-97be-116cd7ab416d',
+        slug : 'suggest',
+        title: 'Öneri ve Geri Bildirimler'
     }
 ];
 export const faqs = [
-    // Most asked
+
     {
         id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
-        categoryId: '28924eab-97cc-465a-ba21-f232bb95843f',
-        question  : 'Is there a 14-days trial?',
-        answer    : 'Magna consectetur culpa duis ad est tempor pariatur velit ullamco aute exercitation magna sunt commodo minim enim aliquip eiusmod ipsum adipisicing magna ipsum reprehenderit lorem magna voluptate magna aliqua culpa.\n\nSit nisi adipisicing pariatur enim enim sunt officia ad labore voluptate magna proident velit excepteur pariatur cillum sit excepteur elit veniam excepteur minim nisi cupidatat proident dolore irure veniam mollit.'
+        categoryId: '395b0d41-b9a8-4cd6-8b5c-f07855e82d62',
+        question  : 'Gaz Broker Nedir',
+        answer    : 'Gas Broker ..... '
+    },
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: '325b0d41-b9a8-4cd6-8b5c-f07855e82d62',
+        question  : 'Gaz Broker Hesabı Oluşturma',
+        answer    : 'Gaz Broker Hesabı Oluşturma ..... '
     },
     {
         id        : '0fcece82-1691-4b98-a9b9-b63218f9deef',
-        categoryId: '28924eab-97cc-465a-ba21-f232bb95843f',
-        question  : 'What’s the benefits of the Premium Membership?',
-        answer    : 'Et in lorem qui ipsum deserunt duis exercitation lorem elit qui qui ipsum tempor nulla velit aliquip enim consequat incididunt pariatur duis excepteur elit irure nulla ipsum dolor dolore est.\n\nAute deserunt nostrud id non ipsum do adipisicing laboris in minim officia magna elit minim mollit elit velit veniam lorem pariatur veniam sit excepteur irure commodo excepteur duis quis in.'
+        categoryId: '325b0d41-b9a8-4cd6-8b5c-f07855e82d62',
+        question  : 'Kimlik Doğrulama – Türk Vatandaşları',
+        answer    : 'Kimlik Doğrulama – Türk Vatandaşları .......'
     },
     {
         id        : '2e6971cd-49d5-49f1-8cbd-fba5c71e6062',
-        categoryId: '28924eab-97cc-465a-ba21-f232bb95843f',
-        question  : 'How much time I will need to learn this app?',
-        answer    : 'Id fugiat et cupidatat magna nulla nulla eu cillum officia nostrud dolore in veniam ullamco nulla ex duis est enim nisi aute ipsum velit et laboris est pariatur est culpa.\n\nCulpa sunt ipsum esse quis excepteur enim culpa est voluptate reprehenderit consequat duis officia irure voluptate veniam dolore fugiat dolor est amet nostrud non velit irure do voluptate id sit.'
-    },   
+        categoryId: '325b0d41-b9a8-4cd6-8b5c-f07855e82d62',
+        question  : 'Kimlik Doğrulama – Yabancı Ülke Vatandaşı ',
+        answer    : 'Kimlik Doğrulama – Yabancı Ülke Vatandaşı ............'
+    },  
+
+      {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'b388a87f-bfbb-44d0-800c-0ddbce2a5d22',
+        question  : 'E-Posta Doğrulama',
+        answer    : 'E-Posta Doğrulama ......... '
+    },
+
+     {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: '71c34043-d89d-4aca-951d-8606c3943c43',
+        question  : 'Güvenlik Konusunda Dikkat Edilmesi Gerekenler',
+        answer    : 'Güvenlik Konusunda Dikkat Edilmesi Gerekenler ......... '
+    },
+
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea49ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Hesabıma Erişemiyorum, Parolamı Unuttum',
+        answer    : '......... '
+    },
+    
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea49ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Hesabıma Erişemiyorum, Giriş SMS Kodu Gelmiyor',
+        answer    : '......... '
+    },
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea49ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Hesabıma Erişemiyorum, Google 2FA (Authenticator) Kodu Çalışmıyor',
+        answer    : '......... '
+    },
+  
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea49ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Güvenlik Sorunu Yaşıyorum, Kayıp Çalıntı ve İhbar',
+        answer    : '......... '
+    },
+
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea49ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Gaz Broker’a Erişemiyorum',
+        answer    : '......... '
+    },
+
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'b388a87f-bfbb-42d0-800c-0ddbce2a5d22',
+        question  : 'Telefon Numarası Değiştirme',
+        answer    : '......... '
+    },
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'b388a87f-bfbb-42d0-800c-0ddbce2a5d22',
+        question  : 'E-Posta Adresi Değiştirme',
+        answer    : '......... '
+    },
+
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: '71c34023-d89d-4aca-911d-8606c3943c43',
+        question  : 'Kurumsal Üyelik ve Başvuru',
+        answer    : '......... '
+    },
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea29ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Öneri',
+        answer    : '......... '
+    },
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea29ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Geri Bildirim',
+        answer    : '......... '
+    },
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea29ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Şikâyet',
+        answer    : '......... '
+    },
+    {
+        id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
+        categoryId: 'bea29ee0-26da-46ad-97be-116cd7ab416d',
+        question  : 'Hesap Kapatma',
+        answer    : '......... '
+    },
 ];
+
+
 export const guideCategories = [
     {
         id   : '0ee72de7-49c0-4880-9e89-b72a4edd6a81',

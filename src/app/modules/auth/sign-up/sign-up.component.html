@@ -1,20 +1,22 @@
 <div class="flex flex-col flex-auto items-center sm:justify-center min-w-0 md:p-8">
     <div class="flex md:w-full md:max-w-6xl sm:rounded-2xl sm:shadow overflow-hidden sm:bg-card">
-        <div class="relative hidden md:flex flex-auto items-center justify-center h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-r">
+        <div
+            class="relative hidden md:flex flex-auto items-center justify-center h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-r">
             <!-- Background - @formatter:off -->
             <!-- Rings -->
-            <svg class="absolute inset-0 pointer-events-none"
-                 viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+            <svg class="absolute inset-0 pointer-events-none" viewBox="0 0 960 540" width="100%" height="100%"
+                preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
                 <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
                     <circle r="234" cx="196" cy="23"></circle>
                     <circle r="234" cx="790" cy="491"></circle>
                 </g>
             </svg>
             <!-- Dots -->
-            <svg class="absolute -top-16 -right-16 text-gray-700"
-                 viewBox="0 0 220 192" width="220" height="192" fill="none">
+            <svg class="absolute -top-16 -right-16 text-gray-700" viewBox="0 0 220 192" width="220" height="192"
+                fill="none">
                 <defs>
-                    <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20"
+                        patternUnits="userSpaceOnUse">
                         <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
                     </pattern>
                 </defs>
@@ -30,35 +32,28 @@
                 <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
                     Join us and start building your application today.
                 </div>
-            
+
             </div>
         </div>
         <div class="w-full sm:w-auto py-8 px-4 sm:p-12 md:p-16">
-            <div >
-               
+            <div>
+
 
                 <!-- Title -->
                 <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign Up</div>
                 <div class="flex items-baseline mt-0.5 font-medium">
                     <div>Don't have an account?</div>
-                    <a
-                        class="ml-1 text-primary-500 hover:underline"
-                        [routerLink]="['/sign-in']">Sign in
+                    <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['/sign-in']">Sign in
                     </a>
                 </div>
 
                 <!-- Alert -->
-                <fuse-alert
-                    class="mt-8 -mb-4"
-                    *ngIf="showAlert"
-                    [appearance]="'outline'"
-                    [showIcon]="false"
-                    [type]="alert.type"
-                    [@shake]="alert.type === 'error'">
+                <fuse-alert class="mt-8 -mb-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false"
+                    [type]="alert.type" [@shake]="alert.type === 'error'">
                     {{alert.message}}
                 </fuse-alert>
 
-               
+
                 <form [formGroup]="signUpForm">
                     <mat-stepper #stepper>
                         <mat-step [formGroupName]="'step1'" [stepControl]="signUpForm.get('step1')" #signUpFormStep1>
@@ -76,14 +71,13 @@
                                 </mat-form-field>
                             </div>
                             <div>
-                                <button mat-button matStepperNext
-                                mat-flat-button
-                                [color]="'primary'"
-                                [disabled]="signUpFormStep1.stepControl.pristine || signUpFormStep1.stepControl.invalid"
-                                type="button">Next</button>
+                                <button mat-button matStepperNext mat-flat-button [color]="'primary'"
+                                    [disabled]="signUpFormStep1.stepControl.pristine || signUpFormStep1.stepControl.invalid"
+                                    type="button">Next</button>
                             </div>
                         </mat-step>
-                        <mat-step [formGroupName]="'step2'" [stepControl]="signUpForm.get('step2')" label="Fill out your email and phone" #signUpFormStep2>
+                        <mat-step [formGroupName]="'step2'" [stepControl]="signUpForm.get('step2')"
+                            label="Fill out your email and phone" #signUpFormStep2>
                             <div>
                                 <mat-form-field appearance="fill" class="w-full">
                                     <mat-label>Email</mat-label>
@@ -97,16 +91,11 @@
                                 </mat-form-field>
                             </div>
                             <div>
-                                <button mat-button matStepperPrevious                                 
-                                mat-flat-button
-                                [color]="'accent'"
-                                type="button">Back</button>
-                                <button                                 
-                                mat-flat-button
-                                [color]="'primary'"
-                                [disabled]="signUpFormStep2.stepControl.pristine || signUpFormStep2.stepControl.invalid"
-                                type="button"
-                                matStepperNext>Next</button>
+                                <button mat-button matStepperPrevious mat-flat-button [color]="'accent'"
+                                    type="button">Back</button>
+                                <button mat-flat-button [color]="'primary'"
+                                    [disabled]="signUpFormStep2.stepControl.pristine || signUpFormStep2.stepControl.invalid"
+                                    type="button" matStepperNext>Next</button>
                             </div>
                         </mat-step>
                         <mat-step [formGroupName]="'step3'" [stepControl]="signUpForm.get('step3')" #signUpFormStep3>
@@ -115,7 +104,7 @@
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                     <mat-label>New Password</mat-label>
                                     <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                                    <input type="password" [formControlName]="'confirmPass'" matInput  required>
+                                    <input type="password" [formControlName]="'confirmPass'" matInput required>
                                 </mat-form-field>
                             </div>
                             <div>
@@ -128,45 +117,66 @@
                             <br>
                             <!-- ToS and PP -->
                             <div class="inline-flex items-end w-full mt-5">
-                                <mat-checkbox
-                                    [color]="'primary'"
-                                    [formControlName]="'agreements'">
-                                    <span>I agree to the</span>
-                                    <a
-                                        class="ml-1 text-primary-500 hover:underline"
-                                        [routerLink]="['./']">Terms of Service
+                                <mat-checkbox [color]="'primary'" [formControlName]="'agreements'">
+                                    <span>Gas Broker tarafından</span>
+                                    <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Ticari
+                                        Elektronik İleti
                                     </a>
-                                    <span>and</span>
-                                    <a
-                                        class="ml-1 text-primary-500 hover:underline"
-                                        [routerLink]="['./']">Privacy Policy
-                                    </a>
+                                    <span>almayı kabul ediyorum.</span>
+
                                 </mat-checkbox>
+
                             </div>
+
+
+                            <div class="inline-flex items-end w-full mt-5">
+                                <div>
+                                    <span>Kişisel verileriniz, </span>
+                                    <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Kişisel
+                                        Verilerin İşlenmesi ve Korunması Politikası
+                                    </a>
+
+                                    <span>kapsamında işlenmektedir. "Hesabımı oluştur" butonuna basarak</span>
+
+                                    <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Kullanım
+                                        Sözleşmesi'ni,
+                                    </a>
+
+                                    <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Aydınlatma
+                                        Metnini'ni,
+                                    </a>
+
+                                    <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Çerez
+                                        Politikası'nı
+                                    </a>
+
+                                    <span> okuduğumu ve kabul ettiğimi onaylıyorum.</span>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Kişisel verileriniz, Kişisel Verilerin İşlenmesi ve Korunması Politikası kapsamında işlenmektedir. "Hesabımı oluştur" butonuna basarak,    -->
+
                             <br><br>
                             <div class="mt-5">
-                                <button mat-flat-button matStepperPrevious>Back</button>
-                                <button mat-flat-button (click)="stepper.reset()">Reset</button>
+                                <button mat-button matStepperPrevious mat-flat-button [color]="'accent'"
+                                    type="button">Back</button>
                                 <button mat-flat-button [color]="'primary'"
-                                [disabled]="signUpFormStep3.stepControl.pristine || signUpFormStep3.stepControl.invalid"
-                                (click)="signUp()">
+                                    [disabled]="signUpFormStep3.stepControl.pristine || signUpFormStep3.stepControl.invalid"
+                                    (click)="signUp()">
                                     Save
                                 </button>
                             </div>
                         </mat-step>
                     </mat-stepper>
-                    
+
                 </form>
 
 
 
-                
+
             </div>
         </div>
     </div>
 </div>
-
-
-
-
- 
