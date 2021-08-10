@@ -78,11 +78,9 @@ export class AuthResetPasswordComponent implements OnInit
                 next: () => {
                     this.token = token;
                     this.tokenStatus = TokenStatus.Valid;
-                    console.log(this.token);
                 },
                 error: () => {
                     this.tokenStatus = TokenStatus.Invalid;
-                    console.log(this.token);
                 }
             });
             
@@ -108,9 +106,9 @@ export class AuthResetPasswordComponent implements OnInit
 
         // Hide the alert
         this.showAlert = false;
-
+        //console.log(this.token)
         // Send the request to the server
-        this._authService.resetPassword(this.resetPasswordForm.get('password').value)
+        this._authService.resetPassword(this.token,this.resetPasswordForm.get('password').value)
             .pipe(
                 finalize(() => {
 
