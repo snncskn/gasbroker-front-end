@@ -5,7 +5,13 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseValidators } from '@fuse/validators';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
+enum TokenStatus {
+    Validating,
+    Valid,
+    Invalid
+}
 @Component({
     selector     : 'auth-reset-password',
     templateUrl  : './reset-password.component.html',
@@ -14,8 +20,13 @@ import { AuthService } from 'app/core/auth/auth.service';
 })
 export class AuthResetPasswordComponent implements OnInit
 {
+    TokenStatus = TokenStatus;
+    tokenStatus = TokenStatus.Validating;
+    token = null;
+
     @ViewChild('resetPasswordNgForm') resetPasswordNgForm: NgForm;
 
+    isToken: boolean = false;
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
         message: ''
@@ -28,9 +39,22 @@ export class AuthResetPasswordComponent implements OnInit
      */
     constructor(
         private _authService: AuthService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
     )
     {
+        this.activatedRouter.paramMap.subscribe(params => {
+            if (params.has('id')) {
+                this._authService.getToken().subscribe(tokens => {
+                    console.log(tokens)
+                })
+                if(params.get('id')=='4444')
+                {
+                    this.isToken=true;
+                }
+            }
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -51,6 +75,11 @@ export class AuthResetPasswordComponent implements OnInit
                 validators: FuseValidators.mustMatch('password', 'passwordConfirm')
             }
         );
+
+        const token = this.route.snapshot.queryParams['token'];
+
+        //console.log(token)
+        this.router.navigate([], { relativeTo: this.route, replaceUrl: true });
     }
 
     // -----------------------------------------------------------------------------------------------------

@@ -16,22 +16,26 @@
                     <!-- Title -->
                     <div class="text-4xl font-extrabold tracking-tight">
                         <button class="fuse-mat-button-rounded mt-2" [routerLink]="['/apps/company']" mat-icon-button
-                        [color]="'primary'">
-                        <mat-icon matPrefix class="hidden sm:flex icon-size-6" [svgIcon]="'heroicons_outline:arrow-left'">
-                        </mat-icon>
-                      </button>
+                            [color]="'primary'">
+                            <mat-icon matPrefix class="hidden sm:flex icon-size-6"
+                                [svgIcon]="'heroicons_outline:arrow-left'">
+                            </mat-icon>
+                        </button>
                         {{ t('text.details') }}
                     </div>
 
                     <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
                         <ng-container *ngIf="isEditUser">
-                            <button class="mr-5" mat-flat-button [color]="'warn'" (click)="approvalStatusDialog('REJECT')">
+                            <button class="mr-5" mat-flat-button [color]="'warn'"
+                                (click)="approvalStatusDialog('REJECT')">
                                 <span>Reject</span>
                             </button>
-                            <button class="mr-5" mat-flat-button [color]="'accent'" (click)="approvalStatusDialog('WAITING')">
+                            <button class="mr-5" mat-flat-button [color]="'accent'"
+                                (click)="approvalStatusDialog('WAITING')">
                                 <span>Waiting</span>
                             </button>
-                            <button class="mr-5" mat-flat-button style="background-color: green; color:white" (click)="approvalStatusDialog('OK')">
+                            <button class="mr-5" mat-flat-button style="background-color: green; color:white"
+                                (click)="approvalStatusDialog('OK')">
                                 <span>Approval</span>
                             </button>
                         </ng-container>
@@ -39,8 +43,7 @@
                             <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                             <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
                         </button>
-                        <button class="" mat-flat-button [color]="'primary'"
-                             (click)="addNewCompany()">
+                        <button class="" mat-flat-button [color]="'primary'" (click)="addNewCompany()">
                             <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                         </button>
                     </div>
@@ -158,256 +161,307 @@
                                 </div>
                             </mat-tab>
                             <ng-container *ngIf="isEditUser">
-                            <mat-tab label="{{ t('company.details.tab.address') }}" (click)="loadAddress()">
-                                <div class="flex items w-full" *ngIf="isLoadAddress">
-                                    <div class="w-full ml-2">
-                                        <div class="w-full">
-                                            <div class="mt-5">
-                                                <ng-container>
-                                                    <mat-accordion class="fuse-mat-no-subscript mt-1">
-                                                        <mat-expansion-panel>
-                                                            <mat-expansion-panel-header>
-                                                                <mat-panel-title>
-                                                                    {{ t('company.details.tab.address.newAddress') }}
-                                                                </mat-panel-title>
-                                                                <mat-panel-description>
+                                <mat-tab label="{{ t('company.details.tab.address') }}" (click)="loadAddress()">
+                                    <div class="flex items w-full" *ngIf="isLoadAddress">
+                                        <div class="w-full ml-2">
+                                            <div class="w-full">
+                                                <div class="mt-5">
+                                                    <ng-container>
+                                                        <mat-accordion class="fuse-mat-no-subscript mt-1">
+                                                            <mat-expansion-panel>
+                                                                <mat-expansion-panel-header>
+                                                                    <mat-panel-title>
+                                                                        {{ t('company.details.tab.address.newAddress')
+                                                                        }}
+                                                                    </mat-panel-title>
+                                                                    <mat-panel-description>
 
-                                                                    <mat-icon>account_circle</mat-icon>
-                                                                </mat-panel-description>
-                                                            </mat-expansion-panel-header>
+                                                                        <mat-icon>account_circle</mat-icon>
+                                                                    </mat-panel-description>
+                                                                </mat-expansion-panel-header>
 
-                                                            <form [formGroup]="addressesForm">
-                                                                <div class="flex items-center" *ngIf="formStatus">
-                                                                    <div class="ml-2 mr-5 w-1/3">
-                                                                        <div class="flex items-center mt-6">
-                                                                            <div class="w-full">
+                                                                <form [formGroup]="addressesForm">
+                                                                    <div class="flex items-center" *ngIf="formStatus">
+                                                                        <div class="ml-2 mr-5 w-1/3">
+                                                                            <div class="flex items-center mt-6">
+                                                                                <div class="w-full">
+                                                                                    <mat-form-field
+                                                                                        class="fuse-mat-no-subscript w-full">
+                                                                                        <mat-label>{{
+                                                                                            t('company.details.tab.address.title')
+                                                                                            }}</mat-label>
+                                                                                        <input matInput
+                                                                                            [formControlName]="'title'"
+                                                                                            placeholder="{{ t('company.details.tab.address.title') }}"
+                                                                                            [spellcheck]="false">
+                                                                                    </mat-form-field>
+                                                                                </div>
+                                                                                <div class="ml-5 w-full">
+                                                                                    <mat-form-field
+                                                                                        class="fuse-mat-no-subscript w-full">
+                                                                                        <mat-label>{{
+                                                                                            t('company.details.tab.address.type')
+                                                                                            }}
+                                                                                        </mat-label>
+                                                                                        <input matInput
+                                                                                            [formControlName]="'type'"
+                                                                                            placeholder="{{ t('company.details.tab.address.type') }}"
+                                                                                            [spellcheck]="false">
+                                                                                    </mat-form-field>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mt-6">
                                                                                 <mat-form-field
                                                                                     class="fuse-mat-no-subscript w-full">
                                                                                     <mat-label>{{
-                                                                                        t('company.details.tab.address.title')
+                                                                                        t('company.details.tab.address.description')
                                                                                         }}</mat-label>
-                                                                                    <input matInput
-                                                                                        [formControlName]="'title'"
-                                                                                        placeholder="{{ t('company.details.tab.address.title') }}"
-                                                                                        [spellcheck]="false">
+                                                                                    <textarea matInput
+                                                                                        [formControlName]="'description'"
+                                                                                        placeholder="{{ t('company.details.tab.address.description') }}"
+                                                                                        [spellcheck]="false"></textarea>
                                                                                 </mat-form-field>
                                                                             </div>
-                                                                            <div class="ml-5 w-full">
-                                                                                <mat-form-field
-                                                                                    class="fuse-mat-no-subscript w-full">
-                                                                                    <mat-label>{{
-                                                                                        t('company.details.tab.address.type')
-                                                                                        }}
-                                                                                    </mat-label>
-                                                                                    <input matInput
-                                                                                        [formControlName]="'type'"
-                                                                                        placeholder="{{ t('company.details.tab.address.type') }}"
-                                                                                        [spellcheck]="false">
-                                                                                </mat-form-field>
+                                                                            <div class="mt-5">
+                                                                                <button type="button" mat-flat-button
+                                                                                    [color]="'primary'"
+                                                                                    (click)="createAddress()">
+                                                                                    {{ t('button.save') }}
+                                                                                </button>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="mt-6">
-                                                                            <mat-form-field
-                                                                                class="fuse-mat-no-subscript w-full">
-                                                                                <mat-label>{{
-                                                                                    t('company.details.tab.address.description')
-                                                                                    }}</mat-label>
-                                                                                <textarea matInput
-                                                                                    [formControlName]="'description'"
-                                                                                    placeholder="{{ t('company.details.tab.address.description') }}"
-                                                                                    [spellcheck]="false"></textarea>
-                                                                            </mat-form-field>
-                                                                        </div>
-                                                                        <div class="flex items-center mt-6">
-                                                                            <div class="w-full">
-                                                                                <mat-form-field
-                                                                                    class="fuse-mat-no-subscript w-full">
-                                                                                    <mat-label>{{
-                                                                                        t('company.details.tab.address.latitude')
-                                                                                        }}</mat-label>
-                                                                                    <input matInput
-                                                                                        [formControlName]="'lat'"
-                                                                                        placeholder="{{ t('company.details.tab.address.latitude') }}"
-                                                                                        [spellcheck]="false">
-                                                                                </mat-form-field>
+                                                                        <div class="w-2/3 mt-5">
+                                                                            <div class="my-google-map">
+                                                                                <google-map [width]="null"
+                                                                                    [height]="null" [center]="center"
+                                                                                    [zoom]="zoom"
+                                                                                    (mapClick)="addMarker($event)">
+                                                                                    <map-marker
+                                                                                        *ngFor="let marker of markerPositions"
+                                                                                        [position]="marker"
+                                                                                        [options]="markerOptions">
+                                                                                    </map-marker>
+
+                                                                                </google-map>
                                                                             </div>
-                                                                            <div class="ml-5 w-full">
-                                                                                <mat-form-field
-                                                                                    class="fuse-mat-no-subscript w-full">
-                                                                                    <mat-label>{{
-                                                                                        t('company.details.tab.address.longitude')
-                                                                                        }}</mat-label>
-                                                                                    <input matInput
-                                                                                        [formControlName]="'long'"
-                                                                                        placeholder="{{ t('company.details.tab.address.longitude') }}"
-                                                                                        [spellcheck]="false">
-                                                                                </mat-form-field>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="mt-5">
-                                                                            <button type="button" mat-flat-button
-                                                                                [color]="'primary'"
-                                                                                (click)="createAddress()">
-                                                                                {{ t('button.save') }}
-                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="w-2/3 mt-5">
+                                                                </form>
+
+                                                            </mat-expansion-panel>
+                                                            <mat-expansion-panel *ngFor="let item of addressList"
+                                                                (opened)="item.expanded" [expanded]="item.expanded">
+                                                                <mat-expansion-panel-header>
+                                                                    <mat-panel-title class="font-bold">{{item.title}}
+                                                                    </mat-panel-title>
+                                                                    <mat-panel-description>
+
+                                                                        <button type="button"
+                                                                            class="fuse-mat-button-rounded text-on-warn-100"
+                                                                            mat-icon-button [color]="'warn'"
+                                                                            (click)="deleteAddress(item)">
+                                                                            <mat-icon matPrefix
+                                                                                class="hidden sm:flex icon-size-5"
+                                                                                [svgIcon]="'heroicons_outline:trash'">
+                                                                            </mat-icon>
+                                                                        </button>
+
+                                                                    </mat-panel-description>
+                                                                </mat-expansion-panel-header>
+
+                                                                <ng-container *ngIf="!item.isNew">
+                                                                    <p>{{ t('company.details.tab.address.description')
+                                                                        }}:
+                                                                        {{item.description}}</p>
+                                                                    <p>{{ t('company.details.tab.address.type') }}:
+                                                                        {{item.type}}
+                                                                    </p>
+                                                                    <div class="w-full mt-5">
                                                                         <div class="my-google-map">
                                                                             <google-map [width]="null" [height]="null"
                                                                                 [center]="center" [zoom]="zoom"
                                                                                 (mapClick)="addMarker($event)">
-                                                                                <map-marker
-                                                                                    [position]="newAddressItem.position"
+                                                                                <map-marker [position]="item.position"
                                                                                     [options]="markerOptions">
                                                                                 </map-marker>
 
                                                                             </google-map>
+
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-
-                                                        </mat-expansion-panel>
-                                                        <mat-expansion-panel *ngFor="let item of addressList"
-                                                            (opened)="item.expanded" [expanded]="item.expanded">
-                                                            <mat-expansion-panel-header>
-                                                                <mat-panel-title class="font-bold">{{item.title}}
-                                                                </mat-panel-title>
-                                                                <mat-panel-description>
-
-                                                                    <button type="button"
-                                                                        class="fuse-mat-button-rounded text-on-warn-100"
-                                                                        mat-icon-button [color]="'warn'"
-                                                                        (click)="deleteAddress(item)">
-                                                                        <mat-icon matPrefix
-                                                                            class="hidden sm:flex icon-size-5"
-                                                                            [svgIcon]="'heroicons_outline:trash'">
-                                                                        </mat-icon>
-                                                                    </button>
-
-                                                                </mat-panel-description>
-                                                            </mat-expansion-panel-header>
-
-                                                            <ng-container *ngIf="!item.isNew">
-                                                                <p>{{ t('company.details.tab.address.description') }}:
-                                                                    {{item.description}}</p>
-                                                                <p>{{ t('company.details.tab.address.type') }}:
-                                                                    {{item.type}}
-                                                                </p>
-                                                                <div class="w-full mt-5">
-                                                                    <div class="my-google-map">
-                                                                        <google-map [width]="null" [height]="null"
-                                                                            [center]="center" [zoom]="zoom"
-                                                                            (mapClick)="addMarker($event)">
-                                                                            <map-marker [position]="item.position"
-                                                                                [options]="markerOptions"></map-marker>
-
-                                                                        </google-map>
 
                                                                     </div>
-
-                                                                </div>
-                                                            </ng-container>
-                                                        </mat-expansion-panel>
-                                                    </mat-accordion>
-                                                </ng-container>
+                                                                </ng-container>
+                                                            </mat-expansion-panel>
+                                                        </mat-accordion>
+                                                    </ng-container>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </mat-tab>
-                            <mat-tab label="{{ t('company.details.tab.documentList') }}">
-                                <div *ngFor="let item of  dataSourceDocs">
-                                    {{item.description}}
-                                    <form [formGroup]="demoForm">
-                                        <file-upload formControlName="files" [multiple]="multiple"
-                                            [animation]="animation">
-                                        </file-upload>
-                                        <input type="hidden" formControlName="label" [ngModel]="item.description">
-                                    </form>
-
-                                </div>
-
-                                <button mat-flat-button [color]="'primary'" (click)="upload()">
-                                    {{ t('company.details.tab.documentList.button.upload') }}
-                                </button>
-                            </mat-tab>
-
-                            <mat-tab label="{{ t('company.details.tab.approvalProcesses') }}">
-                                <ng-container *ngIf="(dataSourceApprovals) as approvals">
-                                    <ng-container *ngIf="approvals.length; else noApprovals">
-                                        <div class="mt-8">
-                                            <ol>
-                                                <!-- Activities -->
-                                                <ng-container *ngFor="let approval of approvals; let i = index; let first = first; let last = last;">
-                    
-                                                    <!-- Date separator -->
-                                                    <ng-container *ngIf="first || !isSameDay(approval.created_at, approvals[i - 1].created_at)">
-                                                        <li class="relative flex py-7">
-                                                            <div class="relative py-2 px-8 text-md font-medium leading-5 rounded-full bg-primary text-on-primary">
-                                                                {{getRelativeFormat(approval.created_at)}}
-                                                            </div>
-                                                        </li>
+                                </mat-tab>
+                                <mat-tab label="{{ t('company.details.tab.documentList') }}">
+                                    <div class="flex items">
+                                        <div class="w-1/5">
+                                            <ng-container *ngFor="let item of  dataSourceDocs">
+                                                {{item.description}}
+                                                <form [formGroup]="demoForm">
+                                                    <file-upload formControlName="files" [multiple]="multiple"
+                                                        [animation]="animation">
+                                                    </file-upload>
+                                                    <input type="hidden" formControlName="label"
+                                                        [ngModel]="item.description">
+                                                </form>
+                                            </ng-container>
+                                        </div>
+                                        <div class="ml-5 w-full">
+                                            <!-- Files Cert-1 -->
+                                            <div class="font-medium">Files</div>
+                                            <div class="flex flex-wrap -m-2 mt-2">
+                                                <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
+                                                    <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
                                                     </ng-container>
-                    
-                                                    <!-- Activity -->
-                                                    <li class="relative flex py-7">
-                                                        <!-- Line -->
-                                                        <ng-container *ngIf="!last && isSameDay(approval.created_at, approvals[i + 1].created_at)">
-                                                            <div class="absolute top-7 left-5 w-0.5 h-full -ml-px bg-gray-300 dark:bg-gray-600"></div>
+                                                </ng-container>
+                                            </div>
+                                            <!-- Files Cert-2 -->
+                                            <div class="flex flex-wrap -m-2 mt-5">
+                                                <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
+                                                    <ng-container *ngIf="file.path.type=='pdf'">
+                                                    <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
+                                                    </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+
+
+
+                                            <!-- Item template -->
+                                            <ng-template #item let-item>
+                                                <a class="flex flex-col w-38 h-38 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card" (click)="clickFile(item)" href="{{fileDownloadLink}}" target="_blank">
+                                                    <div class="aspect-w-9 aspect-h-6">
+                                                        <div class="flex items-center justify-center">
+                                                            <!-- Icons -->
+                                                            <ng-container [ngSwitch]="item?.path.type">
+                                                                <!-- File -->
+                                                                <ng-container *ngSwitchDefault>
+                                                                    <div class="relative">
+                                                                        <mat-icon class="icon-size-14 text-hint"
+                                                                            [svgIcon]="'iconsmind:file'"></mat-icon>
+                                                                        <div class="absolute left-0 bottom-0 px-1.5 rounded text-sm font-semibold leading-5 text-white"
+                                                                            [class.bg-red-600]="item?.path.type === 'pdf'"
+                                                                            [class.bg-blue-600]="item?.path.type === 'doc'"
+                                                                            [class.bg-green-600]="item?.path.type === 'xls'"
+                                                                            [class.bg-gray-600]="item?.path.type === 'txt'"
+                                                                            [class.bg-amber-600]="item?.path.type === 'jpg'">
+                                                                            {{item.path.type?.toUpperCase()}}
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="flex flex-col flex-auto justify-center text-center text-sm font-medium mt-1">
+                                                        <div class="truncate" [matTooltip]="item.name">
+                                                            {{item.path.fileName}}</div>
+                                                        <ng-container *ngIf="item.title">
+                                                            <div class="text-secondary truncate">{{item.title}}</div>
                                                         </ng-container>
-                    
-                                                        <div class="relative flex flex-auto">
-                                                            <!-- Icon -->
-                                                            <ng-container *ngIf="approval.status==='OK'">
-                                                                <div class="flex flex-shrink-0 items-center justify-center w-10 h-10 mr-4 rounded-full bg-green-400">
-                                                                    <mat-icon
-                                                                        class="icon-size-5 text-white"
-                                                                        svgIcon="heroicons_outline:check-circle">
-                                                                    </mat-icon>
+                                                    </div>
+                                                </a>
+                                            </ng-template>
+
+
+
+                                        </div>
+                                    </div>
+                                    <button mat-flat-button [color]="'primary'" (click)="upload()">
+                                        {{ t('company.details.tab.documentList.button.upload') }}
+                                    </button>
+
+
+                                </mat-tab>
+
+                                <mat-tab label="{{ t('company.details.tab.approvalProcesses') }}">
+                                    <ng-container *ngIf="(dataSourceApprovals) as approvals">
+                                        <ng-container *ngIf="approvals.length; else noApprovals">
+                                            <div class="mt-8">
+                                                <ol>
+                                                    <!-- Activities -->
+                                                    <ng-container
+                                                        *ngFor="let approval of approvals; let i = index; let first = first; let last = last;">
+
+                                                        <!-- Date separator -->
+                                                        <ng-container
+                                                            *ngIf="first || !isSameDay(approval.created_at, approvals[i - 1].created_at)">
+                                                            <li class="relative flex py-7">
+                                                                <div
+                                                                    class="relative py-2 px-8 text-md font-medium leading-5 rounded-full bg-primary text-on-primary">
+                                                                    {{getRelativeFormat(approval.created_at)}}
+                                                                </div>
+                                                            </li>
+                                                        </ng-container>
+
+                                                        <!-- Activity -->
+                                                        <li class="relative flex py-7">
+                                                            <!-- Line -->
+                                                            <ng-container
+                                                                *ngIf="!last && isSameDay(approval.created_at, approvals[i + 1].created_at)">
+                                                                <div
+                                                                    class="absolute top-7 left-5 w-0.5 h-full -ml-px bg-gray-300 dark:bg-gray-600">
                                                                 </div>
                                                             </ng-container>
-                                                            <!-- Icon -->
-                                                            <ng-container *ngIf="approval.status==='REJECT'">
-                                                                <div class="flex flex-shrink-0 items-center justify-center w-10 h-10 mr-4 rounded-full bg-red-400">
-                                                                    <mat-icon
-                                                                        class="icon-size-5 text-white"
-                                                                        svgIcon="heroicons_outline:x-circle">
-                                                                    </mat-icon>
-                                                                </div>
-                                                            </ng-container>
-                                                            <!-- Icon -->
-                                                            <ng-container *ngIf="approval.status==='WAITING'">
-                                                                <div class="flex flex-shrink-0 items-center justify-center w-10 h-10 mr-4 rounded-full bg-yellow-400">
-                                                                    <mat-icon
-                                                                        class="icon-size-5 text-white"
-                                                                        svgIcon="heroicons_outline:minus-circle">
-                                                                    </mat-icon>
-                                                                </div>
-                                                            </ng-container>
-                    
-                                                             <!--Image 
+
+                                                            <div class="relative flex flex-auto">
+                                                                <!-- Icon -->
+                                                                <ng-container *ngIf="approval.status==='OK'">
+                                                                    <div
+                                                                        class="flex flex-shrink-0 items-center justify-center w-10 h-10 mr-4 rounded-full bg-green-400">
+                                                                        <mat-icon class="icon-size-5 text-white"
+                                                                            svgIcon="heroicons_outline:check-circle">
+                                                                        </mat-icon>
+                                                                    </div>
+                                                                </ng-container>
+                                                                <!-- Icon -->
+                                                                <ng-container *ngIf="approval.status==='REJECT'">
+                                                                    <div
+                                                                        class="flex flex-shrink-0 items-center justify-center w-10 h-10 mr-4 rounded-full bg-red-400">
+                                                                        <mat-icon class="icon-size-5 text-white"
+                                                                            svgIcon="heroicons_outline:x-circle">
+                                                                        </mat-icon>
+                                                                    </div>
+                                                                </ng-container>
+                                                                <!-- Icon -->
+                                                                <ng-container *ngIf="approval.status==='WAITING'">
+                                                                    <div
+                                                                        class="flex flex-shrink-0 items-center justify-center w-10 h-10 mr-4 rounded-full bg-yellow-400">
+                                                                        <mat-icon class="icon-size-5 text-white"
+                                                                            svgIcon="heroicons_outline:minus-circle">
+                                                                        </mat-icon>
+                                                                    </div>
+                                                                </ng-container>
+
+                                                                <!--Image 
                                                             <ng-container *ngIf="activity.image">
                                                                 <img
                                                                     class="flex-shrink-0 w-10 h-10 mr-4 rounded-full overflow-hidden object-cover object-center"
                                                                     [src]="activity.image"
                                                                     [alt]="'Activity image'">
                                                             </ng-container>-->
-                    
-                                                            <!-- Content -->
-                                                            <div class="flex flex-col flex-auto items-start">
-                                                                <!-- Description -->
-                                                                <ng-container *ngIf="approval.description">
+
+                                                                <!-- Content -->
+                                                                <div class="flex flex-col flex-auto items-start">
+                                                                    <!-- Description -->
+                                                                    <ng-container *ngIf="approval.description">
+                                                                        <div [innerHTML]="approval.description"></div>
+                                                                    </ng-container>
                                                                     <div
-                                                                        [innerHTML]="approval.description"></div>
-                                                                </ng-container>
-                                                                <div class="flex flex-col sm:flex-row sm:items-center mt-2 sm:mt-1 sm:space-x-2 text-md leading-5">
-                                                                    <!-- Date -->
-                                                                    <div class="text-secondary">
-                                                                        {{approval.created_at | date:'MMM dd, h:mm a'}}
-                                                                    </div>
-                                                                    <!-- Linked content 
+                                                                        class="flex flex-col sm:flex-row sm:items-center mt-2 sm:mt-1 sm:space-x-2 text-md leading-5">
+                                                                        <!-- Date -->
+                                                                        <div class="text-secondary">
+                                                                            {{approval.created_at | date:'MMM dd, h:mm
+                                                                            a'}}
+                                                                        </div>
+                                                                        <!-- Linked content 
                                                                     <ng-container *ngIf="activity.linkedContent">
                                                                         <div class="hidden sm:block">&bull;</div>
                                                                          Internal link 
@@ -428,26 +482,26 @@
                                                                             </a>
                                                                         </ng-container>
                                                                     </ng-container>-->
-                                                                </div>
-                                                                <!-- Extra content -->
-                                                                <!--<ng-container *ngIf="activity.extraContent">
+                                                                    </div>
+                                                                    <!-- Extra content -->
+                                                                    <!--<ng-container *ngIf="activity.extraContent">
                                                                     <div
                                                                         class="mt-4 py-4 px-5 rounded-lg bg-gray-200 dark:bg-gray-800"
                                                                         [innerHTML]="activity.extraContent"></div>
                                                                 </ng-container>-->
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                </ng-container>
-                                            </ol>
-                                        </div>
+                                                        </li>
+                                                    </ng-container>
+                                                </ol>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-                                <ng-template #noApprovals>
-                                    There are is activity at the moment...
-                                </ng-template>
-                            </mat-tab>
-                        </ng-container>
+                                    <ng-template #noApprovals>
+                                        There are is activity at the moment...
+                                    </ng-template>
+                                </mat-tab>
+                            </ng-container>
                         </mat-tab-group>
                     </form>
                 </div>

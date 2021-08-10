@@ -66,7 +66,7 @@ export class AuthService
      */
     forgotPassword(email: string): Observable<any>
     {
-        return this._httpClient.post('api/auth/forgot-password', email);
+        return this._httpClient.post(`${environment.url}/api/auth/recover`, {email:email});
     }
 
     /**
@@ -222,5 +222,10 @@ export class AuthService
 
         // If the access token exists and it didn't expire, sign in using it
         return this.signInUsingToken();
+    }
+
+    getToken(): Observable<any>
+    {
+        return this._httpClient.get(`${environment.url}/api/auth/access-token`)
     }
 }
