@@ -106,6 +106,10 @@ export class AuthService
         );
     }
 
+    validateResetToken(token: string) {
+        return this._httpClient.post(`${environment.url}/api/auth/change-password/`, { token });
+    }
+
     setLayout(layout: string): void
     {
         // Clear the 'layout' query param to allow layout changes
