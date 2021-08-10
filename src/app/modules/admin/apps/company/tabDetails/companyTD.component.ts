@@ -14,6 +14,7 @@ import { CustomersService } from '../company.service';
 import { MediaService } from "../../media/media.service";
 import { AuthService } from 'app/core/auth/auth.service';
 import { FileService } from 'app/services/file.service';
+import { environment } from 'environments/environment';
 @Component({
   selector: "companyTD",
   templateUrl: "./companyTD.component.html",
@@ -35,9 +36,11 @@ export class CustomersTDComponent implements OnInit {
   resetPassForm: FormGroup;
   addressesForm: FormGroup;
   addressList: any[] = [];
+  mediaList: any[]= [];
   isLoadAddress: boolean = true;
   formStatus: boolean = true;
   newAddressItem: any;
+  fileDownloadLink:any;
 
   center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
   zoom = 7;
@@ -120,6 +123,7 @@ export class CustomersTDComponent implements OnInit {
                 this.addressesForm.patchValue({company_id:data.body?.id})
                 this.loadAddress();
                 this.dataSourceApprovals = [];
+                this.mediaList = data?.body.media;
                 this._customersService.getApprovals(params.get("id")).subscribe(res => {
                   this.dataSourceApprovals = res.body;
                 });
@@ -391,7 +395,11 @@ export class CustomersTDComponent implements OnInit {
         */
        trackByFn(index: number, item: any): any
        {
-         console.log(item);
            return item.id || index;
+       }
+
+       clickFile(item)
+       {
+         this.fileDownloadLink = `${environment.url}/media/s3/generateGetUrl?Key=`+item?.path.key;
        }
 }
