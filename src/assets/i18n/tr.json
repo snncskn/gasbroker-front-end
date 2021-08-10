@@ -200,6 +200,7 @@
     "group.noGroup.message": "Grup Yok!",
         "group.details.groupName": "Grup Adı",
         "group.details.subGroupName": "Alt Grup Adı",
+        "group.details.newSubGroup": "Yeni Alt Grup",
 
     "users.title": "Kullanıcılar",
     "users.name": "Adı",
