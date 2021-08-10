@@ -72,11 +72,11 @@ export class AuthService
     /**
      * Reset password
      *
-     * @param password
+     * @param token
      */
-    resetPassword(password: string): Observable<any>
+    resetPassword(token: string, password:any): Observable<any>
     {
-        return this._httpClient.post('api/auth/reset-password', password);
+        return this._httpClient.post(`${environment.url}/api/auth/change-password/${token}`, {token:token,password:password});
     }
 
     /**
@@ -107,7 +107,7 @@ export class AuthService
     }
 
     validateResetToken(token: string) {
-        return this._httpClient.post(`${environment.url}/api/auth/change-password/`, { token });
+        return this._httpClient.post(`${environment.url}/api/auth/reset/${token}`,  {token:token} );
     }
 
     setLayout(layout: string): void
