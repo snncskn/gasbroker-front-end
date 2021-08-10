@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { finalize, first } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseValidators } from '@fuse/validators';
 import { FuseAlertType } from '@fuse/components/alert';
@@ -40,20 +40,11 @@ export class AuthResetPasswordComponent implements OnInit
     constructor(
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
-        private route: ActivatedRoute,
+        private activatedRouter: ActivatedRoute,
         private router: Router,
     )
     {
         this.activatedRouter.paramMap.subscribe(params => {
-            if (params.has('id')) {
-                this._authService.getToken().subscribe(tokens => {
-                    console.log(tokens)
-                })
-                if(params.get('id')=='4444')
-                {
-                    this.isToken=true;
-                }
-            }
         });
     }
 
@@ -76,10 +67,25 @@ export class AuthResetPasswordComponent implements OnInit
             }
         );
 
-        const token = this.route.snapshot.queryParams['token'];
+        const token = this.activatedRouter.snapshot.queryParams['token'];
 
         //console.log(token)
-        this.router.navigate([], { relativeTo: this.route, replaceUrl: true });
+        this.router.navigate([], { relativeTo: this.activatedRouter, replaceUrl: true });
+
+        this._authService.validateResetToken(token)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    this.token = token;
+                    this.tokenStatus = TokenStatus.Valid;
+                    console.log(this.token);
+                },
+                error: () => {
+                    this.tokenStatus = TokenStatus.Invalid;
+                    console.log(this.token);
+                }
+            });
+            
     }
 
     // -----------------------------------------------------------------------------------------------------
