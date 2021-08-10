@@ -24,7 +24,6 @@ export class AuthInterceptor implements HttpInterceptor
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>
     {
         let newReq = req.clone();
-
         // Request
         //
         // If the access token didn't expire, add the Authorization header.

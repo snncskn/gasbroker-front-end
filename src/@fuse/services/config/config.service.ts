@@ -31,12 +31,11 @@ export class FuseConfigService
      */
     set config(value: any)
     {
+        console.log(999);
         // Merge the new config over to the current config
         const config = merge({}, this._config.getValue(), value);
-        let tmp =JSON.parse(localStorage.getItem('user'));
-        this._httpClient.put<any>(`${environment.url}/api/user/settings/${tmp.user_id}`, { setting:config }).subscribe(data=>{
-            console.log('güncelleme başarılı');
-        });
+        let tmp = JSON.parse(localStorage.getItem('user'));
+        this._httpClient.put<any>(`${environment.url}/api/user/settings/${tmp.user_id}`, { setting:config }).subscribe();
         // Execute the observable
         this._config.next(config);
     }

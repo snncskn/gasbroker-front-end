@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   ViewChild,
@@ -28,7 +29,7 @@ import { GeneralFunction } from "app/shared/GeneralFunction";
   selector: "proposal-process",
   templateUrl: "./process.component.html",
   styleUrls: ['./process.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
@@ -64,10 +65,10 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
   addMarker(event: google.maps.MapMouseEvent, item:any) {
       this.markerPositions = [];
-      item.value.latitude = event.latLng.toJSON();
-      item.value.longitude = event.latLng.toJSON();
+      item.latitude = event.latLng.toJSON().lat;
+      item.longitude = event.latLng.toJSON().lng;
+      this.markerPositions.push(event.latLng.toJSON());
   }
-
   constructor(
     private router: Router,
     private _formBuilder: FormBuilder,
@@ -77,6 +78,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     private readonly ngxService: NgxUiLoaderService,
     private readonly activatedRouter: ActivatedRoute,
     private _matDialog: MatDialog,
+    private changeDetection: ChangeDetectorRef,
     private translocoService: TranslocoService
   ) {
     this.processForm = this._formBuilder.group({
@@ -110,33 +112,46 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
         })
         let processByID = this._proposalService.getProcessByProposalId(params.get("id"));
         let customer = this._proposalService.getCustomers();
+        let grp =  this._proposalService.getProcessGroup();
       
-        forkJoin(processByID,customer).subscribe(result => {
+        forkJoin(processByID,customer,grp).subscribe(result => {
           this.customers = result[1].body;
           let bodyForm  = result[0].body;
+          this.dataSourceGroup  = result[2].body;
           this.isLoading = true;
           this.processForm.patchValue({
-            id:bodyForm.id,
-            voyage_code:bodyForm.voyage_code,
-            agency:this.customers.find(item =>item.id === bodyForm.agency_id),
-            agency_id:bodyForm.agency_id,
-            broker: this.customers.find(item =>item.id === bodyForm.broker_id),
-            broker_id:bodyForm.broker_id,
-            captain:this.customers.find(item =>item.id === bodyForm.captain_id),
-            captain_id:bodyForm.captain_id,
-            loading_master:this.customers.find(item =>item.id === bodyForm.loading_master_id),
-            loading_master_id:bodyForm.loading_master_id,
-            vendor:this.customers.find(item =>item.id === bodyForm.vendor_id),
-            vendor_id:bodyForm.vendor_id,
-            recipient:this.customers.find(item =>item.id === bodyForm.recipient_id),
-            recipient_id:bodyForm.recipient_id,
+            id:bodyForm?.id,
+            voyage_code:bodyForm?.voyage_code,
+            agency:this.customers.find(item =>item.id === bodyForm?.agency_id),
+            agency_id:bodyForm?.agency_id,
+            broker: this.customers.find(item =>item.id === bodyForm?.broker_id),
+            broker_id:bodyForm?.broker_id,
+            captain:this.customers.find(item =>item.id === bodyForm?.captain_id),
+            captain_id:bodyForm?.captain_id,
+            loading_master:this.customers.find(item =>item.id === bodyForm?.loading_master_id),
+            loading_master_id:bodyForm?.loading_master_id,
+            vendor:this.customers.find(item =>item.id === bodyForm?.vendor_id),
+            vendor_id:bodyForm?.vendor_id,
+            recipient:this.customers.find(item =>item.id === bodyForm?.recipient_id),
+            recipient_id:bodyForm?.recipient_id,
            });
-           this._proposalService.getProcessItemsByProcessId(bodyForm.id).subscribe( items =>{
-            this.items = items.body;
-            this.isLoading = true;
-           },error=>{
-            this.isLoading = true;
-           });
+           if(bodyForm) {
+              this._proposalService.getProcessItemsByProcessId(bodyForm?.id).subscribe( items =>{
+                this.items = [];
+                items.body.forEach(element => {
+                  element.open = true;
+                  element.dataSourceGroup = this.dataSourceGroup;
+                  this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
+                    element.dataSourceSubGroup = data.body.process_sub_groups;
+                    this.items.push(element);
+                  });
+                
+                });
+                this.isLoading = true;
+              },error=>{
+                this.isLoading = true;
+              });
+           }
            this.ngxService.stop();
         });
        }
@@ -148,9 +163,10 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
 
   ngOnInit(): void { }
 
-  changeGroup(val: string) {
+  changeGroup(val: string,item: any) {
     this._proposalService.getProcessGroupById(val).subscribe(data => {
         this.dataSourceSubGroup = data.body.process_sub_groups;
+        item.dataSourceSubGroup = data.body.process_sub_groups;
         if(this.selectedItem){
             this.processItemsForm.patchValue({group_sub_id: this.selectedItem.group_sub_id, group_id:val});
         }
@@ -158,7 +174,14 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   }
 
   add(item?: any) {
+    item.dataSourceGroup = this.dataSourceGroup;
+    this.addNewProcess(true);
     this.items.push(item);
+    this.items.forEach(item=>{
+      item.open = false;
+    })
+    this.changeDetection.detectChanges();
+
   }
   public list() {
 
@@ -204,10 +227,10 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     }
   }
   displayFn(x) {
-    return x.full_name;
+    return x?.full_name;
   }
 
-  addNewProcess()
+  addNewProcess(router?:boolean)
   {
     let status = this.generalFunction.formValidationCheck(this.processForm,this.toastr,this.translocoService);
     if(status)
@@ -215,8 +238,14 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
       return
     }
     this._proposalService.createProcess(this.processForm.value).subscribe(data=>{
-      this._router.navigate(["/apps/proposals/list"]);
-    })
+    
+      this.processForm.value.id = data.id;
+      if(!router){
+        this._router.navigate(["/apps/proposals/list"]);
+      }
+    });
+    this.changeDetection.detectChanges();
+
   }
 
   position(item: any){
@@ -227,11 +256,31 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     return center;
   }
 
-  saveProcessItems(item: any)
+  saveProcessItems(item: any,address: string)
   {
+    item.open = false;
+    item.address = address;
     item.process_id = this.processForm.value.id;
     this._proposalService.createProcessItem(item).subscribe(data=>{
+      this._proposalService.getProcessItemsByProcessId(this.processForm.value.id).subscribe( items =>{
+        this.items = [];
+        items.body.forEach(element => {
+          element.open = true;
+          element.dataSourceGroup = this.dataSourceGroup;
+          this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
+            element.dataSourceSubGroup = data.body.process_sub_groups;
+            this.items.push(element);
+          });
+        
+        });
+        this.isLoading = true;
+      },error=>{
+        this.isLoading = true;
+      });
     });
+
+    this.changeDetection.detectChanges();
+
   }
 
   deleteProcess()
@@ -241,6 +290,9 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
       this.items.forEach(element => {
         this._proposalService.deleteProcessItem(element.id).subscribe();
       });
+      this._router.navigate(["/apps/proposals/list"]);
+
+
     })
   }
 
@@ -249,6 +301,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
     if(item.id){
       this._proposalService.deleteProcessItem(item.id).subscribe(data=>{
         this.items = this.items.filter(it => it.id !==item.id);
+        this.changeDetection.detectChanges();
+
         this.toastr.successToastr(this.translocoService.translate('message.deleteProcessItem'));
       });
   
@@ -258,5 +312,12 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   }
   processDateChange(item,value){
     item.process_date = moment(value,"DD-MM-YYYY");
+  }
+  public trackItem (index: number, item: any) {
+    return item.id;
+  }
+
+  openAccordion(item: any){
+    item.open = !item.open;
   }
 }

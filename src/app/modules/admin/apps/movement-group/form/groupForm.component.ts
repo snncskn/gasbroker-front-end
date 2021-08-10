@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { GroupForm } from './groupForm';
     selector: 'group-form',
     templateUrl: './groupForm.component.html',
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class GroupFormComponent {
 
@@ -35,6 +35,7 @@ export class GroupFormComponent {
         private _groupService: GroupService,
         private readonly activatedRouter: ActivatedRoute,
         private translocoService: TranslocoService,
+        private changeDetection: ChangeDetectorRef,
         private dialog: MatDialog
     ) {
         this.groupForm = this._formBuilder.group({
@@ -120,10 +121,14 @@ export class GroupFormComponent {
     }
 
     deleteSubGroup(item: any,index: number) {
+        console.log(123);
         if(item.id){
             this._groupService.deleteSubGroup(item).subscribe(data => {
                 this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessSubGroup'));
-                this._router.navigateByUrl('/apps/group/form/' + data.body.id);
+                //this._router.navigateByUrl('/apps/group/form/' + data.body.id);
+                let tmp = this.formSubGroup.controls["subGroupItems"] as FormArray;
+                tmp.removeAt(index);
+                this.changeDetection.detectChanges();
             });
         }else{
           let tmp = this.formSubGroup.controls["subGroupItems"] as FormArray;

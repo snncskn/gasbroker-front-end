@@ -154,7 +154,6 @@ export class LayoutComponent implements OnInit, OnDestroy
      */
     setScheme(scheme: Scheme): void
     {
-        console.log('setScheme');
         this._fuseConfigService.config = {scheme};
     }
 
@@ -165,7 +164,6 @@ export class LayoutComponent implements OnInit, OnDestroy
      */
     setTheme(theme: Theme): void
     {
-        console.log('setTheme');
         this._fuseConfigService.config = {theme};
     }
 

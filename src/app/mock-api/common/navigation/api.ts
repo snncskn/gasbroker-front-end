@@ -50,7 +50,7 @@ export class NavigationMockApi
                           
                             let tmpChildren:any[] = [];
                             defaultNavItem.children.forEach(item =>{
-                                tmp.permissions.ids.forEach(permission => {
+                                tmp.permissions?.ids.forEach(permission => {
                                     if(item.id === permission){
                                         tmpChildren.push(item);
                                     }

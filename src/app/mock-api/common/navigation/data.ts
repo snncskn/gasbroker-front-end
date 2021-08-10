@@ -1210,6 +1210,7 @@ export const compactNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:home',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     },
+    /*
     {
         id      : 'apps',
         title   : 'Apps',
@@ -1238,6 +1239,7 @@ export const compactNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:menu',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     }
+    */
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
@@ -1342,6 +1344,8 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                     }
                 ]
             },
+            /*
+
             {
                 id   : 'apps.mailbox',
                 title: 'Mailbox',
@@ -1374,6 +1378,7 @@ export const futuristicNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:check-circle',
                 link : '/apps/tasks'
             }
+            */
         ]
     },
     {
@@ -1411,6 +1416,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:home',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     },
+    /*
     {
         id      : 'apps',
         title   : 'Apps',
@@ -1439,4 +1445,5 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:menu',
         children: [] // This will be filled from defaultNavigation so we don't have to manage multiple sets of the same navigation
     }
+    */
 ];

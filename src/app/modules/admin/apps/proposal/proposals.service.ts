@@ -256,7 +256,18 @@ export class ProposalService {
             ))
         );
     }
-
+    updateProposalOffer(item: any): Observable<any> {
+        return this.offers$.pipe(
+            take(1),
+            switchMap(offers => this._httpClient.put<any>(`${environment.url}/offer/${item.id}`, item).pipe(
+                map((newOffer) => {
+                    this.toastr.successToastr(this.translocoService.translate('message.offerReceived'));
+                    
+                    return newOffer.body;
+                })
+            ))
+        );
+    }
     createProcess(item: any): Observable<any> {
         if(item.id)
         {

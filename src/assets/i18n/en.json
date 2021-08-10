@@ -61,6 +61,11 @@
     "message.savedProcessItem": "Process item saved",
     "message.deleteProcessItem": "Process item deleted!",
     "message.required": " Required",
+    "message.success": "Successfully!",
+    "message.error": "Unsuccessfull",
+    "message.fileUpload": "File upload completed!",
+    "message.fileDownload": "File download completed!",
+    "message.createMedia": "Media saved",
 
 
     "input.search": "Search...",
@@ -193,6 +198,7 @@
     "group.noGroup.message": "There are no groups!",
         "group.details.groupName": "Group Name",
         "group.details.subGroupName": "Sub Group Name",
+        "group.details.newSubGroup": "New Sub Group",
 
     "users.title": "Users",
     "users.name": "Name",

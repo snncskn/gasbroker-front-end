@@ -7,6 +7,11 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+enum TokenStatus {
+    Validating,
+    Valid,
+    Invalid
+}
 @Component({
     selector     : 'auth-reset-password',
     templateUrl  : './reset-password.component.html',
@@ -15,6 +20,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AuthResetPasswordComponent implements OnInit
 {
+    TokenStatus = TokenStatus;
+    tokenStatus = TokenStatus.Validating;
+    token = null;
+
     @ViewChild('resetPasswordNgForm') resetPasswordNgForm: NgForm;
 
     isToken: boolean = false;
@@ -31,8 +40,8 @@ export class AuthResetPasswordComponent implements OnInit
     constructor(
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
-        private _router: Router,
-        private readonly activatedRouter: ActivatedRoute,
+        private route: ActivatedRoute,
+        private router: Router,
     )
     {
         this.activatedRouter.paramMap.subscribe(params => {
@@ -66,6 +75,11 @@ export class AuthResetPasswordComponent implements OnInit
                 validators: FuseValidators.mustMatch('password', 'passwordConfirm')
             }
         );
+
+        const token = this.route.snapshot.queryParams['token'];
+
+        //console.log(token)
+        this.router.navigate([], { relativeTo: this.route, replaceUrl: true });
     }
 
     // -----------------------------------------------------------------------------------------------------
