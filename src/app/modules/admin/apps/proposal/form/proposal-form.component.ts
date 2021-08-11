@@ -13,6 +13,7 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { FileService } from 'app/services/file.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
+import { MediaService } from '../../media/media.service';
 
 
 @Component({
@@ -35,6 +36,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     locationLabel: string;
     fileUploadUrl: string;
     filesUpload: any[] = [];
+    mediaList: any[];
+    fileDownloadLink:any;
     proposalId:any;
     productId: string;
     unit:any;
@@ -64,6 +67,9 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         private translocoService: TranslocoService,
         public toastr: ToastrManager,
         private fileService: FileService,
+        private mediaService: MediaService,
+
+
     ) {
         this.fileUploadUrl = environment.url+'/media';
 
@@ -72,6 +78,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                 this._proposalService.getProposalById(params.get("id")).subscribe(data => {
                     this.proposalId = data.body.id;
                     this.productId = data.body.product_id;
+                    this.mediaList = data?.body.media;
                     this.verticalStepperForm.patchValue({
                         step1:{
                             last_offer_date:data.body.last_offer_date,
@@ -226,9 +233,34 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
             data: { putURL },
           } = res;
     
-          this.fileService.upLoad(putURL, file).then((res) => {
-            // this.mediaService.create({id:null,company_id: this.companyDetail, title: ret.putURL}).subscribe((data) => { });
-          });
+          this.fileService.upLoad(putURL, file).then(
+            (res) => {
+              this.toastr.successToastr(
+                this.translocoService.translate("message.fileUpload")
+              );
+    
+              let key = this._authService.user_id + '/'+ file.name;
+    
+              this.mediaService
+                .createMedia({
+                  id: null,
+                  //company_id: this.companyDetail,
+                  title: "ProposalFile",
+                  user_id: this._authService.user_id,
+                  path: JSON.stringify(key),
+                })
+                .subscribe((data) => {
+                  this.toastr.successToastr(
+                    this.translocoService.translate("message.createMedia")
+                  );
+                });
+            },
+            (error) => {
+              this.toastr.errorToastr(
+                this.translocoService.translate("message.error")
+              );
+            }
+          );
         });
       }
 

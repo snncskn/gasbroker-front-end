@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Data, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { FileService } from 'app/services/file.service';
 import { environment } from 'environments/environment';
 import { InitialData } from 'app/app.types';
 import { DOCUMENT } from '@angular/common';
+import { FileUploadComponent, FileUploadControl } from '@iplab/ngx-file-upload';
 @Component({
   selector: "companyTD",
   templateUrl: "./companyTD.component.html",
@@ -25,6 +26,8 @@ import { DOCUMENT } from '@angular/common';
   encapsulation: ViewEncapsulation.None,
 })
 export class CustomersTDComponent implements OnInit {
+  @ViewChild('fileUpload')fileUpload: FileUploadComponent;
+
   dialogRef: MatDialogRef<ConfirmationDialog>;
   public generalFunction = new GeneralFunction();
 
@@ -152,7 +155,15 @@ export class CustomersTDComponent implements OnInit {
  
 
   ngOnInit(): void {
-
+    let tmp = JSON.parse(localStorage.getItem('user'));
+    if(tmp.role=="admin")
+    {
+      this.isAdmin = true;
+    }
+    else
+    {
+      this.isAdmin = false;
+    }
   }
 
   addNewCompany() {
@@ -264,6 +275,18 @@ export class CustomersTDComponent implements OnInit {
       });
   }
 
+  loadDocs() {
+    this.mediaList = [];
+    this.activatedRouter.paramMap.subscribe(params => {
+      if (params.has('id')) {
+        this._customersService.getCompanyById(params.get("id")).subscribe(data => {
+              this.mediaList = data?.body.media;
+          })
+      };
+    });
+    this.fileUpload.control.clear()
+  }
+
   public toggleStatus(): void {
     this.filesControl.disabled
       ? this.filesControl.enable()
@@ -278,8 +301,8 @@ export class CustomersTDComponent implements OnInit {
     this.filesControl.setValue([]);
   }
 
-  upload() {
-    
+  upload(item) {
+    console.log(item);
     const file = this.demoForm.value.files[0];
     this.fileService.putUrl(file).then((res) => {
       const {
@@ -293,14 +316,14 @@ export class CustomersTDComponent implements OnInit {
           );
 
           let key = this.authService.user_id + '/'+ file.name;
-
+          let pathObject = {type:file.type, fileName:file.name, key:key, group: item.description}
           this.mediaService
             .createMedia({
               id: null,
               company_id: this.companyDetail,
               title: "CompanyFile",
               user_id: this.authService.user_id,
-              path: JSON.stringify(key),
+              path: JSON.stringify(pathObject),
             })
             .subscribe((data) => {
               this.toastr.successToastr(
@@ -315,6 +338,7 @@ export class CustomersTDComponent implements OnInit {
         }
       );
     });
+    this.loadDocs();
   }
 
   download(key: string) {
