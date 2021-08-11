@@ -16,7 +16,7 @@ export class OfferListComponent implements OnInit {
   offersTableColumns: string[] = ['company_name','payment_type','price','offer_date','deal_status','deal_status_btn'];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   offersCount: number=0;
-
+  isAdmin: boolean=false;
 
 
   constructor(
@@ -40,6 +40,16 @@ export class OfferListComponent implements OnInit {
            }
             this._changeDetectorRef.markForCheck();
         });
+    
+    let tmp = JSON.parse(localStorage.getItem('user'));
+    if(tmp.role=="admin")
+    {
+      this.isAdmin = true;
+    }
+    else
+    {
+      this.isAdmin = false;
+    }
   }
 
   trackByFn(index: number, item: any): any {
