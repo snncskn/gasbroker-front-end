@@ -83,7 +83,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                         step2:{
                             location:data.body.location,
                             products:data.body.product?.name,
-                            quantity:data.body.product_quantity
+                            quantity:data.body.product_quantity,
+                            product_detail:data.body.product_detail
                         },
                     })
                 })
@@ -108,6 +109,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                 products: ['', Validators.required],
                 quantity: ['', Validators.required],
                 location: ['', Validators.required],
+                product_detail: ['', Validators.required],
 
             }),
             step3: this._formBuilder.group({
@@ -176,7 +178,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     }
     save() {
         let createPrp = {type:'',freight_type:'',status:'',last_offer_date:'',publish_date:'',location:'',
-                product:'',product_quantity:'',product_id:'',id:'',company_id: this._authService.CompanyId};
+                product:'',product_quantity:'',product_detail:'',product_id:'',id:'',company_id: this._authService.CompanyId};
        createPrp.type    = this.verticalStepperForm.value.step1.type;
        createPrp.freight_type    = this.verticalStepperForm.value.step1.type;
        createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date;
@@ -184,6 +186,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
        createPrp.location        = this.verticalStepperForm.value.step2.location;
        createPrp.product          = this.verticalStepperForm.value.step2.products;
        createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
+       createPrp.product_detail = this.verticalStepperForm.value.step2.product_detail;
        createPrp.status = this.verticalStepperForm.value.step1.status;
        if(this.selectedProduct){
         createPrp.product_id = this.selectedProduct.id;
