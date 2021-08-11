@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { cloneDeep, isNull } from 'lodash';
@@ -15,6 +15,8 @@ import { MediaService } from "../../media/media.service";
 import { AuthService } from 'app/core/auth/auth.service';
 import { FileService } from 'app/services/file.service';
 import { environment } from 'environments/environment';
+import { InitialData } from 'app/app.types';
+import { DOCUMENT } from '@angular/common';
 @Component({
   selector: "companyTD",
   templateUrl: "./companyTD.component.html",
@@ -26,6 +28,8 @@ export class CustomersTDComponent implements OnInit {
   dialogRef: MatDialogRef<ConfirmationDialog>;
   public generalFunction = new GeneralFunction();
 
+  data: InitialData;
+  isAdmin: boolean=false;
   approvals$: Observable<any[]>;
   isEditUser:boolean=false;
   customerForm: FormGroup;
@@ -36,7 +40,7 @@ export class CustomersTDComponent implements OnInit {
   resetPassForm: FormGroup;
   addressesForm: FormGroup;
   addressList: any[] = [];
-  mediaList: any[]= [];
+  mediaList: any[];
   isLoadAddress: boolean = true;
   formStatus: boolean = true;
   newAddressItem: any;
@@ -48,7 +52,6 @@ export class CustomersTDComponent implements OnInit {
   markerPositions: google.maps.LatLngLiteral[] = [];
 
   addMarker(event: google.maps.MapMouseEvent) {
-    console.log(22)
     this.markerPositions = [];
     this.markerPositions.push(event.latLng.toJSON());
     this.markerPositions.forEach((element) =>
@@ -85,8 +88,11 @@ export class CustomersTDComponent implements OnInit {
     private mediaService: MediaService,
     private changeDetection: ChangeDetectorRef,
     private authService: AuthService,
+    @Inject(DOCUMENT) private document: Document,
 
   ) {
+    /*const button = this.document.getElementById("rejectButton");
+    console.log(button)*/
     let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
     this.newAddressItem = { expanded: true, isNew: true, position: center };
 
@@ -146,6 +152,7 @@ export class CustomersTDComponent implements OnInit {
  
 
   ngOnInit(): void {
+
   }
 
   addNewCompany() {

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { FileService } from 'app/services/file.service';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
+import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -26,9 +27,12 @@ export class VehiclesDetailsComponent implements OnInit {
     dataSourceTypes: any[];
     vehicleDetail: string;
     customers: any[];
+    mediaList: any[];
     filteredOptions: Observable<string[]>;
     selectCustomerItem: any;
     dataSourceDocs: any[];
+    fileDownloadLink:any;
+
 
   //file upload
   public animation: boolean = false;
@@ -137,6 +141,7 @@ export class VehiclesDetailsComponent implements OnInit {
                     this.vehicleForm.patchValue(data.body);
                     this.vehicleForm.value.company_id = data.body.company.id;
                     this.vehicleForm.value.company = data.body.company.name;
+                    this.mediaList = data?.body.media;
                 }) 
             };
         });
@@ -200,5 +205,9 @@ export class VehiclesDetailsComponent implements OnInit {
             // this.mediaService.create({id:null,company_id: this.companyDetail, title: ret.putURL}).subscribe((data) => { });
           });
         });
+      }
+      clickFile(item)
+      {
+        this.fileDownloadLink = `${environment.url}/media/s3/generateGetUrl?Key=`+item?.path.key;
       }
 }
