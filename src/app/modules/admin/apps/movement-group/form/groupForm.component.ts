@@ -121,7 +121,6 @@ export class GroupFormComponent {
     }
 
     deleteSubGroup(item: any,index: number) {
-        console.log(123);
         if(item.id){
             this._groupService.deleteSubGroup(item).subscribe(data => {
                 this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessSubGroup'));

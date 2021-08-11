@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { FuseMockApiService } from '@fuse/lib/mock-api';
 import { compactNavigation, defaultNavigation, futuristicNavigation, horizontalNavigation } from 'app/mock-api/common/navigation/data';
 import { UserService } from 'app/core/user/user.service';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -14,12 +15,12 @@ export class NavigationMockApi
     private readonly _defaultNavigation: FuseNavigationItem[] = defaultNavigation;
     private readonly _futuristicNavigation: FuseNavigationItem[] = futuristicNavigation;
     private readonly _horizontalNavigation: FuseNavigationItem[] = horizontalNavigation;
-
     /**
      * Constructor
      */
     constructor(private _fuseMockApiService: FuseMockApiService,
-                private _userService: UserService)
+                private _userService: UserService,
+                @Inject(DOCUMENT) private document: Document,)
     {
         // Register Mock API handlers
         this.registerHandlers();
@@ -34,6 +35,8 @@ export class NavigationMockApi
      */
     registerHandlers(): void
     {
+        /*const button = <HTMLButtonElement> this.document.getElementById('rejectButton');
+        console.log(button)*/
         // -----------------------------------------------------------------------------------------------------
         // @ Navigation - GET
         // -----------------------------------------------------------------------------------------------------

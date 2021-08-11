@@ -7,10 +7,10 @@
             <!-- Title -->
             <div class="text-4xl font-extrabold tracking-tight">
                 <button class="fuse-mat-button-rounded mt-2" [routerLink]="['/apps/vehicles']" mat-icon-button
-                [color]="'primary'">
-                <mat-icon matPrefix class="hidden sm:flex icon-size-6" [svgIcon]="'heroicons_outline:arrow-left'">
-                </mat-icon>
-              </button>
+                    [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-6" [svgIcon]="'heroicons_outline:arrow-left'">
+                    </mat-icon>
+                </button>
                 {{ t('text.details') }}
             </div>
 
@@ -31,22 +31,20 @@
                     <mat-tab label="{{ t('vehicles.details.tab.generalInfo') }}">
                         <div class="ml-2 w-1/3">
                             <div class="mt-6">
-                                    <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
-                                        <mat-label>{{ t('vehicles.companyName') }}</mat-label>
-                                        <input tabindex="-1" type="text" placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}"
-                                            matInput formControlName="company"
-                                            [matAutocomplete]="auto">
-                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                            (optionSelected)="selectCustomer($event)"
-                                            [displayWith]="displayFn">
-                                            <mat-option *ngFor="let option of filteredOptions | async"
-                                                [value]="option">
-                                                <ng-container>
-                                                    {{option.full_name | titlecase}}
-                                                </ng-container>
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
+                                <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
+                                    <mat-label>{{ t('vehicles.companyName') }}</mat-label>
+                                    <input tabindex="-1" type="text"
+                                        placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}" matInput
+                                        formControlName="company" [matAutocomplete]="auto">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                        (optionSelected)="selectCustomer($event)" [displayWith]="displayFn">
+                                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                            <ng-container>
+                                                {{option.full_name | titlecase}}
+                                            </ng-container>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
                             </div>
                             <div class="mt-6">
                                 <mat-form-field class="fuse-mat-no-subscript w-full">
@@ -59,43 +57,104 @@
                             </div>
                             <div class="flex items-center mt-6">
                                 <div class="w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>{{ t('vehicles.type') }}</mat-label>
-                                    <mat-select placeholder="{{ t('vehicles.type') }}" [formControlName]="'type'">
-                                        <mat-option *ngFor="let option of dataSourceTypes" [value]="option.description">
-                                            <ng-container>
-                                                {{option.description | titlecase}}
-                                            </ng-container>
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="ml-5 w-full">
-                                <mat-form-field class="fuse-mat-no-subscript w-full">
-                                    <mat-label>{{ t('vehicles.registeredDate') }}</mat-label>
-                                    <input matInput [matDatepicker]="Datepicker" [formControlName]="'registered_date'"
-                                        placeholder="{{ t('vehicles.registeredDate') }}">
-                                    <mat-datepicker-toggle matSuffix [for]="Datepicker">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #Datepicker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
+                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                        <mat-label>{{ t('vehicles.type') }}</mat-label>
+                                        <mat-select placeholder="{{ t('vehicles.type') }}" [formControlName]="'type'">
+                                            <mat-option *ngFor="let option of dataSourceTypes"
+                                                [value]="option.description">
+                                                <ng-container>
+                                                    {{option.description | titlecase}}
+                                                </ng-container>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="ml-5 w-full">
+                                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                                        <mat-label>{{ t('vehicles.registeredDate') }}</mat-label>
+                                        <input matInput [matDatepicker]="Datepicker"
+                                            [formControlName]="'registered_date'"
+                                            placeholder="{{ t('vehicles.registeredDate') }}">
+                                        <mat-datepicker-toggle matSuffix [for]="Datepicker">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #Datepicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </div>
                     </mat-tab>
 
                     <mat-tab label="{{ t('vehicles.details.tab.documentList') }}">
-                        <div *ngFor="let item of  dataSourceDocs">
-                            {{item.description}}
-                            <form [formGroup]="demoForm">
-                                <file-upload formControlName="files" [multiple]="multiple"
-                                    [animation]="animation">
-                                </file-upload>
-                                <input type="hidden" formControlName="label" [ngModel]="item.description">
-                            </form>
-
+                        <div class="flex items">
+                            <div class="w-1/4">
+                                <ng-container *ngFor="let item of  dataSourceDocs">
+                                    {{item.description}}
+                                    <form [formGroup]="demoForm">
+                                        <file-upload formControlName="files" [multiple]="multiple"
+                                            [animation]="animation">
+                                        </file-upload>
+                                        <input type="hidden" formControlName="label" [ngModel]="item.description">
+                                    </form>
+                                </ng-container>
+                            </div>
+                            <div class="ml-5 w-full">
+                                <!-- Files Cert-1 -->
+                                <div class="font-medium">Files</div>
+                                <div class="flex flex-wrap m-2 mt-2">
+                                    <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
+                                        <ng-container *ngIf="file.path.group=='vehicle'">
+                                        <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
+                                        </ng-container>
+                                    </ng-container>
+                                    </ng-container>
+                                </div>
+                                <!-- Files Cert-2 -->
+                                <div class="flex flex-wrap m-2 mt-9">
+                                    <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
+                                        <ng-container *ngIf="file.path.group=='vehicle-2'">
+                                            <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                                <!-- Item template -->
+                                <ng-template #item let-item>
+                                    <a class="flex flex-col w-39 h-39 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card"
+                                        (click)="clickFile(item)" href="{{fileDownloadLink}}" target="_blank">
+                                        <div class="aspect-w-9 aspect-h-6">
+                                            <div class="flex items-center justify-center">
+                                                <!-- Icons -->
+                                                <ng-container [ngSwitch]="item?.path.type">
+                                                    <!-- File -->
+                                                    <ng-container *ngSwitchDefault>
+                                                        <div class="relative">
+                                                            <mat-icon class="icon-size-14 text-hint"
+                                                                [svgIcon]="'iconsmind:file'"></mat-icon>
+                                                            <div class="absolute left-0 bottom-0 px-1.5 rounded text-sm font-semibold leading-5 text-white"
+                                                                [class.bg-red-600]="item?.path.type === 'pdf'"
+                                                                [class.bg-blue-600]="item?.path.type === 'doc'"
+                                                                [class.bg-green-600]="item?.path.type === 'xls'"
+                                                                [class.bg-gray-600]="item?.path.type === 'txt'"
+                                                                [class.bg-amber-600]="item?.path.type === 'jpg'">
+                                                                {{item.path.type?.toUpperCase()}}
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex flex-col flex-auto justify-center text-center text-sm font-medium mt-1">
+                                            <div class="truncate" [matTooltip]="item.name">
+                                                <br></div>
+                                            <ng-container *ngIf="item.title">
+                                                <div class="truncate">{{item.path.fileName}}</div>
+                                            </ng-container>
+                                        </div>
+                                    </a>
+                                </ng-template>
+                            </div>
                         </div>
-
                         <button mat-flat-button [color]="'primary'" (click)="upload()">
                             {{ t('company.details.tab.documentList.button.upload') }}
                         </button>

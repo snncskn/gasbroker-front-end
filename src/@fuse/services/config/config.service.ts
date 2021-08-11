@@ -31,7 +31,6 @@ export class FuseConfigService
      */
     set config(value: any)
     {
-        console.log(999);
         // Merge the new config over to the current config
         const config = merge({}, this._config.getValue(), value);
         let tmp = JSON.parse(localStorage.getItem('user'));

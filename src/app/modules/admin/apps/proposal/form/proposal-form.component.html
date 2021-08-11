@@ -123,6 +123,16 @@
                             </div>
                             <div class="flex">
                                 <mat-form-field class="fuse-mat-textarea flex-auto">
+                                    <mat-label>{{ t('proposals.productDetail') }}</mat-label>
+
+                                    <textarea matInput [formControlName]="'product_detail'" placeholder="{{ t('proposals.productDetail') }}"
+                                        [rows]="3"></textarea>
+                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:menu-alt-2'">
+                                    </mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="flex">
+                                <mat-form-field class="fuse-mat-textarea flex-auto">
                                     <mat-label>{{locationLabel}}</mat-label>
 
                                     <textarea matInput [formControlName]="'location'" placeholder="{{locationLabel}}"

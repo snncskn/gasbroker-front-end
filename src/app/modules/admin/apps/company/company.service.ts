@@ -164,7 +164,6 @@ export class CustomersService {
     }
 
     getCompanyById(id: string): Observable<any> {
-        console.log(id);
         return this._httpClient.get<any>(`${environment.url}/company/${id}`)
     }
    
