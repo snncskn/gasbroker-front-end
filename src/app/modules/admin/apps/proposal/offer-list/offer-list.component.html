@@ -51,7 +51,6 @@
           </div>
         </td>
       </ng-container>
-
       <ng-container matColumnDef="deal_status_btn">
         <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ t('proposals.status') }}
@@ -59,7 +58,7 @@
         <td class="pr-8 truncate" mat-cell *matCellDef="let row">
           <div class="flex items-center justify-between">
             
-            <ng-container>
+            <ng-container *ngIf="isAdmin">
               <button class="mr-3" mat-flat-button [color]="'warn'" (click)="sendStatus(row,'REJECT')">
                  Reject 
               </button>
@@ -71,7 +70,6 @@
           </div>
         </td>
       </ng-container>
-      
 
       <ng-container matColumnDef="offer_date">
         <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>

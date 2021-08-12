@@ -24,20 +24,24 @@
                         {{ t('text.details') }}
                     </div>
 
-                    <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10" >
+                    <div class="flex flex-shrink-0 items-center mt-6 mr-10 sm:mt-0 sm:ml-10">
                         <ng-container *ngIf="isEditUser">
-                            <button class="mr-5" mat-flat-button [color]="'warn'"
-                                (click)="approvalStatusDialog('REJECT')">
-                                <span>Reject</span>
-                            </button>
-                            <button class="mr-5" mat-flat-button [color]="'accent'"
-                                (click)="approvalStatusDialog('WAITING')">
-                                <span>Waiting</span>
-                            </button>
-                            <button class="mr-5" mat-flat-button style="background-color: green; color:white"
-                                (click)="approvalStatusDialog('OK')">
-                                <span>Approval</span>
-                            </button>
+                            <ng-container *ngIf="isAdmin">
+                                <button class="mr-5" mat-flat-button [color]="'warn'"
+                                    (click)="approvalStatusDialog('REJECT')">
+                                    <span>Reject</span>
+                                </button>
+                                <button class="mr-5" mat-flat-button style="background-color: green; color:white"
+                                    (click)="approvalStatusDialog('OK')">
+                                    <span>Approval</span>
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="!isAdmin">
+                                <button class="mr-5" mat-flat-button [color]="'accent'"
+                                    (click)="approvalStatusDialog('WAITING')">
+                                    <span>Send Approval</span>
+                                </button>
+                            </ng-container>
                         </ng-container>
                         <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteCompany()">
                             <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
@@ -306,7 +310,7 @@
                                                 {{item.description}}
                                                 <form [formGroup]="demoForm">
                                                     <file-upload formControlName="files" [multiple]="multiple"
-                                                        [animation]="animation">
+                                                        [animation]="animation" (change)="upload(item)" #fileUpload>
                                                     </file-upload>
                                                     <input type="hidden" formControlName="label"
                                                         [ngModel]="item.description">
@@ -318,14 +322,17 @@
                                             <div class="font-medium">Files</div>
                                             <div class="flex flex-wrap m-2 mt-2">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
+                                                    <ng-container *ngIf="file.path.group=='Certicifate'">
+                                                        <ng-container
+                                                            *ngTemplateOutlet="item, context: {$implicit: file}">
+                                                        </ng-container>
                                                     </ng-container>
                                                 </ng-container>
                                             </div>
                                             <!-- Files Cert-2 -->
                                             <div class="flex flex-wrap m-2 mt-9">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngIf="file.path.type=='pdf'">
+                                                    <ng-container *ngIf="file.path.group=='Certicifate -2'">
                                                         <ng-container
                                                             *ngTemplateOutlet="item, context: {$implicit: file}">
                                                         </ng-container>
@@ -365,7 +372,8 @@
                                                     <div
                                                         class="flex flex-col flex-auto justify-center text-center text-sm font-medium mt-1">
                                                         <div class="truncate" [matTooltip]="item.name">
-                                                            <br></div>
+                                                            <br>
+                                                        </div>
                                                         <ng-container *ngIf="item.title">
                                                             <div class="truncate">{{item.path.fileName}}</div>
                                                         </ng-container>
@@ -374,9 +382,9 @@
                                             </ng-template>
                                         </div>
                                     </div>
-                                    <button mat-flat-button [color]="'primary'" (click)="upload()">
+                                    <!--<button mat-flat-button [color]="'primary'" (click)="upload()">
                                         {{ t('company.details.tab.documentList.button.upload') }}
-                                    </button>
+                                    </button>-->
 
 
                                 </mat-tab>
