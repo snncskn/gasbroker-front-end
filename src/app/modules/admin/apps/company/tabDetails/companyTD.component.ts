@@ -91,7 +91,6 @@ export class CustomersTDComponent implements OnInit {
     private mediaService: MediaService,
     private changeDetection: ChangeDetectorRef,
     private authService: AuthService,
-    @Inject(DOCUMENT) private document: Document,
 
   ) {
     /*const button = this.document.getElementById("rejectButton");
@@ -218,6 +217,22 @@ export class CustomersTDComponent implements OnInit {
     }
   }
 
+  deleteDocs(item) {
+    if (item) {
+      this.dialogRef = this.dialog.open(ConfirmationDialog, {
+        disableClose: false,
+      });
+      this.dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this._customersService.deleteDocs(item).subscribe(data => {
+            this.loadDocs();
+          })
+        }
+        this.dialogRef = null;
+      });
+    }
+  }
+
   createAddress() {
     if (this.companyDetail) {
       this.addressesForm.value.company_id = this.companyDetail;
@@ -302,7 +317,6 @@ export class CustomersTDComponent implements OnInit {
   }
 
   upload(item) {
-    console.log(item);
     const file = this.demoForm.value.files[0];
     this.fileService.putUrl(file).then((res) => {
       const {
@@ -327,9 +341,8 @@ export class CustomersTDComponent implements OnInit {
             })
             .subscribe((data) => {
               this.toastr.successToastr(
-                this.translocoService.translate("message.createMedia")
-              );
-              this.loadDocs();
+                this.translocoService.translate("message.createMedia"));
+                this.loadDocs();
             });
 
         },
@@ -337,10 +350,10 @@ export class CustomersTDComponent implements OnInit {
           this.toastr.errorToastr(
             this.translocoService.translate("message.error")
           );
+          this.loadDocs();
         }
       );
     });
-  
   }
 
   download(key: string) {
@@ -374,12 +387,13 @@ export class CustomersTDComponent implements OnInit {
   approvalStatusDialog(status:string)
   {
     const dialogRef = this.dialog.open(ApprovalComponent, { data:{company:this.companyDetail, status:status} });
-    dialogRef.afterClosed().subscribe();
-    this.dataSourceApprovals = [];
-    this._customersService.getApprovals(this.companyDetail).subscribe(res => {
-      
-      this.dataSourceApprovals = res.body;
-      this.changeDetection.detectChanges();
+    dialogRef.afterClosed().subscribe(response => {
+      this.dataSourceApprovals = [];
+      this._customersService.getApprovals(this.companyDetail).subscribe(res => {
+        
+        this.dataSourceApprovals = res.body;
+        this.changeDetection.detectChanges();
+      });
     });
   }
 

@@ -67,6 +67,7 @@
     "message.fileUpload": "Media Yükleme işlemi tamamlandı!",
     "message.fileDownload":"Media İndirme işlemi tamamlandı!",
     "message.createMedia": "Media kaydedildi",
+    "message.deleteMedia": "Media silindi!",
 
 
     "input.search": "Arama...",

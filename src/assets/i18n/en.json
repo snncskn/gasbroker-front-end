@@ -67,6 +67,7 @@
     "message.fileUpload": "File upload completed!",
     "message.fileDownload": "File download completed!",
     "message.createMedia": "Media saved",
+    "message.deleteMedia": "Media deleted!",
 
 
     "input.search": "Search...",

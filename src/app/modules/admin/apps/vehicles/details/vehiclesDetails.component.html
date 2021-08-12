@@ -85,13 +85,13 @@
                     </mat-tab>
 
                     <mat-tab label="{{ t('vehicles.details.tab.documentList') }}">
-                        <div class="flex items">
+                        <div class="flex items" *ngIf="isLoadDocs">
                             <div class="w-1/4">
                                 <ng-container *ngFor="let item of  dataSourceDocs">
                                     {{item.description}}
                                     <form [formGroup]="demoForm">
                                         <file-upload formControlName="files" [multiple]="multiple"
-                                            [animation]="animation">
+                                            [animation]="animation" (change)="upload(item)" #fileUpload>
                                         </file-upload>
                                         <input type="hidden" formControlName="label" [ngModel]="item.description">
                                     </form>
@@ -100,7 +100,7 @@
                             <div class="ml-5 w-full">
                                 <!-- Files Cert-1 -->
                                 <div class="font-medium">Files</div>
-                                <div class="flex flex-wrap m-2 mt-2">
+                                <div class="flex flex-wrap m-2 mt-1">
                                     <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
                                         <ng-container *ngIf="file.path.group=='vehicle'">
                                         <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
@@ -109,7 +109,7 @@
                                     </ng-container>
                                 </div>
                                 <!-- Files Cert-2 -->
-                                <div class="flex flex-wrap m-2 mt-9">
+                                <div class="flex flex-wrap m-2 mt-5">
                                     <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
                                         <ng-container *ngIf="file.path.group=='vehicle-2'">
                                             <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
@@ -119,9 +119,9 @@
                                 </div>
                                 <!-- Item template -->
                                 <ng-template #item let-item>
-                                    <a class="flex flex-col w-39 h-39 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card"
+                                    <a class="flex flex-col w-30 h-30 m-2 p-4 shadow rounded-2xl cursor-pointer"
                                         (click)="clickFile(item)" href="{{fileDownloadLink}}" target="_blank">
-                                        <div class="aspect-w-9 aspect-h-6">
+                                        <div class="aspect-w-9 aspect-h-6" matTooltip="{{item.path.fileName}}">
                                             <div class="flex items-center justify-center">
                                                 <!-- Icons -->
                                                 <ng-container [ngSwitch]="item?.path.type">
@@ -135,12 +135,18 @@
                                                                 [class.bg-blue-600]="item?.path.type === 'doc'"
                                                                 [class.bg-green-600]="item?.path.type === 'xls'"
                                                                 [class.bg-gray-600]="item?.path.type === 'txt'"
-                                                                [class.bg-amber-600]="item?.path.type === 'jpg'">
+                                                                [class.bg-amber-600]="item?.path.type === 'jpg'"
+                                                                [class.bg-purple-600]="item?.path.type === 'html'">
                                                                 {{item.path.type?.toUpperCase()}}
                                                             </div>
                                                         </div>
                                                     </ng-container>
                                                 </ng-container>
+                                                <button class="fuse-mat-button text-on-warn-100 absolute ml-18 mb-11" mat-icon-button [color]="'warn'"
+                                                (click)="deleteDocs(item)">
+                                                <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
+                                                </mat-icon>
+                                                </button>
                                             </div>
                                         </div>
                                         <div
@@ -155,9 +161,9 @@
                                 </ng-template>
                             </div>
                         </div>
-                        <button mat-flat-button [color]="'primary'" (click)="upload()">
+                        <!--<button mat-flat-button [color]="'primary'" (click)="upload()">
                             {{ t('company.details.tab.documentList.button.upload') }}
-                        </button>
+                        </button>-->
                     </mat-tab>
 
                 </mat-tab-group>
