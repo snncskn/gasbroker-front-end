@@ -247,6 +247,17 @@ export class VehiclesService {
                 })
             );
         }
+    
+    deleteDocs(doc: any): Observable<any>
+    {
+        let url = `${environment.url}/media/delete/`;
+        return this._httpClient.put<any>(url+doc.id, doc).pipe(
+            map((newDoc) => {
+                this.toastr.successToastr(this.translocoService.translate('message.deleteMedia'));
+                return newDoc
+            })
+        )
+    }
 
     getVehicleDocs():
         Observable<any> {
