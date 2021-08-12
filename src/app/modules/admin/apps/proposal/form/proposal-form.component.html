@@ -15,16 +15,16 @@
         </div>
         <div class="flex-auto p-6 sm:p-10">
 
-            <div class="w-full">
+            <div class="w-flex">
 
 
                 <form class="p-4 bg-card shadow rounded overflow-hidden" [formGroup]="verticalStepperForm">
-                    <mat-horizontal-stepper [linear]="true" class="w-full" #verticalStepper>
+                    <mat-horizontal-stepper [linear]="true" class="w-1/2"  #verticalStepper>
                         <mat-step [formGroupName]="'step1'" [stepControl]="verticalStepperForm.get('step1')"
                             #verticalStepperStep1>
                             <ng-template matStepLabel>{{ t('proposals.details.tab.generalInfo') }}</ng-template>
 
-                            <div class="flex flex-col w-1/3 gt-xs:flex-row">
+                            <div class="flex flex-col w-1/2 gt-xs:flex-row">
 
                                 <mat-form-field class="flex-auto gt-xs:pr-3">
                                     <mat-label>{{ t('proposals.details.tab.generalInfo.processType') }}</mat-label>
@@ -96,7 +96,7 @@
                             <p class="my-6 font-medium">
                                 {{ t('proposals.details.tab.productInfo.text') }}
                             </p>
-                            <div class="flex flex-col w-1/3 gt-xs:flex-row">
+                            <div class="flex flex-col w-1/2 gt-xs:flex-row">
                                 <mat-label>{{ t('proposals.details.tab.productInfo.product') }}</mat-label>
                                 <mat-form-field class="fuse-mat-no-subscript flex-auto">
                                     <input tabindex="-1" type="text"
@@ -113,7 +113,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
                             </div>
-                            <div class="flex w-1/3">
+                            <div class="flex w-1/2">
                                 <mat-form-field class="flex-auto mt-2">
                                     <mat-label>{{ t('proposals.details.tab.productInfo.quantity') }}</mat-label>
                                     <input matInput [formControlName]="'quantity'"
@@ -121,7 +121,7 @@
                                     <span matPrefix>{{unit}}</span>
                                 </mat-form-field>
                             </div>
-                            <div class="flex w-1/3">
+                            <div class="flex w-1/2">
                                 <mat-form-field class="fuse-mat-textarea flex-auto">
                                     <mat-label>{{ t('proposals.productDetail') }}</mat-label>
 
@@ -131,7 +131,7 @@
                                     </mat-icon>
                                 </mat-form-field>
                             </div>
-                            <div class="flex w-1/3">
+                            <div class="flex w-1/2">
                                 <mat-form-field class="fuse-mat-textarea flex-auto">
                                     <mat-label>{{locationLabel}}</mat-label>
 
@@ -162,7 +162,7 @@
                                     <span class="font-medium mb-2">{{ t('proposals.details.tab.documents') }}</span>
 
                                     <div class="flex items">
-                                        <div class="w-1/3">
+                                        <div class="w-1/2">
                                     <ng-container *ngFor="let item of  dataSourceDocs">
                                         {{item.description}}
                                         <form [formGroup]="demoForm">
