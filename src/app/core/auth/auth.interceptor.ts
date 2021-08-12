@@ -39,7 +39,13 @@ export class AuthInterceptor implements HttpInterceptor
             if(this._authService.CompanyId){
                 companyId = this._authService.CompanyId;
                 user_id = this._authService.user_id;
-                
+               
+            } else {
+                if(localStorage.getItem('user')){
+                    let tmp = JSON.parse(localStorage.getItem('user'));
+                    companyId = tmp.CompanyId;
+                    user_id = tmp.user_id;
+                }
             }
             newReq = req.clone({
                 headers: req.headers.set('Cache-Control', 'no-cache')
