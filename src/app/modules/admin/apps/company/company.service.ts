@@ -21,6 +21,7 @@ export class CustomersService {
     private _totalSize: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _totalPage: BehaviorSubject<number | null> = new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
+    private _statusCode: BehaviorSubject<any | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -69,6 +70,9 @@ export class CustomersService {
     get approvals$(): Observable<any[]> {
         return this._approvals.asObservable();
     }
+    get getStatusCode$(): Observable<any> {
+        return this._statusCode;
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -89,6 +93,12 @@ export class CustomersService {
             })
         );
     }
+
+    getCountries():
+    Observable<any> {
+    let url = `${environment.url}/parameter/category/COUNTRIES`;
+    return this._httpClient.get<any>(url);
+    }   
 
     getTypes():
         Observable<any> {
@@ -122,6 +132,20 @@ export class CustomersService {
                 this._approvals.next(response);
             })
         );
+    }
+
+    getValidateName(name:string):
+    Observable<any> {
+    let url = `${environment.url}/company/name-validate/`;
+    return this._httpClient.get<any>(url+name).pipe(
+        catchError((error)=>{
+            if(error instanceof HttpErrorResponse && error.status == 602)
+            {
+
+            }
+            return throwError(error);
+        })
+    )
     }
 
     /**

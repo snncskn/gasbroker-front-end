@@ -213,7 +213,7 @@ export class ProposalService {
     }
 
 
-    createProposal(item: any): Observable<any> {
+    createProposal(item: any, isSubmit:boolean): Observable<any> {
         if(item.id)
         {
             return this.proposals$.pipe(
@@ -222,7 +222,10 @@ export class ProposalService {
                     map((newVehicle) => {
     
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        this.toastr.successToastr(this.translocoService.translate('message.updateProposal'));
+                        if(isSubmit)
+                        {
+                            this.toastr.successToastr(this.translocoService.translate('message.updateProposal'));
+                        }
                         return newVehicle.body;
                     })
                 ))
@@ -236,7 +239,10 @@ export class ProposalService {
                     map((newVehicle) => {
     
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        this.toastr.successToastr(this.translocoService.translate('message.createProposal'));
+                        if(isSubmit)
+                        {
+                            this.toastr.successToastr(this.translocoService.translate('message.createProposal'));
+                        }
                         return newVehicle.body;
                     })
                 ))
@@ -380,6 +386,17 @@ export class ProposalService {
                 return throwError(error);
             })
         );
+    }
+
+    deleteDocs(doc: any): Observable<any>
+    {
+        let url = `${environment.url}/media/delete/`;
+        return this._httpClient.put<any>(url+doc.id, doc).pipe(
+            map((newDoc) => {
+                this.toastr.successToastr(this.translocoService.translate('message.deleteMedia'));
+                return newDoc
+            })
+        )
     }
 
 
