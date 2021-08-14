@@ -61,23 +61,23 @@
                                 <div class="flex items-center mt-6">
                                     <div class="w-full">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>{{ t('company.details.tab.generalInfo.companyFullName') }}
+                                            <mat-label>{{ t('company.details.tab.generalInfo.companyName') }} *
                                             </mat-label>
-                                            <mat-icon class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
+                                            <mat-icon style="color: rgba(59, 130, 246, 0.5);"  class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
                                                 [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                            <input matInput [formControlName]="'full_name'"
-                                                placeholder="{{ t('company.details.tab.generalInfo.companyFullName') }} *"
-                                                [spellcheck]="false">
+                                            <input  matInput [formControlName]="'name'" 
+                                                placeholder="{{ t('company.details.tab.generalInfo.companyName') }} *"
+                                                [spellcheck]="false" (change)="changedName($event.target.value)">
                                         </mat-form-field>
                                     </div>
                                     <div class="ml-5 w-full">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                                            <mat-label>{{ t('company.details.tab.generalInfo.companyName') }}
+                                            <mat-label>{{ t('company.details.tab.generalInfo.companyFullName') }} *
                                             </mat-label>
-                                            <mat-icon class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
+                                            <mat-icon style="color: rgba(59, 130, 246, 0.5);" class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
                                                 [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                            <input matInput [formControlName]="'name'"
-                                                placeholder="{{ t('company.details.tab.generalInfo.companyName') }} *"
+                                            <input matInput [formControlName]="'full_name'"
+                                                placeholder="{{ t('company.details.tab.generalInfo.companyFullName') }} *"
                                                 [spellcheck]="false">
                                         </mat-form-field>
                                     </div>
@@ -154,6 +154,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center mt-6">
+                                    <div class="w-full">
                                     <mat-form-field class="fuse-mat-no-subscript w-full">
                                         <mat-label>{{ t('company.details.tab.generalInfo.website') }}</mat-label>
                                         <mat-icon matPrefix class="hidden sm:flex icon-size-5"
@@ -162,6 +163,23 @@
                                             placeholder="{{ t('company.details.tab.generalInfo.website') }}"
                                             [spellcheck]="false">
                                     </mat-form-field>
+                                    </div>
+                                    <div class="ml-5 w-full">
+                                        <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
+                                            <mat-label>{{ t('company.details.tab.generalInfo.country') }}</mat-label>
+                                            <input  tabindex="-1" type="text"
+                                                placeholder="{{ t('vehicles.details.tab.generalInfo.customer') }}" matInput
+                                                formControlName="country_object" [matAutocomplete]="auto">
+                                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                                (optionSelected)="selectCountries($event)" [displayWith]="displayFn">
+                                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                                    <ng-container>
+                                                        {{option.name | titlecase}}
+                                                    </ng-container>
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
                             </mat-tab>
                             <ng-container *ngIf="isEditUser">

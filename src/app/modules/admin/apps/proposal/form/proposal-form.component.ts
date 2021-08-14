@@ -14,16 +14,25 @@ import { FileService } from 'app/services/file.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { MediaService } from '../../media/media.service';
+import { isBoolean } from 'lodash';
+import { MatStepper } from '@angular/material/stepper';
+import { FileUploadComponent } from '@iplab/ngx-file-upload';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 
 
 @Component({
     selector: 'proposal-form',
     templateUrl: './proposal-form.component.html',
+    styleUrls: ['./proposal-form.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProposalFormComponent implements OnInit, OnDestroy {
  
+    @ViewChild('fileUpload')fileUpload: FileUploadComponent;
+    @ViewChild('verticalStepper') stepper: MatStepper;
+    dialogRef: MatDialogRef<ConfirmationDialog>;
     public generalFunction = new GeneralFunction();
 
     verticalStepperForm: FormGroup;
@@ -57,6 +66,22 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
   });
   //file upload
 
+  center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
+  zoom = 7;
+  markerOptions: google.maps.MarkerOptions = { draggable: false };
+  markerPositions: google.maps.LatLngLiteral[] = [];
+
+  addMarker(event: google.maps.MapMouseEvent) {
+    this.markerPositions = [];
+    this.verticalStepperForm.patchValue({
+        step2:{
+            latitude: event.latLng.toJSON().lat,
+            longitude: event.latLng.toJSON().lng
+        }
+    });
+    this.markerPositions.push(event.latLng.toJSON());
+    }
+
     constructor(private _formBuilder: FormBuilder,
         private _vehiclesService: VehiclesService,
         private _productService: ProductService,
@@ -68,9 +93,12 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         public toastr: ToastrManager,
         private fileService: FileService,
         private mediaService: MediaService,
+        private changeDetection: ChangeDetectorRef,
+        private dialog: MatDialog,
 
 
     ) {
+        //this.markerPositions = [{lat: 41, lng:29}];
         this.fileUploadUrl = environment.url+'/media';
 
         this.activatedRouter.paramMap.subscribe(params => {
@@ -79,6 +107,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                     this.proposalId = data.body.id;
                     this.productId = data.body.product_id;
                     this.mediaList = data?.body.media;
+                    this.markerPositions = [{lat: data.body.latitude, lng:data.body.longitude}];
                     this.verticalStepperForm.patchValue({
                         step1:{
                             last_offer_date:data.body.last_offer_date,
@@ -117,6 +146,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                 quantity: ['', Validators.required],
                 location: ['', Validators.required],
                 product_detail: ['', Validators.required],
+                latitude: [''],
+                longitude: [''],
 
             }),
             step3: this._formBuilder.group({
@@ -152,10 +183,6 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         });
 
         this.locationLabel = this.translocoService.translate('proposals.details.tab.productInfo.productLocation');
-
-
-
-
     }
 
     filter(val: string): Observable<any[]> {
@@ -183,8 +210,9 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
 
     }
-    save() {
-        let createPrp = {type:'',freight_type:'',status:'',last_offer_date:'',publish_date:'',location:'',
+    save(isSubmit: boolean) {
+        console.log(isSubmit);
+        let createPrp = {type:'',freight_type:'',status:'',last_offer_date:'',publish_date:'',location:'',latitude:'',longitude:'',
                 product:'',product_quantity:'',product_detail:'',product_id:'',id:'',company_id: this._authService.CompanyId};
        createPrp.type    = this.verticalStepperForm.value.step1.type;
        createPrp.freight_type    = this.verticalStepperForm.value.step1.type;
@@ -194,6 +222,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
        createPrp.product          = this.verticalStepperForm.value.step2.products;
        createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
        createPrp.product_detail = this.verticalStepperForm.value.step2.product_detail;
+       createPrp.latitude = this.verticalStepperForm.value.step2.latitude;
+       createPrp.longitude = this.verticalStepperForm.value.step2.longitude;
        createPrp.status = this.verticalStepperForm.value.step1.status;
        if(this.selectedProduct){
         createPrp.product_id = this.selectedProduct.id;
@@ -201,15 +231,26 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         createPrp.product_id = this.productId;
        }
        createPrp.id=this.proposalId;
-       this._proposalService.createProposal(createPrp).subscribe(data => {
-        this._router.navigateByUrl('/apps/proposals/list');
-
+       this._proposalService.createProposal(createPrp,isSubmit).subscribe(data => {
+           if(isSubmit)
+           {
+            this._router.navigateByUrl('/apps/proposals/list');
+           }
+           else
+           {
+               this.proposalId=data.id;
+           }
        });
-       if(this.demoForm.value.files)
-       {
-        this.upload();
-       }
     }
+
+    loadDocs() {
+        this.mediaList = [];
+        this._proposalService.getProposalById(this.proposalId).subscribe(data => {
+            this.mediaList = data?.body.media;
+            this.changeDetection.detectChanges();
+        })
+        this.fileUpload.control.clear()
+      }
 
     onChangeType(event) {
         if (event.value === 'Alış') {
@@ -219,14 +260,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         }
 
     } 
-    uploadDocs(fileList: FileList,fileName: any): void {
-        const file = fileList[0];
-        let tmp = {id:1,description:fileName.description,name:fileName.name,fileName: file.name,
-                        type: file.name.split('.')[1].toUpperCase()};
-        this.filesUpload.push(tmp);
-    }
 
-    upload() {
+    upload(item) {
         const file = this.demoForm.value.files[0];
         this.fileService.putUrl(file).then((res) => {
           const {
@@ -240,28 +275,43 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
               );
     
               let key = this._authService.user_id + '/'+ file.name;
-    
+              let pathObject = {type:file.type, fileName:file.name, key:key, group: item.description}
               this.mediaService
                 .createMedia({
-                  id: null,
-                  //company_id: this.companyDetail,
-                  title: "ProposalFile",
-                  user_id: this._authService.user_id,
-                  path: JSON.stringify(key),
+                    id: null,
+                    proposal_id: this.proposalId,
+                    title: "ProposalFile",
+                    user_id: this._authService.user_id,
+                    path: JSON.stringify(pathObject),
                 })
                 .subscribe((data) => {
                   this.toastr.successToastr(
-                    this.translocoService.translate("message.createMedia")
-                  );
+                    this.translocoService.translate("message.createMedia"));
+                    this.loadDocs();
                 });
             },
             (error) => {
               this.toastr.errorToastr(
-                this.translocoService.translate("message.error")
-              );
+                this.translocoService.translate("message.error"));
+                this.loadDocs();
             }
           );
         });
+      }
+      deleteDocs(item) {
+        if (item) {
+          this.dialogRef = this.dialog.open(ConfirmationDialog, {
+            disableClose: false,
+          });
+          this.dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+              this._proposalService.deleteDocs(item).subscribe(data => {
+                this.loadDocs();
+              })
+            }
+            this.dialogRef = null;
+          });
+        }
       }
 
     step1Next()
@@ -269,16 +319,21 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         let status = this.generalFunction.formValidationCheck(this.verticalStepperForm,this.toastr,this.translocoService);
         if(status)
         {
-          return
+            return
         }
     }
 
     step2Next()
     {
+        console.log(222)
         let status = this.generalFunction.formValidationCheck(this.verticalStepperForm,this.toastr,this.translocoService);
         if(status)
         {
-          return
+            return;
+        }
+        else
+        {
+            this.save(false);
         }
     }
 }
