@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
-import { cloneDeep, isNull } from 'lodash';
+import { cloneDeep } from 'lodash';
 import moment from 'moment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs';
@@ -16,8 +16,9 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { FileService } from 'app/services/file.service';
 import { environment } from 'environments/environment';
 import { InitialData } from 'app/app.types';
-import { DOCUMENT } from '@angular/common';
-import { FileUploadComponent, FileUploadControl } from '@iplab/ngx-file-upload';
+import { FileUploadComponent } from '@iplab/ngx-file-upload';
+import { map, startWith } from 'rxjs/operators';
+
 @Component({
   selector: "companyTD",
   templateUrl: "./companyTD.component.html",
@@ -26,6 +27,7 @@ import { FileUploadComponent, FileUploadControl } from '@iplab/ngx-file-upload';
   encapsulation: ViewEncapsulation.None,
 })
 export class CustomersTDComponent implements OnInit {
+
   @ViewChild('fileUpload')fileUpload: FileUploadComponent;
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
@@ -44,10 +46,13 @@ export class CustomersTDComponent implements OnInit {
   addressesForm: FormGroup;
   addressList: any[] = [];
   mediaList: any[];
+  selectCountryItem: any;
   isLoadAddress: boolean = true;
   formStatus: boolean = true;
   newAddressItem: any;
   fileDownloadLink:any;
+  filteredOptions: Observable<string[]>;
+  countries: any[];
 
   center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
   zoom = 7;
@@ -100,15 +105,17 @@ export class CustomersTDComponent implements OnInit {
 
     this.customerForm = this._formBuilder.group({
         id: [''],
-        full_name: ['', [Validators.required]],
         name: ['', [Validators.required]],
+        full_name: ['', [Validators.required]],
         types: ['', Validators.required],
-        registered_date: [null,Validators.required],
+        registered_date: [new Date(), Validators.required],
         tax_office: ['', Validators.required],
         tax_number: ['', Validators.required],
         phone: [null, Validators.required],
         email: [null, Validators.required],
         website: [null],
+        country: [''],
+        country_object: [''],  
     });
 
     this.addressesForm = this._formBuilder.group({
@@ -132,6 +139,8 @@ export class CustomersTDComponent implements OnInit {
                 this.loadAddress();
                 this.dataSourceApprovals = [];
                 this.mediaList = data?.body.media;
+                this.customerForm.value.country = data.body.country;
+                this.customerForm.value.country_object = data.body.country_object;
                 this._customersService.getApprovals(params.get("id")).subscribe(res => {
                   this.dataSourceApprovals = res.body;
                 });
@@ -140,7 +149,14 @@ export class CustomersTDComponent implements OnInit {
             })
         };
     });
-
+    this._customersService.getCountries().subscribe(data => {
+      this.countries=data.body[0].json_value;
+      this.filteredOptions = this.customerForm.controls['country_object'].valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value === '' ? '99' : value))
+        );
+    });
+    
     this._customersService.getTypes().subscribe(res => {
       this.dataSourceTypes = res.body;
     });
@@ -165,6 +181,32 @@ export class CustomersTDComponent implements OnInit {
     }
   }
 
+  private _filter(value: string): string[] {
+
+    let filterValue;
+    if (value === '99') {
+      filterValue = '';
+    } else {
+      filterValue = value;
+    }
+    return this.countries.filter(option => {
+        if( typeof filterValue === 'object'){
+            return option?.name?.indexOf(filterValue.name) === 0 || option?.name?.indexOf(filterValue.name?.toLowerCase()) === 0;
+
+        }else{
+            return option?.name?.indexOf(filterValue) === 0 || option?.name?.indexOf(filterValue?.toLowerCase()) === 0;
+
+        }
+    });
+  }
+  selectCountries(event: any) {
+    let option = this.countries.filter(item => item.name.toUpperCase() === event.option.value.name.toUpperCase());
+    if (option.length > 0) {
+      this.selectCountryItem = option[0];
+      this.customerForm.get('country').setValue(option[0].name, { emitEvent: false });
+    }
+  }
+
   addNewCompany() {
     let status = this.generalFunction.formValidationCheck(this.customerForm,this.toastr,this.translocoService);
     if(status)
@@ -182,6 +224,8 @@ export class CustomersTDComponent implements OnInit {
       registered_date: "",
       tax_number: "",
       tax_office: "",
+      country: "",
+      country_object: "",
     };
     createCompany.id = this.companyDetail;
     createCompany.types = this.customerForm.value.types;
@@ -193,6 +237,8 @@ export class CustomersTDComponent implements OnInit {
     createCompany.tax_number = this.customerForm.value.tax_number;
     createCompany.tax_office = this.customerForm.value.tax_office;
     createCompany.registered_date = this.customerForm.value.registered_date;
+    createCompany.country = this.customerForm.value.country;
+    createCompany.country_object = this.selectCountryItem;
 
     this._customersService.createCustomer(createCompany).subscribe((data) => {
       this._router.navigateByUrl("/apps/company/list");
@@ -447,6 +493,15 @@ export class CustomersTDComponent implements OnInit {
 
        clickFile(item)
        {
+         console.log(item);
          this.fileDownloadLink = `${environment.url}/media/s3/generateGetUrl?Key=`+item?.path.key;
        }
+       displayFn(x) {
+        return x?.name;
+        }
+    
+    changedName(value:string)
+    {
+      this._customersService.getValidateName(value).subscribe();
+    }
 }

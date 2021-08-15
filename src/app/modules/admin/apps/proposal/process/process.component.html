@@ -174,7 +174,7 @@
                                                 [expanded]="item.open"     class="example-headers-align">
                                                     <mat-expansion-panel-header >
                                                         <mat-panel-title style="width: 450px;" >
-                                                            <em><b>    {{item.process_date?.substring(0,10) }} [  {{item.process_group?.description}} | {{item.process_sub_group?.description}}  | {{item.address}}  ] </b></em> 
+                                                            <em><b>    {{item?.process_date}} [  {{item?.process_group?.description}} | {{item?.process_sub_group?.description}}  | {{item?.address}}  ] </b></em> 
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <br>
@@ -259,7 +259,7 @@
                                                             </button>
 
                                                         </div>
-                                                        <div class="ml-5 w-2/3 mt-15">
+                                                        <div class="ml-5 w-2/3 mt-12">
                                                             <div class="my-google-map">
                                                                 <google-map [width]="null" [height]="null"
                                                                     [center]="center" [zoom]="zoom"

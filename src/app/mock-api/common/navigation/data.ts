@@ -12,7 +12,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
            
             {
                 id   : 'dashboards.project',
-                title: 'Project',
+                title: 'Dashboard',
                 type : 'basic',
                 icon : 'heroicons_outline:clipboard-check',
                 link : '/dashboards/project',
@@ -42,7 +42,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon    : 'mat_outline:business',
                 link    : '/apps/company'
             },
-             {
+            {
                 id      : 'app.products',
                 title   : 'Products',
                 type    : 'basic',
@@ -53,7 +53,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id      : 'app.vehicles',
                 title   : 'Vehicles',
                 type    : 'basic',
-                icon    : 'heroicons_outline:truck',
+                icon    : 'iconsmind:ship_2',
                 link    : '/apps/vehicles'
             },
             {

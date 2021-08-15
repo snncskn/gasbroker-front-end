@@ -29,6 +29,7 @@ export class FileService {
   }
 
   download(key: string): Promise<any> {
+    console.log(key);
     const generateGetUrl = `${environment.url}/media/s3/generateGetUrl`;
     const options = {
       params: {

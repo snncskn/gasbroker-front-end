@@ -35,6 +35,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ConfirmationModule } from '../delete-dialog/delete.module';
 import { ApprovalComponent } from './approvalDialog/approval.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         SharedModule,
         FileUploadModule,
         TranslocoModule,
+        MatAutocompleteModule,
         ConfirmationModule    
     ],
     providers   : [
