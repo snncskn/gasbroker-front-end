@@ -71,7 +71,7 @@ export class CustomersTDComponent implements OnInit {
   }
 
   //file upload
-  public animation: boolean = false;
+  public animation: boolean = true;
   public multiple: boolean = false;
   private filesControl = new FormControl(null);
   private label = new FormControl(null);
