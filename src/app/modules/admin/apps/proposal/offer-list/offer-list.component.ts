@@ -13,7 +13,7 @@ import { ProposalOffer } from '../proposals.types';
 export class OfferListComponent implements OnInit {
 
   offers$:Observable<ProposalOffer[]>;
-  offersTableColumns: string[] = ['company_name','payment_type','price','offer_date','deal_status','deal_status_btn'];
+  offersTableColumns: string[] = ['company_name','offer_date','payment_type','price','deal_status','deal_status_btn'];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   offersCount: number=0;
   isAdmin: boolean=false;

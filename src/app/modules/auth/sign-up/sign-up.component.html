@@ -109,7 +109,7 @@
                             <button mat-flat-button matStepperPrevious>Back</button>
                             <button mat-flat-button (click)="stepper.reset()">Reset</button>
                             <button mat-flat-button [color]="'primary'"
-                            [disabled]="signUpFormStep3.stepControl.pristine || signUpFormStep3.stepControl.invalid"
+                            [disabled]="signUpFormStep3.stepControl.invalid"
                             (click)="signUp()">
                                 Save
                             </button>
