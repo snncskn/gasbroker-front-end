@@ -72,6 +72,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
   markerPositions: google.maps.LatLngLiteral[] = [];
 
   addMarker(event: google.maps.MapMouseEvent) {
+      console.log(event)
     this.markerPositions = [];
     this.verticalStepperForm.patchValue({
         step2:{
@@ -107,7 +108,14 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                     this.proposalId = data.body.id;
                     this.productId = data.body.product_id;
                     this.mediaList = data?.body.media;
-                    this.markerPositions = [{lat: data.body.latitude, lng:data.body.longitude}];
+                    this.center = {
+                        lat: Number(data.body.latitude),
+                        lng: Number(data.body.longitude),
+                      };
+                    this.markerPositions = [{
+                        lat: Number(data.body.latitude),
+                        lng: Number(data.body.longitude),
+                      }];
                     this.verticalStepperForm.patchValue({
                         step1:{
                             last_offer_date:data.body.last_offer_date,

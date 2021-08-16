@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   ViewChild,
@@ -58,7 +59,9 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
     private readonly ngxService: NgxUiLoaderService,
     private readonly activatedRouter: ActivatedRoute,
     private _matDialog: MatDialog,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
+    private changeDetection: ChangeDetectorRef,
+
   ) {
     this.productForm = this._formBuilder.group({
       id: [""],
@@ -182,10 +185,11 @@ export class ProductDetailComponent implements OnInit, AfterViewInit  {
       if(result) {
         if (item.id) {
           this._productService.deleteSubProduct(item.id).subscribe(data => {
+            let tmp = this.formSubProduct.controls["subProductItems"] as FormArray;
+            tmp.removeAt(index);
+            this.changeDetection.detectChanges();
           });
         }
-        let tmp = this.formSubProduct.controls["subProductItems"] as FormArray;
-        tmp.removeAt(index);  
       }
       this.dialogRef = null;
     });

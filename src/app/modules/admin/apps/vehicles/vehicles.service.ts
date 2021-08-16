@@ -114,6 +114,8 @@ export class VehiclesService {
         return this._httpClient.get<any>(url);
     }
 
+
+
     /**
      * Search customers with given query
      *
@@ -261,7 +263,7 @@ export class VehiclesService {
 
     getVehicleDocs():
         Observable<any> {
-        let url = `${environment.url}/parameter/category/COMPANY_DOCS`; //Vehicle Docs eklenince değiştirilecek..
+        let url = `${environment.url}/parameter/category/VEHICLE_DOCS`; //Vehicle Docs eklenince değiştirilecek..
         return this._httpClient.get<any>(url);
     }
     /**
