@@ -84,7 +84,6 @@ export class VehiclesDetailsComponent implements OnInit {
       });
       this._vehicleService.getVehicleDocs().subscribe(res => {
           this.dataSourceDocs = res.body;
-          console.log(this.dataSourceDocs);
       });
         
     }
@@ -251,7 +250,7 @@ export class VehiclesDetailsComponent implements OnInit {
                   vehicle_id: this.vehicleDetail,
                   title: "VehicleFile",
                   user_id: this.authService.user_id,
-                  path: JSON.stringify(pathObject),
+                  path: pathObject,
                 })
                 .subscribe((data) => {
                   this.toastr.successToastr(

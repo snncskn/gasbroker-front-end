@@ -350,7 +350,7 @@
                                             <!-- Files Cert-2 -->
                                             <div class="flex flex-wrap m-2 mt-5">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngIf="file.path.group=='dataSourceDocs[1].description'">
+                                                    <ng-container *ngIf="file.path.group==dataSourceDocs[1].description">
                                                         <ng-container
                                                             *ngTemplateOutlet="item, context: {$implicit: file}">
                                                         </ng-container>
