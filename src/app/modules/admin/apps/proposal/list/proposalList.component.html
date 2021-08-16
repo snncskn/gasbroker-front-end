@@ -28,7 +28,8 @@
             <!-- Search  -->
             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-              <input matInput (keyup)="applyFilter($event.target.value)" [autocomplete]="'off'" placeholder="{{ t('input.search') }}">
+              <input matInput (keyup)="applyFilter($event.target.value)" [autocomplete]="'off'"
+                placeholder="{{ t('input.search') }}">
             </mat-form-field>
 
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="newProposal()">
@@ -41,8 +42,8 @@
         <!-- Customers list -->
         <div class="relative">
           <table class="w-full min-w-320 table-fixed bg-transparent" [ngClass]="{ 'pointer-events-none': isLoading }"
-            mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'"
-            [multiTemplateDataRows]="true" [dataSource]="proposals$" [trackBy]="trackByFn">
+            mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'" [multiTemplateDataRows]="true"
+            [dataSource]="proposals$" [trackBy]="trackByFn">
 
             <ng-container matColumnDef="name">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
@@ -55,8 +56,8 @@
             </ng-container>
 
             <ng-container matColumnDef="type">
-              <th class="bg-gray-50 w-30 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
+              <th class="bg-gray-50 w-30 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
+                mat-sort-header disableClear>
                 {{ t('proposals.type') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
@@ -77,8 +78,8 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="publish_date">
-              <th class="bg-gray-50 w-30 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
+              <th class="bg-gray-50 w-30 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
+                mat-sort-header disableClear>
                 {{ t('proposals.publishDate') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
@@ -86,8 +87,8 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="last_offer_date">
-              <th class="bg-gray-50 w-30 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
+              <th class="bg-gray-50 w-30 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
+                mat-sort-header disableClear>
                 {{ t('proposals.offerDate') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
@@ -104,8 +105,8 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="status">
-              <th class="bg-gray-50 w-40 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
+              <th class="bg-gray-50 w-40 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
+                mat-sort-header disableClear>
                 {{ t('proposals.status') }}
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
@@ -117,13 +118,13 @@
                       {{ row.status }}
                     </div>
                     <mat-icon *ngIf="row.status==='OK'" class="mr-8 icon-size-5 text-green-600"
-                    [svgIcon]="'heroicons_solid:badge-check'" [matTooltip]="'Teklif tamamlanmıştır'"></mat-icon>
+                      [svgIcon]="'heroicons_solid:badge-check'" [matTooltip]="'Teklif tamamlanmıştır'"></mat-icon>
                     <div *ngIf="row.status==='NOT OK'"
                       class="py-0.5 px-3 rounded-full text-sm font-semibold text-pink-800 bg-pink-100 dark:text-pink-50 dark:bg-pink-500">
                       {{ row.status }}
                     </div>
                     <mat-icon *ngIf="row.status==='NOT OK'" class="mr-8 icon-size-5 text-red-600"
-                    [svgIcon]="'heroicons_solid:x-circle'" [matTooltip]="'Teklif tamamlanmmamıştır'"></mat-icon>
+                      [svgIcon]="'heroicons_solid:x-circle'" [matTooltip]="'Teklif tamamlanmmamıştır'"></mat-icon>
                   </ng-container>
                 </div>
 
@@ -144,29 +145,42 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="detail">
-              <th class="bg-gray-50 dark:bg-black w-60 dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
+              <th class="bg-gray-50 dark:bg-black w-60 dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
+                mat-sort-header disableClear>
                 #
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <button class="fuse-mat-button-rounded" (click)="openProposal(row)" matTooltip="{{ t('tooltip.edit') }}"  mat-icon-button [color]="'primary'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                  [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon> 
+                <button class="fuse-mat-button-rounded" (click)="openProposal(row)" matTooltip="{{ t('tooltip.edit') }}"
+                  mat-icon-button [color]="'primary'">
+                  <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
+                  </mat-icon>
                 </button>
-                <button class="fuse-mat-button-rounded" (click)="openProcess(row)" matTooltip="{{ t('tooltip.process') }}" mat-icon-button [color]="'primary'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                  [svgIcon]="'heroicons_outline:archive'" ></mat-icon> 
+                <ng-container *ngIf="row.status==='OK'">
+                  <button class="fuse-mat-button-rounded" (click)="openProcess(row)"
+                    matTooltip="{{ t('tooltip.process') }}" mat-icon-button [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:archive'">
+                    </mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="row.status==='NOT OK'">
+                  <button class="fuse-mat-button-rounded" [disabled]=true
+                    matTooltip="{{ t('tooltip.process') }}" mat-icon-button [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:archive'">
+                    </mat-icon>
+                  </button>
+                </ng-container>
+                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)"
+                  matTooltip="{{ t('tooltip.offer') }}" mat-icon-button [color]="'primary'">
+                  <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:cash'">
+                  </mat-icon>
                 </button>
-                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)" matTooltip="{{ t('tooltip.offer') }}" mat-icon-button [color]="'primary'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                  [svgIcon]="'heroicons_outline:cash'" ></mat-icon> 
+                <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)"
+                  matTooltip="{{ t('tooltip.offerList') }}" mat-icon-button [color]="'primary'">
+                  <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:search'">
+                  </mat-icon>
                 </button>
-                <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)" matTooltip="{{ t('tooltip.offerList') }}" mat-icon-button [color]="'primary'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                  [svgIcon]="'heroicons_outline:search'"></mat-icon> 
-                </button>
-                <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" matTooltip="{{ t('tooltip.delete') }}" (click)="deleteProposal(row)"
-                  mat-icon-button [color]="'warn'">
+                <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" matTooltip="{{ t('tooltip.delete') }}"
+                  (click)="deleteProposal(row)" mat-icon-button [color]="'warn'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
                   </mat-icon>
                 </button>
@@ -174,30 +188,25 @@
             </ng-container>
 
             <tr class="shadow" mat-header-row *matHeaderRowDef="proposalsTableColumns; sticky: true"></tr>
-            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" 
-              *matRowDef="let i = dataIndex; let product; columns: proposalsTableColumns"
-              [class]="setStyle(i)" 
-              mat-row></tr>
+            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
+              *matRowDef="let i = dataIndex; let product; columns: proposalsTableColumns" [class]="setStyle(i)" mat-row>
+            </tr>
 
           </table>
           <ng-template #noProposals>
-            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">{{ t('proposals.noProposals.message') }}
+            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">{{
+              t('proposals.noProposals.message') }}
             </div>
           </ng-template>
-          
+
         </div>
       </div>
-      
+
     </mat-drawer-content>
-    
+
   </mat-drawer-container>
-  <mat-paginator
-  #paginator
-  class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-  [ngClass]="{'pointer-events-none': isLoading}"
-  [length]="totalSize$"
-  (page)="getServerData($event)"
-  [pageIndex]="currentPage" 
-  [pageSizeOptions]="[5, 10, 25, 100]"
-  [showFirstLastButtons]="true"></mat-paginator>
+  <mat-paginator #paginator
+    class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+    [ngClass]="{'pointer-events-none': isLoading}" [length]="totalSize$" (page)="getServerData($event)"
+    [pageIndex]="currentPage" [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator>
 </div>
