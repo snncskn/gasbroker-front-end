@@ -84,6 +84,7 @@ export class VehiclesDetailsComponent implements OnInit {
       });
       this._vehicleService.getVehicleDocs().subscribe(res => {
           this.dataSourceDocs = res.body;
+          console.log(this.dataSourceDocs);
       });
         
     }

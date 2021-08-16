@@ -195,7 +195,7 @@
                                             <div class="font-medium">Files</div>
                                             <div class="flex flex-wrap m-2 mt-1">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngIf="file.path.group=='Logo'">
+                                                    <ng-container *ngIf="file.path.group==dataSourceDocs[0].description">
                                                     <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
                                                     </ng-container>
                                                 </ng-container>
@@ -205,7 +205,7 @@
                                             <!-- Files Cert-2 -->
                                             <div class="flex flex-wrap m-2 mt-5">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngIf="file.path.group=='Certifi-1'">
+                                                    <ng-container *ngIf="file.path.group==dataSourceDocs[1].description">
                                                         <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
                                                         </ng-container>
                                                     </ng-container>
@@ -215,7 +215,7 @@
                                             <!-- Files Cert-3 -->
                                             <div class="flex flex-wrap m-2 mt-9">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngIf="file.path.group=='Certifi-2'">
+                                                    <ng-container *ngIf="file.path.group==dataSourceDocs[2].description">
                                                         <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
                                                         </ng-container>
                                                     </ng-container>
