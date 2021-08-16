@@ -22,6 +22,8 @@
     "tooltip.delete": "Sil",
     "tooltip.ok": "Tamamlandı",
     "tooltip.notOk": "Tamamlanmadı",
+    "tooltip.active": "Aktif",
+    "tooltip.passive": "Pasif",
 
     "delete.dialog.confirm":"Onayla",
     "delete.dialog.cancel":"İptal",
@@ -68,6 +70,7 @@
     "message.fileDownload":"Media İndirme işlemi tamamlandı!",
     "message.createMedia": "Media kaydedildi",
     "message.deleteMedia": "Media silindi!",
+    "message.statusChanged": "Statü değiştirildi!",
 
 
     "input.search": "Arama...",
@@ -217,6 +220,7 @@
         "users.details.tab.generalInfo.menu.text": "Menü adını gir",
         "users.details.tab.generalInfo.pass": "Şifre",
         "users.details.tab.generalInfo.confirmPass": "Şifreyi Onayla",
+        "users.details.tab.generalInfo.active": "Aktif",
     "users.details.tab.resetPass": "Şifre Sıfırla",
         "users.details.tab.resetPass.newPass": "Yeni Şifre",
         "users.details.tab.resetPass.confirmNewPass": "Yeni Şifreyi Onayla",

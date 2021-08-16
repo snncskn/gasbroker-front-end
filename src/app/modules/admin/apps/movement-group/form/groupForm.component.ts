@@ -80,15 +80,13 @@ export class GroupFormComponent {
     }
 
     addGroup() {
-        let status = this.generalFunction.formValidationCheck(this.groupForm,this.toastr,this.translocoService);
-        let status2 = this.generalFunction.formValidationCheck(this.formSubGroup,this.toastr,this.translocoService);
-        if(status)
-        {
-          return
+        let status = this.generalFunction.formValidationCheck(this.groupForm, this.toastr, this.translocoService);
+        let status2 = this.generalFunction.formValidationCheck(this.formSubGroup, this.toastr, this.translocoService);
+        if (status) {
+            return
         }
-        if(status2)
-        {
-          return
+        if (status2) {
+            return
         }
         this._groupService.createProcessGroup(this.groupForm.value).subscribe(data => {
             this.groupId = data.body.id
@@ -106,33 +104,41 @@ export class GroupFormComponent {
         if (this.groupForm.value.id) {
             this.dialogRef = this.dialog.open(ConfirmationDialog, {
                 disableClose: false
-              });
-              this.dialogRef.afterClosed().subscribe(result => {
-                if(result) {
+            });
+            this.dialogRef.afterClosed().subscribe(result => {
+                if (result) {
                     this._groupService.deleteGroup(this.groupForm.value).subscribe(data => {
                         this._router.navigateByUrl('/apps/group/list/');
                         this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
                     });
                 }
                 this.dialogRef = null;
-              });
+            });
 
         }
     }
 
-    deleteSubGroup(item: any,index: number) {
-        if(item.id){
-            this._groupService.deleteSubGroup(item).subscribe(data => {
-                this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessSubGroup'));
-                //this._router.navigateByUrl('/apps/group/form/' + data.body.id);
-                let tmp = this.formSubGroup.controls["subGroupItems"] as FormArray;
-                tmp.removeAt(index);
-                this.changeDetection.detectChanges();
+    deleteSubGroup(item: any, index: number) {
+        if (item.id) {
+            this.dialogRef = this.dialog.open(ConfirmationDialog, {
+                disableClose: false
             });
-        }else{
-          let tmp = this.formSubGroup.controls["subGroupItems"] as FormArray;
-          tmp.removeAt(index);
+            this.dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    this._groupService.deleteSubGroup(item).subscribe(data => {
+                        this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessSubGroup'));
+                        //this._router.navigateByUrl('/apps/group/form/' + data.body.id);
+                        let tmp = this.formSubGroup.controls["subGroupItems"] as FormArray;
+                        tmp.removeAt(index);
+                        this.changeDetection.detectChanges();
+                    });
+                }
+                this.dialogRef = null;
+            });
+        } else {
+            let tmp = this.formSubGroup.controls["subGroupItems"] as FormArray;
+            tmp.removeAt(index);
         }
-         
+
     }
 }

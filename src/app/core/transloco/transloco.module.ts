@@ -20,6 +20,10 @@ import { TranslocoHttpLoader } from 'app/core/transloco/transloco.http-loader';
                    {
                         id   : 'tr',
                         label: 'Turkish'
+                    },
+                    {
+                        id   : 'es',
+                        label: 'Spanish'
                     }
                 ],
                 defaultLang         : 'en',

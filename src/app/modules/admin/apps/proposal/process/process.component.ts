@@ -141,7 +141,8 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
                 items.body.forEach(element => {
                   element.open = true;
                   element.dataSourceGroup = this.dataSourceGroup;
-                  //this.markerPositions = [{lat: element.latitude, lng:element.longitude}];
+                  console.log(444)
+                  element.markerPositions = [{lat: Number(element.latitude), lng: Number(element.longitude)}];
                   this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
                     element.dataSourceSubGroup = data.body.process_sub_groups;
                     this.items.push(element);
@@ -269,6 +270,7 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
           element.dataSourceGroup = this.dataSourceGroup;
           this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
             element.dataSourceSubGroup = data.body.process_sub_groups;
+            console.log(111)
             this.items.push(element);
           });
         

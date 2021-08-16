@@ -93,7 +93,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
                     dateA11yLabel     : 'LL',
                     monthYearA11yLabel: 'MMMM YYYY'
                 },
-                availableLangs: ['en', 'tr'],
+                availableLangs: ['en', 'tr', 'es'],
                 defaultLang: 'en'
             }
         }

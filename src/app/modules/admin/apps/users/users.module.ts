@@ -62,6 +62,7 @@ import { ConfirmationModule } from '../delete-dialog/delete.module';
         MatExpansionModule,
         MatTabsModule,
         MatDialogModule,
+        MatSlideToggleModule,
         UsersRoutingModule,
         MatPaginatorModule,
         TranslocoModule,

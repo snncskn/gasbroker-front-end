@@ -102,7 +102,7 @@
                                 <div class="font-medium">Files</div>
                                 <div class="flex flex-wrap m-2 mt-1">
                                     <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                        <ng-container *ngIf="file.path.group=='vehicle'">
+                                        <ng-container *ngIf="file.path.group==dataSourceDocs[0].description">
                                         <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
                                         </ng-container>
                                     </ng-container>
@@ -111,7 +111,7 @@
                                 <!-- Files Cert-2 -->
                                 <div class="flex flex-wrap m-2 mt-5">
                                     <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                        <ng-container *ngIf="file.path.group=='vehicle-2'">
+                                        <ng-container *ngIf="file.path.group=='dataSourceDocs[1].description'">
                                             <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
                                             </ng-container>
                                         </ng-container>

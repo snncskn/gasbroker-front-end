@@ -37,7 +37,7 @@ export class UsersListComponent implements OnInit {
     isLoading: boolean = false;
     pagination: UsersPagination;
     usersCount: number = 0;
-    usersTableColumns: string[] = ['name', 'username', 'email', 'website', 'detail'];
+    usersTableColumns: string[] = ['name', 'username', 'email', 'website','status', 'detail'];
     selectedUser: UsersList | null = null;
     selectedUserForm: FormGroup;
     calendarColors: any = calendarColors;

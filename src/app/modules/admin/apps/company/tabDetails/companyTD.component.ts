@@ -28,15 +28,15 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class CustomersTDComponent implements OnInit {
 
-  @ViewChild('fileUpload')fileUpload: FileUploadComponent;
+  @ViewChild('fileUpload') fileUpload: FileUploadComponent;
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
   public generalFunction = new GeneralFunction();
 
   data: InitialData;
-  isAdmin: boolean=false;
+  isAdmin: boolean = false;
   approvals$: Observable<any[]>;
-  isEditUser:boolean=false;
+  isEditUser: boolean = false;
   customerForm: FormGroup;
   dataSourceTypes: any[];
   dataSourceDocs: any[];
@@ -50,7 +50,7 @@ export class CustomersTDComponent implements OnInit {
   isLoadAddress: boolean = true;
   formStatus: boolean = true;
   newAddressItem: any;
-  fileDownloadLink:any;
+  fileDownloadLink: any;
   filteredOptions: Observable<string[]>;
   countries: any[];
 
@@ -98,24 +98,27 @@ export class CustomersTDComponent implements OnInit {
     private authService: AuthService,
 
   ) {
+    this._customersService.getCompanyDocs().subscribe(res => {
+      this.dataSourceDocs = res.body;
+    });
     /*const button = this.document.getElementById("rejectButton");
     console.log(button)*/
     let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
     this.newAddressItem = { expanded: true, isNew: true, position: center };
 
     this.customerForm = this._formBuilder.group({
-        id: [''],
-        name: ['', [Validators.required]],
-        full_name: ['', [Validators.required]],
-        types: ['', Validators.required],
-        registered_date: [new Date(), Validators.required],
-        tax_office: ['', Validators.required],
-        tax_number: ['', Validators.required],
-        phone: [null, Validators.required],
-        email: [null, Validators.required],
-        website: [null],
-        country: [''],
-        country_object: [''],  
+      id: [''],
+      name: ['', [Validators.required]],
+      full_name: ['', [Validators.required]],
+      types: ['', Validators.required],
+      registered_date: [new Date(), Validators.required],
+      tax_office: ['', Validators.required],
+      tax_number: ['', Validators.required],
+      phone: [null, Validators.required],
+      email: [null, Validators.required],
+      website: [null],
+      country: [''],
+      country_object: [''],
     });
 
     this.addressesForm = this._formBuilder.group({
@@ -129,54 +132,49 @@ export class CustomersTDComponent implements OnInit {
     });
 
     this.activatedRouter.paramMap.subscribe(params => {
-        if (params.has('id')) {
-          this.isEditUser=true;
-          this.companyDetail  = params.get("id");
-          this._customersService.getCompanyById(params.get("id")).subscribe(data => {
-                //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
-                this.customerForm.patchValue(data?.body);
-                this.addressesForm.patchValue({company_id:data.body?.id})
-                this.loadAddress();
-                this.dataSourceApprovals = [];
-                this.mediaList = data?.body.media;
-                this.customerForm.value.country = data.body.country;
-                this.customerForm.value.country_object = data.body.country_object;
-                this._customersService.getApprovals(params.get("id")).subscribe(res => {
-                  this.dataSourceApprovals = res.body;
-                });
-            },error=>{
-                
-            })
-        };
+      if (params.has('id')) {
+        this.isEditUser = true;
+        this.companyDetail = params.get("id");
+        this._customersService.getCompanyById(params.get("id")).subscribe(data => {
+          //this.toastr.warningToastr( this.translocoService.translate('message.no_record'));
+          this.customerForm.patchValue(data?.body);
+          this.addressesForm.patchValue({ company_id: data.body?.id })
+          this.loadAddress();
+          this.dataSourceApprovals = [];
+          this.mediaList = data?.body.media;
+          this.customerForm.value.country = data.body.country;
+          this.customerForm.value.country_object = data.body.country_object;
+          this._customersService.getApprovals(params.get("id")).subscribe(res => {
+            this.dataSourceApprovals = res.body;
+          });
+        }, error => {
+
+        })
+      };
     });
     this._customersService.getCountries().subscribe(data => {
-      this.countries=data.body[0].json_value;
+      this.countries = data.body[0].json_value;
       this.filteredOptions = this.customerForm.controls['country_object'].valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value === '' ? '99' : value))
-        );
+      );
     });
-    
+
     this._customersService.getTypes().subscribe(res => {
       this.dataSourceTypes = res.body;
-    });
-    this._customersService.getCompanyDocs().subscribe(res => {
-      this.dataSourceDocs = res.body;
     });
     this._customersService.getCompanyApprovalStatus().subscribe(res => {
       this.dataSourceApprovalStatus = res.body;
     });
-    }
- 
+  }
+
 
   ngOnInit(): void {
     let tmp = JSON.parse(localStorage.getItem('user'));
-    if(tmp.role=="admin")
-    {
+    if (tmp.role == "admin") {
       this.isAdmin = true;
     }
-    else
-    {
+    else {
       this.isAdmin = false;
     }
   }
@@ -190,13 +188,13 @@ export class CustomersTDComponent implements OnInit {
       filterValue = value;
     }
     return this.countries.filter(option => {
-        if( typeof filterValue === 'object'){
-            return option?.name?.indexOf(filterValue.name) === 0 || option?.name?.indexOf(filterValue.name?.toLowerCase()) === 0;
+      if (typeof filterValue === 'object') {
+        return option?.name?.indexOf(filterValue.name) === 0 || option?.name?.indexOf(filterValue.name?.toLowerCase()) === 0;
 
-        }else{
-            return option?.name?.indexOf(filterValue) === 0 || option?.name?.indexOf(filterValue?.toLowerCase()) === 0;
+      } else {
+        return option?.name?.indexOf(filterValue) === 0 || option?.name?.indexOf(filterValue?.toLowerCase()) === 0;
 
-        }
+      }
     });
   }
   selectCountries(event: any) {
@@ -208,9 +206,8 @@ export class CustomersTDComponent implements OnInit {
   }
 
   addNewCompany() {
-    let status = this.generalFunction.formValidationCheck(this.customerForm,this.toastr,this.translocoService);
-    if(status)
-    {
+    let status = this.generalFunction.formValidationCheck(this.customerForm, this.toastr, this.translocoService);
+    if (status) {
       return
     }
     let createCompany = {
@@ -241,7 +238,9 @@ export class CustomersTDComponent implements OnInit {
     createCompany.country_object = this.selectCountryItem;
 
     this._customersService.createCustomer(createCompany).subscribe((data) => {
-      this._router.navigateByUrl("/apps/company/list");
+      if (this.isAdmin) {
+        this._router.navigateByUrl("/apps/company/list");
+      }
     });
   }
 
@@ -341,8 +340,8 @@ export class CustomersTDComponent implements OnInit {
     this.activatedRouter.paramMap.subscribe(params => {
       if (params.has('id')) {
         this._customersService.getCompanyById(params.get("id")).subscribe(data => {
-              this.mediaList = data?.body.media;
-          })
+          this.mediaList = data?.body.media;
+        })
       };
     });
     this.fileUpload.control.clear()
@@ -375,8 +374,8 @@ export class CustomersTDComponent implements OnInit {
             this.translocoService.translate("message.fileUpload")
           );
 
-          let key = this.authService.user_id + '/'+ file.name;
-          let pathObject = {type:file.type, fileName:file.name, key:key, group: item.description}
+          let key = this.authService.user_id + '/' + file.name;
+          let pathObject = { type: file.type, fileName: file.name, key: key, group: item.description }
           this.mediaService
             .createMedia({
               id: null,
@@ -388,7 +387,7 @@ export class CustomersTDComponent implements OnInit {
             .subscribe((data) => {
               this.toastr.successToastr(
                 this.translocoService.translate("message.createMedia"));
-                this.loadDocs();
+              this.loadDocs();
             });
 
         },
@@ -430,13 +429,12 @@ export class CustomersTDComponent implements OnInit {
     });
   }
 
-  approvalStatusDialog(status:string)
-  {
-    const dialogRef = this.dialog.open(ApprovalComponent, { data:{company:this.companyDetail, status:status} });
+  approvalStatusDialog(status: string) {
+    const dialogRef = this.dialog.open(ApprovalComponent, { data: { company: this.companyDetail, status: status } });
     dialogRef.afterClosed().subscribe(response => {
       this.dataSourceApprovals = [];
       this._customersService.getApprovals(this.companyDetail).subscribe(res => {
-        
+
         this.dataSourceApprovals = res.body;
         this.changeDetection.detectChanges();
       });
@@ -444,64 +442,56 @@ export class CustomersTDComponent implements OnInit {
   }
 
 
-      /**
-     * Returns whether the given dates are different days
-     *
-     * @param current
-     * @param compare
-     */
-       isSameDay(current: string, compare: string): boolean
-       {
-           return moment(current, moment.ISO_8601).isSame(moment(compare, moment.ISO_8601), 'day');
-       }
-   
-       /**
-        * Get the relative format of the given date
-        *
-        * @param date
-        */
-       getRelativeFormat(date: string): string
-       {
-           const today = moment().startOf('day');
-           const yesterday = moment().subtract(1, 'day').startOf('day');
-   
-           // Is today?
-           if ( moment(date, moment.ISO_8601).isSame(today, 'day') )
-           {
-               return 'Today';
-           }
-   
-           // Is yesterday?
-           if ( moment(date, moment.ISO_8601).isSame(yesterday, 'day') )
-           {
-               return 'Yesterday';
-           }
-   
-           return moment(date, moment.ISO_8601).fromNow();
-       }
-   
-       /**
-        * Track by function for ngFor loops
-        *
-        * @param index
-        * @param item
-        */
-       trackByFn(index: number, item: any): any
-       {
-           return item.id || index;
-       }
+  /**
+ * Returns whether the given dates are different days
+ *
+ * @param current
+ * @param compare
+ */
+  isSameDay(current: string, compare: string): boolean {
+    return moment(current, moment.ISO_8601).isSame(moment(compare, moment.ISO_8601), 'day');
+  }
 
-       clickFile(item)
-       {
-         console.log(item);
-         this.fileDownloadLink = `${environment.url}/media/s3/generateGetUrl?Key=`+item?.path.key;
-       }
-       displayFn(x) {
-        return x?.name;
-        }
-    
-    changedName(value:string)
-    {
-      this._customersService.getValidateName(value).subscribe();
+  /**
+   * Get the relative format of the given date
+   *
+   * @param date
+   */
+  getRelativeFormat(date: string): string {
+    const today = moment().startOf('day');
+    const yesterday = moment().subtract(1, 'day').startOf('day');
+
+    // Is today?
+    if (moment(date, moment.ISO_8601).isSame(today, 'day')) {
+      return 'Today';
     }
+
+    // Is yesterday?
+    if (moment(date, moment.ISO_8601).isSame(yesterday, 'day')) {
+      return 'Yesterday';
+    }
+
+    return moment(date, moment.ISO_8601).fromNow();
+  }
+
+  /**
+   * Track by function for ngFor loops
+   *
+   * @param index
+   * @param item
+   */
+  trackByFn(index: number, item: any): any {
+    return item.id || index;
+  }
+
+  clickFile(item) {
+    this.fileDownloadLink = `${environment.url}/media/s3/generateGetUrl?Key=` + item?.path.key;
+  }
+  displayFn(x) {
+    return x?.name;
+  }
+
+  changedName(value: string) {
+    this._customersService.getValidateName(value).subscribe();
+  }
 }

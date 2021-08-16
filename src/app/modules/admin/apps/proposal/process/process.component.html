@@ -168,13 +168,14 @@
                                         </div>
                                     </div>
                                     <div *ngIf="isLoading">
-                                        <div >
-                                            <mat-accordion >
-                                                <mat-expansion-panel  *ngFor="let item of items;let i = index; trackBy: trackItem;" 
-                                                [expanded]="item.open"     class="example-headers-align">
-                                                    <mat-expansion-panel-header >
-                                                        <mat-panel-title style="width: 450px;" >
-                                                            <em><b>    {{item?.process_date}} [  {{item?.process_group?.description}} | {{item?.process_sub_group?.description}}  | {{item?.address}}  ] </b></em> 
+                                        <div>
+                                            <mat-accordion>
+                                                <mat-expansion-panel
+                                                    *ngFor="let item of items;let i = index; trackBy: trackItem;"
+                                                    [expanded]="item.open" class="example-headers-align">
+                                                    <mat-expansion-panel-header>
+                                                        <mat-panel-title style="width: 450px;">
+                                                        <em><b>    {{item?.process_date}} [  {{item?.process_group?.description}} | {{item?.process_sub_group?.description}}  | {{item?.address}}  ] </b></em> 
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <br>
@@ -230,8 +231,7 @@
                                                                 <mat-form-field class="fuse-mat-no-subscript w-full">
                                                                     <mat-label>{{ t('process.details.date') }}
                                                                     </mat-label>
-                                                                    <input matInput 
-                                                                        [matDatepicker]="Datepicker" #ref
+                                                                    <input matInput [matDatepicker]="Datepicker" #ref
                                                                         [(value)]="item.process_date"
                                                                         (dateChange)="processDateChange(item,ref.value)"
                                                                         placeholder="{{ t('process.details.date') }}">
@@ -242,14 +242,12 @@
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="mt-6 mb-6">
-                                                                <mat-form-field
-                                                                    class="fuse-mat-textarea fuse-mat-no-subscript w-full">
-                                                                    <mat-label>{{ t('process.details.address')
-                                                                        }}</mat-label>
-                                                                    <input matInput    #address
-                                                                        [(value)]="item.address"
-                                                                        placeholder="{{ t('process.details.address') }}">
-                                                                  
+                                                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                                                    <mat-label>{{ t('process.details.address')}}
+                                                                    </mat-label>
+                                                                    <textarea matInput #address
+                                                                        placeholder="{{ t('company.details.tab.address.description') }}"
+                                                                        [(value)]="item.address"></textarea>
                                                                 </mat-form-field>
                                                             </div>
                                                             <button class="" mat-flat-button [color]="'primary'"
@@ -264,10 +262,8 @@
                                                                 <google-map [width]="null" [height]="null"
                                                                     [center]="center" [zoom]="zoom"
                                                                     (mapClick)="addMarker($event,item)">
-                                                                    <map-marker
-                                                                    *ngFor="let marker of markerPositions"   
-                                                                    [position]="marker"
-                                                                    [options]="markerOptions">
+                                                                    <map-marker *ngFor="let marker of item.markerPositions"
+                                                                        [position]="marker" [options]="markerOptions">
                                                                     </map-marker>
                                                                 </google-map>
 

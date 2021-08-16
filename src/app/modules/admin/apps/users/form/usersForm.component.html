@@ -7,10 +7,10 @@
             <!-- Title -->
             <div class="text-4xl font-extrabold tracking-tight">
                 <button class="fuse-mat-button-rounded mt-2" [routerLink]="['/apps/users']" mat-icon-button
-                [color]="'primary'">
-                <mat-icon matPrefix class="hidden sm:flex icon-size-6" [svgIcon]="'heroicons_outline:arrow-left'">
-                </mat-icon>
-              </button>
+                    [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-6" [svgIcon]="'heroicons_outline:arrow-left'">
+                    </mat-icon>
+                </button>
                 {{ t('text.details') }}
             </div>
 
@@ -19,8 +19,7 @@
                     <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                     <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
                 </button>
-                <button class="" mat-flat-button [color]="'primary'"
-                     (click)="saveUsers()">
+                <button class="" mat-flat-button [color]="'primary'" (click)="saveUsers()">
                     <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                 </button>
             </div>
@@ -42,41 +41,47 @@
                                 <div class="mt-6">
                                     <mat-form-field class="fuse-mat-no-subscript w-full">
                                         <mat-label>{{ t('users.userName') }}</mat-label>
-                                        <input matInput [formControlName]="'username'" placeholder="{{ t('users.userName') }}"
-                                            [spellcheck]="false">
+                                        <input matInput [formControlName]="'username'"
+                                            placeholder="{{ t('users.userName') }}" [spellcheck]="false">
                                     </mat-form-field>
                                 </div>
                                 <div class="flex items">
                                     <div class="mt-6 w-full">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
                                             <mat-label>{{ t('users.email') }}</mat-label>
-                                            <input matInput [formControlName]="'email'" placeholder="{{ t('users.email') }}"
-                                                [spellcheck]="false">
+                                            <input matInput [formControlName]="'email'"
+                                                placeholder="{{ t('users.email') }}" [spellcheck]="false">
                                         </mat-form-field>
                                     </div>
                                     <div class="mt-6 ml-2 w-full">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
                                             <mat-label>{{ t('users.website') }}</mat-label>
-                                            <input matInput [formControlName]="'website'" placeholder="{{ t('users.website') }}"
-                                                [spellcheck]="false">
+                                            <input matInput [formControlName]="'website'"
+                                                placeholder="{{ t('users.website') }}" [spellcheck]="false">
                                         </mat-form-field>
                                     </div>
                                 </div>
                                 <div class="flex items">
                                     <mat-form-field class="fuse-mat-no-subscript flex-auto w-full mt-6">
                                         <mat-label>{{ t('users.details.tab.generalInfo.company') }}</mat-label>
-                                        <input tabindex="-1" type="text" matInput placeholder="{{ t('users.details.tab.generalInfo.company') }}" aria-label="Company"
-                                            formControlName="companies" [matAutocomplete]="auto">
+                                        <input tabindex="-1" type="text" matInput
+                                            placeholder="{{ t('users.details.tab.generalInfo.company') }}"
+                                            aria-label="Company" formControlName="companies" [matAutocomplete]="auto">
                                         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
                                             (optionSelected)="selectCompany($event)">
-                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                            <mat-option *ngFor="let option of filteredOptions | async"
+                                                [value]="option.name">
                                                 {{option.name}}
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
                                 </div>
-
                                 <ng-container *ngIf="!isNew">
+                                <div class="flex items mt-18">
+                                    <mat-slide-toggle (change)="onToggleActive($event)" formControlName="active">{{ t('users.details.tab.generalInfo.active') }}</mat-slide-toggle>
+                                </div>
+                                </ng-container>
+                                <ng-container *ngIf="isNew">
                                     <div class="flex items">
                                         <div class="mt-6 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
@@ -87,7 +92,8 @@
                                         </div>
                                         <div class=" mt-6 ml-2 w-full">
                                             <mat-form-field class="fuse-mat-no-subscript w-full">
-                                                <mat-label>{{ t('users.details.tab.generalInfo.confirmPass') }}</mat-label>
+                                                <mat-label>{{ t('users.details.tab.generalInfo.confirmPass') }}
+                                                </mat-label>
                                                 <mat-icon [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
                                                 <input type="password" [formControlName]="'confirmPassword'" matInput>
                                             </mat-form-field>
@@ -95,36 +101,26 @@
                                     </div>
                                 </ng-container>
                             </div>
-                                <ng-container>
-                                    <div class="mt-6 ml-10 w-1/3">
+                            <ng-container>
+                                <div class="mt-6 ml-10 w-1/3">
                                     <span class="font-semibold">{{ t('users.details.tab.generalInfo.menus') }}</span>
                                     <div class="mt-1 rounded-md border border-gray-300 shadow-sm overflow-hidden">
                                         <!-- Header -->
                                         <div class="flex items-center my-2 mx-3">
                                             <div class="flex items-center flex-auto min-w-0">
-                                                <mat-icon
-                                                    class="icon-size-5"
-                                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
-                                                <input
-                                                    class="min-w-0 ml-2 py-1 border-0"
-                                                    type="text"
+                                                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:search'">
+                                                </mat-icon>
+                                                <input class="min-w-0 ml-2 py-1 border-0" type="text"
                                                     placeholder="{{ t('users.details.tab.generalInfo.menu.text') }}"
                                                     (input)="filterMenus($event)"
-                                                    (keydown)="filterMenusInputKeyDown($event)"
-                                                    [maxLength]="100"
+                                                    (keydown)="filterMenusInputKeyDown($event)" [maxLength]="100"
                                                     #newTagInput>
                                             </div>
-                                            <button
-                                                class="ml-3 w-8 h-8 min-h-8"
-                                                mat-icon-button
+                                            <button class="ml-3 w-8 h-8 min-h-8" mat-icon-button
                                                 (click)="toggleMenuEditMode()">
-                                                <mat-icon
-                                                    *ngIf="!tagsEditMode"
-                                                    class="icon-size-5"
+                                                <mat-icon *ngIf="!tagsEditMode" class="icon-size-5"
                                                     [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
-                                                <mat-icon
-                                                    *ngIf="tagsEditMode"
-                                                    class="icon-size-5"
+                                                <mat-icon *ngIf="tagsEditMode" class="icon-size-5"
                                                     [svgIcon]="'heroicons_solid:check'"></mat-icon>
                                             </button>
                                         </div>
@@ -133,10 +129,8 @@
                                             <!-- Tags -->
                                             <ng-container *ngIf="!tagsEditMode">
                                                 <ng-container *ngFor="let tag of filteredMenus; trackBy: trackByFn">
-                                                    <mat-checkbox
-                                                        class="flex items-center h-10 min-h-10 px-4"
-                                                        [color]="'primary'"
-                                                        [checked]="checkMenu(tag.id)"
+                                                    <mat-checkbox class="flex items-center h-10 min-h-10 px-4"
+                                                        [color]="'primary'" [checked]="checkMenu(tag.id)"
                                                         (change)="toggleUserMenu(tag, $event)">
                                                         {{tag.title}}
                                                     </mat-checkbox>
@@ -146,17 +140,12 @@
                                             <ng-container *ngIf="tagsEditMode">
                                                 <div class="p-4 space-y-2">
                                                     <ng-container *ngFor="let tag of filteredMenus; trackBy: trackByFn">
-                                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                                                            <input
-                                                                matInput
-                                                                [value]="tag.title"
+                                                        <mat-form-field
+                                                            class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                                            <input matInput [value]="tag.title"
                                                                 (input)="updateMenuTitle(tag, $event)">
-                                                            <button
-                                                                mat-icon-button
-                                                                (click)="deleteTag(tag)"
-                                                                matSuffix>
-                                                                <mat-icon
-                                                                    class="icon-size-5"
+                                                            <button mat-icon-button (click)="deleteTag(tag)" matSuffix>
+                                                                <mat-icon class="icon-size-5"
                                                                     [svgIcon]="'heroicons_solid:trash'"></mat-icon>
                                                             </button>
                                                         </mat-form-field>
@@ -178,10 +167,10 @@
                                         -->
                                     </div>
                                 </div>
-                                </ng-container>
+                            </ng-container>
                         </div>
                     </mat-tab>
-                    <ng-container *ngIf="isNew">
+                    <ng-container *ngIf="!isNew">
                         <mat-tab label="Reset Password">
                             <form [formGroup]="resetPassForm">
                                 <div class="w-1/3">

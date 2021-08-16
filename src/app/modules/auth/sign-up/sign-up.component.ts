@@ -17,7 +17,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 })
 export class AuthSignUpComponent implements OnInit {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
-
+    
     alert: { type: FuseAlertType; message: string } = {
         type: 'success',
         message: ''
@@ -56,13 +56,13 @@ export class AuthSignUpComponent implements OnInit {
                 name: ['', Validators.required],
             }),
             step2: this._formBuilder.group({
-                email: ['', Validators.required, Validators.email],
+                email: ['', Validators.required],
                 mobilePhone: ['', Validators.required],
             }),
             step3: this._formBuilder.group({
                 pass: ['', Validators.required],
                 confirmPass: ['', Validators.required],
-                agreements:['']
+                agreements:['', Validators.requiredTrue]
             })
 
         }

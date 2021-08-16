@@ -163,7 +163,7 @@
                                 <button mat-button matStepperPrevious mat-flat-button [color]="'accent'"
                                     type="button">Back</button>
                                 <button mat-flat-button [color]="'primary'"
-                                    [disabled]="signUpFormStep3.stepControl.pristine || signUpFormStep3.stepControl.invalid"
+                                    [disabled]="signUpFormStep3.stepControl.invalid"
                                     (click)="signUp()">
                                     Save
                                 </button>
