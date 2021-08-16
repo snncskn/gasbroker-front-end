@@ -102,6 +102,10 @@ get getTotalPage$(): Observable<any> {
     return this._httpClient.get<any>(`${environment.url}/api/user/${id}`)
   }
 
+  putUserActive(id: string): Observable<any> {
+    return this._httpClient.put<any>(`${environment.url}/api/change-active/${id}`,{id:id})
+  }
+
   getRoles(userId?: string): Observable<any> {
     let url = `${environment.url}/roles`;
     if (userId) {

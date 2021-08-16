@@ -98,6 +98,9 @@ export class CustomersTDComponent implements OnInit {
     private authService: AuthService,
 
   ) {
+    this._customersService.getCompanyDocs().subscribe(res => {
+      this.dataSourceDocs = res.body;
+    });
     /*const button = this.document.getElementById("rejectButton");
     console.log(button)*/
     let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
@@ -159,9 +162,6 @@ export class CustomersTDComponent implements OnInit {
 
     this._customersService.getTypes().subscribe(res => {
       this.dataSourceTypes = res.body;
-    });
-    this._customersService.getCompanyDocs().subscribe(res => {
-      this.dataSourceDocs = res.body;
     });
     this._customersService.getCompanyApprovalStatus().subscribe(res => {
       this.dataSourceApprovalStatus = res.body;
@@ -382,7 +382,7 @@ export class CustomersTDComponent implements OnInit {
               company_id: this.companyDetail,
               title: "CompanyFile",
               user_id: this.authService.user_id,
-              path: JSON.stringify(pathObject),
+              path: pathObject,
             })
             .subscribe((data) => {
               this.toastr.successToastr(

@@ -262,7 +262,7 @@
                                                                 <google-map [width]="null" [height]="null"
                                                                     [center]="center" [zoom]="zoom"
                                                                     (mapClick)="addMarker($event,item)">
-                                                                    <map-marker *ngFor="let marker of markerPositions"
+                                                                    <map-marker *ngFor="let marker of item.markerPositions"
                                                                         [position]="marker" [options]="markerOptions">
                                                                     </map-marker>
                                                                 </google-map>

@@ -89,6 +89,27 @@
                             </td>
                         </ng-container>
 
+                        <ng-container matColumnDef="status">
+                            <th class="bg-gray-10 w-30 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header>
+                              {{ t('proposals.status') }}
+                            </th>
+                            <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                              <div class="flex items-center justify-between">
+                                <ng-container>
+                                  <div *ngIf="row.active===true">
+                                    <mat-icon *ngIf="row.active===true" class="mr-8 icon-size-5 text-green-600"
+                                      [svgIcon]="'heroicons_solid:badge-check'" matTooltip="{{ t('tooltip.active') }}"></mat-icon>
+                                  </div>
+                                  <div *ngIf="row.active===false">
+                                    <mat-icon *ngIf="row.active===false" class="mr-8 icon-size-5 text-red-600"
+                                      [svgIcon]="'heroicons_solid:x-circle'" matTooltip="{{ t('tooltip.passive') }}"></mat-icon>
+                                  </div>
+                                </ng-container>
+                                
+                              </div>
+                            </td>
+                          </ng-container>
+
                         <!-- email -->
                         <ng-container matColumnDef="detail">
                             <th class="bg-gray-50 w-60 dark:bg-black dark:bg-opacity-5" mat-header-cell

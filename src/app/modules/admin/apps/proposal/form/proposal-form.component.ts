@@ -290,7 +290,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                     proposal_id: this.proposalId,
                     title: "ProposalFile",
                     user_id: this._authService.user_id,
-                    path: JSON.stringify(pathObject),
+                    path: pathObject,
                 })
                 .subscribe((data) => {
                   this.toastr.successToastr(
