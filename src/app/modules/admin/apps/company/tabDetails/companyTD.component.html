@@ -58,23 +58,23 @@
                         <mat-tab-group mat-align-tabs="left">
 
                             <mat-tab label="{{ t('company.details.tab.generalInfo') }}">
-                                <div class="flex items-center mt-6">
-                                    <div class="w-full">
-                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <div class="flex items-center mt-6 ">
+                                    <div class="w-full company-name">
+                                        <mat-form-field  class="fuse-mat-no-subscript w-full">
                                             <mat-label>{{ t('company.details.tab.generalInfo.companyName') }} *
                                             </mat-label>
-                                            <mat-icon style="color: rgba(59, 130, 246, 0.5);"  class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
+                                            <mat-icon  class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
                                                 [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
-                                            <input  matInput [formControlName]="'name'" 
+                                            <input matInput [formControlName]="'name'" 
                                                 placeholder="{{ t('company.details.tab.generalInfo.companyName') }} *"
                                                 [spellcheck]="false" (change)="changedName($event.target.value)">
                                         </mat-form-field>
                                     </div>
-                                    <div class="ml-5 w-full">
+                                    <div class="ml-5 w-full company-name">
                                         <mat-form-field class="fuse-mat-no-subscript w-full">
                                             <mat-label>{{ t('company.details.tab.generalInfo.companyFullName') }} *
                                             </mat-label>
-                                            <mat-icon style="color: rgba(59, 130, 246, 0.5);" class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
+                                            <mat-icon class="green-icon" matPrefix class="hidden sm:flex icon-size-5"
                                                 [svgIcon]="'heroicons_outline:briefcase'"></mat-icon>
                                             <input matInput [formControlName]="'full_name'"
                                                 placeholder="{{ t('company.details.tab.generalInfo.companyFullName') }} *"
