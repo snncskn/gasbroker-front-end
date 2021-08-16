@@ -19,6 +19,8 @@ export class OfferComponent implements OnInit {
   dataSourceCurrencyTypes: any[];
   dataSourcePaymentTypes: any[];
 
+  isAdmin:boolean=false;
+
   currency = "$";
   usAmount = 100;
   updateUSAmount(event) {
@@ -51,8 +53,15 @@ export class OfferComponent implements OnInit {
       price: ['', Validators.required],
       id: [''],
       currency:['', Validators.required],
-      deal_status:['', Validators.required],
+      deal_status:['NOT OK', Validators.required],
     });
+    let tmp = JSON.parse(localStorage.getItem('user'));
+    if (tmp.role == "admin") {
+      this.isAdmin = true;
+    }
+    else {
+      this.isAdmin = false;
+    }
   }
 
   selectedCurrency(value)

@@ -30,7 +30,7 @@ export class UsersFormComponent implements OnInit {
     filteredOptions: Observable<any[]>;
 
     selectCustomerItem: any;
-    isNew = false;
+    isNew = true;
     companies: any[];
     filteredMenus: any[];
     selectedMenu: any;
@@ -55,75 +55,75 @@ export class UsersFormComponent implements OnInit {
     ) {
         this.menus = [
             {
-                id   : 'dashboards.project',
+                id: 'dashboards.project',
                 title: 'Project',
-                type : 'basic',
-                icon : 'heroicons_outline:clipboard-check',
-                link : '/dashboards/project',
+                type: 'basic',
+                icon: 'heroicons_outline:clipboard-check',
+                link: '/dashboards/project',
             },
             {
-                id      : 'app.company',
-                title   : 'Company',
-                type    : 'basic',
-                icon    : 'heroicons_outline:user-group',
-                link    : '/apps/company'
-            },
-             {
-                id      : 'app.products',
-                title   : 'Products',
-                type    : 'basic',
-                icon    : 'heroicons_outline:user-group',
-                link    : '/apps/products'
+                id: 'app.company',
+                title: 'Company',
+                type: 'basic',
+                icon: 'heroicons_outline:user-group',
+                link: '/apps/company'
             },
             {
-                id      : 'app.vehicles',
-                title   : 'Vehicles',
-                type    : 'basic',
-                icon    : 'heroicons_outline:truck',
-                link    : '/apps/vehicles'
+                id: 'app.products',
+                title: 'Products',
+                type: 'basic',
+                icon: 'heroicons_outline:user-group',
+                link: '/apps/products'
             },
             {
-                id      : 'app.proposal',
-                title   : 'Proposal',
-                type    : 'basic',
-                icon    : 'heroicons_outline:archive',
-                link    : '/apps/proposals/list'
+                id: 'app.vehicles',
+                title: 'Vehicles',
+                type: 'basic',
+                icon: 'heroicons_outline:truck',
+                link: '/apps/vehicles'
             },
             {
-                id      : 'app.transportaion',
-                title   : 'Transportation',
-                type    : 'basic',
-                icon    : 'heroicons_outline:flag',
-                link    : '/apps/transportation/list'
+                id: 'app.proposal',
+                title: 'Proposal',
+                type: 'basic',
+                icon: 'heroicons_outline:archive',
+                link: '/apps/proposals/list'
             },
             {
-                id      : 'app.group',
-                title   : 'Movement Groups',
-                type    : 'basic',
-                icon    : 'heroicons_outline:collection',
-                link    : '/apps/group'
+                id: 'app.transportaion',
+                title: 'Transportation',
+                type: 'basic',
+                icon: 'heroicons_outline:flag',
+                link: '/apps/transportation/list'
             },
             {
-                id      : 'app.users',
-                title   : 'Users',
-                type    : 'basic',
-                icon    : 'heroicons_outline:user',
-                link    : '/apps/users/list'
+                id: 'app.group',
+                title: 'Movement Groups',
+                type: 'basic',
+                icon: 'heroicons_outline:collection',
+                link: '/apps/group'
             },
             {
-                id      : 'sign-out',
-                title   : 'Sign Out',
-                type    : 'basic',
-                icon    : 'heroicons_outline:logout',
-                link    : '/sign-out'
+                id: 'app.users',
+                title: 'Users',
+                type: 'basic',
+                icon: 'heroicons_outline:user',
+                link: '/apps/users/list'
+            },
+            {
+                id: 'sign-out',
+                title: 'Sign Out',
+                type: 'basic',
+                icon: 'heroicons_outline:logout',
+                link: '/sign-out'
             }
         ];
-        this.menus=[];
-        this._usersService.getMenus().subscribe(data=>{
-            data.body.forEach(item=>{
+        this.menus = [];
+        this._usersService.getMenus().subscribe(data => {
+            data.body.forEach(item => {
                 this.menus.push({
-                    id:item.menu_name,
-                    title:item.title
+                    id: item.menu_name,
+                    title: item.title
                 })
             });
             this.filteredMenus = this.menus;
@@ -140,6 +140,7 @@ export class UsersFormComponent implements OnInit {
             companies: [''],
             company_id: [''],
             permissions: [''],
+            active: [null],
         });
 
         this.resetPassForm = this._formBuilder.group({
@@ -158,7 +159,8 @@ export class UsersFormComponent implements OnInit {
                         username: data.body.username,
                         website: data.body.website,
                         company_id: data.body.company_id,
-                        companies: data.body.company?.name
+                        companies: data.body.company?.name,
+                        active: data.body.active
                     });
                     this.selectedMenu = data.body.permissions?.ids;
                     this.selectedMenuWithUser = data.body.permissions?.ids;
@@ -168,12 +170,12 @@ export class UsersFormComponent implements OnInit {
                         id: data.body.id
                     })
                 })
-                this.isNew = true;
+                this.isNew = false;
             };
         });
-        this._customersService.getCustomers(0,999).subscribe(data => {
+        this._customersService.getCustomers(0, 999).subscribe(data => {
             this.companies = data.body;
- 
+
         });
         this.filteredOptions = this.usersForm.get('companies').valueChanges.pipe(
             startWith(''),
@@ -190,13 +192,12 @@ export class UsersFormComponent implements OnInit {
     }
 
     saveUsers() {
-        let status = this.generalFunction.formValidationCheck(this.usersForm,this.toastr,this.translocoService);
-        if(status)
-        {
-          return
+        let status = this.generalFunction.formValidationCheck(this.usersForm, this.toastr, this.translocoService);
+        if (status) {
+            return
         }
         if (this.usersForm.value.id) {
-            this.usersForm.value.permissions = {ids:this.selectedMenuWithUser}; 
+            this.usersForm.value.permissions = { ids: this.selectedMenuWithUser };
             this._usersService.updateUser(this.usersForm.value.id, this.usersForm.value).subscribe(data => {
                 this.toastr.successToastr(this.translocoService.translate('message.updateUser'));
                 this._router.navigateByUrl('/apps/users/list');
@@ -209,14 +210,14 @@ export class UsersFormComponent implements OnInit {
                 }
                 else {
                     let addUser = {
-                        id: '', name: '', email: '', username: '', website: '', password: '',permissions:{}
+                        id: '', name: '', email: '', username: '', website: '', password: '', permissions: {}
                     };
                     addUser.name = this.usersForm.value.name
                     addUser.email = this.usersForm.value.email
                     addUser.username = this.usersForm.value.username
                     addUser.website = this.usersForm.value.website
                     addUser.password = this.usersForm.value.password
-                    addUser.permissions = {ids:this.selectedMenuWithUser}; 
+                    addUser.permissions = { ids: this.selectedMenuWithUser };
                     this._usersService.createUser(addUser).subscribe(data => {
                         this.toastr.successToastr(this.translocoService.translate('message.createUser'));
 
@@ -230,17 +231,21 @@ export class UsersFormComponent implements OnInit {
         }
     }
 
+    onToggleActive(event) {
+        this._usersService.putUserActive(this.usersForm.value.id).subscribe();
+    }
+
     deleteUser() {
         if (this.usersForm.value.id) {
             this.dialogRef = this.dialog.open(ConfirmationDialog, {
                 disableClose: false
-              });
-              this.dialogRef.afterClosed().subscribe(result => {
-                if(result) {
+            });
+            this.dialogRef.afterClosed().subscribe(result => {
+                if (result) {
                     this._usersService.deleteUser(this.usersForm.value.id).subscribe()
                 }
                 this.dialogRef = null;
-              });
+            });
         }
     }
 
@@ -264,8 +269,8 @@ export class UsersFormComponent implements OnInit {
     selectCompany(event: any) {
         let option = this.companies.filter(
             product =>
-                (product.name.toUpperCase() === event.option.value.toUpperCase() ||
-                                 product.name.toLowerCase() === event.option.value.toLowerCase())
+            (product.name.toUpperCase() === event.option.value.toUpperCase() ||
+                product.name.toLowerCase() === event.option.value.toLowerCase())
         );
         this.usersForm.get('company_id').setValue(option[0].id, { emitEvent: false });
 
@@ -284,9 +289,8 @@ export class UsersFormComponent implements OnInit {
     displayFn(product) {
         return product.name;
     }
-    filterMenus(event): void
-    {
-       
+    filterMenus(event): void {
+
 
         // Get the value
         const value = event.target.value.toLowerCase();
@@ -294,17 +298,14 @@ export class UsersFormComponent implements OnInit {
         // Filter the tags
         this.filteredMenus = this.menus.filter(tag => tag.title.toLowerCase().includes(value));
     }
-    filterMenusInputKeyDown(event): void
-    {
-       
+    filterMenusInputKeyDown(event): void {
+
         // Return if the pressed key is not 'Enter'
-        if ( event.key !== 'Enter' )
-        {
+        if (event.key !== 'Enter') {
             return;
         }
 
-        if ( this.filteredMenus.length === 0 )
-        {
+        if (this.filteredMenus.length === 0) {
             this.createMenu(event.target.value);
             event.target.value = '';
 
@@ -314,18 +315,15 @@ export class UsersFormComponent implements OnInit {
         const menu = this.filteredMenus[0];
         const isTagApplied = this.selectedMenu.menus.find(id => id === menu.id);
 
-        if ( isTagApplied )
-        {
+        if (isTagApplied) {
             this.removeMenuFromUser(menu);
         }
-        else
-        {
+        else {
             this.addMenuToUser(menu);
         }
     }
 
-    createMenu(title: string): void
-    {
+    createMenu(title: string): void {
         const tag = {
             title
         };
@@ -339,31 +337,28 @@ export class UsersFormComponent implements OnInit {
             });
             */
     }
-    removeMenuFromUser(tag: any): void
-    {
+    removeMenuFromUser(tag: any): void {
         // Remove the tag
-       // this.selectedProduct.tags.splice(this.selectedProduct.tags.findIndex(item => item === tag.id), 1);
+        // this.selectedProduct.tags.splice(this.selectedProduct.tags.findIndex(item => item === tag.id), 1);
 
         // Update the selected product form
-       // this.selectedProductForm.get('tags').patchValue(this.selectedProduct.tags);
+        // this.selectedProductForm.get('tags').patchValue(this.selectedProduct.tags);
 
         // Mark for check
-       // this._changeDetectorRef.markForCheck();
+        // this._changeDetectorRef.markForCheck();
     }
-    addMenuToUser(tag: any): void
-    {
+    addMenuToUser(tag: any): void {
         // Add the tag
-      //  this.selectedProduct.tags.unshift(tag.id);
+        //  this.selectedProduct.tags.unshift(tag.id);
 
         // Update the selected product form
-       // this.selectedProductForm.get('tags').patchValue(this.selectedProduct.tags);
+        // this.selectedProductForm.get('tags').patchValue(this.selectedProduct.tags);
 
         // Mark for check
         //this._changeDetectorRef.markForCheck();
     }
 
-    updateMenuTitle(tag: any, event): void
-    {
+    updateMenuTitle(tag: any, event): void {
         // Update the title on the tag
         tag.title = event.target.value;
 
@@ -375,36 +370,31 @@ export class UsersFormComponent implements OnInit {
         this._changeDetectorRef.markForCheck();
         */
     }
-    shouldShowCreateMenuButton(inputValue: string): boolean
-    {
+    shouldShowCreateMenuButton(inputValue: string): boolean {
         return !!!(inputValue === '' || this.menus.findIndex(tag => tag.title.toLowerCase() === inputValue.toLowerCase()) > -1);
     }
-    toggleMenuEditMode(): void
-    {
+    toggleMenuEditMode(): void {
         this.tagsEditMode = !this.tagsEditMode;
     }
-    toggleUserMenu(tag: any, change: MatCheckboxChange): void
-    {
-        if(!this.selectedMenuWithUser){
+    toggleUserMenu(tag: any, change: MatCheckboxChange): void {
+        if (!this.selectedMenuWithUser) {
             this.selectedMenuWithUser = [];
         }
-        if ( change.checked )
-        {
+        if (change.checked) {
             this.selectedMenuWithUser.push(tag.id);
             this.addMenuToUser(tag);
         }
-        else
-        {
-            this.selectedMenuWithUser = this.selectedMenuWithUser.filter(item=>item!==tag.id);
+        else {
+            this.selectedMenuWithUser = this.selectedMenuWithUser.filter(item => item !== tag.id);
 
             this.removeMenuFromUser(tag);
         }
     }
-    checkMenu(id: string){
-        let checkMenu = this.selectedMenu?.filter(element => element === id );
-        if(checkMenu?.length>0){
+    checkMenu(id: string) {
+        let checkMenu = this.selectedMenu?.filter(element => element === id);
+        if (checkMenu?.length > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

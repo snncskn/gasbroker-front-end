@@ -21,6 +21,8 @@
     "tooltip.delete": "Delete",
     "tooltip.ok": "Ok",
     "tooltip.notOk": "Not Ok",
+    "tooltip.active": "Active",
+    "tooltip.passive": "Passive",
 
     "delete.dialog.confirm":"Confirm",
     "delete.dialog.cancel":"Cancel",
@@ -214,6 +216,7 @@
         "users.details.tab.generalInfo.menu.text": "Enter menu name",
         "users.details.tab.generalInfo.pass": "Password",
         "users.details.tab.generalInfo.confirmPass": "Confirm Password",
+        "users.details.tab.generalInfo.active": "Active",
     "users.details.tab.resetPass": "Reset Password",
         "users.details.tab.resetPass.newPass": "New Password",
         "users.details.tab.resetPass.confirmNewPass": "Confirm New Password",
