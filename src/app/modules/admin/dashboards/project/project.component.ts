@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApexOptions } from 'ng-apexcharts';
 import { ProjectService } from 'app/modules/admin/dashboards/project/project.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
     selector       : 'project',
@@ -28,7 +29,8 @@ export class ProjectComponent implements OnInit, OnDestroy
      */
     constructor(
         private _projectService: ProjectService,
-        private _router: Router
+        private _router: Router,
+        private readonly ngxService: NgxUiLoaderService,
     )
     {
     }
@@ -42,6 +44,7 @@ export class ProjectComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        this.ngxService.start();
         // Get the data
         this._projectService.data$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -67,6 +70,7 @@ export class ProjectComponent implements OnInit, OnDestroy
                 }
             }
         };
+    this.ngxService.stop();
     }
 
     /**

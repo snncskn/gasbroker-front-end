@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { GroupService } from '../group.service';
 import { GroupForm } from './groupForm';
@@ -36,8 +37,10 @@ export class GroupFormComponent {
         private readonly activatedRouter: ActivatedRoute,
         private translocoService: TranslocoService,
         private changeDetection: ChangeDetectorRef,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private readonly ngxService: NgxUiLoaderService,
     ) {
+        this.ngxService.start();
         this.groupForm = this._formBuilder.group({
             id: [''],
             description: ['', Validators.required],
@@ -49,7 +52,7 @@ export class GroupFormComponent {
         this.formSubGroup = this.groupsForm.convertModelToFormGroup(this.subGroupForm);
 
         this.getGroupAndSubGroup();
-
+        this.ngxService.stop();
     }
 
     getGroupAndSubGroup() {

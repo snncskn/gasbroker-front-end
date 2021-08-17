@@ -19,6 +19,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { FileUploadComponent } from '@iplab/ngx-file-upload';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -96,9 +97,11 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         private mediaService: MediaService,
         private changeDetection: ChangeDetectorRef,
         private dialog: MatDialog,
+        private readonly ngxService: NgxUiLoaderService,
 
 
     ) {
+        this.ngxService.start();
         this._proposalService.getProposalDocs().subscribe(res => {
             this.dataSourceDocs = res.body;
         });
@@ -137,6 +140,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                 })
             };
         });
+    this.ngxService.stop();
     }
 
 

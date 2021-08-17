@@ -18,6 +18,7 @@ import { environment } from 'environments/environment';
 import { InitialData } from 'app/app.types';
 import { FileUploadComponent } from '@iplab/ngx-file-upload';
 import { map, startWith } from 'rxjs/operators';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: "companyTD",
@@ -97,8 +98,11 @@ export class CustomersTDComponent implements OnInit {
     private mediaService: MediaService,
     private changeDetection: ChangeDetectorRef,
     private authService: AuthService,
+    private readonly ngxService: NgxUiLoaderService,
+
 
   ) {
+    this.ngxService.start();
     this._customersService.getCompanyDocs().subscribe(res => {
       this.dataSourceDocs = res.body;
     });
@@ -167,6 +171,7 @@ export class CustomersTDComponent implements OnInit {
     this._customersService.getCompanyApprovalStatus().subscribe(res => {
       this.dataSourceApprovalStatus = res.body;
     });
+    this.ngxService.stop();
   }
 
 
@@ -313,6 +318,7 @@ export class CustomersTDComponent implements OnInit {
 
   loadAddress() {
     this.isLoadAddress = false;
+    this.isLoading = true;
 
     this.addressList = [];
     this.formStatus = false;
@@ -333,6 +339,7 @@ export class CustomersTDComponent implements OnInit {
           this.changeDetection.detectChanges();
         });
         this.isLoadAddress = true;
+        this.isLoading = false;
         this.formStatus = true;
       });
   }
@@ -436,12 +443,14 @@ export class CustomersTDComponent implements OnInit {
   approvalStatusDialog(status: string) {
     const dialogRef = this.dialog.open(ApprovalComponent, { data: { company: this.companyDetail, status: status } });
     dialogRef.afterClosed().subscribe(response => {
+      this.ngxService.start();
       this.dataSourceApprovals = [];
       this._customersService.getApprovals(this.companyDetail).subscribe(res => {
 
         this.dataSourceApprovals = res.body;
         this.changeDetection.detectChanges();
       });
+    this.ngxService.stop();
     });
   }
 

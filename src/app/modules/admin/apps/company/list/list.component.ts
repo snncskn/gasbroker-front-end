@@ -30,6 +30,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
     @ViewChild(MatSort) private _sort: MatSort;
 
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
+    
 
     customers$: Observable<Company[]>;
     //customer$: Observable<Customer>;
@@ -59,7 +60,8 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        
 
     ) {
 
@@ -77,7 +79,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
      * On init
      */
     ngOnInit(): void {
-
+        this.ngxService.start();
         this._customersService.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: InventoryPagination) => {
@@ -137,7 +139,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit, OnDestroy 
                 this._changeDetectorRef.markForCheck();
             });
 
-
+            this.ngxService.stop();
     }
 
     /**
