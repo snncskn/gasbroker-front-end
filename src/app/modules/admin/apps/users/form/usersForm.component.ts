@@ -236,9 +236,9 @@ export class UsersFormComponent implements OnInit {
     }
 
     onToggleActive(event) {
-        this.isLoading = true;
-        this._usersService.putUserActive(this.usersForm.value.id).subscribe();
-        this.isLoading = false;
+        this._usersService.putUserActive(this.usersForm.value.id).subscribe(data => {
+            this.toastr.successToastr(this.translocoService.translate('message.statusChanged'));
+        });       
     }
 
     deleteUser() {
