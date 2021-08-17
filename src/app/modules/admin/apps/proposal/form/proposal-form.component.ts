@@ -29,8 +29,8 @@ import { ConfirmationDialog } from '../../delete-dialog/delete.component';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProposalFormComponent implements OnInit, OnDestroy {
- 
-    @ViewChild('fileUpload')fileUpload: FileUploadComponent;
+
+    @ViewChild('fileUpload') fileUpload: FileUploadComponent;
     @ViewChild('verticalStepper') stepper: MatStepper;
     dialogRef: MatDialogRef<ConfirmationDialog>;
     public generalFunction = new GeneralFunction();
@@ -46,41 +46,41 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
     fileUploadUrl: string;
     filesUpload: any[] = [];
     mediaList: any[];
-    fileDownloadLink:any;
-    proposalId:any;
+    fileDownloadLink: any;
+    proposalId: any;
     productId: string;
-    unit:any;
+    unit: any;
+    isLoading: boolean = false;
 
     @ViewChild('docsFileInput') private docsFileInput: ElementRef;
 
 
-  //file upload
-  public animation: boolean = false;
-  public multiple: boolean = false;
-  private filesControl = new FormControl(null);
-  private label = new FormControl(null);
+    //file upload
+    public animation: boolean = false;
+    public multiple: boolean = false;
+    private filesControl = new FormControl(null);
+    private label = new FormControl(null);
 
-  public demoForm = new FormGroup({
-    files: this.filesControl,
-    label: this.label,
-  });
-  //file upload
-
-  center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
-  zoom = 7;
-  markerOptions: google.maps.MarkerOptions = { draggable: false };
-  markerPositions: google.maps.LatLngLiteral[] = [];
-
-  addMarker(event: google.maps.MapMouseEvent) {
-      console.log(event)
-    this.markerPositions = [];
-    this.verticalStepperForm.patchValue({
-        step2:{
-            latitude: event.latLng.toJSON().lat,
-            longitude: event.latLng.toJSON().lng
-        }
+    public demoForm = new FormGroup({
+        files: this.filesControl,
+        label: this.label,
     });
-    this.markerPositions.push(event.latLng.toJSON());
+    //file upload
+
+    center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
+    zoom = 7;
+    markerOptions: google.maps.MarkerOptions = { draggable: false };
+    markerPositions: google.maps.LatLngLiteral[] = [];
+
+    addMarker(event: google.maps.MapMouseEvent) {
+        this.markerPositions = [];
+        this.verticalStepperForm.patchValue({
+            step2: {
+                latitude: event.latLng.toJSON().lat,
+                longitude: event.latLng.toJSON().lng
+            }
+        });
+        this.markerPositions.push(event.latLng.toJSON());
     }
 
     constructor(private _formBuilder: FormBuilder,
@@ -99,8 +99,11 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
 
     ) {
+        this._proposalService.getProposalDocs().subscribe(res => {
+            this.dataSourceDocs = res.body;
+        });
         //this.markerPositions = [{lat: 41, lng:29}];
-        this.fileUploadUrl = environment.url+'/media';
+        this.fileUploadUrl = environment.url + '/media';
 
         this.activatedRouter.paramMap.subscribe(params => {
             if (params.has('id')) {
@@ -111,24 +114,24 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                     this.center = {
                         lat: Number(data.body.latitude),
                         lng: Number(data.body.longitude),
-                      };
+                    };
                     this.markerPositions = [{
                         lat: Number(data.body.latitude),
                         lng: Number(data.body.longitude),
-                      }];
+                    }];
                     this.verticalStepperForm.patchValue({
-                        step1:{
-                            last_offer_date:data.body.last_offer_date,
-                            publish_date:data.body.publish_date,
-                            status:data.body.status,
-                            type:data.body.type,
+                        step1: {
+                            last_offer_date: data.body.last_offer_date,
+                            publish_date: data.body.publish_date,
+                            status: data.body.status,
+                            type: data.body.type,
                         },
 
-                        step2:{
-                            location:data.body.location,
-                            products:data.body.product?.name,
-                            quantity:data.body.product_quantity,
-                            product_detail:data.body.product_detail
+                        step2: {
+                            location: data.body.location,
+                            products: data.body.product?.name,
+                            quantity: data.body.product_quantity,
+                            product_detail: data.body.product_detail
                         },
                     })
                 })
@@ -186,9 +189,6 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         this._proposalService.getProposalStatus().subscribe(res => {
             this.dataSourceStatus = res.body;
         });
-        this._proposalService.getProposalDocs().subscribe(res => {
-            this.dataSourceDocs = res.body;
-        });
 
         this.locationLabel = this.translocoService.translate('proposals.details.tab.productInfo.productLocation');
     }
@@ -203,15 +203,14 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                 })
             )
     }
-    
+
     selectProduct(event: any) {
         let option = this.products.filter(item => item.name.toUpperCase() === event.option.value.toUpperCase());
         if (option.length > 0) {
             this.selectedProduct = option[0];
-            this.unit=this.selectedProduct.unit;
-            if(this.unit=="Adet")
-            {
-                this.unit=this.translocoService.translate('proposals.details.tab.productInfo.piece');
+            this.unit = this.selectedProduct.unit;
+            if (this.unit == "Adet") {
+                this.unit = this.translocoService.translate('proposals.details.tab.productInfo.piece');
             }
             //this.eventForm.get('customersId').setValue(option[0].id, { emitEvent: false });
         }
@@ -219,36 +218,35 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
 
     }
     save(isSubmit: boolean) {
-        console.log(isSubmit);
-        let createPrp = {type:'',freight_type:'',status:'',last_offer_date:'',publish_date:'',location:'',latitude:'',longitude:'',
-                product:'',product_quantity:'',product_detail:'',product_id:'',id:'',company_id: this._authService.CompanyId};
-       createPrp.type    = this.verticalStepperForm.value.step1.type;
-       createPrp.freight_type    = this.verticalStepperForm.value.step1.type;
-       createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date;
-       createPrp.publish_date    = this.verticalStepperForm.value.step1.publish_date;
-       createPrp.location        = this.verticalStepperForm.value.step2.location;
-       createPrp.product          = this.verticalStepperForm.value.step2.products;
-       createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
-       createPrp.product_detail = this.verticalStepperForm.value.step2.product_detail;
-       createPrp.latitude = this.verticalStepperForm.value.step2.latitude;
-       createPrp.longitude = this.verticalStepperForm.value.step2.longitude;
-       createPrp.status = this.verticalStepperForm.value.step1.status;
-       if(this.selectedProduct){
-        createPrp.product_id = this.selectedProduct.id;
-       } else {
-        createPrp.product_id = this.productId;
-       }
-       createPrp.id=this.proposalId;
-       this._proposalService.createProposal(createPrp,isSubmit).subscribe(data => {
-           if(isSubmit)
-           {
-            this._router.navigateByUrl('/apps/proposals/list');
-           }
-           else
-           {
-               this.proposalId=data.id;
-           }
-       });
+        let createPrp = {
+            type: '', freight_type: '', status: '', last_offer_date: '', publish_date: '', location: '', latitude: '', longitude: '',
+            product: '', product_quantity: '', product_detail: '', product_id: '', id: '', company_id: this._authService.CompanyId
+        };
+        createPrp.type = this.verticalStepperForm.value.step1.type;
+        createPrp.freight_type = this.verticalStepperForm.value.step1.type;
+        createPrp.last_offer_date = this.verticalStepperForm.value.step1.last_offer_date;
+        createPrp.publish_date = this.verticalStepperForm.value.step1.publish_date;
+        createPrp.location = this.verticalStepperForm.value.step2.location;
+        createPrp.product = this.verticalStepperForm.value.step2.products;
+        createPrp.product_quantity = this.verticalStepperForm.value.step2.quantity;
+        createPrp.product_detail = this.verticalStepperForm.value.step2.product_detail;
+        createPrp.latitude = this.verticalStepperForm.value.step2.latitude;
+        createPrp.longitude = this.verticalStepperForm.value.step2.longitude;
+        createPrp.status = this.verticalStepperForm.value.step1.status;
+        if (this.selectedProduct) {
+            createPrp.product_id = this.selectedProduct.id;
+        } else {
+            createPrp.product_id = this.productId;
+        }
+        createPrp.id = this.proposalId;
+        this._proposalService.createProposal(createPrp, isSubmit).subscribe(data => {
+            if (isSubmit) {
+                this._router.navigateByUrl('/apps/proposals/list');
+            }
+            else {
+                this.proposalId = data.id;
+            }
+        });
     }
 
     loadDocs() {
@@ -257,8 +255,9 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
             this.mediaList = data?.body.media;
             this.changeDetection.detectChanges();
         })
-        this.fileUpload.control.clear()
-      }
+        this.fileUpload.control.clear();
+        this.isLoading = false;
+    }
 
     onChangeType(event) {
         if (event.value === 'Alış') {
@@ -267,80 +266,76 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
             this.locationLabel = this.translocoService.translate('proposals.details.tab.productInfo.productDestinationLocation');
         }
 
-    } 
+    }
 
     upload(item) {
+        this.isLoading = true;
         const file = this.demoForm.value.files[0];
         this.fileService.putUrl(file).then((res) => {
-          const {
-            data: { putURL },
-          } = res;
-    
-          this.fileService.upLoad(putURL, file).then(
-            (res) => {
-              this.toastr.successToastr(
-                this.translocoService.translate("message.fileUpload")
-              );
-    
-              let key = this._authService.user_id + '/'+ file.name;
-              let pathObject = {type:file.type, fileName:file.name, key:key, group: item.description}
-              this.mediaService
-                .createMedia({
-                    id: null,
-                    proposal_id: this.proposalId,
-                    title: "ProposalFile",
-                    user_id: this._authService.user_id,
-                    path: pathObject,
-                })
-                .subscribe((data) => {
-                  this.toastr.successToastr(
-                    this.translocoService.translate("message.createMedia"));
-                    this.loadDocs();
-                });
-            },
-            (error) => {
-              this.toastr.errorToastr(
-                this.translocoService.translate("message.error"));
-                this.loadDocs();
-            }
-          );
-        });
-      }
-      deleteDocs(item) {
-        if (item) {
-          this.dialogRef = this.dialog.open(ConfirmationDialog, {
-            disableClose: false,
-          });
-          this.dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-              this._proposalService.deleteDocs(item).subscribe(data => {
-                this.loadDocs();
-              })
-            }
-            this.dialogRef = null;
-          });
-        }
-      }
+            const {
+                data: { putURL },
+            } = res;
 
-    step1Next()
-    {
-        let status = this.generalFunction.formValidationCheck(this.verticalStepperForm,this.toastr,this.translocoService);
-        if(status)
-        {
+            this.fileService.upLoad(putURL, file).then(
+                (res) => {
+                    this.toastr.successToastr(
+                        this.translocoService.translate("message.fileUpload")
+                    );
+
+                    let key = this._authService.user_id + '/' + file.name;
+                    let pathObject = { type: file.type, fileName: file.name, key: key, group: item.description }
+                    this.mediaService
+                        .createMedia({
+                            id: null,
+                            proposal_id: this.proposalId,
+                            title: "ProposalFile",
+                            user_id: this._authService.user_id,
+                            path: pathObject,
+                        })
+                        .subscribe((data) => {
+                            this.toastr.successToastr(
+                                this.translocoService.translate("message.createMedia"));
+                            this.loadDocs();
+                        });
+                },
+                (error) => {
+                    this.toastr.errorToastr(
+                        this.translocoService.translate("message.error"));
+                    this.loadDocs();
+                }
+            );
+        });
+    }
+    deleteDocs(item) {
+        if (item) {
+            this.dialogRef = this.dialog.open(ConfirmationDialog, {
+                disableClose: false,
+            });
+            this.dialogRef.afterClosed().subscribe((result) => {
+                if (result) {
+                    this.isLoading = true;
+                    this._proposalService.deleteDocs(item).subscribe(data => {
+                        this.loadDocs();
+                    })
+                }
+                this.dialogRef = null;
+            });
+        }
+    }
+
+    step1Next() {
+        let status = this.generalFunction.formValidationCheck(this.verticalStepperForm, this.toastr, this.translocoService);
+        if (status) {
             return
         }
     }
 
-    step2Next()
-    {
-        console.log(222)
-        let status = this.generalFunction.formValidationCheck(this.verticalStepperForm,this.toastr,this.translocoService);
-        if(status)
-        {
+    step2Next() {
+        let status = this.generalFunction.formValidationCheck(this.verticalStepperForm, this.toastr, this.translocoService);
+        if (status) {
             return;
         }
-        else
-        {
+        else {
             this.save(false);
         }
     }

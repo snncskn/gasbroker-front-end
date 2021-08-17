@@ -38,6 +38,7 @@ export class VehiclesDetailsComponent implements OnInit {
     dataSourceDocs: any[];
     fileDownloadLink:any;
     isLoadDocs: boolean = true;
+    isLoading: boolean = false;
 
 
   //file upload
@@ -171,6 +172,7 @@ export class VehiclesDetailsComponent implements OnInit {
       });
       this.fileUpload.control.clear()
       this.isLoadDocs = true;
+      this.isLoading = false;
     }
 
     selectCustomer(event: any) {
@@ -206,6 +208,7 @@ export class VehiclesDetailsComponent implements OnInit {
         });
         this.dialogRef.afterClosed().subscribe((result) => {
           if (result) {
+            this.isLoading = true;
             this._vehicleService.deleteDocs(item).subscribe(data => {
               this.loadDocs();
             })
@@ -230,6 +233,7 @@ export class VehiclesDetailsComponent implements OnInit {
       }
     
       upload(item) {
+        this.isLoading = true;
         const file = this.demoForm.value.files[0];
         this.fileService.putUrl(file).then((res) => {
           const {
@@ -241,7 +245,8 @@ export class VehiclesDetailsComponent implements OnInit {
               this.toastr.successToastr(
                 this.translocoService.translate("message.fileUpload")
               );
-    
+              /*let str = file.type;
+              var last = str.substring(str.lastIndexOf("/") + 1, str.length);*/
               let key = this.authService.user_id + '/'+ file.name;
               let pathObject = {type:file.type, fileName:file.name, key:key, group: item.description}
               this.mediaService
