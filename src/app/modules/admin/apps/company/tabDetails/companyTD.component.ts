@@ -48,6 +48,7 @@ export class CustomersTDComponent implements OnInit {
   mediaList: any[];
   selectCountryItem: any;
   isLoadAddress: boolean = true;
+  isLoading: boolean = false;
   formStatus: boolean = true;
   newAddressItem: any;
   fileDownloadLink: any;
@@ -269,6 +270,7 @@ export class CustomersTDComponent implements OnInit {
       });
       this.dialogRef.afterClosed().subscribe((result) => {
         if (result) {
+          this.isLoading=true;
           this._customersService.deleteDocs(item).subscribe(data => {
             this.loadDocs();
           })
@@ -344,7 +346,8 @@ export class CustomersTDComponent implements OnInit {
         })
       };
     });
-    this.fileUpload.control.clear()
+    this.fileUpload.control.clear();
+    this.isLoading=false;
   }
 
   public toggleStatus(): void {
@@ -362,6 +365,7 @@ export class CustomersTDComponent implements OnInit {
   }
 
   upload(item) {
+    this.isLoading=true;
     const file = this.demoForm.value.files[0];
     this.fileService.putUrl(file).then((res) => {
       const {

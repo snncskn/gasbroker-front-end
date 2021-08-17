@@ -3,13 +3,19 @@
         <!-- Header -->
         <div
             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+
+            <!-- Loader -->
+            <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+                <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+            </div>
+
             <!-- Title -->
             <div class="text-4xl font-extrabold tracking-tight">
                 <button class="fuse-mat-button-rounded mt-2" [routerLink]="['/apps/proposals']" mat-icon-button
-                [color]="'primary'">
-                <mat-icon matPrefix class="hidden sm:flex icon-size-6" [svgIcon]="'heroicons_outline:arrow-left'">
-                </mat-icon>
-              </button>
+                    [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-6" [svgIcon]="'heroicons_outline:arrow-left'">
+                    </mat-icon>
+                </button>
                 {{ t('text.details') }}
             </div>
         </div>
@@ -86,7 +92,8 @@
 
                             <br>
                             <div class="flex justify-end">
-                                <button class="px-8" mat-flat-button [color]="'primary'" (click)="step1Next()" type="button" matStepperNext>
+                                <button class="px-8" mat-flat-button [color]="'primary'" (click)="step1Next()"
+                                    type="button" matStepperNext>
                                     {{ t('proposals.button.next') }}
                                 </button>
                             </div>
@@ -97,75 +104,76 @@
                             <ng-template matStepLabel>{{ t('proposals.details.tab.productInfo') }}</ng-template>
                             <div class="flex items">
                                 <div class="w-1/3">
-                            <p class="my-6 font-medium">
-                                {{ t('proposals.details.tab.productInfo.text') }}
-                            </p>
-                            <div class="flex flex-col w-full gt-xs:flex-row">
-                                <mat-label>{{ t('proposals.details.tab.productInfo.product') }}</mat-label>
-                                <mat-form-field class="fuse-mat-no-subscript flex-auto">
-                                    <input tabindex="-1" type="text"
-                                        placeholder="{{ t('proposals.details.tab.productInfo.product') }}" matInput
-                                        formControlName="products" [matAutocomplete]="auto">
-                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                        (optionSelected)="selectProduct($event)">
-                                        <mat-option *ngFor="let option of filteredOptions | async"
-                                            [value]="option.name">
-                                            <ng-container>
-                                                {{option.name | titlecase}}
-                                            </ng-container>
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                            </div>
-                            <div class="flex w-full">
-                                <mat-form-field class="flex-auto mt-2">
-                                    <mat-label>{{ t('proposals.details.tab.productInfo.quantity') }}</mat-label>
-                                    <input matInput [formControlName]="'quantity'"
-                                        placeholder="{{ t('proposals.details.tab.productInfo.quantity') }}" required>
-                                    <span matPrefix>{{unit}}</span>
-                                </mat-form-field>
-                            </div>
-                            <div class="flex w-full">
-                                <mat-form-field class="fuse-mat-textarea flex-auto">
-                                    <mat-label>{{ t('proposals.productDetail') }}</mat-label>
+                                    <p class="my-6 font-medium">
+                                        {{ t('proposals.details.tab.productInfo.text') }}
+                                    </p>
+                                    <div class="flex flex-col w-full gt-xs:flex-row">
+                                        <mat-label>{{ t('proposals.details.tab.productInfo.product') }}</mat-label>
+                                        <mat-form-field class="fuse-mat-no-subscript flex-auto">
+                                            <input tabindex="-1" type="text"
+                                                placeholder="{{ t('proposals.details.tab.productInfo.product') }}"
+                                                matInput formControlName="products" [matAutocomplete]="auto">
+                                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                                (optionSelected)="selectProduct($event)">
+                                                <mat-option *ngFor="let option of filteredOptions | async"
+                                                    [value]="option.name">
+                                                    <ng-container>
+                                                        {{option.name | titlecase}}
+                                                    </ng-container>
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="flex w-full">
+                                        <mat-form-field class="flex-auto mt-2">
+                                            <mat-label>{{ t('proposals.details.tab.productInfo.quantity') }}</mat-label>
+                                            <input matInput [formControlName]="'quantity'"
+                                                placeholder="{{ t('proposals.details.tab.productInfo.quantity') }}"
+                                                required>
+                                            <span matPrefix>{{unit}}</span>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="flex w-full">
+                                        <mat-form-field class="fuse-mat-textarea flex-auto">
+                                            <mat-label>{{ t('proposals.productDetail') }}</mat-label>
 
-                                    <textarea matInput [formControlName]="'product_detail'" placeholder="{{ t('proposals.productDetail') }}"
-                                        [rows]="3"></textarea>
-                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:menu-alt-2'">
-                                    </mat-icon>
-                                </mat-form-field>
-                            </div>
-                            <div class="flex w-full">
-                                <mat-form-field class="fuse-mat-textarea flex-auto">
-                                    <mat-label>{{locationLabel}}</mat-label>
+                                            <textarea matInput [formControlName]="'product_detail'"
+                                                placeholder="{{ t('proposals.productDetail') }}" [rows]="3"></textarea>
+                                            <mat-icon class="icon-size-5" matPrefix
+                                                [svgIcon]="'heroicons_solid:menu-alt-2'">
+                                            </mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="flex w-full">
+                                        <mat-form-field class="fuse-mat-textarea flex-auto">
+                                            <mat-label>{{locationLabel}}</mat-label>
 
-                                    <textarea matInput [formControlName]="'location'" placeholder="{{locationLabel}}"
-                                        [rows]="3"></textarea>
-                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:menu-alt-2'">
-                                    </mat-icon>
-                                </mat-form-field>
-                            </div>
-                            </div>
-                            <div class="w-1/2 ml-15 mt-22">
-                                <div class="my-google-map">
-                                    <google-map [width]="null" [height]="null"
-                                        [center]="center" [zoom]="zoom"
-                                        (mapClick)="addMarker($event)">
-                                        <map-marker
-                                        *ngFor="let marker of markerPositions"   
-                                        [position]="marker"
-                                        [options]="markerOptions">
-                                        </map-marker>
-                                    </google-map>
+                                            <textarea matInput [formControlName]="'location'"
+                                                placeholder="{{locationLabel}}" [rows]="3"></textarea>
+                                            <mat-icon class="icon-size-5" matPrefix
+                                                [svgIcon]="'heroicons_solid:menu-alt-2'">
+                                            </mat-icon>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="w-full ml-5 mt-22">
+                                    <div class="my-google-map">
+                                        <google-map [width]="null" [height]="null" [center]="center" [zoom]="zoom"
+                                            (mapClick)="addMarker($event)">
+                                            <map-marker *ngFor="let marker of markerPositions" [position]="marker"
+                                                [options]="markerOptions">
+                                            </map-marker>
+                                        </google-map>
+                                    </div>
+                                </div>
                             </div>
                             <div class="flex justify-end mt-5">
                                 <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
                                     matStepperPrevious>
                                     {{ t('proposals.button.back') }}
                                 </button>
-                                <button class="px-8" mat-flat-button [color]="'primary'" (click)="step2Next()" type="button" matStepperNext>
+                                <button class="px-8" mat-flat-button [color]="'primary'" (click)="step2Next()"
+                                    type="button" matStepperNext>
                                     {{ t('proposals.button.next') }}
                                 </button>
                             </div>
@@ -181,44 +189,51 @@
                                     <span class="font-medium mb-2">{{ t('proposals.details.tab.documents') }}</span>
 
                                     <div class="flex items">
-                                        <div class="w-1/4">
-                                    <ng-container *ngFor="let item of  dataSourceDocs">
-                                        {{item.description}}
-                                        <form [formGroup]="demoForm">
-                                            <file-upload formControlName="files" [multiple]="multiple"
-                                             [animation]="animation" (change)="upload(item)" #fileUpload>
-                                            </file-upload>
-                                            <input type="hidden" formControlName="label" [ngModel]="item.description">
-                                        </form>
-                                    </ng-container>
+                                        <div class="w-1/3">
+                                            <ng-container *ngFor="let item of  dataSourceDocs">
+                                                {{item.description}}
+                                                <form [formGroup]="demoForm">
+                                                    <file-upload formControlName="files" [multiple]="multiple"
+                                                        [animation]="animation" (change)="upload(item)" #fileUpload>
+                                                    </file-upload>
+                                                    <input type="hidden" formControlName="label"
+                                                        [ngModel]="item.description">
+                                                </form>
+                                            </ng-container>
                                         </div>
                                         <div class="ml-5 w-full">
                                             <!-- Files Cert-1 -->
                                             <div class="font-medium">Files</div>
                                             <div class="flex flex-wrap m-2 mt-1">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngIf="file.path.group==dataSourceDocs[0].description">
-                                                    <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
+                                                    <ng-container
+                                                        *ngIf="file.path.group==dataSourceDocs[0].description">
+                                                        <ng-container
+                                                            *ngTemplateOutlet="item, context: {$implicit: file}">
+                                                        </ng-container>
                                                     </ng-container>
-                                                </ng-container>
                                                 </ng-container>
                                             </div>
 
                                             <!-- Files Cert-2 -->
                                             <div class="flex flex-wrap m-2 mt-5">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngIf="file.path.group==dataSourceDocs[1].description">
-                                                        <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
+                                                    <ng-container
+                                                        *ngIf="file.path.group==dataSourceDocs[1].description">
+                                                        <ng-container
+                                                            *ngTemplateOutlet="item, context: {$implicit: file}">
                                                         </ng-container>
                                                     </ng-container>
                                                 </ng-container>
                                             </div>
-                                                                                        
+
                                             <!-- Files Cert-3 -->
-                                            <div class="flex flex-wrap m-2 mt-9">
+                                            <div class="flex flex-wrap m-2 mt-7">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                                    <ng-container *ngIf="file.path.group==dataSourceDocs[2].description">
-                                                        <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
+                                                    <ng-container
+                                                        *ngIf="file.path.group==dataSourceDocs[2].description">
+                                                        <ng-container
+                                                            *ngTemplateOutlet="item, context: {$implicit: file}">
                                                         </ng-container>
                                                     </ng-container>
                                                 </ng-container>
@@ -226,8 +241,10 @@
                                             <!-- Item template -->
                                             <ng-template #item let-item>
                                                 <a class="flex flex-col w-30 h-30 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card"
-                                                    (click)="clickFile(item)" href="{{fileDownloadLink}}" target="_blank">
-                                                    <div class="aspect-w-9 aspect-h-6" matTooltip="{{item.path.fileName}}">
+                                                    (click)="clickFile(item)" href="{{fileDownloadLink}}"
+                                                    target="_blank">
+                                                    <div class="aspect-w-9 aspect-h-6"
+                                                        matTooltip="{{item.path.fileName}}">
                                                         <div class="flex items-center justify-center">
                                                             <!-- Icons -->
                                                             <ng-container [ngSwitch]="item?.path.type">
@@ -248,17 +265,21 @@
                                                                     </div>
                                                                 </ng-container>
                                                             </ng-container>
-                                                            <button class="fuse-mat-button text-on-warn-100 absolute ml-18 mb-11" mat-icon-button [color]="'warn'"
-                                                            (click)="deleteDocs(item)">
-                                                            <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
-                                                            </mat-icon>
+                                                            <button
+                                                                class="fuse-mat-button text-on-warn-100 absolute ml-18 mb-11"
+                                                                mat-icon-button [color]="'warn'"
+                                                                (click)="deleteDocs(item)">
+                                                                <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                                    [svgIcon]="'heroicons_outline:trash'">
+                                                                </mat-icon>
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div
                                                         class="flex flex-col flex-auto justify-center text-center text-sm font-medium mt-1">
                                                         <div class="truncate" [matTooltip]="item.name">
-                                                            <br></div>
+                                                            <br>
+                                                        </div>
                                                         <ng-container *ngIf="item.title">
                                                             <div class="truncate">{{item.path.fileName}}</div>
                                                         </ng-container>
@@ -266,7 +287,7 @@
                                                 </a>
                                             </ng-template>
                                         </div>
-                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
