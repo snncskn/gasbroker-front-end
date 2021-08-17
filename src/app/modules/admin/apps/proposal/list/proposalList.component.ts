@@ -67,6 +67,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
         this.onload();
     }
     ngOnInit(): void {
+        this.ngxService.start();
         this._proposalService.pagination$
         .pipe(takeUntil(this._unsubscribeAll))
         .subscribe((pagination: InventoryPagination) => {
@@ -140,6 +141,7 @@ export class ProposalListComponent implements OnInit, OnDestroy {
                 )
             )
             .subscribe();
+    this.ngxService.stop();
     }
 
     onload()
@@ -225,10 +227,12 @@ export class ProposalListComponent implements OnInit, OnDestroy {
           });
           this.dialogRef.afterClosed().subscribe(result => {
             if(result) {
+                this.ngxService.start();
                 this._proposalService.deleteProposal(item.id).subscribe(data=>{
                     this.onload();
                     this._changeDetectorRef.markForCheck();
                 });
+            this.ngxService.stop();
             }
             this.dialogRef = null;
           });

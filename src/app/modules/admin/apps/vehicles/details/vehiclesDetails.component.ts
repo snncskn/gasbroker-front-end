@@ -9,6 +9,7 @@ import { FileService } from 'app/services/file.service';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
@@ -67,8 +68,10 @@ export class VehiclesDetailsComponent implements OnInit {
         private mediaService: MediaService,
         private authService: AuthService,
         private changeDetection: ChangeDetectorRef,
+        private readonly ngxService: NgxUiLoaderService,
 
     ) {
+      this.ngxService.start();
         this.list();
         this.vehicleForm = this._formBuilder.group({
             id: [''],
@@ -86,7 +89,7 @@ export class VehiclesDetailsComponent implements OnInit {
       this._vehicleService.getVehicleDocs().subscribe(res => {
           this.dataSourceDocs = res.body;
       });
-        
+    this.ngxService.stop();  
     }
 
     ngOnInit(): void {

@@ -68,6 +68,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         this._vehicleService.getVehicles().subscribe();
     }
     ngOnInit(): void {
+        this.ngxService.start();
         this._vehicleService.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: InventoryPagination) => {
@@ -147,6 +148,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
                 )
             )
             .subscribe();
+        this.ngxService.stop();
     }
 
     ngAfterViewInit(): void {
@@ -161,10 +163,11 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         // Get products if sort or page changes
         merge(this._sort.sortChange,).pipe(
             switchMap(() => {
+                this.isLoading = true;
                 return this._vehicleService.getVehicles();
             }),
             map(() => {
-
+                this.isLoading = false;
             })
         ).subscribe();
     }
@@ -189,9 +192,11 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
         });
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
+                this.ngxService.start();
                 this._vehicleService.deleteVehicle(item.id).subscribe(data => {
                     this._vehicleService.getVehicles().subscribe();
                 });
+            this.ngxService.stop();
             }
             this.dialogRef = null;
         });

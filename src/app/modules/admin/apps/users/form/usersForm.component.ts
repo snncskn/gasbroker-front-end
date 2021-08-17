@@ -13,6 +13,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { GeneralFunction } from 'app/shared/GeneralFunction';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
     selector: 'users-form',
@@ -28,7 +29,7 @@ export class UsersFormComponent implements OnInit {
     usersForm: FormGroup;
     resetPassForm: FormGroup;
     filteredOptions: Observable<any[]>;
-
+    isLoading: boolean = false;
     selectCustomerItem: any;
     isNew = true;
     companies: any[];
@@ -49,10 +50,12 @@ export class UsersFormComponent implements OnInit {
         private _usersService: UsersService,
         private readonly activatedRouter: ActivatedRoute,
         private translocoService: TranslocoService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private readonly ngxService: NgxUiLoaderService,
 
 
     ) {
+        this.ngxService.start();
         this.menus = [
             {
                 id: 'dashboards.project',
@@ -185,6 +188,7 @@ export class UsersFormComponent implements OnInit {
                 return this.filter(val || '')
             })
         );
+    this.ngxService.stop();
     }
 
     ngOnInit(): void {
@@ -232,7 +236,9 @@ export class UsersFormComponent implements OnInit {
     }
 
     onToggleActive(event) {
+        this.isLoading = true;
         this._usersService.putUserActive(this.usersForm.value.id).subscribe();
+        this.isLoading = false;
     }
 
     deleteUser() {

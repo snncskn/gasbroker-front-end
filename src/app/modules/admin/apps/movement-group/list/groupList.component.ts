@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
@@ -52,7 +53,8 @@ export class GroupListComponent implements OnInit
         private _groupService: GroupService,
         public toastr: ToastrManager,
         private translocoService: TranslocoService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private readonly ngxService: NgxUiLoaderService,
 
     )
     {
@@ -60,7 +62,7 @@ export class GroupListComponent implements OnInit
     }
 
     ngOnInit(): void{
-
+        this.ngxService.start();
         this._groupService.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: InventoryPagination) => {
@@ -90,6 +92,7 @@ export class GroupListComponent implements OnInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+    this.ngxService.stop();
     }
     ngAfterViewInit(): void {
         // If the user changes the sort order...
@@ -123,12 +126,13 @@ export class GroupListComponent implements OnInit
           });
           this.dialogRef.afterClosed().subscribe(result => {
             if(result) {
-
+                this.ngxService.start();
                 this._groupService.deleteGroup(item).subscribe(data=>{
                     this._router.navigateByUrl('/apps/group/list');
                     this._groupService.getGroup().subscribe();
                     this.toastr.errorToastr(this.translocoService.translate('message.deleteProcessGroup'));
                 });
+            this.ngxService.stop();
             }                
             this.dialogRef = null;
           });
