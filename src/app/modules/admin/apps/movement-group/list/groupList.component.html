@@ -1,99 +1,95 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let t;">
 
-    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
-  
-      <!-- Drawer -->
-      <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
-        [disableClose]="true" #matDrawer>
-        <router-outlet></router-outlet>
-      </mat-drawer>
-  
-      <mat-drawer-content class="flex flex-col">
-  
-        <!-- Main -->
-        <div class="flex-auto">
-          <!-- Header -->
-          <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+  <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
 
-            <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
-              <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    <!-- Drawer -->
+    <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
+      [disableClose]="true" #matDrawer>
+      <router-outlet></router-outlet>
+    </mat-drawer>
+
+    <mat-drawer-content class="flex flex-col">
+
+      <!-- Main -->
+      <div class="flex-auto">
+        <!-- Header -->
+        <div
+          class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+
+          <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
           </div>
-            <!-- Title -->
-            <div>
-              <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('group.title') }}</div>
-              <div class="ml-0.5 font-medium text-secondary">
-                {{ t('text.total.record') }}: {{totalSize$}}
-              </div>
-            </div>
-  
-            <!-- Main actions -->
-            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-              <!-- Search  -->
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
-                  <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-                  <input matInput [autocomplete]="'off'" (keyup)="applyFilter($event.target.value)"
-                    placeholder="{{ t('input.search') }}">
-                </mat-form-field>
-               
-              <button class="ml-4" mat-flat-button (click)="newGroup()"  [color]="'primary'">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'" ></mat-icon>
-                <span class="ml-2 mr-1">{{ t('button.add') }}</span>
-              </button>
+          <!-- Title -->
+          <div>
+            <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('group.title') }}</div>
+            <div class="ml-0.5 font-medium text-secondary">
+              {{ t('text.total.record') }}: {{totalSize$}}
             </div>
           </div>
-  
-          <!-- Customers list -->
-          <div class="relative">
-            <table class="w-full min-w-320 table-fixed bg-transparent"
-              mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'"
-              [multiTemplateDataRows]="true" [dataSource]="groups$" [trackBy]="trackByFn">
-  
-              <ng-container matColumnDef="description">
-                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5 w-full" mat-header-cell *matHeaderCellDef mat-sort-header
-                  disableClear>
-                  {{ t('group.group') }}
-                </th>
-                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  {{ row.description }}
-                </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="detail">
-                <th class="bg-gray-50 w-60 dark:bg-black dark:bg-opacity-5 w-60" mat-header-cell *matHeaderCellDef mat-sort-header
-                  disableClear>
-                  #
-                </th>
-                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                  <div>
-                  <button class="fuse-mat-button-rounded" (click)="openGroup(row)" mat-icon-button matTooltip="{{ t('tooltip.edit') }}" [color]="'primary'">
-                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                    [svgIcon]="'heroicons_outline:pencil-alt'" ></mat-icon>
-                  </button>
-                  <button class="fuse-mat-button-rounded ml-1 text-on-warn-100" mat-icon-button [color]="'warn'" matTooltip="{{ t('tooltip.delete') }}" (click)="deleteGroup(row)">
-                    <mat-icon matPrefix class="hidden sm:flex icon-size-5"
-                    [svgIcon]="'heroicons_outline:trash'" ></mat-icon>
-                  </button>
-                </div>
-                </td>
-              </ng-container>
-  
-              <tr class="shadow" mat-header-row *matHeaderRowDef="groupTableColumns; sticky: true"></tr>
-              <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
-                *matRowDef="let i = dataIndex; let groups; columns: groupTableColumns"
-                [class]="setStyle(i)" ></tr>
-  
-            </table>
+
+          <!-- Main actions -->
+          <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <!-- Search  -->
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
+              <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
+              <input matInput [autocomplete]="'off'" (keyup)="applyFilter($event.target.value)"
+                placeholder="{{ t('input.search') }}">
+            </mat-form-field>
+
+            <button class="ml-4" mat-flat-button (click)="newGroup()" [color]="'primary'">
+              <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+              <span class="ml-2 mr-1">{{ t('button.add') }}</span>
+            </button>
           </div>
         </div>
-      </mat-drawer-content>
-    </mat-drawer-container>
-    <mat-paginator
-    #paginator
+
+        <!-- Customers list -->
+        <div class="relative">
+          <table class="w-full min-w-320 table-fixed bg-transparent" mat-table matSort [matSortDisableClear]="true"
+            [matSortDirection]="'asc'" [multiTemplateDataRows]="true" [dataSource]="groups$" [trackBy]="trackByFn">
+
+            <ng-container matColumnDef="description">
+              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5 w-full" mat-header-cell *matHeaderCellDef
+                mat-sort-header disableClear>
+                {{ t('group.group') }}
+              </th>
+              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                {{ row.description }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="detail">
+              <th class="bg-gray-50 w-60 dark:bg-black dark:bg-opacity-5 w-60" mat-header-cell *matHeaderCellDef
+                mat-sort-header disableClear>
+                #
+              </th>
+              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                <div>
+                  <button class="fuse-mat-button-rounded" (click)="openGroup(row)" mat-icon-button
+                    matTooltip="{{ t('tooltip.edit') }}" [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
+                    </mat-icon>
+                  </button>
+                  <button class="fuse-mat-button-rounded ml-1 text-on-warn-100" mat-icon-button [color]="'warn'"
+                    matTooltip="{{ t('tooltip.delete') }}" (click)="deleteGroup(row)">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
+                    </mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr class="shadow" mat-header-row *matHeaderRowDef="groupTableColumns; sticky: true"></tr>
+            <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover" mat-row
+              *matRowDef="let i = dataIndex; let groups; columns: groupTableColumns" [class]="setStyle(i)"></tr>
+
+          </table>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+  <mat-paginator #paginator
     class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-    [ngClass]="{'pointer-events-none': isLoading}"
-    [length]="totalSize$"
-    (page)="getServerData($event)"
-    [pageIndex]="currentPage" 
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    [showFirstLastButtons]="true"></mat-paginator>
-  </div>
+    [ngClass]="{'pointer-events-none': isLoading}" [length]="totalSize$" (page)="getServerData($event)"
+    [pageIndex]="currentPage" [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator>
+</div>

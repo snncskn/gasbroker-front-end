@@ -15,6 +15,11 @@
         <!-- Header -->
         <div
           class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+
+          <!-- Loader -->
+          <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+          </div>
           <!-- Title -->
           <div>
             <div class="text-4xl font-extrabold tracking-tight leading-none">{{ t('proposals.title') }}</div>
@@ -163,38 +168,38 @@
                   </button>
                 </ng-container>
                 <ng-container *ngIf="row.status==='NOT OK'">
-                  <button class="fuse-mat-button-rounded" [disabled]="true"
-                    matTooltip="{{ t('tooltip.process') }}" mat-icon-button [color]="'primary'">
+                  <button class="fuse-mat-button-rounded" [disabled]="true" matTooltip="{{ t('tooltip.process') }}"
+                    mat-icon-button [color]="'primary'">
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:archive'">
                     </mat-icon>
                   </button>
                 </ng-container>
                 <ng-container *ngIf="row.status==='OK'">
-                <button class="fuse-mat-button-rounded" [disabled]="true"
-                  matTooltip="{{ t('tooltip.offer') }}" mat-icon-button [color]="'primary'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:cash'">
-                  </mat-icon>
-                </button>
-              </ng-container>
-              <ng-container *ngIf="row.status==='NOT OK'">
-                <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)"
-                  matTooltip="{{ t('tooltip.offer') }}" mat-icon-button [color]="'primary'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:cash'">
-                  </mat-icon>
-                </button>
-              </ng-container>
+                  <button class="fuse-mat-button-rounded" [disabled]="true" matTooltip="{{ t('tooltip.offer') }}"
+                    mat-icon-button [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:cash'">
+                    </mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="row.status==='NOT OK'">
+                  <button class="fuse-mat-button-rounded" (click)="openProposalOffer(row)"
+                    matTooltip="{{ t('tooltip.offer') }}" mat-icon-button [color]="'primary'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:cash'">
+                    </mat-icon>
+                  </button>
+                </ng-container>
                 <button class="fuse-mat-button-rounded ml-1" (click)="openOfferList(row)"
                   matTooltip="{{ t('tooltip.offerList') }}" mat-icon-button [color]="'primary'">
                   <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:search'">
                   </mat-icon>
                 </button>
                 <ng-container *ngIf="row.status==='NOT OK'">
-                <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" matTooltip="{{ t('tooltip.delete') }}"
-                  (click)="deleteProposal(row)" mat-icon-button [color]="'warn'">
-                  <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
-                  </mat-icon>
-                </button>
-              </ng-container>
+                  <button class="fuse-mat-button-rounded text-on-warn-100 ml-1" matTooltip="{{ t('tooltip.delete') }}"
+                    (click)="deleteProposal(row)" mat-icon-button [color]="'warn'">
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
+                    </mat-icon>
+                  </button>
+                </ng-container>
               </td>
             </ng-container>
 

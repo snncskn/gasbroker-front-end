@@ -13,6 +13,7 @@ import { calendarColors } from 'app/modules/admin/apps/calendar/sidebar/calendar
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { InventoryPagination } from '../../product/product.types';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 
@@ -57,7 +58,7 @@ export class UsersListComponent implements OnInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _formBuilder: FormBuilder,
         private _usersService: UsersService,
-
+        private readonly ngxService: NgxUiLoaderService,
         public _dialog: MatDialog,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
@@ -67,7 +68,7 @@ export class UsersListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        this.ngxService.start();
         this._usersService.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: InventoryPagination) => {
@@ -100,6 +101,7 @@ export class UsersListComponent implements OnInit {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+    this.ngxService.stop();
     }
 
     ngAfterViewInit(): void {
@@ -149,9 +151,11 @@ export class UsersListComponent implements OnInit {
           });
           this.dialogRef.afterClosed().subscribe(result => {
             if(result) {
+                this.ngxService.start();
                 this._usersService.deleteUser(item.id).subscribe(data=>{
                     this.onLoad();
                 });
+            this.ngxService.stop();
             }
             this.dialogRef = null;
           });

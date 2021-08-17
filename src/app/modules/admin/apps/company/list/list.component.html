@@ -15,9 +15,15 @@
         <!-- Header -->
         <div
           class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+
+          <!-- Loader -->
+          <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+          </div>
+
           <!-- Title -->
           <div>
-            <div class="text-4xl font-extrabold tracking-tight leading-none"> 
+            <div class="text-4xl font-extrabold tracking-tight leading-none">
               {{ t('company.title') }}
             </div>
             <div class="ml-0.5 font-medium text-secondary">
@@ -42,121 +48,104 @@
 
         <!-- Customers list -->
         <div class="relative">
-          <div
-          class="overflow-x-auto sm:overflow-y-auto"
-          cdkScrollable>
-          <table class="w-full min-w-320 table-fixed bg-transparent"
-            [ngClass]="{ 'pointer-events-none': isLoading }"
-            mat-table 
-            matSort 
-            [matSortDisableClear]="true" 
-            [matSortDirection]="'asc'"
-            [multiTemplateDataRows]="true" 
-            [dataSource]="customers$" 
-            [trackBy]="trackByFn">
+          <div class="overflow-x-auto sm:overflow-y-auto" cdkScrollable>
+            <table class="w-full min-w-320 table-fixed bg-transparent" [ngClass]="{ 'pointer-events-none': isLoading }"
+              mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'" [multiTemplateDataRows]="true"
+              [dataSource]="customers$" [trackBy]="trackByFn">
 
-            <ng-container matColumnDef="name">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                {{ t('company.companyName') }}
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                {{ row.name }}
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="name">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  {{ t('company.companyName') }}
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  {{ row.name }}
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="type">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                {{ t('company.type') }}
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <div class="flex items-center justify-between">
-                  <ng-container>
-                    <div>
-                      {{row.types}}
-                    </div>
-                  </ng-container>
-                </div>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="registered_date">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                {{ t('company.registeredDate') }}
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                {{ row.registered_date | date:'dd/MM/yyyy' }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="email">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                {{ t('company.email') }}
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                {{ row.email }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="phone">
-              <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                {{ t('company.phone') }}
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                {{ row.phone }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="detail">
-              <th class="bg-gray-50 w-60 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
-                disableClear>
-                #
-              </th>
-              <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                <div>
-                  <button class="fuse-mat-button-rounded" (click)="openCompany(row)" matTooltip="{{ t('tooltip.edit') }}" mat-icon-button
-                    [color]="'primary'">
-                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
-                    </mat-icon>
-                  </button>
-                  <button class="fuse-mat-button-rounded text-on-warn-100" mat-icon-button matTooltip="{{ t('tooltip.delete') }}" [color]="'warn'"
-                    (click)="deleteCompany(row)">
-                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
-                    </mat-icon>
-                  </button>
-                </div>
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="type">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  {{ t('company.type') }}
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  <div class="flex items-center justify-between">
+                    <ng-container>
+                      <div>
+                        {{row.types}}
+                      </div>
+                    </ng-container>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="registered_date">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  {{ t('company.registeredDate') }}
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  {{ row.registered_date | date:'dd/MM/yyyy' }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="email">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  {{ t('company.email') }}
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  {{ row.email }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="phone">
+                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
+                  disableClear>
+                  {{ t('company.phone') }}
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  {{ row.phone }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="detail">
+                <th class="bg-gray-50 w-60 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef
+                  mat-sort-header disableClear>
+                  #
+                </th>
+                <td class="pr-8 truncate" mat-cell *matCellDef="let row">
+                  <div>
+                    <button class="fuse-mat-button-rounded" (click)="openCompany(row)"
+                      matTooltip="{{ t('tooltip.edit') }}" mat-icon-button [color]="'primary'">
+                      <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'">
+                      </mat-icon>
+                    </button>
+                    <button class="fuse-mat-button-rounded text-on-warn-100" mat-icon-button
+                      matTooltip="{{ t('tooltip.delete') }}" [color]="'warn'" (click)="deleteCompany(row)">
+                      <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_outline:trash'">
+                      </mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
 
-            <tr class="shadow" 
-            mat-header-row 
-            *matHeaderRowDef="customersTableColumns; sticky: true"></tr>
-            <tr 
-            class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
-            *matRowDef="let i = dataIndex; let customers; columns: customersTableColumns"
-            [class]="setStyle(i)" 
-            mat-row
-            ></tr>
+              <tr class="shadow" mat-header-row *matHeaderRowDef="customersTableColumns; sticky: true"></tr>
+              <tr class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
+                *matRowDef="let i = dataIndex; let customers; columns: customersTableColumns" [class]="setStyle(i)"
+                mat-row></tr>
 
-          </table>
-        </div>
+            </table>
+          </div>
 
-          
+
           <ng-template #noCompany>
-            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">{{ t('company.noCompany.message') }}
+            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">{{
+              t('company.noCompany.message') }}
             </div>
           </ng-template>
         </div>
       </div>
     </mat-drawer-content>
   </mat-drawer-container>
-  <mat-paginator
-  #paginator
-  class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-  [ngClass]="{'pointer-events-none': isLoading}"
-  [length]="totalSize$"
-  (page)="getServerData($event)"
-  [pageIndex]="currentPage" 
-  [pageSizeOptions]="[5, 10, 25, 100]"
-  [showFirstLastButtons]="true"></mat-paginator>
+  <mat-paginator #paginator
+    class=" sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+    [ngClass]="{'pointer-events-none': isLoading}" [length]="totalSize$" (page)="getServerData($event)"
+    [pageIndex]="currentPage" [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator>
 </div>
