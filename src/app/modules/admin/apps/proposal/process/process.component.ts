@@ -29,9 +29,10 @@ import { GeneralFunction } from "app/shared/GeneralFunction";
   selector: "proposal-process",
   templateUrl: "./process.component.html",
   styleUrls: ['./process.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
+export class ProposalProcessComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
 
@@ -64,10 +65,10 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
   //uzeyr
 
   addMarker(event: google.maps.MapMouseEvent, item:any) {
-      this.markerPositions = [];
+      item.markerPositions = [];
       item.latitude = event.latLng.toJSON().lat;
       item.longitude = event.latLng.toJSON().lng;
-      this.markerPositions.push(event.latLng.toJSON());
+      item.markerPositions.push(event.latLng.toJSON());
   }
   constructor(
     private router: Router,
@@ -141,7 +142,6 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
                 items.body.forEach(element => {
                   element.open = true;
                   element.dataSourceGroup = this.dataSourceGroup;
-                  console.log(444)
                   element.markerPositions = [{lat: Number(element.latitude), lng: Number(element.longitude)}];
                   this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
                     element.dataSourceSubGroup = data.body.process_sub_groups;
@@ -270,7 +270,6 @@ export class ProposalProcessComponent /*implements OnInit, AfterViewInit*/ {
           element.dataSourceGroup = this.dataSourceGroup;
           this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
             element.dataSourceSubGroup = data.body.process_sub_groups;
-            console.log(111)
             this.items.push(element);
           });
         
