@@ -21,12 +21,14 @@
 
                     <!-- Title -->
                     <div class="text-4xl font-extrabold tracking-tight">
-                        <button class="fuse-mat-button-rounded mt-2" [routerLink]="['/apps/company']" mat-icon-button
-                            [color]="'primary'">
-                            <mat-icon matPrefix class="hidden sm:flex icon-size-6"
-                                [svgIcon]="'heroicons_outline:arrow-left'">
-                            </mat-icon>
-                        </button>
+                        <ng-container *ngIf="isAdmin">
+                            <button class="fuse-mat-button-rounded mt-2" [routerLink]="['/apps/company']"
+                                mat-icon-button [color]="'primary'">
+                                <mat-icon matPrefix class="hidden sm:flex icon-size-6"
+                                    [svgIcon]="'heroicons_outline:arrow-left'">
+                                </mat-icon>
+                            </button>
+                        </ng-container>
                         {{ t('text.details') }}
                     </div>
 
@@ -49,10 +51,12 @@
                                 </button>
                             </ng-container>
                         </ng-container>
-                        <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteCompany()">
-                            <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                            <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
-                        </button>
+                        <ng-container *ngIf="isAdmin">
+                            <button class="mr-5" mat-flat-button [color]="'primary'" (click)="deleteCompany()">
+                                <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                <span class="ml-2 mr-1">{{ t('button.delete') }}</span>
+                            </button>
+                        </ng-container>
                         <button class="" mat-flat-button [color]="'primary'" (click)="addNewCompany()">
                             <span class="ml-2 mr-1">{{ t('button.save') }}</span>
                         </button>
@@ -345,7 +349,7 @@
                                         <div class="ml-5 w-full">
                                             <!-- Files Cert-1 -->
                                             <div class="font-medium">Files</div>
-                                            <div class="flex flex-wrap m-2 mt-1">
+                                            <div class="flex h-36 flex-wrap m-2 mt-1">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
                                                     <ng-container
                                                         *ngIf="file.path.group==dataSourceDocs[0].description">
@@ -356,7 +360,7 @@
                                                 </ng-container>
                                             </div>
                                             <!-- Files Cert-2 -->
-                                            <div class="flex flex-wrap m-2 mt-5">
+                                            <div class="flex h-36 flex-wrap m-2 mt-4">
                                                 <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
                                                     <ng-container
                                                         *ngIf="file.path.group==dataSourceDocs[1].description">
@@ -389,7 +393,7 @@
                                                                             [class.bg-blue-600]="item?.path.type === 'doc'"
                                                                             [class.bg-green-600]="item?.path.type === 'xls'"
                                                                             [class.bg-gray-600]="item?.path.type === 'txt'"
-                                                                            [class.bg-amber-600]="item?.path.type === 'jpg'"
+                                                                            [class.bg-amber-600]="item?.path.type === 'jpg' || item?.path.type === 'png'"
                                                                             [class.bg-purple-600]="item?.path.type === 'html'">
                                                                             {{item.path.type?.toUpperCase()}}
                                                                         </div>

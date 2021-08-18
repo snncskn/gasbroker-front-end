@@ -27,7 +27,7 @@
           {{ t('proposals.offerList.price') }}
         </th>
         <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-          {{ row.price | currency}}   {{ row.currency }}
+          {{ row.price | currency:'':'' }}   {{ row.currency }}
         </td>
       </ng-container>
 

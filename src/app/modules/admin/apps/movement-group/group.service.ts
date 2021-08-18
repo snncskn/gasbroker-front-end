@@ -111,7 +111,15 @@ export class GroupService {
     deleteSubGroup(item:any):
     Observable<any> {
     let url = `${environment.url}/process-sub-group/delete/${item.id}`;
-    return this._httpClient.put<any>(url,item);
+    return this._httpClient.put<any>(url,item).pipe(
+        catchError((error) => {
+            if(error instanceof HttpErrorResponse && error.status == 601)
+            {
+                this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
+            }
+            return throwError(error);
+        })
+    )
     }
 
     createProcessGroup(item: any): Observable<any> {

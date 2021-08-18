@@ -268,6 +268,7 @@ export class ProposalProcessComponent implements OnInit, AfterViewInit {
         items.body.forEach(element => {
           element.open = true;
           element.dataSourceGroup = this.dataSourceGroup;
+          element.markerPositions = [{lat: Number(element.latitude), lng: Number(element.longitude)}];
           this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
             element.dataSourceSubGroup = data.body.process_sub_groups;
             this.items.push(element);

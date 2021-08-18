@@ -255,5 +255,15 @@
     "agency": "Ajans ",
     "loading_master": "Yükleme Yöneticisi ",
     "step1": "Adım-1 Alanlar ",
-    "step2": "Adım-2 Alanlar "
+    "step2": "Adım-2 Alanlar ",
+
+    "profile.signed": "Olarak giriş yapıldı",
+    "profile": "Profil",
+    "profile.status": "Durum",
+        "profile.status.online": "Aktif",
+        "profile.status.away": "Uzakta",
+        "profile.status.busy": "Meşgul",
+        "profile.status.invisible": "Görünmez",
+    "profile.signOut": "Çıkış yap"
+
 }
