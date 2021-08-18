@@ -250,5 +250,14 @@
     "agency": "Agency ",
     "loading_master": "Loading Master ",
     "step1": "Step-1 Fields ",
-    "step2": "Step-2 Fields "
+    "step2": "Step-2 Fields ",
+
+    "profile.signed": "Signed in as",
+    "profile": "Profile",
+    "profile.status": "Status",
+        "profile.status.online": "Online",
+        "profile.status.away": "Away",
+        "profile.status.busy": "Busy",
+        "profile.status.invisible": "Invisible",
+    "profile.signOut": "Sign out"
 }
