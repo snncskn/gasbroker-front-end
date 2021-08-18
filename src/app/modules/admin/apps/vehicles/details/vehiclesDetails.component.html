@@ -106,7 +106,7 @@
                             <div class="ml-5 w-full">
                                 <!-- Files Cert-1 -->
                                 <div class="font-medium">Files</div>
-                                <div class="flex flex-wrap m-2 mt-1">
+                                <div class="flex h-36 flex-wrap m-2 mt-1">
                                     <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
                                         <ng-container *ngIf="file.path.group==dataSourceDocs[0].description">
                                             <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
@@ -114,15 +114,15 @@
                                         </ng-container>
                                     </ng-container>
                                 </div>
-                                <!-- Files Cert-2 -->
-                                <div class="flex flex-wrap m-2 mt-5">
+                                <!-- Files Cert-2 
+                                <div class="flex w-36 h-36 flex-wrap m-2 mt-4">
                                     <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
                                         <ng-container *ngIf="file.path.group=='dataSourceDocs[1].description'">
                                             <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
                                             </ng-container>
                                         </ng-container>
                                     </ng-container>
-                                </div>
+                                </div>-->
                                 <!-- Item template -->
                                 <ng-template #item let-item>
                                     <a class="flex flex-col w-30 h-30 m-2 p-4 shadow rounded-2xl cursor-pointer"
@@ -141,8 +141,7 @@
                                                                 [class.bg-blue-600]="item?.path.type === 'doc'"
                                                                 [class.bg-green-600]="item?.path.type === 'xls'"
                                                                 [class.bg-gray-600]="item?.path.type === 'txt'"
-                                                                [class.bg-amber-600]="item?.path.type === 'jpeg'"
-                                                                [class.bg-amber-600]="item?.path.type === 'png'"
+                                                                [class.bg-amber-600]="item?.path.type === 'jpg' || item?.path.type === 'png'"
                                                                 [class.bg-purple-600]="item?.path.type === 'html'">
                                                                 {{item.path.type?.toUpperCase()}}
                                                             </div>

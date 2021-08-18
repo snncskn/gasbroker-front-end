@@ -140,7 +140,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                 })
             };
         });
-    this.ngxService.stop();
+        this.ngxService.stop();
     }
 
 
@@ -285,9 +285,10 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
                     this.toastr.successToastr(
                         this.translocoService.translate("message.fileUpload")
                     );
-
+                    let str = file.name;
+                    var last = str.substring(str.lastIndexOf(".") + 1, str.length);
                     let key = this._authService.user_id + '/' + file.name;
-                    let pathObject = { type: file.type, fileName: file.name, key: key, group: item.description }
+                    let pathObject = { type: last, fileName: file.name, key: key, group: item.description }
                     this.mediaService
                         .createMedia({
                             id: null,
