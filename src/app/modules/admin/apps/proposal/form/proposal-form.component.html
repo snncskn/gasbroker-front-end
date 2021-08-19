@@ -158,8 +158,10 @@
                                 </div>
                                 <div class="w-full ml-5 mt-22">
                                     <div class="my-google-map">
-                                        <google-map [width]="null" [height]="null" [center]="center" [zoom]="zoom"
-                                            (mapClick)="addMarker($event)">
+                                        <input #mapSearchField class="controls" class="mt-80" style="width:50%; height: 40px;"  id="pac-input" matInput type="text"
+                                            placeholder="Place Search..." />
+                                        <google-map [width]="null" [height]="380" [center]="center" [zoom]="zoom"
+                                            (mapClick)="addMarker($event)" [options]="mapOptions">
                                             <map-marker *ngFor="let marker of markerPositions" [position]="marker"
                                                 [options]="markerOptions">
                                             </map-marker>
