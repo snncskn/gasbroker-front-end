@@ -265,16 +265,18 @@
                                                                         </div>
                                                                         <div class="w-2/3 mt-5">
                                                                             <div class="my-google-map">
+                                                                                <input #mapSearchField2 class="controls" id="pac-input" matInput type="text"
+                                                                                placeholder=" " />
                                                                                 <google-map [width]="null"
                                                                                     [height]="null" [center]="center"
                                                                                     [zoom]="zoom"
-                                                                                    (mapClick)="addMarker($event)">
+                                                                                    (mapClick)="addMarker($event)"
+                                                                                    [options]="mapOptions">
                                                                                     <map-marker
                                                                                         *ngFor="let marker of markerPositions"
                                                                                         [position]="marker"
                                                                                         [options]="markerOptions">
                                                                                     </map-marker>
-
                                                                                 </google-map>
                                                                             </div>
                                                                         </div>

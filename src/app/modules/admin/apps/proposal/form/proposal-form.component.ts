@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ProductService } from '../../product/product.service';
@@ -20,6 +20,7 @@ import { FileUploadComponent } from '@iplab/ngx-file-upload';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { GoogleMap } from '@angular/google-maps';
 
 
 @Component({
@@ -29,8 +30,10 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProposalFormComponent implements OnInit, OnDestroy {
+export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
 
+    @ViewChild('mapSearchField') searchField: ElementRef;
+    @ViewChild(GoogleMap) map: GoogleMap;
     @ViewChild('fileUpload') fileUpload: FileUploadComponent;
     @ViewChild('verticalStepper') stepper: MatStepper;
     dialogRef: MatDialogRef<ConfirmationDialog>;
@@ -67,6 +70,10 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         label: this.label,
     });
     //file upload
+
+    mapOptions = {
+        zoomControl: true,
+    }
 
     center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
     zoom = 7;
@@ -143,7 +150,6 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         this.ngxService.stop();
     }
 
-
     ngOnDestroy(): void {
 
     }
@@ -195,6 +201,35 @@ export class ProposalFormComponent implements OnInit, OnDestroy {
         });
 
         this.locationLabel = this.translocoService.translate('proposals.details.tab.productInfo.productLocation');
+    }
+
+    ngAfterViewInit(): void {
+        const searchBox = new google.maps.places.SearchBox(
+            this.searchField.nativeElement,
+        );
+        this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+            this.searchField.nativeElement,
+        );
+
+        searchBox.addListener('places_changed', () => {
+            const places = searchBox.getPlaces();
+            if(places.length === 0) {
+                return;
+            }
+            const bounds = new google.maps.LatLngBounds();
+            places.forEach(place => {
+                if (!place.geometry || !place.geometry.location) {
+                    return;
+                }
+                if (place.geometry.viewport) {
+                    bounds.union(place.geometry.viewport);
+                }
+                else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            this.map.fitBounds(bounds);
+        });
     }
 
     filter(val: string): Observable<any[]> {
