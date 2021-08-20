@@ -310,7 +310,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
     upload(item) {
         this.isLoading = true;
         const file = this.demoForm.value.files[0];
-        this.fileService.putUrl(file).then((res) => {
+        let key = this._authService.user_id + '/' + file.name;
+        this.fileService.putUrl({type: file.type, key: key}).then((res) => {
             const {
                 data: { putURL },
             } = res;
@@ -322,7 +323,6 @@ export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
                     );
                     let str = file.name;
                     var last = str.substring(str.lastIndexOf(".") + 1, str.length);
-                    let key = this._authService.user_id + '/' + file.name;
                     let pathObject = { type: last, fileName: file.name, key: key, group: item.description }
                     this.mediaService
                         .createMedia({

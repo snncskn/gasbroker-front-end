@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
 import axios from "axios";
+import { MediaKey } from "app/modules/admin/apps/media/media.types";
 @Injectable({
   providedIn: "root",
 })
@@ -10,12 +11,12 @@ export class FileService {
    */
   constructor() {}
 
-  putUrl(file: File): Promise<any> {
+  putUrl(mediaKey: MediaKey): Promise<any> {
     const generatePutUrl = `${environment.url}/media/s3/generatePutUrl`;
     const options = {
       params: {
-        Key: file.name,
-        ContentType: file.type,
+        Key: mediaKey.key,
+        ContentType: mediaKey.type,
       },
       headers: {
         "Content-Type": "multipart/form-data;",

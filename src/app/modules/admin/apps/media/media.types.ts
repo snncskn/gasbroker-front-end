@@ -8,3 +8,10 @@ export interface Media
 }
 
  
+export interface MediaKey
+{
+    type?: string | null;
+    key?: string | null;
+}
+
+ 

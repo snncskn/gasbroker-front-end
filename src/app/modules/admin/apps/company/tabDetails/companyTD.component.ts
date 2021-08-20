@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Data, Router } from '@angular/router';
@@ -19,6 +19,8 @@ import { InitialData } from 'app/app.types';
 import { FileUploadComponent } from '@iplab/ngx-file-upload';
 import { map, startWith } from 'rxjs/operators';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { GoogleMap } from '@angular/google-maps';
+import { Media, MediaKey } from '../../media/media.types';
 
 @Component({
   selector: "companyTD",
@@ -27,8 +29,10 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
 })
-export class CustomersTDComponent implements OnInit {
+export class CustomersTDComponent implements OnInit, AfterViewInit {
 
+  @ViewChild('mapSearchField') searchField: ElementRef;
+  @ViewChild(GoogleMap) map: GoogleMap;
   @ViewChild('fileUpload') fileUpload: FileUploadComponent;
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
@@ -56,6 +60,9 @@ export class CustomersTDComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   countries: any[];
 
+  mapOptions = {
+    zoomControl: true,
+  }
   center: google.maps.LatLngLiteral = { lat: 41, lng: 29 };
   zoom = 7;
   markerOptions: google.maps.MarkerOptions = { draggable: false };
@@ -203,6 +210,34 @@ export class CustomersTDComponent implements OnInit {
       }
     });
   }
+  ngAfterViewInit(): void {
+    const searchBox = new google.maps.places.SearchBox(
+      this.searchField.nativeElement,
+    );
+    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+      this.searchField.nativeElement,
+    );
+
+    searchBox.addListener('places_changed', () => {
+      const places = searchBox.getPlaces();
+      if (places.length === 0) {
+        return;
+      }
+      const bounds = new google.maps.LatLngBounds();
+      places.forEach(place => {
+        if (!place.geometry || !place.geometry.location) {
+          return;
+        }
+        if (place.geometry.viewport) {
+          bounds.union(place.geometry.viewport);
+        }
+        else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+      this.map.fitBounds(bounds);
+    });
+  }
   selectCountries(event: any) {
     let option = this.countries.filter(item => item.name.toUpperCase() === event.option.value.name.toUpperCase());
     if (option.length > 0) {
@@ -275,7 +310,7 @@ export class CustomersTDComponent implements OnInit {
       });
       this.dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          this.isLoading=true;
+          this.isLoading = true;
           this._customersService.deleteDocs(item).subscribe(data => {
             this.loadDocs();
           })
@@ -354,7 +389,7 @@ export class CustomersTDComponent implements OnInit {
       };
     });
     this.fileUpload.control.clear();
-    this.isLoading=false;
+    this.isLoading = false;
   }
 
   public toggleStatus(): void {
@@ -372,9 +407,10 @@ export class CustomersTDComponent implements OnInit {
   }
 
   upload(item) {
-    this.isLoading=true;
+    this.isLoading = true;
     const file = this.demoForm.value.files[0];
-    this.fileService.putUrl(file).then((res) => {
+    let key = this.authService.user_id + '/' + file.name;
+    this.fileService.putUrl({type: file.type, key: key}).then((res) => {
       const {
         data: { putURL },
       } = res;
@@ -386,8 +422,9 @@ export class CustomersTDComponent implements OnInit {
           );
           let str = file.name;
           var last = str.substring(str.lastIndexOf(".") + 1, str.length);
-          let key = this.authService.user_id + '/' + file.name;
-          let pathObject = { type: last, fileName: file.name, key: key, group: item.description }
+         
+          let pathObject = { type: last, fileName: file.name, key: key, group: item.description };
+
           this.mediaService
             .createMedia({
               id: null,
@@ -413,20 +450,7 @@ export class CustomersTDComponent implements OnInit {
     });
   }
 
-  download(key: string) {
-    this.fileService.download(key).then(
-      (res) => {
-        this.toastr.successToastr(
-          this.translocoService.translate("message.fileUpload")
-        );
-      },
-      (error) => {
-        this.toastr.errorToastr(
-          this.translocoService.translate("message.error")
-        );
-      }
-    );
-  }
+
 
   formUrunEkle(val: any) {
     return new FormBuilder().group({
@@ -451,7 +475,7 @@ export class CustomersTDComponent implements OnInit {
         this.dataSourceApprovals = res.body;
         this.changeDetection.detectChanges();
       });
-    this.ngxService.stop();
+      this.ngxService.stop();
     });
   }
 

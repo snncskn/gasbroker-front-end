@@ -238,7 +238,9 @@ export class VehiclesDetailsComponent implements OnInit {
       upload(item) {
         this.isLoading = true;
         const file = this.demoForm.value.files[0];
-        this.fileService.putUrl(file).then((res) => {
+        let key = this.authService.user_id + '/' + file.name;
+        
+        this.fileService.putUrl({type: file.type, key: key}).then((res) => {
           const {
             data: { putURL },
           } = res;
