@@ -82,7 +82,14 @@
                                 </div>
                                 <ng-container *ngIf="!isNew">
                                 <div class="flex items mt-6">
-                                    <mat-slide-toggle (change)="onToggleActive($event)" formControlName="active">{{ t('users.details.tab.generalInfo.active') }}</mat-slide-toggle>
+                                    <mat-slide-toggle (change)="onToggleActive($event)" formControlName="active">
+                                        <ng-container *ngIf="isChecked">
+                                            {{ t('users.details.tab.generalInfo.active') }}
+                                        </ng-container>
+                                        <ng-container *ngIf="!isChecked">
+                                            {{ t('users.details.tab.generalInfo.passive') }}
+                                        </ng-container>
+                                    </mat-slide-toggle>
                                 </div>
                                 </ng-container>
                                 <ng-container *ngIf="isNew">

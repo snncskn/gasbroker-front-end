@@ -217,6 +217,7 @@
         "users.details.tab.generalInfo.pass": "Password",
         "users.details.tab.generalInfo.confirmPass": "Confirm Password",
         "users.details.tab.generalInfo.active": "Active",
+        "users.details.tab.generalInfo.passive": "Passive",
     "users.details.tab.resetPass": "Reset Password",
         "users.details.tab.resetPass.newPass": "New Password",
         "users.details.tab.resetPass.confirmNewPass": "Confirm New Password",

@@ -32,6 +32,7 @@ export class UsersFormComponent implements OnInit {
     isLoading: boolean = false;
     selectCustomerItem: any;
     isNew = true;
+    isChecked:boolean;
     companies: any[];
     filteredMenus: any[];
     selectedMenu: any;
@@ -167,7 +168,7 @@ export class UsersFormComponent implements OnInit {
                     });
                     this.selectedMenu = data.body.permissions?.ids;
                     this.selectedMenuWithUser = data.body.permissions?.ids;
-
+                    this.isChecked = this.usersForm.value.active;
                     this.filteredMenus = this.menus;
                     this.resetPassForm.patchValue({
                         id: data.body.id
@@ -236,6 +237,7 @@ export class UsersFormComponent implements OnInit {
     }
 
     onToggleActive(event) {
+        this.isChecked = event.checked;
         this.isLoading = true;
         this._usersService.putUserActive(this.usersForm.value.id).subscribe();
         this.isLoading = false;
