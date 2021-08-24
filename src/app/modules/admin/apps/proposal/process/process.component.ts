@@ -171,7 +171,7 @@ export class ProposalProcessComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
     setTimeout(() => {
-      //console.log(333)
+     
       const searchBox = new google.maps.places.SearchBox(
         this.searchField.nativeElement,
       );
@@ -198,7 +198,8 @@ export class ProposalProcessComponent implements OnInit, AfterViewInit {
         });
         this.map.fitBounds(bounds);
       });
-    }, 1000);
+    }, 5000);
+
     this.list();
   }
 

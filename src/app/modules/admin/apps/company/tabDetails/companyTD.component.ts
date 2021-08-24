@@ -113,8 +113,7 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
     this._customersService.getCompanyDocs().subscribe(res => {
       this.dataSourceDocs = res.body;
     });
-    /*const button = this.document.getElementById("rejectButton");
-    console.log(button)*/
+ 
     let center: google.maps.LatLngLiteral = { lat: Number(0), lng: Number(0) };
     this.newAddressItem = { expanded: true, isNew: true, position: center };
 
@@ -211,6 +210,9 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
     });
   }
   ngAfterViewInit(): void {
+  
+  setTimeout(() => {
+
     const searchBox = new google.maps.places.SearchBox(
       this.searchField.nativeElement,
     );
@@ -236,7 +238,8 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
         }
       });
       this.map.fitBounds(bounds);
-    });
+    })}, 1000);
+
   }
   selectCountries(event: any) {
     let option = this.countries.filter(item => item.name.toUpperCase() === event.option.value.name.toUpperCase());
