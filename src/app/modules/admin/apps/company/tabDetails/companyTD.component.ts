@@ -388,7 +388,7 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
         })
       };
     });
-    this.fileUpload.control.clear();
+    this.filesControl.setValue([]);
     this.isLoading = false;
   }
 

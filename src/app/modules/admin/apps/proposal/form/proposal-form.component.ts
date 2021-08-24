@@ -294,7 +294,7 @@ export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
             this.mediaList = data?.body.media;
             this.changeDetection.detectChanges();
         })
-        this.fileUpload.control.clear();
+        this.filesControl.setValue([]);
         this.isLoading = false;
     }
 

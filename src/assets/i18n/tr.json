@@ -221,6 +221,7 @@
         "users.details.tab.generalInfo.pass": "Şifre",
         "users.details.tab.generalInfo.confirmPass": "Şifreyi Onayla",
         "users.details.tab.generalInfo.active": "Aktif",
+        "users.details.tab.generalInfo.passive": "Pasif",
     "users.details.tab.resetPass": "Şifre Sıfırla",
         "users.details.tab.resetPass.newPass": "Yeni Şifre",
         "users.details.tab.resetPass.confirmNewPass": "Yeni Şifreyi Onayla",
