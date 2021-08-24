@@ -30,7 +30,7 @@ import { GoogleMap } from '@angular/google-maps';
 })
 export class CustomersTDComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('mapSearchField2') searchField: ElementRef;
+  @ViewChild('mapSearchField') searchField: ElementRef;
   @ViewChild(GoogleMap) map: GoogleMap;
   @ViewChild('fileUpload') fileUpload: FileUploadComponent;
 
@@ -210,6 +210,10 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
     });
   }
   ngAfterViewInit(): void {
+    console.log(12);
+
+    setTimeout(() => {
+
     const searchBox = new google.maps.places.SearchBox(
       this.searchField.nativeElement,
     );
@@ -218,6 +222,7 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
     );
 
     searchBox.addListener('places_changed', () => {
+      console.log(123);
       const places = searchBox.getPlaces();
       if (places.length === 0) {
         return;
@@ -235,7 +240,8 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
         }
       });
       this.map.fitBounds(bounds);
-    });
+    })}, 1000);
+
   }
   selectCountries(event: any) {
     let option = this.countries.filter(item => item.name.toUpperCase() === event.option.value.name.toUpperCase());
