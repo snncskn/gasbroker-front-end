@@ -6088,7 +6088,7 @@
   "resolved" "https://registry.npmjs.org/marked/-/marked-2.0.7.tgz"
   "version" "2.0.7"
 
-"mat-currency-format@^0.0.7":
+"mat-currency-format@0.0.7":
   "integrity" "sha512-HJIlfFADefe8oBaTlf8umFLmSi+Ndj7W/0IsGggljIJNdfoIkGRKCoxJOdWxUbbrBCn+/+PpUAF+bYjXKtPXjw=="
   "resolved" "https://registry.npmjs.org/mat-currency-format/-/mat-currency-format-0.0.7.tgz"
   "version" "0.0.7"
