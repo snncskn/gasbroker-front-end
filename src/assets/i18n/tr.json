@@ -192,7 +192,7 @@
         "process.details.subGroup": "Alt Grup",
         "process.details.date": "Hareket Tarihi",
         "process.details.address": "Adres",
-    "process.voyageCode": "Yolculuk Kodu",
+    "process.voyageCode": "Sefer Kodu",
     "process.vendor": "Satıcı",
     "process.recipient": "Alıcı",
     "process.broker": "Komisyoncu",
