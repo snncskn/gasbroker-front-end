@@ -173,7 +173,7 @@ export class VehiclesDetailsComponent implements OnInit {
             })
         };
       });
-      this.fileUpload.control.clear()
+      this.filesControl.setValue([]);
       this.isLoadDocs = true;
       this.isLoading = false;
     }
