@@ -69,6 +69,7 @@
     "message.fileDownload":"Media İndirme işlemi tamamlandı!",
     "message.createMedia": "Media kaydedildi",
     "message.deleteMedia": "Media silindi!",
+    "message.image": "Lütfen sadece fotoğraf yükleyin !",
 
 
     "input.search": "Arama...",
@@ -144,6 +145,7 @@
         "vehicles.details.tab.generalInfo.customer": "Müşteri",
     "vehicles.details.tab.documentList": "Evrak Listesi",
     "vehicles.details.tab.approvalProcesses": "Onay Süreçleri",
+    "vehicles.details.tab.imageUpload": "Resim Yükle",
 
     "proposals.title": "Teklifler",
     "proposals.companyName": "Müsteri Adı",
