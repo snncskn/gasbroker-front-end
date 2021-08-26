@@ -35,6 +35,7 @@
                 <mat-tab-group class="ml-2" mat-align-tabs="left">
 
                     <mat-tab label="{{ t('vehicles.details.tab.generalInfo') }}">
+                        <div class="flex items">
                         <div class="ml-2 w-1/3">
                             <div class="mt-6">
                                 <mat-form-field class="fuse-mat-no-subscript flex-auto w-full">
@@ -88,6 +89,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="ml-10 w-2/3">
+                            <img src="{{imgsrc}}">
+                        </div>
+                        </div>
+
                     </mat-tab>
 
                     <mat-tab label="{{ t('vehicles.details.tab.documentList') }}">
@@ -105,10 +111,10 @@
                             </div>
                             <div class="ml-5 w-full">
                                 <!-- Files Cert-1 -->
-                                <div class="font-medium">Files</div>
+                                <div class="font-medium">Filess</div>
                                 <div class="flex h-36 flex-wrap m-2 mt-1">
                                     <ng-container *ngFor="let file of mediaList; trackBy:trackByFn">
-                                        <ng-container *ngIf="file.path.group==dataSourceDocs[0].description">
+                                        <ng-container *ngIf="file.path.group==dataSourceDocs[0].description && !(file.path.type == 'jpg' || file.path.type == 'png' || file.path.type == 'jpeg')">
                                             <ng-container *ngTemplateOutlet="item, context: {$implicit: file}">
                                             </ng-container>
                                         </ng-container>
@@ -125,6 +131,7 @@
                                 </div>-->
                                 <!-- Item template -->
                                 <ng-template #item let-item>
+                                    <ng-container>
                                     <a class="flex flex-col w-30 h-30 m-2 p-4 shadow rounded-2xl cursor-pointer"
                                         (click)="clickFile(item)" href="{{fileDownloadLink}}" target="_blank">
                                         <div class="aspect-w-9 aspect-h-6" matTooltip="{{item.path.fileName}}">
@@ -141,7 +148,6 @@
                                                                 [class.bg-blue-600]="item?.path.type === 'doc'"
                                                                 [class.bg-green-600]="item?.path.type === 'xls'"
                                                                 [class.bg-gray-600]="item?.path.type === 'txt'"
-                                                                [class.bg-amber-600]="item?.path.type === 'jpg' || item?.path.type === 'png'"
                                                                 [class.bg-purple-600]="item?.path.type === 'html'">
                                                                 {{item.path.type?.toUpperCase()}}
                                                             </div>
@@ -166,12 +172,27 @@
                                             </ng-container>
                                         </div>
                                     </a>
+                                    </ng-container>
                                 </ng-template>
                             </div>
                         </div>
                         <!--<button mat-flat-button [color]="'primary'" (click)="upload()">
                             {{ t('company.details.tab.documentList.button.upload') }}
                         </button>-->
+                    </mat-tab>
+                    
+                    <mat-tab label="{{ t('vehicles.details.tab.imageUpload') }}">
+                        <div class="w-1/4">
+                            <ng-container *ngFor="let item of  dataSourceDocs">
+                                {{ t('vehicles.details.tab.imageUpload') }}
+                                <form [formGroup]="demoForm">
+                                    <file-upload formControlName="files" [multiple]="multiple"
+                                        [animation]="animation" (change)="uploadImg(item)" #fileUpload>
+                                    </file-upload>
+                                    <input type="hidden" formControlName="label" [ngModel]="item.description">
+                                </form>
+                            </ng-container>
+                        </div>
                     </mat-tab>
 
                 </mat-tab-group>
