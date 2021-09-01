@@ -526,7 +526,10 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
   }
 
   clickFile(item) {
-    this.fileDownloadLink = `${environment.url}/media/s3/generateGetUrl?Key=` + item?.path.key;
+    this.fileService.download(item?.path.key).then(response => {
+      this.fileDownloadLink = response.data;
+      window.open(this.fileDownloadLink, "_blank");
+    });
   }
   displayFn(x) {
     return x?.name;

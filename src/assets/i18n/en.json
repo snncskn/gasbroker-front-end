@@ -140,6 +140,7 @@
     "vehicles.companyName": "Company Name",
     "vehicles.name": "Vehicle Name",
     "vehicles.type": "Vehicle Type",
+    "vehicles.imo": "Imo Number",
     "vehicles.registeredDate": "Registered Date",
     "vehicles.noVehicles.message": "There are no vehicle!",
     "vehicles.details.tab.generalInfo": "General Informations",
