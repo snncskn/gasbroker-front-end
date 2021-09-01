@@ -71,6 +71,7 @@
     "message.createMedia": "Media saved",
     "message.deleteMedia": "Media deleted!",
     "message.statusChanged": "Status changed!",
+    "message.image": "Please just upload photos !",
 
 
     "input.search": "Search...",
@@ -145,6 +146,7 @@
         "vehicles.details.tab.generalInfo.customer": "Customer",
     "vehicles.details.tab.documentList": "Document List",
     "vehicles.details.tab.approvalProcesses": "Approval Processes",
+    "vehicles.details.tab.imageUpload": "Upload Image",
 
     "proposals.title": "Proposals",
     "proposals.companyName": "Company Name",
