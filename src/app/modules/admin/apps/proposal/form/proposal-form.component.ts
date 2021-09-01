@@ -379,4 +379,11 @@ export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
             this.save(false);
         }
     }
+
+    clickFile(item) {
+        this.fileService.download(item?.path.key).then(response => {
+          this.fileDownloadLink = response.data;
+          window.open(this.fileDownloadLink, "_blank");
+        });
+      }
 }

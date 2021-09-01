@@ -79,6 +79,7 @@ export class VehiclesDetailsComponent implements OnInit {
       company_id: [''],
       company: ['', [Validators.required]],
       name: ['', [Validators.required]],
+      imo_no: ['', [Validators.required]],
       type: ['', [Validators.required]],
       registered_date: [null, [Validators.required]],
     });
@@ -105,12 +106,13 @@ export class VehiclesDetailsComponent implements OnInit {
     }
 
     let createVehicle = {
-      id: '', type: '', name: '', company_id: '', registered_date: ''
+      id: '', type: '', name: '', company_id: '', registered_date: '', imo_no: ''
     };
 
     createVehicle.id = this.vehicleDetail;
     createVehicle.type = this.vehicleForm.value.type;
     createVehicle.name = this.vehicleForm.value.name;
+    createVehicle.imo_no = this.vehicleForm.value.imo_no;
     createVehicle.company_id = this.vehicleForm.value.company_id;
     createVehicle.registered_date = this.vehicleForm.value.registered_date;
 
@@ -348,6 +350,9 @@ export class VehiclesDetailsComponent implements OnInit {
     return item.id || index;
   }
   clickFile(item) {
-    this.fileDownloadLink = `${environment.url}/media/s3/generateGetUrl?Key=` + item?.path.key;
+    this.fileService.download(item?.path.key).then(response => {
+      this.fileDownloadLink = response.data;
+      window.open(this.fileDownloadLink, "_blank");
+    });
   }
 }
