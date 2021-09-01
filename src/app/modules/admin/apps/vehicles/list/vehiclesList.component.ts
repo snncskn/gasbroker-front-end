@@ -36,7 +36,7 @@ export class VehiclesListComponent implements OnInit, OnDestroy {
 
     vehiclesCount: number = 0;
     selectedVehicle: Vehicle;
-    vehiclesTableColumn: string[] = ['company_id', 'name', 'type', 'registered_date', 'detail'];
+    vehiclesTableColumn: string[] = ['company_id', 'name', 'imo_no', 'type', 'registered_date', 'detail'];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();

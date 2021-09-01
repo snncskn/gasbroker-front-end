@@ -139,6 +139,7 @@
     "vehicles.companyName": "Müşteri Adı",
     "vehicles.name": "Araç Adı",
     "vehicles.type": "Araç Tipi",
+    "vehicles.imo": "Imo Numarası",
     "vehicles.registeredDate": "Kayıt Tarihi",
     "vehicles.noVehicles.message": "Araç Yok!",
     "vehicles.details.tab.generalInfo": "Genel Bilgiler",

@@ -62,6 +62,13 @@
                                         [spellcheck]="false">
                                 </mat-form-field>
                             </div>
+                            <div class="mt-6">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>{{ t('vehicles.imo') }}</mat-label>
+                                    <input matInput [formControlName]="'imo_no'" placeholder="{{ t('vehicles.imo') }} *"
+                                        [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
                             <div class="flex items-center mt-6">
                                 <div class="w-full">
                                     <mat-form-field class="fuse-mat-no-subscript w-full">
