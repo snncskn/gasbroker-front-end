@@ -46,17 +46,17 @@
 
         <!-- Customers list -->
         <div class="relative">
-          <table class="w-full min-w-320 table-fixed bg-transparent" [ngClass]="{ 'pointer-events-none': isLoading }"
+          <table class="w-full min-w-50 table-fixed bg-transparent" [ngClass]="{ 'pointer-events-none': isLoading }"
             mat-table matSort [matSortDisableClear]="true" [matSortDirection]="'asc'" [multiTemplateDataRows]="true"
             [dataSource]="proposals$" [trackBy]="trackByFn">
 
             <ng-container matColumnDef="name">
               <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5" mat-header-cell *matHeaderCellDef mat-sort-header
                 disableClear>
-                {{ t('proposals.companyName') }}
+                {{ t('app.company') }} Id
               </th>
               <td class="pr-8 truncate" mat-cell *matCellDef="let row">
-                {{ row.company?.name }}
+                {{ row?.company_id | slice:0:8}}
               </td>
             </ng-container>
 
