@@ -167,6 +167,7 @@ export class VehiclesDetailsComponent implements OnInit {
             let x = 1;
             this.url = "https://www.marinetraffic.com/tr/ais/details/ships/shipid:420945/mmsi:351056000/imo:"+data.body.imo_no+"/vessel:"+data.body.name;
             this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+            console.log(this.urlSafe);
             for (let index = 0; index < this.mediaList.length; index++) {
               if(this.mediaList[this.mediaList.length - x]?.path.type == 'jpg' ||
               this.mediaList[this.mediaList.length - x]?.path.type == 'png' ||
