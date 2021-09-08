@@ -103,7 +103,7 @@
 
                     </mat-tab>
 
-                    <mat-tab label="{{ t('vehicles.details.tab.documentList') }}">
+                    <mat-tab label="{{ t('vehicles.details.tab.documentList') }}" *ngIf="isDetails">
                         <div class="flex items" *ngIf="isLoadDocs">
                             <div class="w-1/4">
                                 <ng-container *ngFor="let item of  dataSourceDocs">
@@ -188,7 +188,7 @@
                         </button>-->
                     </mat-tab>
                     
-                    <mat-tab label="{{ t('vehicles.details.tab.imageUpload') }}">
+                    <mat-tab label="{{ t('vehicles.details.tab.imageUpload') }}" *ngIf="isDetails">
                         <div class="w-1/4">
                             <ng-container *ngFor="let item of  dataSourceDocs">
                                 {{ t('vehicles.details.tab.imageUpload') }}
@@ -199,6 +199,12 @@
                                     <input type="hidden" formControlName="label" [ngModel]="item.description">
                                 </form>
                             </ng-container>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="{{ t('vehicles.details.tab.location') }}" *ngIf="isDetails">
+                        <div class="w-full">
+                            <iframe width="100%" height="600" [src]="urlSafe"></iframe>
                         </div>
                     </mat-tab>
 

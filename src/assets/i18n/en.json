@@ -146,6 +146,7 @@
     "vehicles.details.tab.documentList": "Document List",
     "vehicles.details.tab.approvalProcesses": "Approval Processes",
     "vehicles.details.tab.imageUpload": "Upload Image",
+    "vehicles.details.tab.location": "Location",
 
     "proposals.title": "Proposals",
     "proposals.companyName": "Company Name",
