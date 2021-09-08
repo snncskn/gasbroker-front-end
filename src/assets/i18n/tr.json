@@ -148,6 +148,7 @@
     "vehicles.details.tab.documentList": "Evrak Listesi",
     "vehicles.details.tab.approvalProcesses": "Onay Süreçleri",
     "vehicles.details.tab.imageUpload": "Resim Yükle",
+    "vehicles.details.tab.location": "Konum",
 
     "proposals.title": "Teklifler",
     "proposals.companyName": "Müsteri Adı",

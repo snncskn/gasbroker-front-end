@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileUploadComponent } from '@iplab/ngx-file-upload';
 import { TranslocoService } from '@ngneat/transloco';
@@ -29,6 +30,7 @@ export class VehiclesDetailsComponent implements OnInit {
   dialogRef: MatDialogRef<ConfirmationDialog>;
   public generalFunction = new GeneralFunction();
 
+  isDetails:boolean = false;
   vehicleForm: FormGroup;
   dataSourceTypes: any[];
   vehicleDetail: string;
@@ -42,6 +44,9 @@ export class VehiclesDetailsComponent implements OnInit {
   isLoading: boolean = false;
   imgsrc: any;
 
+  name = 'Set iframe source';
+  url: string = "";
+  urlSafe: SafeResourceUrl;
 
   //file upload
   public animation: boolean = false;
@@ -70,9 +75,11 @@ export class VehiclesDetailsComponent implements OnInit {
     private authService: AuthService,
     private changeDetection: ChangeDetectorRef,
     private readonly ngxService: NgxUiLoaderService,
+    public sanitizer: DomSanitizer
 
   ) {
     this.ngxService.start();
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
     this.list();
     this.vehicleForm = this._formBuilder.group({
       id: [''],
@@ -156,8 +163,11 @@ export class VehiclesDetailsComponent implements OnInit {
             this.vehicleForm.value.company_id = data.body.company.id;
             this.vehicleForm.value.company = data.body.company.name;
             this.mediaList = data?.body.media;
+            this.isDetails = true;
             let x = 1;
-            console.log(333)
+            this.url = "https://www.marinetraffic.com/tr/ais/details/ships/shipid:420945/mmsi:351056000/imo:"+data.body.imo_no+"/vessel:"+data.body.name;
+            this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+            console.log(this.urlSafe);
             for (let index = 0; index < this.mediaList.length; index++) {
               if(this.mediaList[this.mediaList.length - x]?.path.type == 'jpg' ||
               this.mediaList[this.mediaList.length - x]?.path.type == 'png' ||
