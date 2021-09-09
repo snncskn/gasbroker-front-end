@@ -21,7 +21,7 @@
         </div>
         <div class="flex-auto p-6 sm:p-10">
 
-            <div class="w-full">
+            <div class="w-full" *ngIf="!isPdf">
 
 
                 <form class="p-4 bg-card shadow rounded overflow-hidden" [formGroup]="verticalStepperForm">
@@ -324,6 +324,31 @@
                     </mat-vertical-stepper>
                 </form>
 
+            </div>
+
+            <div class="w-full" *ngIf="isPdf">
+                <div class="p-4 bg-card shadow rounded overflow-hidden">
+                    <div id="pdfTable" #pdfTable class="mt-5 mb-5">
+                        <div class="mx-20" style="font-weight: bold; font-size: 20px;">
+                            <p>Location: {{pdfInfo.location}}</p>
+                            <p>Location: {{pdfInfo.location}}</p><br>&nbsp;
+                        </div>
+                    </div>
+                    <div class="mt-10">
+                        <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
+                            (click)="backToForm()">
+                            {{ t('proposals.button.back') }}
+                        </button>
+                        <button class="px-8 mr-2" mat-flat-button [color]="'primary'" type="return"
+                            (click)="returnToList()">
+                            {{ t('proposals.details.tab.returnProposal') }}
+                        </button>
+                        <button class="px-8" style="background-color: green; color:white" mat-flat-button
+                            type="download" (click)="downloadAsPDF()">
+                            {{ t('proposals.details.tab.downloadPdf') }}
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
