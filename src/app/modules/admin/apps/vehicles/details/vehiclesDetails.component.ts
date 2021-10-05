@@ -145,7 +145,7 @@ export class VehiclesDetailsComponent implements OnInit {
       if (typeof filterValue === 'object') {
         return option?.full_name?.indexOf(filterValue.full_name) === 0 || option?.full_name?.indexOf(filterValue.full_name?.toLowerCase()) === 0;
 
-      } else {
+    } else {
         return option?.full_name?.indexOf(filterValue) === 0 || option?.full_name?.indexOf(filterValue?.toLowerCase()) === 0;
 
       }
@@ -373,4 +373,10 @@ export class VehiclesDetailsComponent implements OnInit {
       window.open(this.fileDownloadLink, "_blank");
     });
   }
+
+  goUrl() {
+      window.open(this.url, "_blank");    
+  } 
+
+
 }
