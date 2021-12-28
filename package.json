@@ -41,6 +41,7 @@
         "fullcalendar": "^5.8.0",
         "google": "^0.6.0",
         "highlight.js": "11.0.0",
+        "jspdf": "^2.3.1",
         "lodash-es": "4.17.21",
         "mat-currency-format": "0.0.7",
         "moment": "^2.29.1",

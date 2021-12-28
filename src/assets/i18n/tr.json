@@ -177,6 +177,8 @@
     "proposals.details.tab.submit": "Gönder",
         "proposals.details.tab.submit.text": "Lütfen gönderdiğiniz bilgilerin doğruluğundan emin olunuz!",
         "proposals.details.tab.submit.cancel": "İptal",
+        "proposals.details.tab.returnProposal": "Tekliflere Dön",
+        "proposals.details.tab.downloadPdf": "PDF İndir",
     
         "proposals.offerList.paymentType": "Ödeme Türü",
         "proposals.offerList.price": "Fiyat",

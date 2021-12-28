@@ -21,6 +21,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GoogleMap } from '@angular/google-maps';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 @Component({
@@ -32,6 +34,7 @@ import { GoogleMap } from '@angular/google-maps';
 })
 export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
 
+    @ViewChild('pdfTable', {static: false}) pdfTable: ElementRef;
     @ViewChild('mapSearchField') searchField: ElementRef;
     @ViewChild(GoogleMap) map: GoogleMap;
     @ViewChild('fileUpload') fileUpload: FileUploadComponent;
@@ -55,6 +58,8 @@ export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
     productId: string;
     unit: any;
     isLoading: boolean = false;
+    isPdf:boolean = false;
+    pdfInfo:any;
 
     @ViewChild('docsFileInput') private docsFileInput: ElementRef;
 
@@ -280,7 +285,12 @@ export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
         createPrp.id = this.proposalId;
         this._proposalService.createProposal(createPrp, isSubmit).subscribe(data => {
             if (isSubmit) {
-                this._router.navigateByUrl('/apps/proposals/list');
+                //this._router.navigateByUrl('/apps/proposals/list');
+                this.pdfInfo = data;
+                this.isPdf = true;
+                this.ngxService.start();
+                this.changeDetection.detectChanges();
+                this.ngxService.stop();
             }
             else {
                 this.proposalId = data.id;
@@ -385,5 +395,34 @@ export class ProposalFormComponent implements OnInit, OnDestroy, AfterViewInit {
           this.fileDownloadLink = response.data;
           window.open(this.fileDownloadLink, "_blank");
         });
-      }
+    }
+    backToForm() {
+        this.isPdf = false;
+        this.ngxService.start();
+        this.ngxService.stop();
+    }
+    returnToList() {
+        this._router.navigate(['/apps/proposals/list']);
+    }
+    public async downloadAsPDF() {
+        const doc = new jsPDF();
+    
+        const specialElementHandlers = {
+          '#editor': function (element, renderer) {
+            return true;
+          }
+        };
+    
+        const pdfTable = this.pdfTable.nativeElement;
+        await html2canvas(pdfTable).then(canvas => {
+            // Few necessary setting options
+            const imgWidth = 208; // your own stuff to calc the format you want
+            const imgHeight = canvas.height * imgWidth / canvas.width; // your own stuff to calc the format you want
+            const contentDataURL = canvas.toDataURL('image/png');
+            doc.addImage(contentDataURL, 'PNG', 0, 0, imgWidth, imgHeight);
+            doc.output('dataurlnewwindow');
+            doc.save('sozlesme.pdf')
+        
+      });
+    }
 }

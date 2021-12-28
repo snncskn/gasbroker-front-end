@@ -176,6 +176,9 @@
     "proposals.details.tab.submit": "Submit",
         "proposals.details.tab.submit.text": "Please make sure the information you send is correct!",
         "proposals.details.tab.submit.cancel": "Cancel",
+        "proposals.details.tab.returnProposal": "Return To Proposals",
+        "proposals.details.tab.downloadPdf": "Download PDF",
+
 
         "proposals.offerList.paymentType": "Payment Type",
         "proposals.offerList.price": "Price",
