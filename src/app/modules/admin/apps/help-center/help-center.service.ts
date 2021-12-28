@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FaqCategory, Guide, GuideCategory } from 'app/modules/admin/apps/help-center/help-center.type';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -57,9 +58,10 @@ export class HelpCenterService
      */
     getAllFaqs(): Observable<FaqCategory[]>
     {
-        return this._httpClient.get<FaqCategory[]>('api/apps/help-center/faqs').pipe(
+        //
+        return this._httpClient.get<FaqCategory[]>(`${environment.url}/help`).pipe(
             tap((response: any) => {
-                this._faqs.next(response);
+                this._faqs.next(response.body);
             })
         );
     }
