@@ -14,9 +14,9 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, PB_DIRECTION, POSITION, SPINNER } from 'ngx-ui-loader';
 import { ToastrModule } from 'ng6-toastr-notifications';
-import { HttpClientModule } from '@angular/common/http';  
-
-
+import { HttpClientModule } from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatDialogModule} from '@angular/material/dialog';
 
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
@@ -36,7 +36,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        MatDialogModule
     ],
     imports     : [
         BrowserModule,
@@ -51,8 +52,12 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         LayoutModule,
         MarkdownModule.forRoot({}),
         HttpClientModule, 
+        FormsModule,
+        ReactiveFormsModule,
+        LayoutModule,
         
     ],
+    providers: [],
     bootstrap   : [
         AppComponent
     ]

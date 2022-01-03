@@ -44,8 +44,16 @@
                             <ng-container *ngIf="faq.links" >
                                     <br/>
                                     <br/>
-                                  <a href="{{faq.links}}" target="_blank">  {{faq.links}} </a>
 
+                                    
+                                    <button class="ml-3 w-7 h-7 min-h-7" (click)="link(faq.links)" 
+                                    mat-icon-button [color]="'warn'">
+                                    <mat-icon *ngIf="faq.links" class="icon-size-4" 
+                                    [svgIcon]="'heroicons_solid:link'">
+                                    </mat-icon>
+                                    </button>
+                                  <a href="{{faq.links}}" target="_blank">  {{faq.links}} </a>
+                                  
                             </ng-container>
                           
                         </mat-expansion-panel>

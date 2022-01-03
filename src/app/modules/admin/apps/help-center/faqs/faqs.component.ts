@@ -62,4 +62,7 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
     {
         return item.id || index;
     }
+    link(link:string){
+        window.open(link, '_blank');
+    }
 }

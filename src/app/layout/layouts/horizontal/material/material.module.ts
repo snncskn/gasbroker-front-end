@@ -15,6 +15,7 @@ import { ShortcutsModule } from 'app/layout/common/shortcuts/shortcuts.module';
 import { UserMenuModule } from 'app/layout/common/user-menu/user-menu.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { MaterialLayoutComponent } from 'app/layout/layouts/horizontal/material/material.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { MaterialLayoutComponent } from 'app/layout/layouts/horizontal/material/
         SearchModule,
         ShortcutsModule,
         UserMenuModule,
-        SharedModule
+        SharedModule,
+        MatDialogModule
     ],
     exports     : [
         MaterialLayoutComponent
