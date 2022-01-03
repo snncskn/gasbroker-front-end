@@ -3,6 +3,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HelpCenterService } from 'app/modules/admin/apps/help-center/help-center.service';
 import { FaqCategory } from 'app/modules/admin/apps/help-center/help-center.type';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogFaq } from '../dialog/dialog.component';
 
 @Component({
     selector     : 'help-center-faqs',
@@ -17,7 +19,8 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
     /**
      * Constructor
      */
-    constructor(private _helpCenterService: HelpCenterService)
+    constructor(private _helpCenterService: HelpCenterService,
+                public dialog: MatDialog)
     {
     }
 
@@ -65,4 +68,18 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
     link(link:string){
         window.open(link, '_blank');
     }
+    openDialog(row: any): void {
+        console.log(row);
+        const dialogRef = this.dialog.open(DialogFaq, {
+          width: '450px',
+          data: row,
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+        
+        });
+      }
+
+
 }

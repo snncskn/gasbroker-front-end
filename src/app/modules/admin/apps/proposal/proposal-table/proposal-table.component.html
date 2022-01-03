@@ -1,0 +1,93 @@
+<div class="grid justify-items-start mt-13 mb-12 w-full">
+    <div>
+        <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel *ngFor="let item of data">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                 {{item.description}}
+                </mat-panel-title>
+                <mat-panel-description>
+                 
+                 
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+          
+              <table>
+                <tr>
+                    <th scope="col">Kaptan Tarih/ Saat</th>
+                    <th scope="col">Kaptan Evrak</th>
+
+                    <th scope="col">M Acente Tarih/ Saat</th>
+                    <th scope="col">Acente Evrak</th>
+
+                    <th scope="col">C Loading Tarih/ Saat</th>
+                    <th scope="col"> C Loading Evrak</th>
+                </tr>
+                <tr ngFor="let row of item.process_sub_groups">
+                    <td>
+                        <mat-form-field >
+                              <input matInput  [matDatepicker]="picker">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                    </td>
+                    <td>
+                        <input type="file" class="file-input"
+                            (change)="onFileSelected($event)" #fileUpload>
+
+                        <div class="file-upload">
+                            {{fileName }}
+                            <button mat-mini-fab color="primary" class="upload-btn"
+                            (click)="fileUpload.click()">
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                    <td >
+                        <mat-form-field >
+                              <input matInput  [matDatepicker]="picker">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                    </td>
+                    <td style="margin-top: -10!important;align-items: center;">
+                        <input type="file" class="file-input"
+                            (change)="onFileSelected($event)" #fileUpload>
+
+                        <div class="file-upload">
+                            {{fileName }}
+                            <button mat-mini-fab color="primary" class="upload-btn"
+                            (click)="fileUpload.click()">
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <mat-form-field >
+                              <input matInput  [matDatepicker]="picker">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                    </td>
+                    <td>
+                        <input type="file" class="file-input"
+                            (change)="onFileSelected($event)" #fileUpload>
+
+                        <div class="file-upload">
+                            {{fileName }}
+                            <button mat-mini-fab color="primary" class="upload-btn"
+                            (click)="fileUpload.click()">
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+               
+            </table>
+            
+          
+            </mat-expansion-panel>
+        </mat-accordion>
+       {{proposal}}
+    </div>
+</div>

@@ -29,6 +29,7 @@
 </div>
 
 
+
     <!-- Main -->
     <div class="flex flex-col items-center p-6 sm:p-10">
         <div class="flex flex-col w-full max-w-4xl">
@@ -42,10 +43,9 @@
                             </mat-expansion-panel-header>
                             {{faq.content}}
                             <ng-container *ngIf="faq.links" >
+                                <button mat-button (click)="openDialog(faq)">Basic</button>
                                     <br/>
                                     <br/>
-
-                                    
                                     <button class="ml-3 w-7 h-7 min-h-7" (click)="link(faq.links)" 
                                     mat-icon-button [color]="'warn'">
                                     <mat-icon *ngIf="faq.links" class="icon-size-4" 
@@ -53,6 +53,7 @@
                                     </mat-icon>
                                     </button>
                                   <a href="{{faq.links}}" target="_blank">  {{faq.links}} </a>
+                                  
                                   
                             </ng-container>
                           

@@ -38,6 +38,7 @@ import { ProposalProcessComponent } from './process/process.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCurrencyFormatModule } from 'mat-currency-format';
+import { ProposalTableComponent } from './proposal-table/proposal-table.component';
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import { MatCurrencyFormatModule } from 'mat-currency-format';
         ProposalFormComponent,
         OfferComponent,
         OfferListComponent,
-        ProposalProcessComponent
+        ProposalProcessComponent,
+        ProposalTableComponent
     ],
     imports     : [
         RouterModule.forChild(proposalRoutes),

@@ -56,6 +56,7 @@ export class ProposalProcessComponent implements OnInit, AfterViewInit {
   selectProductItem: any;
   products: any[];
   array: any[] = ['vendor', 'recipient', 'broker', 'captain', 'agency', 'loading_master'];
+  proposalID: string;
 
 
   mapOptions = {
@@ -112,6 +113,7 @@ export class ProposalProcessComponent implements OnInit, AfterViewInit {
     });
     this.activatedRouter.paramMap.subscribe((params) => {
       if (params.has("id")) {
+        this.proposalID = params.get("id");
         this.isLoading = false;
         this.ngxService.start();
         this.list();

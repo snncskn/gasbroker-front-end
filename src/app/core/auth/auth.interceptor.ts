@@ -33,7 +33,8 @@ export class AuthInterceptor implements HttpInterceptor
         // catch and delete the access token from the local storage while logging
         // the user out from the app.
         //&& !AuthUtils.isTokenExpired(this._authService.accessToken
-        if ( this._authService.accessToken &&  req.url.indexOf('svg')<0)
+        //&&  req.url.indexOf('svg')<0
+        if ( this._authService.accessToken )
         {
             let companyId='', user_id='';
             if(this._authService.CompanyId){
@@ -62,7 +63,6 @@ export class AuthInterceptor implements HttpInterceptor
         // Response
         return next.handle(newReq).pipe(
             catchError((error) => {
-                // Catch "  401 Unauthorized" responses
                 if ( error instanceof HttpErrorResponse && error.status === 401 )
                 {
                     // Sign out
