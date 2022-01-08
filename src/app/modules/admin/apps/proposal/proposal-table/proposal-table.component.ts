@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 import { Proposal } from '../proposals.types';
 import { ProposalService } from '../proposals.service';
+import { AccordionDirective } from '../accordion.directive';
 
 @Component({
   selector: 'app-proposal-table',
@@ -12,6 +13,10 @@ export class ProposalTableComponent implements OnInit {
   @Input() proposal: string; 
   data: any[];
   fileName = "";
+
+  isOpen: boolean = false;
+  @ContentChild(AccordionDirective, { read: TemplateRef })
+  accordionBodyRef: TemplateRef<unknown>;
 
   constructor(private readonly proposalService: ProposalService) { 
     this.data = [];

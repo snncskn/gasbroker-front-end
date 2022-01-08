@@ -39,6 +39,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCurrencyFormatModule } from 'mat-currency-format';
 import { ProposalTableComponent } from './proposal-table/proposal-table.component';
+import { AccordionDirective } from './accordion.directive';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import { ProposalTableComponent } from './proposal-table/proposal-table.componen
         OfferComponent,
         OfferListComponent,
         ProposalProcessComponent,
-        ProposalTableComponent
+        ProposalTableComponent,
+        AccordionDirective
     ],
     imports     : [
         RouterModule.forChild(proposalRoutes),
