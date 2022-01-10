@@ -71,7 +71,7 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
     openDialog(row: any): void {
         console.log(row);
         const dialogRef = this.dialog.open(DialogFaq, {
-          width: '450px',
+          width: '400px',
           data: row,
         });
     

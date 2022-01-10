@@ -43,16 +43,29 @@
                             </mat-expansion-panel-header>
                             {{faq.content}}
                             <ng-container *ngIf="faq.links" >
-                                <button mat-button (click)="openDialog(faq)">Basic</button>
-                                    <br/>
-                                    <br/>
-                                    <button class="ml-3 w-7 h-7 min-h-7" (click)="link(faq.links)" 
-                                    mat-icon-button [color]="'warn'">
-                                    <mat-icon *ngIf="faq.links" class="icon-size-4" 
-                                    [svgIcon]="'heroicons_solid:link'">
+                                <button style="float: right;" 
+                                    mat-icon-button
+                                    class="ml-3 w-2 h-2 min-h-3"
+                                    [color]="'primary'"
+                                    (click)="openDialog(faq)">
+                                    <mat-icon 
+                                        class="icon-size-5" 
+                                        [svgIcon]="'heroicons_solid:pencil-alt'">
                                     </mat-icon>
-                                    </button>
-                                  <a href="{{faq.links}}" target="_blank">  {{faq.links}} </a>
+                                </button>
+                                    <br/>
+                                <a href="{{faq.links}}" target="_blank">  {{faq.links}} </a>
+                                <button 
+                                    mat-icon-button 
+                                    class="ml-3 w-2 h-2 min-h-3" 
+                                    (click)="link(faq.links)" 
+                                    [color]="'warn'">
+                                    <mat-icon 
+                                        *ngIf="faq.links" 
+                                        class="icon-size-4" 
+                                        [svgIcon]="'heroicons_solid:link'">
+                                    </mat-icon>
+                                </button>
                                   
                                   
                             </ng-container>

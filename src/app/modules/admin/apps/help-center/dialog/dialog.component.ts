@@ -1,5 +1,6 @@
-import {Component, Inject} from '@angular/core';
+import {Component, OnInit ,Inject} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {DialogService} from '../dialog/dialog.service';
 
 export interface DialogData {
   content: string;
@@ -7,19 +8,23 @@ export interface DialogData {
   links: string;
 }
 @Component({
-  selector: 'dialog-example',
-  templateUrl: 'dialog-example.component.html',
+  selector: 'dialog.faq',
+  templateUrl: 'dialog.faq.component.html',
+  styleUrls  : ['./dialog.component.css'],
+  providers : [DialogService]
 })
 export class DialogFaq {
   constructor(
     public dialogRef: MatDialogRef<DialogFaq>,
+    private _dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  update(){
+  dialogUpdate(){
+    this._dialogService.getDialog()
     console.log(this.data);
   }
 }
