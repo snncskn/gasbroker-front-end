@@ -44,10 +44,17 @@
                                     </mat-form-field>
                                 </td>
                                 <td>
-                                    <input type="file" class="file-input" (change)="onFileSelected($event,'captain_media_path',rowGroup)" #fileUploadCaptain>
+                                    <input type="file" class="file-input"
+                                        (change)="onFileSelected($event,'captain_media_path',rowGroup)"
+                                        #fileUploadCaptain>
 
                                     <div class="file-upload">
-                                        {{rowGroup.captain_media_path}}
+
+                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                        *ngIf="rowGroup.captain_media_path"
+                                            (click)="openNewWindows(rowGroup.captain_media_path)">
+                                            <mat-icon>download</mat-icon>
+                                        </button>
                                         <button mat-mini-fab color="primary" class="upload-btn"
                                             (click)="fileUploadCaptain.click()">
                                             <mat-icon>attach_file</mat-icon>
@@ -66,24 +73,26 @@
 
                                 </td>
                                 <td style="margin-top: -10!important;align-items: center;">
-                                    <input type="file" class="file-input" (change)="onFileSelected($event,'agency_media_path',rowGroup)" #fileUpload>
+                                    <input type="file" class="file-input"
+                                        (change)="onFileSelected($event,'agency_media_path',rowGroup)" #fileUpload>
 
                                     <div class="file-upload">
-                                        <ng-container *ngIf="rowGroup.agency_media_path;else upload">
-                                            {{rowGroup.agency_media_path}}
-                                        </ng-container>
-                                        <ng-container #upload>
-                                            <button mat-mini-fab color="primary" class="upload-btn"
+                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                            *ngIf="rowGroup.agency_media_path"
+                                            (click)="openNewWindows(rowGroup.agency_media_path)">
+                                            <mat-icon>download</mat-icon>
+                                        </button> 
+                                        <button mat-mini-fab color="primary" class="upload-btn"
                                             (click)="fileUpload.click()">
                                             <mat-icon>attach_file</mat-icon>
                                         </button>
-                                        </ng-container>
                                     </div>
                                 </td>
                                 <td>
                                     <mat-form-field>
                                         <input type="input" matInput [matDatepicker]="lm_process_date" #lm_date
-                                            (ngModelChange)="editRowLm($event,rowGroup)" [(ngModel)]="rowGroup.lm_process_date"
+                                            (ngModelChange)="editRowLm($event,rowGroup)"
+                                            [(ngModel)]="rowGroup.lm_process_date"
                                             (keyup.enter)="editRow(row,$lm_date)">
                                         <mat-datepicker-toggle matSuffix [for]="lm_process_date">
                                         </mat-datepicker-toggle>
@@ -91,9 +100,14 @@
                                     </mat-form-field>
                                 </td>
                                 <td>
-                                    <input type="file" class="file-input" (change)="onFileSelected($event,'lm_media_path',rowGroup)" #fileUploadLm>
+                                    <input type="file" class="file-input"
+                                        (change)="onFileSelected($event,'lm_media_path',rowGroup)" #fileUploadLm>
                                     <div class="file-upload">
-                                        {{fileName }}
+                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                        *ngIf="rowGroup.lm_media_path"
+                                        (click)="openNewWindows(rowGroup.lm_media_path)">
+                                        <mat-icon>download</mat-icon>
+                                    </button> 
                                         <button mat-mini-fab color="primary" class="upload-btn"
                                             (click)="fileUploadLm.click()">
                                             <mat-icon>attach_file</mat-icon>

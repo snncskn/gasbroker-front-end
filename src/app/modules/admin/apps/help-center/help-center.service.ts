@@ -65,6 +65,9 @@ export class HelpCenterService
             })
         );
     }
+    saveHelp(item: any): Observable<any>{
+        return this._httpClient.post<any>(`${environment.url}/help`,item);  
+    }
 
     /**
      * Get FAQs by category using category slug

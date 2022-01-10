@@ -1,6 +1,7 @@
 import {Component, OnInit ,Inject} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {DialogService} from '../dialog/dialog.service';
+import { HelpCenterService } from '../help-center.service';
 
 export interface DialogData {
   content: string;
@@ -17,6 +18,7 @@ export class DialogFaq {
   constructor(
     public dialogRef: MatDialogRef<DialogFaq>,
     private _dialogService: DialogService,
+    private readonly helpService: HelpCenterService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
 
@@ -26,5 +28,9 @@ export class DialogFaq {
   dialogUpdate(){
     this._dialogService.getDialog()
     console.log(this.data);
+
+    this.helpService.saveHelp(this.data).subscribe(res => {
+      console.log(res);
+    });
   }
 }

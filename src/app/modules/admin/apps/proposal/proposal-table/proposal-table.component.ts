@@ -82,6 +82,15 @@ export class ProposalTableComponent implements OnInit {
           if(tmp.agency_process_date){
             subElement.agency_process_date = new Date(tmp.agency_process_date);
           }
+          if(tmp.captain_media_path){
+            subElement.captain_media_path = tmp.captain_media_path;
+          }
+          if(tmp.agency_media_path){
+            subElement.agency_media_path = tmp.agency_media_path;
+          }
+          if(tmp.lm_media_path){
+            subElement.lm_media_path = tmp.lm_media_path;
+          }
           subElement.id = tmp.id;
         }
         console.log(tmp);
@@ -155,6 +164,10 @@ export class ProposalTableComponent implements OnInit {
       row.realId = data.id;
       console.log(data);
     })
+  }
+
+  openNewWindows(link: string){
+    window.open(link, '_blank');
   }
 
 }
