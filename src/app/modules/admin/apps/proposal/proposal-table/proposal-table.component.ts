@@ -2,6 +2,7 @@ import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/co
 import { Proposal } from '../proposals.types';
 import { ProposalService } from '../proposals.service';
 import { AccordionDirective } from '../accordion.directive';
+import { FileService } from '../../../../../services/file.service';
 
 @Component({
   selector: 'app-proposal-table',
@@ -19,7 +20,8 @@ export class ProposalTableComponent implements OnInit {
   @ContentChild(AccordionDirective, { read: TemplateRef })
   accordionBodyRef: TemplateRef<unknown>;
 
-  constructor(private readonly proposalService: ProposalService) {
+  constructor(private readonly proposalService: ProposalService,
+              private readonly fileService: FileService) {
     this.data = [];
     this.isLoading = false;
     this.proposalService.getProcessGroup().subscribe(data => {
@@ -47,22 +49,22 @@ export class ProposalTableComponent implements OnInit {
     })
 
   }
-  onFileSelected(event) {
-
+  onFileSelected(event,param: string,row: any) {
+    console.log(event);
     const file: File = event.target.files[0];
-
-    if (file) {
-
-      this.fileName = file.name;
-
-      const formData = new FormData();
-
-      formData.append("thumbnail", file);
-
-      //const upload$ = this.http.post("/api/thumbnail-upload", formData);
-
-      //upload$.subscribe();
-    }
+    this.fileService.putUrl({type: file.type, key: param}).then((res) => {
+      const {
+        data: { putURL },
+      } = res;
+      this.fileService.upLoad(putURL, file).then(
+        (res) => {
+          console.log(res);
+          row[param] = res.config.url;
+          this.proposalService.updateRow(row).subscribe(data => {
+            console.log(data);
+          });
+        });
+    });
   }
   loadGroup(item: any){
 
@@ -130,7 +132,7 @@ export class ProposalTableComponent implements OnInit {
     this.proposalService.updateRow(item).subscribe(data=>{
       row.realId = data.body.id;
       console.log(data);
-    })
+    });
   }
   editRowLm(event,row: any){
     row.lm_process_date_str = ''+event.toISOString();

@@ -410,6 +410,7 @@ export class CustomersTDComponent implements OnInit, AfterViewInit {
   }
 
   upload(item) {
+    console.log(item);
     this.isLoading = true;
     const file = this.demoForm.value.files[0];
     let key = this.authService.user_id + '/' + file.name;
