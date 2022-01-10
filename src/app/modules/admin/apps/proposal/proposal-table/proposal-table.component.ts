@@ -10,43 +10,149 @@ import { AccordionDirective } from '../accordion.directive';
 })
 export class ProposalTableComponent implements OnInit {
 
-  @Input() proposal: string; 
+  @Input() proposal: string;
   data: any[];
   fileName = "";
 
   isOpen: boolean = false;
+  isLoading = false;
   @ContentChild(AccordionDirective, { read: TemplateRef })
   accordionBodyRef: TemplateRef<unknown>;
 
-  constructor(private readonly proposalService: ProposalService) { 
+  constructor(private readonly proposalService: ProposalService) {
     this.data = [];
-    this.proposalService.getProcessGroup().subscribe(data=>{
-      console.log(data.body);
+    this.isLoading = false;
+    this.proposalService.getProcessGroup().subscribe(data => {
+      
       data.body.forEach(element => {
-        element.captainDate='';
+        delete element.id;
+        element.captainDate = '';
+        element.process_sub_groups.forEach(subItem => {
+          subItem.captain_process_date = '';
+          subItem.agency_process_date = '';
+          subItem.lm_process_date = '';
+          
+        });
         this.data.push(element);
+ 
       });
+      this.isLoading = true;
+      console.log(this.data);
     });
   }
 
   ngOnInit(): void {
+    this.proposalService.getProcessDetail(this.proposal).subscribe(data=>{
+      console.log(data);
+    })
+
   }
   onFileSelected(event) {
 
-    const file:File = event.target.files[0];
+    const file: File = event.target.files[0];
 
     if (file) {
 
-        this.fileName = file.name;
+      this.fileName = file.name;
 
-        const formData = new FormData();
+      const formData = new FormData();
 
-        formData.append("thumbnail", file);
+      formData.append("thumbnail", file);
 
-        //const upload$ = this.http.post("/api/thumbnail-upload", formData);
+      //const upload$ = this.http.post("/api/thumbnail-upload", formData);
 
-        //upload$.subscribe();
+      //upload$.subscribe();
     }
-}
+  }
+  loadGroup(item: any){
+
+    this.proposalService.getProcessDetail(this.proposal).subscribe(data=>{
+      console.log(data.body);
+      item.process_sub_groups.forEach(subElement => {
+        let tmp = data.body.find(item=> item.group_sub_id === subElement.id);
+        if(tmp){
+          if(tmp.captain_process_date){
+            subElement.captain_process_date = new Date(tmp.captain_process_date);
+          }
+          if(tmp.lm_process_date){
+            subElement.lm_process_date = new Date(tmp.lm_process_date);
+          }
+          if(tmp.agency_process_date){
+            subElement.agency_process_date = new Date(tmp.agency_process_date);
+          }
+          subElement.id = tmp.id;
+        }
+        console.log(tmp);
+      });
+  
+    })
+  }
+
+  editRowCaptain(event,row: any){
+    row.captain_process_date_str = ''+event.toISOString();
+    let item = {
+      id:'',
+      group_sub_id:row.id,
+      group_id: row.group_id,
+      process_id: this.proposal,
+      captain_process_date: event.toISOString(),
+      agency_process_date: row.agency_process_date_str,
+      lm_process_date: row.lm_process_date_str,
+
+    };
+    if(row.realId){
+      item.id = row.realId;
+    }else{
+      delete item.id;
+    }
+    this.proposalService.updateRow(item).subscribe(data=>{
+      row.realId = data.body.id;
+      console.log(data);
+    })
+  }
+  editRowAg(event,row: any){
+    row.agency_process_date_str = ''+event.toISOString();
+
+    let item = {
+      id:'',
+      group_sub_id:row.id,
+      group_id: row.group_id,
+      process_id: this.proposal,
+      agency_process_date: event.toISOString(),
+      lm_process_date: row.lm_process_date_str ?  row.lm_process_date_str.toISOString() : '',
+      captain_process_date: row.captain_process_date ?  row.captain_process_date.toISOString() : '',
+    };
+    if(row.realId){
+      item.id = row.realId;
+    }else{
+      delete item.id;
+    }
+    this.proposalService.updateRow(item).subscribe(data=>{
+      row.realId = data.body.id;
+      console.log(data);
+    })
+  }
+  editRowLm(event,row: any){
+    row.lm_process_date_str = ''+event.toISOString();
+
+    let item = {
+      id:'',
+      group_sub_id:row.id,
+      group_id: row.group_id,
+      process_id: this.proposal,
+      agency_process_date: row.agency_process_date_str  ?  row.agency_process_date_str.toISOString() : '',
+      captain_process_date: row.captain_process_date_str ?  row.captain_process_date_str.toISOString() : '',
+      lm_process_date: event.toISOString(),
+    };
+    if(row.realId){
+      item.id = row.realId;
+    }else{
+      delete item.id;
+    }
+    this.proposalService.updateRow(item).subscribe(data=>{
+      row.realId = data.id;
+      console.log(data);
+    })
+  }
 
 }

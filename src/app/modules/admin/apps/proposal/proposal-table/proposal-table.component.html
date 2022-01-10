@@ -1,109 +1,107 @@
 <div class="grid justify-items-start mt-13 mb-12 w-full">
-    <div class="accordion">
-        <div class="accordion-head">
-          <button (click)="isOpen = !isOpen">{{ isOpen ? "-" : "+" }}</button>
-        </div>
-        <hr />
-        <div *ngIf="isOpen" class="accordion-content">
-          <ng-container *ngIf="accordionBodyRef; else eagerBody">
-            <ng-container *ngTemplateOutlet="accordionBodyRef"></ng-container>
-          </ng-container>
-          <ng-template #eagerBody>
-            <ng-content select="[accordionBody]"></ng-content>
-          </ng-template>
-        </div>
-      </div>
-      <!--
+
     <div>
         <mat-accordion class="example-headers-align" multi>
             <mat-expansion-panel *ngFor="let item of data">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                 {{item.description}}
-                </mat-panel-title>
-                <mat-panel-description>
-                 
-                 
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-          
-              <table>
-                <tr>
-                    <th scope="col">Kaptan Tarih/ Saat</th>
-                    <th scope="col">Kaptan Evrak</th>
+                <mat-expansion-panel-header (click)="loadGroup(item)">
+                    <mat-panel-title>
+                        {{item.description}}
+                    </mat-panel-title>
+                    <mat-panel-description>
 
-                    <th scope="col">M Acente Tarih/ Saat</th>
-                    <th scope="col">Acente Evrak</th>
 
-                    <th scope="col">C Loading Tarih/ Saat</th>
-                    <th scope="col"> C Loading Evrak</th>
-                </tr>
-                <tr ngFor="let row of item.process_sub_groups">
-                    <td>
-                        <mat-form-field >
-                              <input matInput  [matDatepicker]="picker">
-                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field>
-                    </td>
-                    <td>
-                        <input type="file" class="file-input"
-                            (change)="onFileSelected($event)" #fileUpload>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div *ngIf="isLoading;else loading">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Açıklama</th>
+                                <th scope="col">Kaptan Tarih/ Saat</th>
+                                <th scope="col">Kaptan Evrak</th>
 
-                        <div class="file-upload">
-                            {{fileName }}
-                            <button mat-mini-fab color="primary" class="upload-btn"
-                            (click)="fileUpload.click()">
-                                <mat-icon>attach_file</mat-icon>
-                            </button>
-                        </div>
-                    </td>
-                    <td >
-                        <mat-form-field >
-                              <input matInput  [matDatepicker]="picker">
-                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field>
-                    </td>
-                    <td style="margin-top: -10!important;align-items: center;">
-                        <input type="file" class="file-input"
-                            (change)="onFileSelected($event)" #fileUpload>
+                                <th scope="col">M Acente Tarih/ Saat</th>
+                                <th scope="col">Acente Evrak</th>
 
-                        <div class="file-upload">
-                            {{fileName }}
-                            <button mat-mini-fab color="primary" class="upload-btn"
-                            (click)="fileUpload.click()">
-                                <mat-icon>attach_file</mat-icon>
-                            </button>
-                        </div>
-                    </td>
-                    <td>
-                        <mat-form-field >
-                              <input matInput  [matDatepicker]="picker">
-                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field>
-                    </td>
-                    <td>
-                        <input type="file" class="file-input"
-                            (change)="onFileSelected($event)" #fileUpload>
+                                <th scope="col">C Loading Tarih/ Saat</th>
+                                <th scope="col"> C Loading Evrak</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="item.process_sub_groups.length">
 
-                        <div class="file-upload">
-                            {{fileName }}
-                            <button mat-mini-fab color="primary" class="upload-btn"
-                            (click)="fileUpload.click()">
-                                <mat-icon>attach_file</mat-icon>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-               
-            </table>
-            
-          
+                            <tr *ngFor="let rowGroup of item.process_sub_groups">
+                                <td>
+                                    {{rowGroup.description}}
+                                </td>
+                                <td>
+                                    <mat-form-field>
+                                        <input type="input" matInput [matDatepicker]="captain_process_date"
+                                            (ngModelChange)="editRowCaptain($event,rowGroup)"
+                                            [(ngModel)]="rowGroup.captain_process_date">
+                                        <mat-datepicker-toggle matSuffix [for]="captain_process_date">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #captain_process_date></mat-datepicker>
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+
+                                    <div class="file-upload">
+                                        {{fileName }}
+                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                            (click)="fileUpload.click()">
+                                            <mat-icon>attach_file</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <mat-form-field>
+                                        <input type="input" matInput [matDatepicker]="agency_process_date"
+                                            (ngModelChange)="editRowAg($event,rowGroup)"
+                                            [(ngModel)]="rowGroup.agency_process_date" (keyup.enter)="editRow(row)">
+                                        <mat-datepicker-toggle matSuffix [for]="agency_process_date">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #agency_process_date></mat-datepicker>
+                                    </mat-form-field>
+
+                                </td>
+                                <td style="margin-top: -10!important;align-items: center;">
+                                    <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+
+                                    <div class="file-upload">
+                                        {{fileName }}
+                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                            (click)="fileUpload.click()">
+                                            <mat-icon>attach_file</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <mat-form-field>
+                                        <input type="input" matInput [matDatepicker]="lm_process_date" #lm_date
+                                            (ngModelChange)="editRowLm($event,rowGroup)" [(ngModel)]="rowGroup.lm_process_date"
+                                            (keyup.enter)="editRow(row,$lm_date)">
+                                        <mat-datepicker-toggle matSuffix [for]="lm_process_date">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #lm_process_date></mat-datepicker>
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+                                    <div class="file-upload">
+                                        {{fileName }}
+                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                            (click)="fileUpload.click()">
+                                            <mat-icon>attach_file</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ng-template #loading>Loading...</ng-template>
             </mat-expansion-panel>
         </mat-accordion>
-       {{proposal}}
     </div>
-    -->
 </div>

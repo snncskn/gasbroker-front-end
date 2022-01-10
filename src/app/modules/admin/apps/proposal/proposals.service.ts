@@ -128,14 +128,16 @@ export class ProposalService {
         );
     }
 
-    getProcessGroup():
-    Observable<any> {
+    getProcessGroup(): Observable<any> {
     let url = `${environment.url}/process-group`;
     return this._httpClient.get<any>(url);
     }
+    getProcessDetail(processDetailID: string): Observable<any> {
+        let url = `${environment.url}/process-detail/details/${processDetailID}`;
+        return this._httpClient.get<any>(url);
+    }
 
-    getProcessGroupById(id: any):
-    Observable<any> {
+    getProcessGroupById(id: any): Observable<any> {
     let url = `${environment.url}/process-group/${id}`;
     return this._httpClient.get<any>(url);
     }
@@ -523,4 +525,12 @@ export class ProposalService {
             ))
         );
     }*/
+
+    updateRow(item: any){
+        //delete item.id;
+        return this._httpClient.post<any>(`${environment.url}/process-detail`, item)
+        .pipe(tap(data => {
+            return this.proposals = data.body
+        }));
+    }
 }

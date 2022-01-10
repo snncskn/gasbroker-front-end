@@ -41,6 +41,11 @@ import { MatCurrencyFormatModule } from 'mat-currency-format';
 import { ProposalTableComponent } from './proposal-table/proposal-table.component';
 import { AccordionDirective } from './accordion.directive';
 
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+
+
+
 @NgModule({
     declarations: [
         ProposalsComponent,
@@ -85,7 +90,9 @@ import { AccordionDirective } from './accordion.directive';
         MatCurrencyFormatModule,
         FileUploadModule,
         ConfirmationModule,
-        TranslocoModule
+        TranslocoModule,
+        FormsModule,
+        ReactiveFormsModule
         
     ],
     providers   : [
@@ -103,7 +110,8 @@ import { AccordionDirective } from './accordion.directive';
                     monthYearA11yLabel: 'MMMM YYYY'
                 }
             }
-        }
+        },
+
     ]
 })
 export class ProposalsModule

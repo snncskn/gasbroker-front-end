@@ -113,7 +113,6 @@ export class ProposalProcessComponent implements OnInit, AfterViewInit {
     });
     this.activatedRouter.paramMap.subscribe((params) => {
       if (params.has("id")) {
-        this.proposalID = params.get("id");
         this.isLoading = false;
         this.ngxService.start();
         this.list();
@@ -129,6 +128,7 @@ export class ProposalProcessComponent implements OnInit, AfterViewInit {
           let bodyForm = result[0].body;
           this.dataSourceGroup = result[2].body;
           this.isLoading = true;
+
           this.processForm.patchValue({
             id: bodyForm?.id,
             voyage_code: bodyForm?.voyage_code,
@@ -150,6 +150,8 @@ export class ProposalProcessComponent implements OnInit, AfterViewInit {
               this.items = [];
               items.body.forEach(element => {
                 element.open = true;
+                this.proposalID = element.process_id;
+
                 element.dataSourceGroup = this.dataSourceGroup;
                 element.markerPositions = [{ lat: Number(element.latitude), lng: Number(element.longitude) }];
                 this._proposalService.getProcessGroupById(element.group_id).subscribe(data => {
