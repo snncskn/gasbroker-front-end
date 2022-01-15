@@ -43,7 +43,19 @@ import { AccordionDirective } from './accordion.directive';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 
+const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
+    parse: {
+      dateInput: "l, LTS"
+    },
+    display: {
+      dateInput: "l, LTS",
+      monthYearLabel: "MMM YYYY",
+      dateA11yLabel: "LL",
+      monthYearA11yLabel: "MMMM YYYY"
+    }
+  };
 
 
 @NgModule({
@@ -111,6 +123,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
                 }
             }
         },
+        { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
+
 
     ]
 })

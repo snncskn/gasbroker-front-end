@@ -19,6 +19,12 @@ export class ProposalTableComponent implements OnInit {
   isLoading = false;
   @ContentChild(AccordionDirective, { read: TemplateRef })
   accordionBodyRef: TemplateRef<unknown>;
+  public showSpinners = true;
+  public showSeconds = false;
+  public stepHour = 1;
+  public stepMinute = 1;
+  public stepSecond = 1;
+  public touchUi = false;
 
   constructor(private readonly proposalService: ProposalService,
               private readonly fileService: FileService) {
@@ -92,6 +98,8 @@ export class ProposalTableComponent implements OnInit {
             subElement.lm_media_path = tmp.lm_media_path;
           }
           subElement.id = tmp.id;
+          subElement.realId = tmp.id;
+
         }
         console.log(tmp);
       });
@@ -109,7 +117,6 @@ export class ProposalTableComponent implements OnInit {
       captain_process_date: event.toISOString(),
       agency_process_date: row.agency_process_date_str,
       lm_process_date: row.lm_process_date_str,
-
     };
     if(row.realId){
       item.id = row.realId;
@@ -136,7 +143,7 @@ export class ProposalTableComponent implements OnInit {
     if(row.realId){
       item.id = row.realId;
     }else{
-      delete item.id;
+      //delete item.id;
     }
     this.proposalService.updateRow(item).subscribe(data=>{
       row.realId = data.body.id;

@@ -17,13 +17,26 @@ import { ToastrModule } from 'ng6-toastr-notifications';
 import { HttpClientModule } from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
+import { NgxMatDateFormats } from '@angular-material-components/datetime-picker';
 
+ 
+  
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
     preloadingStrategy       : PreloadAllModules
 };
 
-
+const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
+    parse: {
+      dateInput: "l, LTS"
+    },
+    display: {
+      dateInput: "l, LTS",
+      monthYearLabel: "MMM YYYY",
+      dateA11yLabel: "LL",
+      monthYearA11yLabel: "MMMM YYYY"
+    }
+  };
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     bgsColor: 'red',
     bgsPosition: POSITION.bottomCenter,
@@ -53,10 +66,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         HttpClientModule, 
         FormsModule,
         ReactiveFormsModule,
-        LayoutModule,
-        
+        LayoutModule        
     ],
-    providers: [],
+    providers: [
+    ],
     bootstrap   : [
         AppComponent
     ]

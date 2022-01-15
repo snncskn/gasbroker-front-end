@@ -48,8 +48,7 @@ export class ProposalService {
     get proposal$(): Observable<Proposal> {
         return this._proposal.asObservable();
     }
-    get pagination$(): Observable<InventoryPagination>
-    {
+    get pagination$(): Observable<InventoryPagination> {
         return this._pagination.asObservable();
     }
     /**
@@ -82,7 +81,7 @@ export class ProposalService {
     get getTotalSize$(): Observable<any> {
         return this._totalSize;
     }
-    
+
     get getTotalPage$(): Observable<any> {
         return this._totalPage;
     }
@@ -95,7 +94,7 @@ export class ProposalService {
      * Get customers
      */
     getProposals(page: number = 0, size: number = 5, sort: string = 'created_at', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
-    Observable<any> {
+        Observable<any> {
 
         return this._httpClient.get<any>(`${environment.url}/proposal?page=${page}&size=${size}&sortBy=${sort}&sortType=${order}&filter=${search}`).pipe(
             tap((proposals) => {
@@ -108,13 +107,13 @@ export class ProposalService {
         );
     }
 
-    getProposalById(id:any):
-    Observable<any> {
-    let url = `${environment.url}/proposal/${id}`;
-    return this._httpClient.get<any>(url);
+    getProposalById(id: any):
+        Observable<any> {
+        let url = `${environment.url}/proposal/${id}`;
+        return this._httpClient.get<any>(url);
     }
 
-    getProcessByProposalId(id:any): Observable<any> {
+    getProcessByProposalId(id: any): Observable<any> {
         return this._httpClient.get<any>(`${environment.url}/process/processes/${id}`)
     }
 
@@ -129,8 +128,8 @@ export class ProposalService {
     }
 
     getProcessGroup(): Observable<any> {
-    let url = `${environment.url}/process-group`;
-    return this._httpClient.get<any>(url);
+        let url = `${environment.url}/process-group`;
+        return this._httpClient.get<any>(url);
     }
     getProcessDetail(processDetailID: string): Observable<any> {
         let url = `${environment.url}/process-detail/details/${processDetailID}`;
@@ -138,8 +137,8 @@ export class ProposalService {
     }
 
     getProcessGroupById(id: any): Observable<any> {
-    let url = `${environment.url}/process-group/${id}`;
-    return this._httpClient.get<any>(url);
+        let url = `${environment.url}/process-group/${id}`;
+        return this._httpClient.get<any>(url);
     }
 
     public CustomersFind(search: string): Observable<any> {
@@ -164,9 +163,9 @@ export class ProposalService {
     }
 
     getCurrency():
-    Observable<any> {
-    let url = `${environment.url}/parameter/category/CURRENCY_TYPES`;
-    return this._httpClient.get<any>(url);
+        Observable<any> {
+        let url = `${environment.url}/parameter/category/CURRENCY_TYPES`;
+        return this._httpClient.get<any>(url);
     }
 
     getCustomers():
@@ -215,17 +214,15 @@ export class ProposalService {
     }
 
 
-    createProposal(item: any, isSubmit:boolean): Observable<any> {
-        if(item.id)
-        {
+    createProposal(item: any, isSubmit: boolean): Observable<any> {
+        if (item.id) {
             return this.proposals$.pipe(
                 take(1),
-                switchMap(proposals => this._httpClient.put<any>(`${environment.url}/proposal/`+item.id, item).pipe(
+                switchMap(proposals => this._httpClient.put<any>(`${environment.url}/proposal/` + item.id, item).pipe(
                     map((newVehicle) => {
-    
+
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        if(isSubmit)
-                        {
+                        if (isSubmit) {
                             this.toastr.successToastr(this.translocoService.translate('message.updateProposal'));
                         }
                         return newVehicle.body;
@@ -233,16 +230,14 @@ export class ProposalService {
                 ))
             );
         }
-        else
-        {
+        else {
             return this.proposals$.pipe(
                 take(1),
                 switchMap(proposals => this._httpClient.post<any>(`${environment.url}/proposal`, item).pipe(
                     map((newVehicle) => {
-    
+
                         //this._proposals.next([newVehicle.body, ...proposals]);
-                        if(isSubmit)
-                        {
+                        if (isSubmit) {
                             this.toastr.successToastr(this.translocoService.translate('message.createProposal'));
                         }
                         return newVehicle.body;
@@ -258,7 +253,7 @@ export class ProposalService {
             switchMap(offers => this._httpClient.post<any>(`${environment.url}/offer`, item).pipe(
                 map((newOffer) => {
                     this.toastr.successToastr(this.translocoService.translate('message.offerReceived'));
-                    
+
                     return newOffer.body;
                 })
             ))
@@ -270,20 +265,19 @@ export class ProposalService {
             switchMap(offers => this._httpClient.put<any>(`${environment.url}/offer/${item.id}`, item).pipe(
                 map((newOffer) => {
                     this.toastr.successToastr(this.translocoService.translate('message.offerReceived'));
-                    
+
                     return newOffer.body;
                 })
             ))
         );
     }
     createProcess(item: any): Observable<any> {
-        if(item.id)
-        {
+        if (item.id) {
             return this.processes$.pipe(
                 take(1),
-                switchMap(processes => this._httpClient.put<any>(`${environment.url}/process/`+item.id, item).pipe(
+                switchMap(processes => this._httpClient.put<any>(`${environment.url}/process/` + item.id, item).pipe(
                     map((newProcess) => {
-    
+
                         //this._proposals.next([newVehicle.body, ...proposals]);
                         this.toastr.successToastr(this.translocoService.translate('message.updateProcess'));
                         return newProcess.body;
@@ -291,13 +285,12 @@ export class ProposalService {
                 ))
             );
         }
-        else
-        {
+        else {
             return this.processes$.pipe(
                 take(1),
                 switchMap(proposals => this._httpClient.post<any>(`${environment.url}/process`, item).pipe(
                     map((newProcess) => {
-    
+
                         //this._proposals.next([newVehicle.body, ...proposals]);
                         this.toastr.successToastr(this.translocoService.translate('message.savedProcess'));
                         return newProcess.body;
@@ -308,13 +301,12 @@ export class ProposalService {
     }
 
     createProcessItem(item: any): Observable<any> {
-        if(item.id)
-        {
+        if (item.id) {
             return this.process_items$.pipe(
                 take(1),
-                switchMap(processes => this._httpClient.put<any>(`${environment.url}/process-item/`+item.id, item).pipe(
+                switchMap(processes => this._httpClient.put<any>(`${environment.url}/process-item/` + item.id, item).pipe(
                     map((newProcess) => {
-    
+
                         //this._proposals.next([newVehicle.body, ...proposals]);
                         this.toastr.successToastr(this.translocoService.translate('message.updateProcessItem'));
                         return newProcess.body;
@@ -322,13 +314,12 @@ export class ProposalService {
                 ))
             );
         }
-        else
-        {
+        else {
             return this.process_items$.pipe(
                 take(1),
                 switchMap(proposals => this._httpClient.post<any>(`${environment.url}/process-item`, item).pipe(
                     map((newProcess) => {
-    
+
                         //this._proposals.next([newVehicle.body, ...proposals]);
                         this.toastr.successToastr(this.translocoService.translate('message.savedProcessItem'));
                         return newProcess.body;
@@ -340,8 +331,8 @@ export class ProposalService {
 
     getProcessItemsByProcessId(id: string): Observable<any> {
         let url = `${environment.url}/process-item/items/${id}`;
-        return   this._httpClient.get<any>(url);
-       }
+        return this._httpClient.get<any>(url);
+    }
 
 
     newVehicle(): Observable<any> {
@@ -380,9 +371,8 @@ export class ProposalService {
                     return isDeleted;
                 })
             )),
-            catchError((error)=>{
-                if(error instanceof HttpErrorResponse && error.status == 601)
-                {
+            catchError((error) => {
+                if (error instanceof HttpErrorResponse && error.status == 601) {
                     this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
                 }
                 return throwError(error);
@@ -390,10 +380,9 @@ export class ProposalService {
         );
     }
 
-    deleteDocs(doc: any): Observable<any>
-    {
+    deleteDocs(doc: any): Observable<any> {
         let url = `${environment.url}/media/delete/`;
-        return this._httpClient.put<any>(url+doc.id, doc).pipe(
+        return this._httpClient.put<any>(url + doc.id, doc).pipe(
             map((newDoc) => {
                 this.toastr.successToastr(this.translocoService.translate('message.deleteMedia'));
                 return newDoc
@@ -470,9 +459,8 @@ export class ProposalService {
                     return isDeleted;
                 })
             )),
-            catchError((error)=>{
-                if(error instanceof HttpErrorResponse && error.status == 601)
-                {
+            catchError((error) => {
+                if (error instanceof HttpErrorResponse && error.status == 601) {
                     this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
                 }
                 return throwError(error);
@@ -498,9 +486,8 @@ export class ProposalService {
                     return isDeleted;
                 })
             )),
-            catchError((error)=>{
-                if(error instanceof HttpErrorResponse && error.status == 601)
-                {
+            catchError((error) => {
+                if (error instanceof HttpErrorResponse && error.status == 601) {
                     this.toastr.errorToastr(this.translocoService.translate('message.error.601'));
                 }
                 return throwError(error);
@@ -526,11 +513,19 @@ export class ProposalService {
         );
     }*/
 
-    updateRow(item: any){
+    updateRow(item: any) {
         //delete item.id;
-        return this._httpClient.post<any>(`${environment.url}/process-detail`, item)
-        .pipe(tap(data => {
-            return this.proposals = data.body
-        }));
+        if (!item.id) {
+            return this._httpClient.post<any>(`${environment.url}/process-detail`, item)
+                .pipe(tap(data => {
+                    return this.proposals = data.body
+                }));
+
+        } else {
+            return this._httpClient.put<any>(`${environment.url}/process-detail/${item.id}`, item)
+                .pipe(tap(data => {
+                    return this.proposals = data.body
+                }));
+        }
     }
 }
