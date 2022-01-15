@@ -72,6 +72,7 @@ export class HelpCenterService
         );
     }
     saveHelp(item: any): Observable<any>{
+        console.log(item);
         if(!item.id){
             return this._httpClient.post<any>(`${environment.url}/help-item`,item).pipe(
                 map((newItem) => {
