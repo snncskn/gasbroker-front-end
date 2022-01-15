@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { FaqCategory, Guide, GuideCategory } from 'app/modules/admin/apps/help-center/help-center.type';
 import { environment } from 'environments/environment';
+import { ToastrManager } from 'ng6-toastr-notifications';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({
     providedIn: 'root'
@@ -17,9 +19,13 @@ export class HelpCenterService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
-    {
+    constructor(private _httpClient: HttpClient,
+        public toastr: ToastrManager,
+        private translocoService: TranslocoService
+
+    ) {
     }
+    headers =[];
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -66,7 +72,29 @@ export class HelpCenterService
         );
     }
     saveHelp(item: any): Observable<any>{
-        return this._httpClient.post<any>(`${environment.url}/help`,item);  
+        if(!item.id){
+            return this._httpClient.post<any>(`${environment.url}/help-item`,item).pipe(
+                map((newItem) => {
+                    this.toastr.successToastr(this.translocoService.translate('message.updateProduct'));
+
+                    return newItem;
+                })
+            )
+
+        }else{
+            return this._httpClient.put(`${environment.url}/help-item/${item.id}`,item).pipe(
+                map((newItem) => {
+                    this.toastr.successToastr(this.translocoService.translate('message.updateProduct'));
+
+                    return newItem;
+                })
+            )
+
+        }
+        
+    }
+    updateHelp(item: any, id:any): Observable<any>{
+        return this._httpClient.put<any>(`${environment.url}/help`,item, id);  
     }
 
     /**

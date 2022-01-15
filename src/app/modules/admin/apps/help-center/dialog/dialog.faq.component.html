@@ -1,5 +1,10 @@
 <div mat-dialog-content>
   <mat-form-field style="width: 100%;" appearance="fill">
+   
+    <input type="hidden" matInput [(ngModel)]="data.id">
+  </mat-form-field>
+
+  <mat-form-field style="width: 100%;" appearance="fill">
     <mat-label>Head</mat-label>
     <input matInput [(ngModel)]="data.head">
   </mat-form-field>
