@@ -34,29 +34,76 @@
     <div class="flex flex-col items-center p-6 sm:p-10">
         <div class="flex flex-col w-full max-w-4xl">
             <ng-container *ngFor="let faqCategory of faqCategories; trackBy: trackByFn">
-                <div class="mt-12 sm:mt-16 text-3xl font-bold leading-tight tracking-tight">{{faqCategory.head}}</div>
+                <div class="mt-12 sm:mt-16 text-3xl font-bold leading-tight tracking-tight">
+                    <button 
+                        style="float: left;"
+                        type="button"
+                        class="fuse-mat-button-rounded text-on-warn-100"
+                        mat-icon-button
+                        [color]="'warn'"
+                        (click)="deleteDialog(faq)">
+                        <mat-icon
+                            matPrefix
+                            class="hidden sm:flex icon-size-4"
+                            [svgIcon]="'heroicons_outline:trash'">
+                        </mat-icon>
+                    </button>
+                    <button 
+                        style="float: left;" 
+                        type="button"
+                        class="fuse-mat-button-rounded"
+                        (click)="openDialog(faq)"
+                        mat-icon-button
+                        [color]="'primary'">
+                        <mat-icon
+                            matPrefix 
+                            class="hidden sm:flex icon-size-4" 
+                            [svgIcon]="'heroicons_solid:pencil-alt'">
+                        </mat-icon>
+                    </button>
+                    {{faqCategory.head}}
+                </div>
                 <mat-accordion class="max-w-4xl mt-8">
                     <ng-container *ngFor="let faq of faqCategory.help_items; trackBy: trackByFn">
                         <mat-expansion-panel>
                             <mat-expansion-panel-header [collapsedHeight]="'56px'">
-                                <mat-panel-title class="font-medium leading-tight">{{faq.head}}</mat-panel-title>
+                                <mat-panel-title class="font-medium leading-tight">
+                                    <div text-align: center>
+                                        <button 
+                                            style="float: left;"
+                                            type="button"
+                                            class="fuse-mat-button-rounded text-on-warn-100"
+                                            mat-icon-button
+                                            [color]="'warn'"
+                                            (click)="deleteDialog(faq)">
+                                            <mat-icon matPrefix
+                                                class="hidden sm:flex icon-size-4"
+                                                [svgIcon]="'heroicons_outline:trash'">
+                                            </mat-icon>
+                                        </button>
+                                        <button 
+                                            style="float: right;" 
+                                            type="button"
+                                            class="fuse-mat-button-rounded text-on-warn-100"
+                                            (click)="openDialog(faq)"
+                                            mat-icon-button
+                                            [color]="'primary'">
+                                            <mat-icon
+                                                matPrefix 
+                                                class="hidden sm:flex icon-size-4" 
+                                                [svgIcon]="'heroicons_solid:pencil-alt'">
+                                            </mat-icon>
+                                        </button>
+                                    </div>
+                                {{faq.head}}
+                            </mat-panel-title>
                             </mat-expansion-panel-header>
                             {{faq.content}}
                             <ng-container *ngIf="faq.links" >
-                                <button style="float: right;" 
-                                    mat-icon-button
-                                    class="ml-3 w-2 h-2 min-h-3"
-                                    [color]="'primary'"
-                                    (click)="openDialog(faq)">
-                                    <mat-icon 
-                                        class="icon-size-5" 
-                                        [svgIcon]="'heroicons_solid:pencil-alt'">
-                                    </mat-icon>
-                                </button>
                                     <br/>
-                                <a href="{{faq.links}}" target="_blank">  {{faq.links}} </a>
+                                <a href="{{faq.links}}" target="_blank">{{faq.links}}</a>
                                 <button 
-                                    mat-icon-button 
+                                    mat-icon-button
                                     class="ml-3 w-2 h-2 min-h-3" 
                                     (click)="link(faq.links)" 
                                     [color]="'warn'">

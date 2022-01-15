@@ -17,13 +17,10 @@
                         <thead>
                             <tr>
                                 <th scope="col">Açıklama</th>
-                                <th scope="col">Kaptan Tarih/ Saat</th>
                                 <th scope="col">Kaptan Evrak</th>
 
-                                <th scope="col">M Acente Tarih/ Saat</th>
                                 <th scope="col">Acente Evrak</th>
 
-                                <th scope="col">C Loading Tarih/ Saat</th>
                                 <th scope="col"> C Loading Evrak</th>
                             </tr>
                         </thead>
@@ -50,12 +47,12 @@
 
                                     <div class="file-upload">
 
-                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                        <button mat-mini-fab color="primary" class="upload-btn icon-size-7"
                                         *ngIf="rowGroup.captain_media_path"
                                             (click)="openNewWindows(rowGroup.captain_media_path)">
                                             <mat-icon>download</mat-icon>
                                         </button>
-                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                        <button mat-mini-fab color="primary" class="upload-btn icon-size-7"
                                             (click)="fileUploadCaptain.click()">
                                             <mat-icon>attach_file</mat-icon>
                                         </button>
@@ -77,12 +74,12 @@
                                         (change)="onFileSelected($event,'agency_media_path',rowGroup)" #fileUpload>
 
                                     <div class="file-upload">
-                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                        <button mat-mini-fab color="primary" class="upload-btn icon-size-7"
                                             *ngIf="rowGroup.agency_media_path"
                                             (click)="openNewWindows(rowGroup.agency_media_path)">
                                             <mat-icon>download</mat-icon>
                                         </button> 
-                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                        <button mat-mini-fab color="primary" class="upload-btn icon-size-7"
                                             (click)="fileUpload.click()">
                                             <mat-icon>attach_file</mat-icon>
                                         </button>
@@ -103,12 +100,12 @@
                                     <input type="file" class="file-input"
                                         (change)="onFileSelected($event,'lm_media_path',rowGroup)" #fileUploadLm>
                                     <div class="file-upload">
-                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                        <button mat-mini-fab color="primary" class="upload-btn icon-size-7"
                                         *ngIf="rowGroup.lm_media_path"
                                         (click)="openNewWindows(rowGroup.lm_media_path)">
                                         <mat-icon>download</mat-icon>
                                     </button> 
-                                        <button mat-mini-fab color="primary" class="upload-btn"
+                                        <button mat-mini-fab color="primary" class="upload-btn icon-size-7"
                                             (click)="fileUploadLm.click()">
                                             <mat-icon>attach_file</mat-icon>
                                         </button>
