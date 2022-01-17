@@ -24,9 +24,10 @@ export class DialogFaq {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  dialogUpdate(){
+  dialogUpdate()
+  {
     this.helpService.saveHelp(this.data).subscribe(res => {
-      this.dialogRef.close(res);
-    });
+      this.dialogRef.close();
+    })
   }
 }

@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HelpCenterService } from 'app/modules/admin/apps/help-center/help-center.service';
 import { FaqCategory } from 'app/modules/admin/apps/help-center/help-center.type';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogFaq } from '../dialog/dialog.component';
+import { ConfirmationDialog } from '../../delete-dialog/delete.component';
 
 @Component({
     selector     : 'help-center-faqs',
@@ -15,6 +16,9 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
 {
     faqCategories: FaqCategory[];
     private _unsubscribeAll: Subject<any> = new Subject();
+    dialogRef: MatDialogRef<ConfirmationDialog>;
+
+    isLoading: boolean = false;
 
     /**
      * Constructor
@@ -79,6 +83,21 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
           console.log('The dialog was closed');
         
         });
+    }
+
+    deleteDialog(item) {
+        if (item) {
+            this.dialogRef = this.dialog.open(ConfirmationDialog, {
+                disableClose: false,
+            });
+            this.dialogRef.afterClosed().subscribe((result) => {
+                if (result) {
+                    this.isLoading = true;
+                    this._helpCenterService.deleteDialog(item).subscribe();
+                }
+                this.dialogRef = null;
+            })
+        }
     }
 
 

@@ -98,6 +98,17 @@ export class HelpCenterService
         return this._httpClient.put<any>(`${environment.url}/help`,item, id);  
     }
 
+    deleteDialog(item: any): Observable<any>
+    {
+        let url = `${environment.url}/help-item/delete/`;
+        return this._httpClient.put<any>(url+item.id, item).pipe(
+            map((newItem) => {
+                this.toastr.successToastr(this.translocoService.translate('message.deleteMedia'));
+                return newItem
+            })
+        )
+    }
+
     /**
      * Get FAQs by category using category slug
      *
