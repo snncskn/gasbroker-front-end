@@ -197,6 +197,13 @@
   dependencies:
     "tslib" "^2.1.0"
 
+"@angular-material-components/moment-adapter@6.0.0":
+  "integrity" "sha512-YnUfaaYIsK1xeN3D84RGc500ieh7BrgSK1DNh3abneeKGTS9es9FJPkqK3JW9P+8460YQ4hxrMMeerGLG30C5A=="
+  "resolved" "https://registry.npmjs.org/@angular-material-components/moment-adapter/-/moment-adapter-6.0.0.tgz"
+  "version" "6.0.0"
+  dependencies:
+    "tslib" "^2.1.0"
+
 "@angular/animations@^12.0.0 || ^13.0.0-0", "@angular/animations@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/animations@12.0.2":
   "integrity" "sha512-5RZ5a8ouVZ3iDy29uZ7jCryisWjX2c9xjIG5F5rn+mBL3UkxzzUDFhql9rP0PB5G+aGgaElSlTatGJ85mY0XvA=="
   "resolved" "https://registry.npmjs.org/@angular/animations/-/animations-12.0.2.tgz"

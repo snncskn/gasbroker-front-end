@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -45,19 +45,25 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular-material-components/moment-adapter';
+
+
+const CUSTOM_PARSE_DATE_INPUT = 'l, LTS';
+const CUSTOM_DISPLAY_DATE_INPUT = 'DD-MMM-YYYY, HH:mm';
+
+// If using Moment
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
-    parse: {
-      dateInput: "l, LTS"
-    },
-    display: {
-      dateInput: "l, LTS",
-      monthYearLabel: "MMM YYYY",
-      dateA11yLabel: "LL",
-      monthYearA11yLabel: "MMMM YYYY"
-    }
-  };
-
-
+  parse: {
+    dateInput: CUSTOM_PARSE_DATE_INPUT
+  },
+  display: {
+    dateInput: CUSTOM_DISPLAY_DATE_INPUT,
+    monthYearLabel: "MMM YYYY",
+    dateA11yLabel: "LL",
+    monthYearA11yLabel: "MMMM YYYY"
+  }
+};
 @NgModule({
     declarations: [
         ProposalsComponent,
@@ -104,25 +110,14 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
         ConfirmationModule,
         TranslocoModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgxMatDatetimePickerModule,
+        NgxMatTimepickerModule,
+        NgxMatNativeDateModule
         
     ],
     providers   : [
         ProposalListComponent,
-        {
-            provide : MAT_DATE_FORMATS,
-            useValue: {
-                parse  : {
-                    dateInput: moment.ISO_8601
-                },
-                display: {
-                    dateInput         : 'DD/MM/yyyy',
-                    monthYearLabel    : 'MMM YYYY',
-                    dateA11yLabel     : 'LL',
-                    monthYearA11yLabel: 'MMMM YYYY'
-                }
-            }
-        },
         { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
 
 

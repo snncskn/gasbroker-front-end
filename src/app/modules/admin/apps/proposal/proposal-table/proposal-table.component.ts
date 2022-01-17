@@ -25,6 +25,7 @@ export class ProposalTableComponent implements OnInit {
   public stepMinute = 1;
   public stepSecond = 1;
   public touchUi = false;
+  
 
   constructor(private readonly proposalService: ProposalService,
               private readonly fileService: FileService) {
@@ -97,17 +98,16 @@ export class ProposalTableComponent implements OnInit {
           if(tmp.lm_media_path){
             subElement.lm_media_path = tmp.lm_media_path;
           }
-          subElement.id = tmp.id;
           subElement.realId = tmp.id;
 
         }
-        console.log(tmp);
       });
   
     })
   }
 
   editRowCaptain(event,row: any){
+    console.log(event);
     row.captain_process_date_str = ''+event.toISOString();
     let item = {
       id:'',

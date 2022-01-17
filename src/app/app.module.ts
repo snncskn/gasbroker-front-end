@@ -26,17 +26,6 @@ const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules
 };
 
-const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
-    parse: {
-      dateInput: "l, LTS"
-    },
-    display: {
-      dateInput: "l, LTS",
-      monthYearLabel: "MMM YYYY",
-      dateA11yLabel: "LL",
-      monthYearA11yLabel: "MMMM YYYY"
-    }
-  };
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     bgsColor: 'red',
     bgsPosition: POSITION.bottomCenter,

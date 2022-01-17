@@ -33,35 +33,17 @@
                                     {{rowGroup.description}}
                                 </td>
                                 <td>  
-                                    <input mdc-datetime-picker="" date="true" time="true" type="text" id="datetime"
-                                        placeholder="Date" show-todays-date="" minutes="true" min-date="date" show-icon="true"
-                                        ng-model="dateTime" class=" dtp-no-msclear dtp-input md-input">
-
-<!--
                                     <mat-form-field>
-                                        <input matInput [ngxMatDatetimePicker]="captain_process_date" placeholder="Choose a date" 
+                                        <input matInput [ngxMatDatetimePicker]="captain_process_date" 
+                                        placeholder="Choose a date" 
                                         (ngModelChange)="editRowCaptain($event,rowGroup)"
                                         [(ngModel)]="rowGroup.captain_process_date">
                                         <mat-datepicker-toggle matSuffix [for]="captain_process_date"></mat-datepicker-toggle>
                                         <ngx-mat-datetime-picker #captain_process_date
-                                            [showSpinners]="showSpinners" 
-                                            [showSeconds]="showSeconds"
-                                            [stepHour]="stepHour" [stepMinute]="stepMinute" 
-                                            [stepSecond]="stepSecond"
-                                            [touchUi]="touchUi"
-                                        >
-                                        </ngx-mat-datetime-picker>
-                                     </mat-form-field>
-                                 
-                                    <mat-form-field>
-                                        <input type="input" matInput [matDatepicker]="captain_process_date"
-                                            (ngModelChange)="editRowCaptain($event,rowGroup)"
-                                            [(ngModel)]="rowGroup.captain_process_date">
-                                        <mat-datepicker-toggle matSuffix [for]="captain_process_date">
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #captain_process_date></mat-datepicker>
-                                    </mat-form-field>
-                                -->
+                                        [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                        [stepHour]="stepHour" [stepMinute]="stepMinute" 
+                                        [stepSecond]="stepSecond" [touchUi]="touchUi"></ngx-mat-datetime-picker>
+                                      </mat-form-field>
                                 </td>
                                 <td>
                                     <input type="file" class="file-input"
@@ -82,27 +64,14 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <!---  <mat-form-field>
+                                    <mat-form-field>
                                         <input matInput [ngxMatDatetimePicker]="agency_process_date" 
+                                        placeholder="Choose a date" 
                                         (ngModelChange)="editRowAg($event,rowGroup)"
-                                        placeholder="Choose a date & time" [(ngModel)]="rowGroup.agency_process_date">
+                                        [(ngModel)]="rowGroup.agency_process_date">
                                         <mat-datepicker-toggle matSuffix [for]="agency_process_date"></mat-datepicker-toggle>
                                         <ngx-mat-datetime-picker #agency_process_date></ngx-mat-datetime-picker>
-                                    </mat-form-field>
-                                -->    
-                                    <mat-form-field>
-                                        <input type="input" matInput [matDatepicker]="agency_process_date"
-                                            (ngModelChange)="editRowAg($event,rowGroup)"
-                                            [(ngModel)]="rowGroup.agency_process_date" (keyup.enter)="editRow(row)">
-                                        <mat-datepicker-toggle matSuffix [for]="agency_process_date">
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #agency_process_date></mat-datepicker>
-                                        <ngx-mat-timepicker [(ngModel)]="rowGroup.agency_process_date_timer">
-                                        </ngx-mat-timepicker>
-                                    </mat-form-field>
-
-                              
-
+                                      </mat-form-field>
                                 </td>
                                 <td style="margin-top: -10!important;align-items: center;">
                                     <input type="file" class="file-input"
@@ -122,14 +91,13 @@
                                 </td>
                                 <td>
                                     <mat-form-field>
-                                        <input type="input" matInput [matDatepicker]="lm_process_date" #lm_date
-                                            (ngModelChange)="editRowLm($event,rowGroup)"
-                                            [(ngModel)]="rowGroup.lm_process_date"
-                                            (keyup.enter)="editRow(row,$lm_date)">
-                                        <mat-datepicker-toggle matSuffix [for]="lm_process_date">
-                                        </mat-datepicker-toggle>
-                                        <mat-datepicker #lm_process_date></mat-datepicker>
-                                    </mat-form-field>
+                                        <input matInput [ngxMatDatetimePicker]="lm_process_date" 
+                                        placeholder="Choose a date" 
+                                        (ngModelChange)="editRowLm($event,rowGroup)"
+                                        [(ngModel)]="rowGroup.lm_process_date">
+                                        <mat-datepicker-toggle matSuffix [for]="lm_process_date"></mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #lm_process_date></ngx-mat-datetime-picker>
+                                      </mat-form-field>
                                 </td>
                                 <td>
                                     <input type="file" class="file-input"
