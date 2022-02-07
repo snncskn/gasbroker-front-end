@@ -5,6 +5,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { SharedModule } from 'app/shared/shared.module';
 import { HelpCenterComponent } from 'app/modules/admin/apps/help-center/help-center.component';
@@ -15,6 +16,9 @@ import { HelpCenterGuidesGuideComponent } from 'app/modules/admin/apps/help-cent
 import { HelpCenterSupportComponent } from 'app/modules/admin/apps/help-center/support/support.component';
 import { helpCenterRoutes } from 'app/modules/admin/apps/help-center/help-center.routing';
 import { DialogFaq } from './dialog/dialog.component';
+import { HeaderFaq } from './dialog/header/dialog-header.component';
+import { upHeaderFaq } from './dialog/upHeader/dialog-upHeader.component';
+
 
 @NgModule({
     declarations: [
@@ -24,7 +28,9 @@ import { DialogFaq } from './dialog/dialog.component';
         HelpCenterGuidesCategoryComponent,
         HelpCenterGuidesGuideComponent,
         HelpCenterSupportComponent,
-        DialogFaq
+        DialogFaq,
+        HeaderFaq,
+        upHeaderFaq
     ],
     imports     : [
         RouterModule.forChild(helpCenterRoutes),
@@ -34,7 +40,8 @@ import { DialogFaq } from './dialog/dialog.component';
         MatIconModule,
         MatInputModule,
         FuseAlertModule,
-        SharedModule
+        SharedModule,
+        MatTooltipModule
     ]
 })
 export class HelpCenterModule

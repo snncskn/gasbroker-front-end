@@ -6,6 +6,7 @@ import { FaqCategory, Guide, GuideCategory } from 'app/modules/admin/apps/help-c
 import { environment } from 'environments/environment';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { TranslocoService } from '@ngneat/transloco';
+import { upHeaderData } from './dialog/upHeader/dialog-upHeader.component';
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +26,6 @@ export class HelpCenterService
 
     ) {
     }
-    headers =[];
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -83,7 +83,7 @@ export class HelpCenterService
             )
 
         }else{
-            return this._httpClient.put(`${environment.url}/help-item/${item.id}`,item).pipe(
+            return this._httpClient.put<any>(`${environment.url}/help-item/${item.id}`,item).pipe(
                 map((newItem) => {
                     this.toastr.successToastr(this.translocoService.translate('message.updateProduct'));
 
@@ -94,17 +94,57 @@ export class HelpCenterService
         }
         
     }
-    updateHelp(item: any, id:any): Observable<any>{
-        return this._httpClient.put<any>(`${environment.url}/help`,item, id);  
+    createDialog(item: any): Observable<any>{
+        console.log(item);
+        if(item.id!== ''){
+            return this._httpClient.put<any>(`${environment.url}/help-item/${item.id}`,item);
+            
+        }
+        else {
+            return this._httpClient.post<any>(`${environment.url}/help-item/`,item);
+        }
+    }
+    saveHelpHeader(item: any): Observable<any>{
+        if(item.id!== ''){
+            return this._httpClient.put<any>(`${environment.url}/help/${item.id}`,item);
+            
+        }
+        else {
+            return this._httpClient.post<any>(`${environment.url}/help/`,item);
+        }
+    }
+
+    createHeader(item: any): Observable<any> {
+        if(item.id!== ''){
+            return this._httpClient.put<any>(`${environment.url}/help/${item.id}`,item);
+            
+        }
+        else {
+            return this._httpClient.post<any>(`${environment.url}/help/`,item);
+        }
+    }
+    updateHelp(item: any, id?:any): Observable<any>{
+        console.log(item)
+        return this._httpClient.post<any>(`${environment.url}/help/`,item, id);  
+    }
+    deleteDialogHeader(item: any): Observable<any>
+    {
+        
+        let url = `${environment.url}/help/delete`;
+        return this._httpClient.put<any>(url+item.id, item).pipe(
+            map((newItem) => {
+                this.toastr.successToastr(this.translocoService.translate('message.deleteMedia'));
+
+            })
+        )
     }
 
     deleteDialog(item: any): Observable<any>
     {
-        let url = `${environment.url}/help-item/delete/`;
+        let url = `${environment.url}/help-item/delete`;
         return this._httpClient.put<any>(url+item.id, item).pipe(
             map((newItem) => {
-                this.toastr.successToastr(this.translocoService.translate('message.deleteMedia'));
-                return newItem
+                this.toastr.successToastr(this.translocoService.translate('message.deleteMedia'))
             })
         )
     }

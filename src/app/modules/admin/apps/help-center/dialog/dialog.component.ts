@@ -12,7 +12,7 @@ export interface DialogData {
 @Component({
   selector: 'dialog.faq',
   templateUrl: 'dialog.faq.component.html',
-  styleUrls  : ['./dialog.component.css'],
+  styleUrls  : ['./dialog.component.scss'],
 })
 export class DialogFaq {
   constructor(
@@ -27,6 +27,12 @@ export class DialogFaq {
   dialogUpdate()
   {
     this.helpService.saveHelp(this.data).subscribe(res => {
+      this.dialogRef.close();
+    })
+  }
+  createDialog()
+  {
+    this.helpService.createDialog(this.data).subscribe(res => {
       this.dialogRef.close();
     })
   }

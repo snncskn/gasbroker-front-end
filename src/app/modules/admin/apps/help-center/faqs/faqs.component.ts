@@ -6,6 +6,8 @@ import { FaqCategory } from 'app/modules/admin/apps/help-center/help-center.type
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogFaq } from '../dialog/dialog.component';
 import { ConfirmationDialog } from '../../delete-dialog/delete.component';
+import { HeaderFaq } from '../dialog/header/dialog-header.component';
+import { upHeaderFaq } from '../dialog/upHeader/dialog-upHeader.component';
 
 @Component({
     selector     : 'help-center-faqs',
@@ -38,11 +40,7 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Get the FAQs
-        this._helpCenterService.faqs$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((faqCategories) => {
-                this.faqCategories = faqCategories;
-            });
+        this.onLoad();
     }
 
     /**
@@ -81,8 +79,53 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
     
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed');
-        
+          this.onLoad();
         });
+    }
+    createHeader(row?: any): void {
+        console.log(row);
+        const dialogRef = this.dialog.open(upHeaderFaq, {
+            width: '450px',
+            data: row,
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            this.onLoad();
+        })
+    }
+    saveHelpHeader(row: any): void {
+        console.log(row);
+        const dialogRef = this.dialog.open(HeaderFaq, {
+          width: '450px',
+          data: row,
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+          this.onLoad();
+        });
+    }
+    createDialog(row: any): void {
+        const dialogRef = this.dialog.open(DialogFaq, {
+            width: '400px',
+            data: row,
+        });
+        
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            this.onLoad();
+        })
+    }
+    
+
+    onLoad() {
+        this._helpCenterService.faqs$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((faqCategories) => {
+              this.faqCategories = faqCategories;
+          });
+        
     }
 
     deleteDialog(item) {
@@ -93,7 +136,27 @@ export class HelpCenterFaqsComponent implements OnInit, OnDestroy
             this.dialogRef.afterClosed().subscribe((result) => {
                 if (result) {
                     this.isLoading = true;
-                    this._helpCenterService.deleteDialog(item).subscribe();
+                    this._helpCenterService.deleteDialog(item).subscribe(() => {
+                        this.onLoad();
+                    });
+                }
+                this.dialogRef = null;
+            })
+        }
+    }
+
+
+    deleteDialogHeader(item) {
+        if (item) {
+            this.dialogRef = this.dialog.open(ConfirmationDialog, {
+                disableClose: false,
+            });
+            this.dialogRef.afterClosed().subscribe((result) => {
+                if (result) {
+                    this.isLoading = true;
+                    this._helpCenterService.deleteDialogHeader(item).subscribe(() => {
+                        this.onLoad();
+                    });
                 }
                 this.dialogRef = null;
             })
